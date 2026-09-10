@@ -1,508 +1,729 @@
-import hashlib
-import hmac
-import json
-import mimetypes
-import os
-import secrets
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from pathlib import Path
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-HOST = "0.0.0.0"
-PORT = int(os.getenv("PORT", "5000"))
-BASE_DIR = Path(__file__).resolve().parent
+    <title>ورود | لاینو</title>
 
-# =========================================================
-# حساب پیش‌فرض
-# =========================================================
-DEFAULT_USERNAME = os.getenv("LAINO_USERNAME", "admin")
-DEFAULT_PASSWORD = os.getenv("LAINO_PASSWORD", "123456")
-
-# رمز را فقط به صورت هش‌شده نگه می‌داریم
-PASSWORD_SALT = os.getenv(
-    "LAINO_PASSWORD_SALT",
-    "lainolive-default-salt"
-)
-
-PASSWORD_HASH = hashlib.sha256(
-    (PASSWORD_SALT + DEFAULT_PASSWORD).encode("utf-8")
-).hexdigest()
-
-
-# =========================================================
-# JSON
-# =========================================================
-def send_json(handler, status_code, data):
-    body = json.dumps(
-        data,
-        ensure_ascii=False,
-        indent=2
-    ).encode("utf-8")
-
-    handler.send_response(status_code)
-
-    handler.send_header(
-        "Content-Type",
-        "application/json; charset=utf-8"
-    )
-
-    handler.send_header(
-        "Content-Length",
-        str(len(body))
-    )
-
-    handler.send_header(
-        "Access-Control-Allow-Origin",
-        "*"
-    )
-
-    handler.send_header(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS"
-    )
-
-    handler.send_header(
-        "Access-Control-Allow-Headers",
-        "Content-Type"
-    )
-
-    handler.end_headers()
-
-    handler.wfile.write(body)
-
-
-# =========================================================
-# JSON REQUEST
-# =========================================================
-def read_json(handler):
-    try:
-        content_length = int(
-            handler.headers.get(
-                "Content-Length",
-                "0"
-            )
-        )
-    except ValueError:
-        return {}
-
-    if content_length <= 0:
-        return {}
-
-    try:
-        raw = handler.rfile.read(content_length)
-
-        return json.loads(
-            raw.decode("utf-8")
-        )
-
-    except (
-        json.JSONDecodeError,
-        UnicodeDecodeError
-    ):
-        return {}
-
-
-# =========================================================
-# STATIC FILES
-# =========================================================
-def get_content_type(path):
-    content_type, _ = mimetypes.guess_type(
-        str(path)
-    )
-
-    if not content_type:
-        content_type = "application/octet-stream"
-
-    return content_type
-
-
-def serve_static_file(handler, relative_path):
-    requested = Path(relative_path)
-
-    if (
-        ".." in requested.parts
-        or requested.is_absolute()
-    ):
-        return send_json(
-            handler,
-            403,
-            {
-                "success": False,
-                "message": "دسترسی غیرمجاز."
-            }
-        )
-
-    file_path = (
-        BASE_DIR / requested
-    ).resolve()
-
-    try:
-        file_path.relative_to(BASE_DIR)
-    except ValueError:
-        return send_json(
-            handler,
-            403,
-            {
-                "success": False,
-                "message": "دسترسی غیرمجاز."
-            }
-        )
-
-    if not file_path.is_file():
-        return send_json(
-            handler,
-            404,
-            {
-                "success": False,
-                "message": "فایل پیدا نشد."
-            }
-        )
-
-    try:
-        data = file_path.read_bytes()
-    except OSError:
-        return send_json(
-            handler,
-            500,
-            {
-                "success": False,
-                "message": "خواندن فایل ناموفق بود."
-            }
-        )
-
-    content_type = get_content_type(file_path)
-
-    extension = file_path.suffix.lower()
-
-    if extension == ".html":
-        content_type = "text/html; charset=utf-8"
-
-    elif extension == ".css":
-        content_type = "text/css; charset=utf-8"
-
-    elif extension == ".js":
-        content_type = "application/javascript; charset=utf-8"
-
-    elif extension == ".json":
-        content_type = "application/json; charset=utf-8"
-
-    handler.send_response(200)
-
-    handler.send_header(
-        "Content-Type",
-        content_type
-    )
-
-    handler.send_header(
-        "Content-Length",
-        str(len(data))
-    )
-
-    handler.send_header(
-        "Cache-Control",
-        "no-cache"
-    )
-
-    handler.end_headers()
-
-    handler.wfile.write(data)
-
-
-# =========================================================
-# LOGIN CHECK
-# =========================================================
-def verify_login(username, password):
-    username = str(username or "").strip()
-    password = str(password or "")
-
-    if username != DEFAULT_USERNAME:
-        return False
-
-    entered_hash = hashlib.sha256(
-        (PASSWORD_SALT + password).encode("utf-8")
-    ).hexdigest()
-
-    return hmac.compare_digest(
-        entered_hash,
-        PASSWORD_HASH
-    )
-
-
-# =========================================================
-# HTTP HANDLER
-# =========================================================
-class LainoHandler(BaseHTTPRequestHandler):
-
-    def log_message(self, format_string, *args):
-        print(
-            f"{self.address_string()} - "
-            f"{format_string % args}"
-        )
-
-    # -----------------------------------------------------
-    # OPTIONS
-    # -----------------------------------------------------
-    def do_OPTIONS(self):
-        self.send_response(204)
-
-        self.send_header(
-            "Access-Control-Allow-Origin",
-            "*"
-        )
-
-        self.send_header(
-            "Access-Control-Allow-Methods",
-            "GET, POST, OPTIONS"
-        )
-
-        self.send_header(
-            "Access-Control-Allow-Headers",
-            "Content-Type"
-        )
-
-        self.end_headers()
-
-    # -----------------------------------------------------
-    # GET
-    # -----------------------------------------------------
-    def do_GET(self):
-        path = self.path.split("?", 1)[0]
-
-        # Health
-        if path == "/health":
-            return send_json(
-                self,
-                200,
-                {
-                    "status": "ok",
-                    "service": "LainoLive",
-                    "login_method": "username_password"
-                }
-            )
-
-        # API status
-        if path == "/api/status":
-            return send_json(
-                self,
-                200,
-                {
-                    "service": "LainoLive API",
-                    "status": "online",
-                    "login_method": "username_password",
-                    "sms": False,
-                    "otp": False
-                }
-            )
-
-        # Home
-        if path == "/":
-            return serve_static_file(
-                self,
-                "index.html"
-            )
-
-        # Favicon
-        if path == "/favicon.ico":
-            self.send_response(204)
-            self.end_headers()
-            return
-
-        relative_path = path.lstrip("/")
-
-        allowed_extensions = {
-            ".html",
-            ".css",
-            ".js",
-            ".png",
-            ".jpg",
-            ".jpeg",
-            ".gif",
-            ".svg",
-            ".webp",
-            ".ico",
-            ".json",
-            ".mp3",
-            ".wav",
-            ".mp4",
-            ".webm"
+    <style>
+        * {
+            box-sizing: border-box;
         }
 
-        extension = Path(
-            relative_path
-        ).suffix.lower()
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Tahoma, Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #111827,
+                #1e293b
+            );
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-        if extension in allowed_extensions:
-            return serve_static_file(
-                self,
-                relative_path
-            )
+        .container {
+            width: 100%;
+            max-width: 430px;
+        }
 
-        return send_json(
-            self,
-            404,
-            {
-                "success": False,
-                "message": "مسیر پیدا نشد."
+        .card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 28px 22px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #cbd5e1;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: rgba(255,255,255,0.06);
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+        }
+
+        .tab {
+            border: 0;
+            padding: 11px;
+            border-radius: 10px;
+            background: transparent;
+            color: #cbd5e1;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            background: #f8fafc;
+            color: #111827;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .password-help {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: -7px;
+            margin-bottom: 14px;
+        }
+
+        .main-button {
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #22c55e;
+            color: white;
+        }
+
+        .main-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 14px;
+            white-space: pre-wrap;
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .error {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #fecaca;
+        }
+
+        .success {
+            background: rgba(34,197,94,0.15);
+            border: 1px solid rgba(34,197,94,0.3);
+            color: #bbf7d0;
+        }
+
+        .server-status {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 18px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="logo">لاینو</div>
+
+        <div class="subtitle">
+            LainoLive
+        </div>
+
+        <div class="tabs">
+
+            <button
+                id="loginTab"
+                class="tab active"
+                type="button"
+            >
+                ورود
+            </button>
+
+            <button
+                id="registerTab"
+                class="tab"
+                type="button"
+            >
+                ثبت‌نام
+            </button>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div id="loginForm">
+
+            <label for="loginUsername">
+                نام کاربری
+            </label>
+
+            <input
+                id="loginUsername"
+                class="ltr"
+                type="text"
+                autocomplete="username"
+                placeholder="نام کاربری"
+            >
+
+            <label for="loginPassword">
+                رمز عبور
+            </label>
+
+            <input
+                id="loginPassword"
+                class="ltr"
+                type="password"
+                autocomplete="current-password"
+                placeholder="رمز عبور"
+            >
+
+            <button
+                id="loginButton"
+                class="main-button"
+                type="button"
+            >
+                ورود
+            </button>
+
+        </div>
+
+
+        <!-- REGISTER -->
+
+        <div
+            id="registerForm"
+            class="hidden"
+        >
+
+            <label for="registerUsername">
+                نام کاربری
+            </label>
+
+            <input
+                id="registerUsername"
+                class="ltr"
+                type="text"
+                autocomplete="username"
+                placeholder="مثلاً amir123"
+            >
+
+            <label for="registerPassword">
+                رمز عبور
+            </label>
+
+            <input
+                id="registerPassword"
+                class="ltr"
+                type="password"
+                autocomplete="new-password"
+                placeholder="حداقل 6 کاراکتر"
+            >
+
+            <div class="password-help">
+                رمز عبور باید حداقل 6 کاراکتر باشد.
+            </div>
+
+            <label for="registerConfirm">
+                تکرار رمز عبور
+            </label>
+
+            <input
+                id="registerConfirm"
+                class="ltr"
+                type="password"
+                autocomplete="new-password"
+                placeholder="تکرار رمز عبور"
+            >
+
+            <button
+                id="registerButton"
+                class="main-button"
+                type="button"
+            >
+                ساخت حساب
+            </button>
+
+        </div>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+        <div
+            id="serverStatus"
+            class="server-status"
+        >
+            در حال بررسی سرور...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const loginTab =
+        document.getElementById("loginTab");
+
+    const registerTab =
+        document.getElementById("registerTab");
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const registerForm =
+        document.getElementById("registerForm");
+
+    const loginUsername =
+        document.getElementById("loginUsername");
+
+    const loginPassword =
+        document.getElementById("loginPassword");
+
+    const registerUsername =
+        document.getElementById("registerUsername");
+
+    const registerPassword =
+        document.getElementById("registerPassword");
+
+    const registerConfirm =
+        document.getElementById("registerConfirm");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const registerButton =
+        document.getElementById("registerButton");
+
+    const messageBox =
+        document.getElementById("message");
+
+    const serverStatus =
+        document.getElementById("serverStatus");
+
+
+    function showMessage(
+        text,
+        type = "error"
+    ) {
+        messageBox.className =
+            "message show " + type;
+
+        messageBox.textContent =
+            text;
+    }
+
+
+    function clearMessage() {
+        messageBox.className =
+            "message";
+
+        messageBox.textContent = "";
+    }
+
+
+    function showLogin() {
+
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+
+        loginForm.classList.remove("hidden");
+        registerForm.classList.add("hidden");
+
+        clearMessage();
+    }
+
+
+    function showRegister() {
+
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+
+        registerForm.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+
+        clearMessage();
+    }
+
+
+    loginTab.addEventListener(
+        "click",
+        showLogin
+    );
+
+
+    registerTab.addEventListener(
+        "click",
+        showRegister
+    );
+
+
+    async function checkServer() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/health",
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (
+                response.ok &&
+                data.status === "ok"
+            ) {
+
+                serverStatus.textContent =
+                    "سرور آنلاین است";
+
+            } else {
+
+                serverStatus.textContent =
+                    "خطا در سرور";
             }
-        )
 
-    # -----------------------------------------------------
-    # POST
-    # -----------------------------------------------------
-    def do_POST(self):
-        path = self.path.split("?", 1)[0]
+        } catch (error) {
 
-        if path == "/api/login":
-            return self.login()
+            serverStatus.textContent =
+                "اتصال به سرور برقرار نشد";
+        }
+    }
 
-        return send_json(
-            self,
-            404,
-            {
-                "success": False,
-                "message": "مسیر پیدا نشد."
+
+    async function login() {
+
+        clearMessage();
+
+        const username =
+            loginUsername.value.trim();
+
+        const password =
+            loginPassword.value;
+
+        if (!username) {
+
+            showMessage(
+                "نام کاربری را وارد کنید."
+            );
+
+            return;
+        }
+
+        if (!password) {
+
+            showMessage(
+                "رمز عبور را وارد کنید."
+            );
+
+            return;
+        }
+
+        loginButton.disabled = true;
+
+        loginButton.textContent =
+            "در حال ورود...";
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/login",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            username: username,
+                            password: password
+                        })
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                showMessage(
+                    data.message ||
+                    "نام کاربری یا رمز عبور اشتباه است."
+                );
+
+                return;
             }
-        )
 
-    # -----------------------------------------------------
-    # LOGIN
-    # -----------------------------------------------------
-    def login(self):
-        data = read_json(self)
+            localStorage.setItem(
+                "lainolive_logged_in",
+                "true"
+            );
 
-        username = str(
-            data.get("username", "")
-        ).strip()
+            localStorage.setItem(
+                "lainolive_username",
+                data.username
+            );
 
-        password = str(
-            data.get("password", "")
-        )
+            showMessage(
+                "ورود با موفقیت انجام شد.",
+                "success"
+            );
 
-        if not username:
-            return send_json(
-                self,
-                400,
-                {
-                    "success": False,
-                    "message": "نام کاربری را وارد کنید."
-                }
-            )
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/index.html";
+                },
+                500
+            );
 
-        if not password:
-            return send_json(
-                self,
-                400,
-                {
-                    "success": False,
-                    "message": "رمز عبور را وارد کنید."
-                }
-            )
+        } catch (error) {
 
-        if len(username) > 100:
-            return send_json(
-                self,
-                400,
-                {
-                    "success": False,
-                    "message": "نام کاربری نامعتبر است."
-                }
-            )
+            showMessage(
+                "خطا در ارتباط با سرور."
+            );
 
-        if len(password) > 200:
-            return send_json(
-                self,
-                400,
-                {
-                    "success": False,
-                    "message": "رمز عبور نامعتبر است."
-                }
-            )
+        } finally {
 
-        if not verify_login(
-            username,
-            password
-        ):
-            return send_json(
-                self,
-                401,
-                {
-                    "success": False,
-                    "message": (
-                        "نام کاربری یا رمز عبور اشتباه است."
-                    )
-                }
-            )
+            loginButton.disabled = false;
 
-        return send_json(
-            self,
-            200,
-            {
-                "success": True,
-                "message": "ورود با موفقیت انجام شد.",
-                "username": username
+            loginButton.textContent =
+                "ورود";
+        }
+    }
+
+
+    async function register() {
+
+        clearMessage();
+
+        const username =
+            registerUsername.value.trim();
+
+        const password =
+            registerPassword.value;
+
+        const confirmPassword =
+            registerConfirm.value;
+
+        if (!username) {
+
+            showMessage(
+                "نام کاربری را وارد کنید."
+            );
+
+            return;
+        }
+
+        if (!password) {
+
+            showMessage(
+                "رمز عبور را وارد کنید."
+            );
+
+            return;
+        }
+
+        if (password.length < 6) {
+
+            showMessage(
+                "رمز عبور باید حداقل 6 کاراکتر باشد."
+            );
+
+            return;
+        }
+
+        if (password !== confirmPassword) {
+
+            showMessage(
+                "تکرار رمز عبور یکسان نیست."
+            );
+
+            return;
+        }
+
+        registerButton.disabled = true;
+
+        registerButton.textContent =
+            "در حال ساخت حساب...";
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            username: username,
+                            password: password,
+                            confirm_password:
+                                confirmPassword
+                        })
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                showMessage(
+                    data.message ||
+                    "ثبت‌نام ناموفق بود."
+                );
+
+                return;
             }
-        )
+
+            showMessage(
+                "ثبت‌نام با موفقیت انجام شد. اکنون وارد شوید.",
+                "success"
+            );
+
+            loginUsername.value =
+                username;
+
+            loginPassword.value = "";
+
+            registerUsername.value = "";
+            registerPassword.value = "";
+            registerConfirm.value = "";
+
+            setTimeout(
+                () => {
+                    showLogin();
+                },
+                800
+            );
+
+        } catch (error) {
+
+            showMessage(
+                "خطا در ارتباط با سرور."
+            );
+
+        } finally {
+
+            registerButton.disabled = false;
+
+            registerButton.textContent =
+                "ساخت حساب";
+        }
+    }
 
 
-# =========================================================
-# MAIN
-# =========================================================
-def main():
-    server = ThreadingHTTPServer(
-        (HOST, PORT),
-        LainoHandler
-    )
-
-    print("=" * 60)
-    print("LainoLive")
-    print("=" * 60)
-
-    print(
-        f"Home:   http://127.0.0.1:{PORT}/"
-    )
-
-    print(
-        f"Login:  http://127.0.0.1:{PORT}/login.html"
-    )
-
-    print(
-        f"Health: http://127.0.0.1:{PORT}/health"
-    )
-
-    print(
-        f"Status: http://127.0.0.1:{PORT}/api/status"
-    )
-
-    print(
-        "Login method: username + password"
-    )
-
-    print(
-        "Username:",
-        DEFAULT_USERNAME
-    )
-
-    print(
-        "SMS:",
-        False
-    )
-
-    print(
-        "OTP:",
-        False
-    )
-
-    print("=" * 60)
-
-    try:
-        server.serve_forever()
-
-    except KeyboardInterrupt:
-        print()
-        print("LainoLive stopped.")
-
-    finally:
-        server.server_close()
+    loginButton.addEventListener(
+        "click",
+        login
+    );
 
 
-if __name__ == "__main__":
-    main()
+    registerButton.addEventListener(
+        "click",
+        register
+    );
+
+
+    loginPassword.addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                login();
+            }
+        }
+    );
+
+
+    registerConfirm.addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                register();
+            }
+        }
+    );
+
+
+    checkServer();
+
+</script>
+
+</body>
+</html>
