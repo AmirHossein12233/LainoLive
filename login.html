@@ -1,10 +1,18 @@
+```html id="zj8vkc"
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#020617"
     >
 
     <title>ورود | لاینو</title>
@@ -58,6 +66,20 @@
             margin-bottom: 25px;
         }
 
+        .remember-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 16px;
+            color: #cbd5e1;
+            font-size: 12px;
+        }
+
+        .remember-box input {
+            width: auto;
+            margin: 0;
+        }
+
         .tabs {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -90,7 +112,8 @@
             font-size: 14px;
         }
 
-        input {
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
             border: none;
             outline: none;
@@ -176,7 +199,9 @@
 
     <div class="card">
 
-        <div class="logo">لاینو</div>
+        <div class="logo">
+            لاینو
+        </div>
 
         <div class="subtitle">
             LainoLive
@@ -230,6 +255,15 @@
                 autocomplete="current-password"
                 placeholder="رمز عبور"
             >
+
+            <label class="remember-box">
+                <input
+                    id="rememberMe"
+                    type="checkbox"
+                    checked
+                >
+                ماندن در حساب روی این دستگاه
+            </label>
 
             <button
                 id="loginButton"
@@ -319,52 +353,145 @@
 
 <script>
 
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
     const loginTab =
-        document.getElementById("loginTab");
+        document.getElementById(
+            "loginTab"
+        );
 
     const registerTab =
-        document.getElementById("registerTab");
+        document.getElementById(
+            "registerTab"
+        );
 
     const loginForm =
-        document.getElementById("loginForm");
+        document.getElementById(
+            "loginForm"
+        );
 
     const registerForm =
-        document.getElementById("registerForm");
+        document.getElementById(
+            "registerForm"
+        );
 
     const loginUsername =
-        document.getElementById("loginUsername");
+        document.getElementById(
+            "loginUsername"
+        );
 
     const loginPassword =
-        document.getElementById("loginPassword");
+        document.getElementById(
+            "loginPassword"
+        );
+
+    const rememberMe =
+        document.getElementById(
+            "rememberMe"
+        );
 
     const registerUsername =
-        document.getElementById("registerUsername");
+        document.getElementById(
+            "registerUsername"
+        );
 
     const registerPassword =
-        document.getElementById("registerPassword");
+        document.getElementById(
+            "registerPassword"
+        );
 
     const registerConfirm =
-        document.getElementById("registerConfirm");
+        document.getElementById(
+            "registerConfirm"
+        );
 
     const loginButton =
-        document.getElementById("loginButton");
+        document.getElementById(
+            "loginButton"
+        );
 
     const registerButton =
-        document.getElementById("registerButton");
+        document.getElementById(
+            "registerButton"
+        );
 
     const messageBox =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
 
     const serverStatus =
-        document.getElementById("serverStatus");
+        document.getElementById(
+            "serverStatus"
+        );
 
+
+    /* =====================================================
+       STORAGE
+    ===================================================== */
+
+    function saveLogin(
+        username
+    ) {
+
+        localStorage.setItem(
+            "lainolive_logged_in",
+            "true"
+        );
+
+        localStorage.setItem(
+            "lainolive_username",
+            username
+        );
+    }
+
+
+    function clearLogin() {
+
+        localStorage.removeItem(
+            "lainolive_logged_in"
+        );
+
+        localStorage.removeItem(
+            "lainolive_username"
+        );
+    }
+
+
+    function getSavedUsername() {
+
+        return localStorage.getItem(
+            "lainolive_username"
+        );
+    }
+
+
+    function isLoggedIn() {
+
+        return (
+            localStorage.getItem(
+                "lainolive_logged_in"
+            ) === "true"
+            &&
+            !!getSavedUsername()
+        );
+    }
+
+
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
 
     function showMessage(
         text,
         type = "error"
     ) {
+
         messageBox.className =
-            "message show " + type;
+            "message show " +
+            type;
 
         messageBox.textContent =
             text;
@@ -372,20 +499,36 @@
 
 
     function clearMessage() {
+
         messageBox.className =
             "message";
 
-        messageBox.textContent = "";
+        messageBox.textContent =
+            "";
     }
 
 
+    /* =====================================================
+       TABS
+    ===================================================== */
+
     function showLogin() {
 
-        loginTab.classList.add("active");
-        registerTab.classList.remove("active");
+        loginTab.classList.add(
+            "active"
+        );
 
-        loginForm.classList.remove("hidden");
-        registerForm.classList.add("hidden");
+        registerTab.classList.remove(
+            "active"
+        );
+
+        loginForm.classList.remove(
+            "hidden"
+        );
+
+        registerForm.classList.add(
+            "hidden"
+        );
 
         clearMessage();
     }
@@ -393,11 +536,21 @@
 
     function showRegister() {
 
-        registerTab.classList.add("active");
-        loginTab.classList.remove("active");
+        registerTab.classList.add(
+            "active"
+        );
 
-        registerForm.classList.remove("hidden");
-        loginForm.classList.add("hidden");
+        loginTab.classList.remove(
+            "active"
+        );
+
+        registerForm.classList.remove(
+            "hidden"
+        );
+
+        loginForm.classList.add(
+            "hidden"
+        );
 
         clearMessage();
     }
@@ -415,6 +568,10 @@
     );
 
 
+    /* =====================================================
+       SERVER
+    ===================================================== */
+
     async function checkServer() {
 
         try {
@@ -423,12 +580,15 @@
                 await fetch(
                     "/health",
                     {
-                        cache: "no-store"
+                        cache:
+                            "no-store"
                     }
                 );
 
+
             const data =
                 await response.json();
+
 
             if (
                 response.ok &&
@@ -452,9 +612,14 @@
     }
 
 
+    /* =====================================================
+       LOGIN
+    ===================================================== */
+
     async function login() {
 
         clearMessage();
+
 
         const username =
             loginUsername.value.trim();
@@ -462,7 +627,10 @@
         const password =
             loginPassword.value;
 
-        if (!username) {
+
+        if (
+            !username
+        ) {
 
             showMessage(
                 "نام کاربری را وارد کنید."
@@ -471,7 +639,10 @@
             return;
         }
 
-        if (!password) {
+
+        if (
+            !password
+        ) {
 
             showMessage(
                 "رمز عبور را وارد کنید."
@@ -480,10 +651,13 @@
             return;
         }
 
-        loginButton.disabled = true;
+
+        loginButton.disabled =
+            true;
 
         loginButton.textContent =
             "در حال ورود...";
+
 
         try {
 
@@ -491,22 +665,31 @@
                 await fetch(
                     "/api/login",
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
                             "Content-Type":
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
-                            username: username,
-                            password: password
-                        })
+                        body:
+                            JSON.stringify({
+
+                                username:
+                                    username,
+
+                                password:
+                                    password
+
+                            })
                     }
                 );
 
+
             const data =
                 await response.json();
+
 
             if (
                 !response.ok ||
@@ -521,30 +704,46 @@
                 return;
             }
 
-            localStorage.setItem(
-                "lainolive_logged_in",
-                "true"
+
+            const savedUsername =
+                data.username ||
+                username;
+
+
+            /*
+             * حساب روی دستگاه باقی می‌ماند.
+             * خروج از صفحه یا خروج از لایو
+             * این اطلاعات را پاک نمی‌کند.
+             */
+
+            saveLogin(
+                savedUsername
             );
 
-            localStorage.setItem(
-                "lainolive_username",
-                data.username
-            );
 
             showMessage(
                 "ورود با موفقیت انجام شد.",
                 "success"
             );
 
+
             setTimeout(
                 () => {
+
                     window.location.href =
                         "/index.html";
+
                 },
-                500
+                300
             );
 
         } catch (error) {
+
+            console.error(
+                "Login:",
+                error
+            );
+
 
             showMessage(
                 "خطا در ارتباط با سرور."
@@ -552,7 +751,8 @@
 
         } finally {
 
-            loginButton.disabled = false;
+            loginButton.disabled =
+                false;
 
             loginButton.textContent =
                 "ورود";
@@ -560,9 +760,14 @@
     }
 
 
+    /* =====================================================
+       REGISTER
+    ===================================================== */
+
     async function register() {
 
         clearMessage();
+
 
         const username =
             registerUsername.value.trim();
@@ -573,7 +778,10 @@
         const confirmPassword =
             registerConfirm.value;
 
-        if (!username) {
+
+        if (
+            !username
+        ) {
 
             showMessage(
                 "نام کاربری را وارد کنید."
@@ -582,7 +790,10 @@
             return;
         }
 
-        if (!password) {
+
+        if (
+            !password
+        ) {
 
             showMessage(
                 "رمز عبور را وارد کنید."
@@ -591,7 +802,11 @@
             return;
         }
 
-        if (password.length < 6) {
+
+        if (
+            password.length <
+            6
+        ) {
 
             showMessage(
                 "رمز عبور باید حداقل 6 کاراکتر باشد."
@@ -600,7 +815,11 @@
             return;
         }
 
-        if (password !== confirmPassword) {
+
+        if (
+            password !==
+            confirmPassword
+        ) {
 
             showMessage(
                 "تکرار رمز عبور یکسان نیست."
@@ -609,10 +828,13 @@
             return;
         }
 
-        registerButton.disabled = true;
+
+        registerButton.disabled =
+            true;
 
         registerButton.textContent =
             "در حال ساخت حساب...";
+
 
         try {
 
@@ -620,24 +842,34 @@
                 await fetch(
                     "/api/register",
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
                             "Content-Type":
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
-                            username: username,
-                            password: password,
-                            confirm_password:
-                                confirmPassword
-                        })
+                        body:
+                            JSON.stringify({
+
+                                username:
+                                    username,
+
+                                password:
+                                    password,
+
+                                confirm_password:
+                                    confirmPassword
+
+                            })
                     }
                 );
 
+
             const data =
                 await response.json();
+
 
             if (
                 !response.ok ||
@@ -652,28 +884,53 @@
                 return;
             }
 
+
+            /*
+             * بعد از ثبت‌نام حساب هنوز وارد نشده،
+             * بنابراین اول صفحه ورود را نشان می‌دهیم.
+             */
+
             showMessage(
                 "ثبت‌نام با موفقیت انجام شد. اکنون وارد شوید.",
                 "success"
             );
 
+
             loginUsername.value =
                 username;
 
-            loginPassword.value = "";
+            loginPassword.value =
+                "";
 
-            registerUsername.value = "";
-            registerPassword.value = "";
-            registerConfirm.value = "";
+
+            registerUsername.value =
+                "";
+
+            registerPassword.value =
+                "";
+
+            registerConfirm.value =
+                "";
+
 
             setTimeout(
                 () => {
+
                     showLogin();
+
+                    loginUsername.focus();
+
                 },
-                800
+                600
             );
 
         } catch (error) {
+
+            console.error(
+                "Register:",
+                error
+            );
+
 
             showMessage(
                 "خطا در ارتباط با سرور."
@@ -681,13 +938,18 @@
 
         } finally {
 
-            registerButton.disabled = false;
+            registerButton.disabled =
+                false;
 
             registerButton.textContent =
                 "ساخت حساب";
         }
     }
 
+
+    /* =====================================================
+       EVENTS
+    ===================================================== */
 
     loginButton.addEventListener(
         "click",
@@ -703,8 +965,13 @@
 
     loginPassword.addEventListener(
         "keydown",
-        function(event) {
-            if (event.key === "Enter") {
+        event => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
                 login();
             }
         }
@@ -713,17 +980,61 @@
 
     registerConfirm.addEventListener(
         "keydown",
-        function(event) {
-            if (event.key === "Enter") {
+        event => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
                 register();
             }
         }
     );
 
 
-    checkServer();
+    /* =====================================================
+       AUTO LOGIN
+    ===================================================== */
+
+    const savedUsername =
+        getSavedUsername();
+
+
+    if (
+        isLoggedIn()
+    ) {
+
+        loginUsername.value =
+            savedUsername;
+
+
+        serverStatus.textContent =
+            "حساب شما روی این دستگاه ذخیره است";
+
+
+        /*
+         * اگر قبلاً وارد شده‌ای،
+         * مستقیم صفحه اصلی باز می‌شود.
+         */
+
+        setTimeout(
+            () => {
+
+                window.location.href =
+                    "/index.html";
+
+            },
+            150
+        );
+
+    } else {
+
+        checkServer();
+    }
 
 </script>
 
 </body>
 </html>
+```
