@@ -38,7 +38,7 @@
         }
 
         body {
-            padding-bottom: 90px;
+            padding-bottom: 30px;
         }
 
         .profile-page {
@@ -84,7 +84,7 @@
         }
 
         .profile-content {
-            width: min(700px, 100%);
+            width: min(760px, 100%);
             margin: 0 auto;
             padding: 20px 15px 30px;
         }
@@ -125,7 +125,7 @@
 
         .stats {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             margin-top: 22px;
         }
@@ -146,36 +146,125 @@
         .stat-label {
             margin-top: 5px;
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 11px;
         }
 
-        .live-status {
-            margin-top: 18px;
-            padding: 14px;
-            border-radius: 14px;
+        .section-title {
+            margin: 26px 0 12px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .active-live-card {
             background: #0f172a;
-            border: 1px solid #273449;
-            color: #cbd5e1;
-            text-align: center;
-            font-size: 13px;
+            border: 1px solid #166534;
+            border-radius: 18px;
+            padding: 15px;
+        }
+
+        .active-live-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .active-live-title {
+            min-width: 0;
+            font-size: 15px;
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .live-badge {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 9px;
+            border-radius: 8px;
+            background: #3f0a0a;
+            color: #fecaca;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .active-live-info {
+            margin-top: 8px;
+            color: #94a3b8;
+            font-size: 12px;
             line-height: 1.8;
         }
 
-        .live-status.active {
-            border-color: #166534;
-            background: #052e16;
-            color: #bbf7d0;
+        .live-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 11px;
+        }
+
+        .meta-item {
+            padding: 6px 9px;
+            border-radius: 8px;
+            background: #1e293b;
+            color: #cbd5e1;
+            font-size: 10px;
+        }
+
+        .continue-live-button {
+            width: 100%;
+            margin-top: 14px;
+            border: 0;
+            border-radius: 12px;
+            padding: 13px;
+            background: #22c55e;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .continue-live-button:active {
+            transform: scale(0.99);
+        }
+
+        .no-live {
+            padding: 22px 15px;
+            border-radius: 16px;
+            background: #0f172a;
+            border: 1px solid #273449;
+            text-align: center;
+        }
+
+        .no-live-icon {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .no-live-title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .no-live-text {
+            margin-top: 6px;
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.8;
         }
 
         .action-group {
             display: grid;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 22px;
         }
 
         .action-button {
             width: 100%;
-            border: 0;
             border-radius: 14px;
             padding: 14px;
             font-family: inherit;
@@ -186,20 +275,15 @@
         }
 
         .home-button {
+            border: 1px solid #334155;
             background: #1e293b;
             color: #ffffff;
-            border: 1px solid #334155;
         }
 
         .logout-button {
+            border: 0;
             background: #dc2626;
             color: #ffffff;
-        }
-
-        .logout-button:active,
-        .home-button:active,
-        .back-button:active {
-            transform: scale(0.98);
         }
 
         .loading {
@@ -214,6 +298,7 @@
             color: #fca5a5;
             font-size: 12px;
             margin-top: 18px;
+            line-height: 1.8;
         }
 
         .toast {
@@ -258,7 +343,19 @@
             }
 
             .stats {
-                gap: 8px;
+                gap: 7px;
+            }
+
+            .stat-card {
+                padding: 15px 7px;
+            }
+
+            .stat-number {
+                font-size: 21px;
+            }
+
+            .stat-label {
+                font-size: 10px;
             }
         }
     </style>
@@ -352,7 +449,23 @@
                     </div>
 
                     <div class="stat-label">
-                        لایوهای فعال
+                        لایو فعال
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div
+                        id="viewerCount"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        بیننده
                     </div>
 
                 </div>
@@ -376,12 +489,45 @@
             </div>
 
 
-            <div
-                id="liveStatus"
-                class="live-status"
-            >
-                در حال بررسی لایوهای شما...
+            <div class="section-title">
+                لایو فعال من
             </div>
+
+
+            <div id="activeLiveContainer">
+
+                <div class="no-live">
+
+                    <div class="no-live-icon">
+                        📺
+                    </div>
+
+                    <div class="no-live-title">
+                        در حال بررسی...
+                    </div>
+
+                    <div class="no-live-text">
+                        در حال دریافت اطلاعات لایو.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="loading"
+                class="loading"
+            >
+                در حال دریافت اطلاعات...
+            </div>
+
+
+            <div
+                id="error"
+                class="error"
+                style="display:none;"
+            ></div>
 
 
             <div class="action-group">
@@ -404,20 +550,6 @@
                 </button>
 
             </div>
-
-
-            <div
-                id="loading"
-                class="loading"
-            >
-                در حال دریافت اطلاعات...
-            </div>
-
-            <div
-                id="error"
-                class="error"
-                style="display:none;"
-            ></div>
 
         </section>
 
@@ -448,14 +580,19 @@
             "liveCount"
         );
 
+    const viewerCount =
+        document.getElementById(
+            "viewerCount"
+        );
+
     const statusNumber =
         document.getElementById(
             "statusNumber"
         );
 
-    const liveStatus =
+    const activeLiveContainer =
         document.getElementById(
-            "liveStatus"
+            "activeLiveContainer"
         );
 
     const loading =
@@ -473,10 +610,6 @@
             "toast"
         );
 
-
-    /* =====================================================
-       USER
-    ===================================================== */
 
     username.textContent =
         currentUsername;
@@ -512,7 +645,184 @@
 
 
     /* =====================================================
-       LOAD PROFILE DATA
+       ESCAPE
+    ===================================================== */
+
+    function escapeHtml(
+        text
+    ) {
+
+        return String(
+            text ?? ""
+        )
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+    }
+
+
+    /* =====================================================
+       RENDER NO LIVE
+    ===================================================== */
+
+    function renderNoLive() {
+
+        activeLiveContainer.innerHTML = `
+            <div class="no-live">
+
+                <div class="no-live-icon">
+                    📺
+                </div>
+
+                <div class="no-live-title">
+                    لایو فعالی نداری
+                </div>
+
+                <div class="no-live-text">
+                    برای شروع پخش زنده به صفحه خانه برو.
+                </div>
+
+            </div>
+        `;
+
+        viewerCount.textContent =
+            "0";
+    }
+
+
+    /* =====================================================
+       RENDER ACTIVE LIVE
+    ===================================================== */
+
+    function renderActiveLive(
+        stream
+    ) {
+
+        const viewers =
+            Number(
+                stream.viewer_count ??
+                stream.viewers ??
+                0
+            );
+
+
+        liveCount.textContent =
+            "1";
+
+
+        viewerCount.textContent =
+            String(
+                viewers
+            );
+
+
+        activeLiveContainer.innerHTML = `
+
+            <div class="active-live-card">
+
+                <div class="active-live-top">
+
+                    <div
+                        class="active-live-title"
+                        title="${escapeHtml(
+                            stream.title ||
+                            "پخش زنده"
+                        )}"
+                    >
+                        ${escapeHtml(
+                            stream.title ||
+                            "پخش زنده"
+                        )}
+                    </div>
+
+                    <div class="live-badge">
+                        🔴 LIVE
+                    </div>
+
+                </div>
+
+
+                <div class="active-live-info">
+                    لایو شما در حال حاضر فعال است.
+                </div>
+
+
+                <div class="live-meta">
+
+                    <div class="meta-item">
+                        👁 ${viewers} بیننده
+                    </div>
+
+                    <div class="meta-item">
+                        📂 ${escapeHtml(
+                            stream.category ||
+                            "عمومی"
+                        )}
+                    </div>
+
+                    <div class="meta-item">
+                        🆔 #${escapeHtml(
+                            stream.id
+                        )}
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="continueLiveButton"
+                    class="continue-live-button"
+                    type="button"
+                >
+                    🎥 ادامه لایو
+                </button>
+
+            </div>
+        `;
+
+
+        document
+            .getElementById(
+                "continueLiveButton"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    sessionStorage.setItem(
+                        "lainolive_current_stream",
+                        JSON.stringify(
+                            stream
+                        )
+                    );
+
+
+                    window.location.href =
+                        "/live.html";
+                }
+            );
+    }
+
+
+    /* =====================================================
+       LOAD PROFILE
     ===================================================== */
 
     async function loadProfile() {
@@ -539,6 +849,7 @@
             if (
                 !response.ok
             ) {
+
                 throw new Error(
                     "HTTP " +
                     response.status
@@ -588,33 +899,29 @@
                 );
 
 
-            statusNumber.textContent =
-                "فعال";
-
-
             if (
                 myStreams.length
             ) {
 
-                liveStatus.classList.add(
-                    "active"
+                const stream =
+                    myStreams[0];
+
+
+                renderActiveLive(
+                    stream
                 );
 
 
-                liveStatus.textContent =
-                    "شما در حال حاضر " +
-                    myStreams.length +
-                    " لایو فعال دارید.";
+                statusNumber.textContent =
+                    "فعال";
 
             } else {
 
-                liveStatus.classList.remove(
-                    "active"
-                );
+                renderNoLive();
 
 
-                liveStatus.textContent =
-                    "در حال حاضر لایو فعالی از طرف شما وجود ندارد.";
+                statusNumber.textContent =
+                    "آنلاین";
             }
 
 
@@ -626,22 +933,37 @@
             );
 
 
+            liveCount.textContent =
+                "0";
+
+            viewerCount.textContent =
+                "0";
+
             statusNumber.textContent =
                 "نامشخص";
 
 
-            liveStatus.classList.remove(
-                "active"
-            );
+            activeLiveContainer.innerHTML = `
+                <div class="no-live">
 
+                    <div class="no-live-icon">
+                        ⚠️
+                    </div>
 
-            liveStatus.textContent =
-                "دریافت تعداد لایوها در حال حاضر ممکن نیست.";
+                    <div class="no-live-title">
+                        دریافت اطلاعات ناموفق بود
+                    </div>
+
+                    <div class="no-live-text">
+                        اتصال به سرور را بررسی کن و دوباره تلاش کن.
+                    </div>
+
+                </div>
+            `;
 
 
             errorBox.textContent =
                 "خطا در دریافت اطلاعات از سرور.";
-
 
             errorBox.style.display =
                 "block";
