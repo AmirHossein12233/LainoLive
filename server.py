@@ -18,7 +18,9 @@ HOST = "0.0.0.0"
 PORT = int(os.getenv("PORT", "5000"))
 
 BASE_DIR = Path(__file__).resolve().parent
+
 USERS_FILE = BASE_DIR / "users.json"
+HISTORY_FILE = BASE_DIR / "streams_history.json"
 
 MAX_MESSAGE_LENGTH = 500
 MAX_CHAT_MESSAGES = 200
@@ -28,9 +30,11 @@ PASSWORD_ITERATIONS = 310_000
 users_lock = threading.Lock()
 streams_lock = threading.Lock()
 chat_lock = threading.Lock()
+history_lock = threading.Lock()
 
 streams = {}
 chat_messages = {}
+stream_history = []
 
 next_stream_id = 1
 next_chat_id = 1
@@ -335,7 +339,104 @@ users = load_users()
 
 
 # =========================================================
-# STREAM
+# STREAM HISTORY
+# =========================================================
+
+def load_stream_history():
+
+    if not HISTORY_FILE.exists():
+        return []
+
+    try:
+
+        data = json.loads(
+            HISTORY_FILE.read_text(
+                encoding="utf-8"
+            )
+        )
+
+        if isinstance(
+            data,
+            list
+        ):
+            return data
+
+        return []
+
+    except (
+        OSError,
+        json.JSONDecodeError
+    ):
+
+        return []
+
+
+def save_stream_history():
+
+    temporary = (
+        HISTORY_FILE.with_suffix(
+            ".tmp"
+        )
+    )
+
+    temporary.write_text(
+        json.dumps(
+            stream_history,
+            ensure_ascii=False,
+            indent=2
+        ),
+        encoding="utf-8"
+    )
+
+    temporary.replace(
+        HISTORY_FILE
+    )
+
+
+stream_history = load_stream_history()
+
+
+# =========================================================
+# NEXT STREAM ID
+# =========================================================
+
+def initialize_next_stream_id():
+
+    highest_id = 0
+
+    with history_lock:
+
+        for item in stream_history:
+
+            try:
+
+                value = int(
+                    str(
+                        item.get(
+                            "id",
+                            "0"
+                        )
+                    )
+                )
+
+                if value > highest_id:
+                    highest_id = value
+
+            except (
+                ValueError,
+                TypeError
+            ):
+
+                continue
+
+    return highest_id + 1
+
+
+next_stream_id = initialize_next_stream_id()
+
+
+# =========================================================
+# STREAM PUBLIC DATA
 # =========================================================
 
 def stream_public_data(stream):
@@ -355,6 +456,56 @@ def stream_public_data(stream):
 
         "viewer_count":
             stream["viewer_count"]
+    }
+
+
+# =========================================================
+# STREAM HISTORY DATA
+# =========================================================
+
+def history_public_data(stream):
+
+    return {
+        "id":
+            stream["id"],
+
+        "title":
+            stream["title"],
+
+        "username":
+            stream["username"],
+
+        "created_at":
+            stream["created_at"],
+
+        "started_at":
+            stream.get(
+                "started_at",
+                stream["created_at"]
+            ),
+
+        "ended_at":
+            stream.get(
+                "ended_at"
+            ),
+
+        "duration_seconds":
+            stream.get(
+                "duration_seconds",
+                0
+            ),
+
+        "viewer_peak":
+            stream.get(
+                "viewer_peak",
+                0
+            ),
+
+        "viewer_count":
+            stream.get(
+                "viewer_count",
+                0
+            )
     }
 
 
@@ -449,6 +600,12 @@ class LainoHandler(
                     streams
                 )
 
+            with history_lock:
+
+                history_count = len(
+                    stream_history
+                )
+
             return send_json(
                 self,
                 200,
@@ -460,11 +617,14 @@ class LainoHandler(
                         True,
 
                     "streams":
-                        stream_count
+                        stream_count,
+
+                    "history":
+                        history_count
                 }
             )
 
-        # STREAMS
+        # ACTIVE STREAMS
         if path == "/api/streams":
 
             with streams_lock:
@@ -494,6 +654,11 @@ class LainoHandler(
                         result
                 }
             )
+
+        # STREAM HISTORY
+        if path == "/api/streams/history":
+
+            return self.get_stream_history()
 
         # CHAT
         if path == "/api/chat/messages":
@@ -848,6 +1013,10 @@ class LainoHandler(
 
         global next_stream_id
 
+        now = int(
+            time.time()
+        )
+
         with streams_lock:
 
             stream_id = str(
@@ -867,11 +1036,15 @@ class LainoHandler(
                     username,
 
                 "created_at":
-                    int(
-                        time.time()
-                    ),
+                    now,
+
+                "started_at":
+                    now,
 
                 "viewer_count":
+                    0,
+
+                "viewer_peak":
                     0
             }
 
@@ -974,10 +1147,86 @@ class LainoHandler(
                     }
                 )
 
+            ended_at = int(
+                time.time()
+            )
+
+            started_at = int(
+                stream.get(
+                    "started_at",
+                    stream.get(
+                        "created_at",
+                        ended_at
+                    )
+                )
+            )
+
+            duration_seconds = max(
+                0,
+                ended_at - started_at
+            )
+
+            history_item = {
+                "id":
+                    stream["id"],
+
+                "title":
+                    stream["title"],
+
+                "username":
+                    stream["username"],
+
+                "created_at":
+                    stream["created_at"],
+
+                "started_at":
+                    started_at,
+
+                "ended_at":
+                    ended_at,
+
+                "duration_seconds":
+                    duration_seconds,
+
+                "viewer_peak":
+                    stream.get(
+                        "viewer_peak",
+                        stream.get(
+                            "viewer_count",
+                            0
+                        )
+                    ),
+
+                "viewer_count":
+                    stream.get(
+                        "viewer_count",
+                        0
+                    )
+            }
+
             streams.pop(
                 stream_id,
                 None
             )
+
+        # ذخیره تاریخچه
+        with history_lock:
+
+            stream_history.append(
+                history_item
+            )
+
+            # جدیدترین لایوها اول باشند
+            stream_history.sort(
+                key=lambda item:
+                    item.get(
+                        "ended_at",
+                        0
+                    ),
+                reverse=True
+            )
+
+            save_stream_history()
 
         with chat_lock:
 
@@ -994,7 +1243,12 @@ class LainoHandler(
                     True,
 
                 "message":
-                    "لایو پایان یافت."
+                    "لایو پایان یافت.",
+
+                "history":
+                    history_public_data(
+                        history_item
+                    )
             }
         )
 
@@ -1065,6 +1319,19 @@ class LainoHandler(
                     "viewer_count"
                 ] += 1
 
+                if stream[
+                    "viewer_count"
+                ] > stream.get(
+                    "viewer_peak",
+                    0
+                ):
+
+                    stream[
+                        "viewer_peak"
+                    ] = stream[
+                        "viewer_count"
+                    ]
+
             else:
 
                 stream[
@@ -1080,6 +1347,11 @@ class LainoHandler(
                 "viewer_count"
             ]
 
+            peak = stream.get(
+                "viewer_peak",
+                0
+            )
+
         return send_json(
             self,
             200,
@@ -1088,7 +1360,103 @@ class LainoHandler(
                     True,
 
                 "viewer_count":
-                    count
+                    count,
+
+                "viewer_peak":
+                    peak
+            }
+        )
+
+    # =====================================================
+    # STREAM HISTORY API
+    # =====================================================
+
+    def get_stream_history(self):
+
+        parsed = urllib.parse.urlparse(
+            self.path
+        )
+
+        params = urllib.parse.parse_qs(
+            parsed.query
+        )
+
+        username = clean_username(
+            params.get(
+                "username",
+                [""]
+            )[0]
+        )
+
+        try:
+
+            limit = int(
+                params.get(
+                    "limit",
+                    ["50"]
+                )[0]
+            )
+
+        except ValueError:
+
+            limit = 50
+
+        limit = max(
+            1,
+            min(
+                limit,
+                200
+            )
+        )
+
+        with history_lock:
+
+            items = list(
+                stream_history
+            )
+
+        if username:
+
+            items = [
+                item
+                for item
+                in items
+                if item.get(
+                    "username"
+                ) == username
+            ]
+
+        items.sort(
+            key=lambda item:
+                item.get(
+                    "ended_at",
+                    0
+                ),
+            reverse=True
+        )
+
+        items = items[:limit]
+
+        result = [
+            history_public_data(
+                item
+            )
+            for item
+            in items
+        ]
+
+        return send_json(
+            self,
+            200,
+            {
+                "success":
+                    True,
+
+                "count":
+                    len(result),
+
+                "history":
+                    result
             }
         )
 
@@ -1516,6 +1884,14 @@ def main():
         "=" * 60
     )
 
+    print(
+        f"History file: {HISTORY_FILE}"
+    )
+
+    print(
+        f"History count: {len(stream_history)}"
+    )
+
     server = ThreadingHTTPServer(
         (
             HOST,
@@ -1533,11 +1909,19 @@ def main():
     )
 
     print(
+        f"History: http://127.0.0.1:{PORT}/api/streams/history"
+    )
+
+    print(
         "Live: enabled"
     )
 
     print(
         "Chat: enabled"
+    )
+
+    print(
+        "History: enabled"
     )
 
     print(
