@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -11,10 +12,10 @@
 
     <meta
         name="theme-color"
-        content="#0f172a"
+        content="#111827"
     >
 
-    <title>پروفایل | لاینو</title>
+    <title>پروفایل | LainoLive</title>
 
     <link
         rel="stylesheet"
@@ -22,178 +23,243 @@
     >
 
     <style>
-        .profile-page {
-            width: min(700px, calc(100% - 20px));
-            margin: 0 auto;
-            padding-top: 25px;
+        * {
+            box-sizing: border-box;
         }
 
-        .profile-card {
-            background: #172033;
-            border: 1px solid #273449;
-            border-radius: 22px;
-            padding: 24px;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            background: #020617;
+            color: #ffffff;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        body {
+            padding-bottom: 90px;
+        }
+
+        .profile-page {
+            width: 100%;
+            min-height: 100vh;
         }
 
         .profile-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .avatar {
-            width: 105px;
-            height: 105px;
-            margin: 0 auto 14px;
-            border-radius: 50%;
-            background: #1e293b;
-            border: 3px solid #22c55e;
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            font-size: 48px;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-header h1 {
-            margin: 0 0 7px;
-            font-size: 24px;
-        }
-
-        .profile-header p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .profile-form {
-            margin-top: 20px;
-        }
-
-        .profile-form label {
-            display: block;
-            margin: 15px 0 8px;
-            color: #cbd5e1;
-            font-size: 13px;
-        }
-
-        .profile-form input {
-            width: 100%;
+            justify-content: space-between;
+            gap: 12px;
             padding: 14px;
-            border: 1px solid #334155;
-            border-radius: 13px;
-            outline: none;
-            background: #1e293b;
-            color: #ffffff;
-            font-size: 15px;
+            background: #111827;
+            border-bottom: 1px solid #273449;
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
 
-        .profile-form input:focus {
-            border-color: #22c55e;
-        }
-
-        .upload-button {
-            display: block;
-            width: 100%;
-            margin-top: 12px;
-            padding: 13px;
-            border: 1px solid #334155;
-            border-radius: 13px;
-            background: #1e293b;
-            color: #ffffff;
-            text-align: center;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .upload-button:hover {
-            background: #273449;
-        }
-
-        .save-button {
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .logout-button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 13px;
-            border: 1px solid #7f1d1d;
-            border-radius: 13px;
-            background: #450a0a;
-            color: #fecaca;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .logout-button:hover {
-            background: #7f1d1d;
+        .profile-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
         }
 
         .back-button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 13px;
-            border: 1px solid #334155;
-            border-radius: 13px;
+            width: 40px;
+            height: 40px;
+            border: 0;
+            border-radius: 10px;
             background: #1e293b;
             color: #ffffff;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 14px;
+            touch-action: manipulation;
         }
 
-        .back-button:hover {
-            background: #273449;
+        .page-title {
+            font-size: 18px;
+            font-weight: bold;
         }
 
-        .message {
-            display: none;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 12px;
+        .profile-content {
+            width: min(700px, 100%);
+            margin: 0 auto;
+            padding: 20px 15px 30px;
+        }
+
+        .profile-card {
+            background: #111827;
+            border: 1px solid #273449;
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.22);
+        }
+
+        .avatar {
+            width: 92px;
+            height: 92px;
+            margin: 0 auto 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e293b;
+            border: 2px solid #22c55e;
+            font-size: 38px;
+        }
+
+        .username {
+            text-align: center;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .username-label {
+            text-align: center;
+            color: #94a3b8;
+            margin-top: 6px;
+            font-size: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .stat-card {
+            background: #0f172a;
+            border: 1px solid #273449;
+            border-radius: 16px;
+            padding: 18px 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            margin-top: 5px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .live-status {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 14px;
+            background: #0f172a;
+            border: 1px solid #273449;
+            color: #cbd5e1;
+            text-align: center;
             font-size: 13px;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
-        .message.show {
-            display: block;
-        }
-
-        .message.success {
-            background: #132b1d;
-            border: 1px solid #166534;
+        .live-status.active {
+            border-color: #166534;
+            background: #052e16;
             color: #bbf7d0;
         }
 
-        .message.error {
-            background: #3f0a0a;
-            border: 1px solid #7f1d1d;
-            color: #fecaca;
+        .action-group {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        .username-box {
-            padding: 12px;
-            margin-top: 18px;
-            border-radius: 12px;
-            background: #0f172a;
-            color: #94a3b8;
+        .action-button {
+            width: 100%;
+            border: 0;
+            border-radius: 14px;
+            padding: 14px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .home-button {
+            background: #1e293b;
+            color: #ffffff;
+            border: 1px solid #334155;
+        }
+
+        .logout-button {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .logout-button:active,
+        .home-button:active,
+        .back-button:active {
+            transform: scale(0.98);
+        }
+
+        .loading {
             text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 18px;
+        }
+
+        .error {
+            text-align: center;
+            color: #fca5a5;
+            font-size: 12px;
+            margin-top: 18px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            z-index: 1000;
+            transform: translate(-50%, 20px);
+            opacity: 0;
+            pointer-events: none;
+            max-width: calc(100% - 30px);
+            padding: 11px 16px;
+            border-radius: 12px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #ffffff;
             font-size: 13px;
+            text-align: center;
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease;
         }
 
-        .username-box strong {
-            color: #86efac;
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
         }
 
-        .hidden-input {
-            display: none;
+        @media (max-width: 600px) {
+
+            .profile-content {
+                padding: 14px 12px 25px;
+            }
+
+            .profile-card {
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            .username {
+                font-size: 21px;
+            }
+
+            .stats {
+                gap: 8px;
+            }
         }
     </style>
 </head>
@@ -201,20 +267,26 @@
 <body>
 
 <script>
+    /* =====================================================
+       AUTH
+    ===================================================== */
+
     const loggedIn =
         localStorage.getItem(
             "lainolive_logged_in"
         );
 
-    const username =
+    const currentUsername =
         localStorage.getItem(
             "lainolive_username"
         );
 
+
     if (
         loggedIn !== "true" ||
-        !username
+        !currentUsername
     ) {
+
         window.location.replace(
             "/login.html"
         );
@@ -222,485 +294,471 @@
 </script>
 
 
-<header class="topbar">
+<div class="profile-page">
 
-    <div class="topbar-left">
+    <header class="profile-header">
 
-        <div class="logo">
-            لاینو
-        </div>
-
-    </div>
-
-    <div class="topbar-right">
-
-        <button
-            id="homeButton"
-            class="icon-button"
-            type="button"
-        >
-            🏠
-        </button>
-
-    </div>
-
-</header>
-
-
-<main class="profile-page">
-
-    <section class="profile-card">
-
-        <div class="profile-header">
-
-            <div
-                id="avatar"
-                class="avatar"
-            >
-                👤
-            </div>
-
-            <h1 id="displayName">
-                کاربر
-            </h1>
-
-            <p>
-                پروفایل LainoLive
-            </p>
-
-        </div>
-
-
-        <div class="username-box">
-            نام کاربری:
-            <strong id="usernameText">
-                کاربر
-            </strong>
-        </div>
-
-
-        <div class="profile-form">
-
-            <label for="nameInput">
-                نام نمایشی
-            </label>
-
-            <input
-                id="nameInput"
-                type="text"
-                maxlength="40"
-                placeholder="نام نمایشی"
-            >
-
-
-            <label>
-                عکس پروفایل
-            </label>
-
-            <label
-                for="avatarInput"
-                class="upload-button"
-            >
-                انتخاب عکس
-            </label>
-
-            <input
-                id="avatarInput"
-                class="hidden-input"
-                type="file"
-                accept="image/*"
-            >
-
-
-            <button
-                id="saveButton"
-                class="primary-button save-button"
-                type="button"
-            >
-                ذخیره تغییرات
-            </button>
-
+        <div class="profile-header-left">
 
             <button
                 id="backButton"
                 class="back-button"
                 type="button"
+                aria-label="بازگشت"
             >
-                برگشت به صفحه اصلی
+                ←
             </button>
 
-
-            <button
-                id="logoutButton"
-                class="logout-button"
-                type="button"
-            >
-                خروج از حساب
-            </button>
+            <div class="page-title">
+                پروفایل
+            </div>
 
         </div>
 
+    </header>
 
-        <div
-            id="message"
-            class="message"
-        ></div>
 
-    </section>
+    <main class="profile-content">
 
-</main>
+        <section class="profile-card">
+
+            <div class="avatar">
+                👤
+            </div>
+
+
+            <div
+                id="username"
+                class="username"
+            >
+                کاربر
+            </div>
+
+
+            <div class="username-label">
+                حساب LainoLive
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div
+                        id="liveCount"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        لایوهای فعال
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div
+                        id="statusNumber"
+                        class="stat-number"
+                    >
+                        آنلاین
+                    </div>
+
+                    <div class="stat-label">
+                        وضعیت حساب
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="liveStatus"
+                class="live-status"
+            >
+                در حال بررسی لایوهای شما...
+            </div>
+
+
+            <div class="action-group">
+
+                <button
+                    id="homeButton"
+                    class="action-button home-button"
+                    type="button"
+                >
+                    🏠 بازگشت به خانه
+                </button>
+
+
+                <button
+                    id="logoutButton"
+                    class="action-button logout-button"
+                    type="button"
+                >
+                    🚪 خروج از حساب
+                </button>
+
+            </div>
+
+
+            <div
+                id="loading"
+                class="loading"
+            >
+                در حال دریافت اطلاعات...
+            </div>
+
+            <div
+                id="error"
+                class="error"
+                style="display:none;"
+            ></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div
+    id="toast"
+    class="toast"
+></div>
 
 
 <script>
 
-    const currentUsername =
-        localStorage.getItem(
-            "lainolive_username"
-        ) || "کاربر";
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
-
-    const displayNameElement =
+    const username =
         document.getElementById(
-            "displayName"
+            "username"
+        );
+
+    const liveCount =
+        document.getElementById(
+            "liveCount"
+        );
+
+    const statusNumber =
+        document.getElementById(
+            "statusNumber"
+        );
+
+    const liveStatus =
+        document.getElementById(
+            "liveStatus"
+        );
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const errorBox =
+        document.getElementById(
+            "error"
+        );
+
+    const toast =
+        document.getElementById(
+            "toast"
         );
 
 
-    const usernameText =
-        document.getElementById(
-            "usernameText"
-        );
+    /* =====================================================
+       USER
+    ===================================================== */
 
-
-    const nameInput =
-        document.getElementById(
-            "nameInput"
-        );
-
-
-    const avatar =
-        document.getElementById(
-            "avatar"
-        );
-
-
-    const avatarInput =
-        document.getElementById(
-            "avatarInput"
-        );
-
-
-    const saveButton =
-        document.getElementById(
-            "saveButton"
-        );
-
-
-    const backButton =
-        document.getElementById(
-            "backButton"
-        );
-
-
-    const logoutButton =
-        document.getElementById(
-            "logoutButton"
-        );
-
-
-    const homeButton =
-        document.getElementById(
-            "homeButton"
-        );
-
-
-    const message =
-        document.getElementById(
-            "message"
-        );
-
-
-    /*
-     * =====================================================
-     * USER DATA
-     * =====================================================
-     */
-
-    const storageKey =
-        "lainolive_profile_" +
+    username.textContent =
         currentUsername;
 
 
-    let profileData =
-        JSON.parse(
-            localStorage.getItem(
-                storageKey
-            ) || "null"
-        );
+    /* =====================================================
+       TOAST
+    ===================================================== */
 
-
-    if (!profileData) {
-
-        profileData = {
-            displayName:
-                currentUsername,
-
-            avatar:
-                ""
-        };
-
-    }
-
-
-    /*
-     * =====================================================
-     * RENDER
-     * =====================================================
-     */
-
-    function renderProfile() {
-
-        const name =
-            profileData.displayName ||
-            currentUsername;
-
-
-        displayNameElement.textContent =
-            name;
-
-
-        usernameText.textContent =
-            currentUsername;
-
-
-        nameInput.value =
-            name;
-
-
-        if (
-            profileData.avatar
-        ) {
-
-            avatar.innerHTML =
-                `
-                <img
-                    src="${profileData.avatar}"
-                    alt="پروفایل"
-                >
-                `;
-
-        } else {
-
-            avatar.textContent =
-                "👤";
-        }
-    }
-
-
-    /*
-     * =====================================================
-     * MESSAGE
-     * =====================================================
-     */
-
-    function showMessage(
-        text,
-        type = "success"
+    function showToast(
+        text
     ) {
 
-        message.className =
-            "message show " +
-            type;
-
-        message.textContent =
+        toast.textContent =
             text;
+
+        toast.classList.add(
+            "show"
+        );
+
 
         setTimeout(
             () => {
-                message.className =
-                    "message";
+
+                toast.classList.remove(
+                    "show"
+                );
+
             },
-            2500
+            2200
         );
     }
 
 
-    /*
-     * =====================================================
-     * AVATAR
-     * =====================================================
-     */
+    /* =====================================================
+       LOAD PROFILE DATA
+    ===================================================== */
 
-    avatarInput.addEventListener(
-        "change",
-        function() {
+    async function loadProfile() {
 
-            const file =
-                avatarInput.files[0];
+        loading.style.display =
+            "block";
 
-            if (!file) {
-                return;
-            }
+        errorBox.style.display =
+            "none";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/streams",
+                    {
+                        cache:
+                            "no-store"
+                    }
+                );
 
 
             if (
-                !file.type.startsWith(
-                    "image/"
-                )
+                !response.ok
+            ) {
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data ||
+                !data.success
             ) {
 
-                showMessage(
-                    "فقط فایل تصویری انتخاب کن.",
-                    "error"
+                throw new Error(
+                    data?.message ||
+                    "دریافت اطلاعات ناموفق بود."
                 );
-
-                avatarInput.value =
-                    "";
-
-                return;
             }
 
 
-            const reader =
-                new FileReader();
-
-
-            reader.onload =
-                function(event) {
-
-                    profileData.avatar =
-                        event.target.result;
-
-                    renderProfile();
-
-                    showMessage(
-                        "عکس آماده ذخیره است."
-                    );
-                };
-
-
-            reader.readAsDataURL(
-                file
-            );
-        }
-    );
-
-
-    /*
-     * =====================================================
-     * SAVE
-     * =====================================================
-     */
-
-    saveButton.addEventListener(
-        "click",
-        function() {
-
-            const name =
-                nameInput.value.trim();
-
-
-            if (!name) {
-
-                showMessage(
-                    "نام نمایشی را وارد کن.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            profileData.displayName =
-                name;
-
-
-            localStorage.setItem(
-                storageKey,
-                JSON.stringify(
-                    profileData
+            const streams =
+                Array.isArray(
+                    data.streams
                 )
+                    ? data.streams
+                    : [];
+
+
+            const myStreams =
+                streams.filter(
+                    stream =>
+                        String(
+                            stream.username
+                        ) ===
+                        String(
+                            currentUsername
+                        )
+                );
+
+
+            liveCount.textContent =
+                String(
+                    myStreams.length
+                );
+
+
+            statusNumber.textContent =
+                "فعال";
+
+
+            if (
+                myStreams.length
+            ) {
+
+                liveStatus.classList.add(
+                    "active"
+                );
+
+
+                liveStatus.textContent =
+                    "شما در حال حاضر " +
+                    myStreams.length +
+                    " لایو فعال دارید.";
+
+            } else {
+
+                liveStatus.classList.remove(
+                    "active"
+                );
+
+
+                liveStatus.textContent =
+                    "در حال حاضر لایو فعالی از طرف شما وجود ندارد.";
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Profile:",
+                error
             );
 
 
-            localStorage.setItem(
-                "lainolive_display_name",
-                name
+            statusNumber.textContent =
+                "نامشخص";
+
+
+            liveStatus.classList.remove(
+                "active"
             );
 
 
-            showMessage(
-                "پروفایل ذخیره شد."
-            );
+            liveStatus.textContent =
+                "دریافت تعداد لایوها در حال حاضر ممکن نیست.";
 
 
-            renderProfile();
+            errorBox.textContent =
+                "خطا در دریافت اطلاعات از سرور.";
+
+
+            errorBox.style.display =
+                "block";
+
+        } finally {
+
+            loading.style.display =
+                "none";
         }
-    );
+    }
 
 
-    /*
-     * =====================================================
-     * LOGOUT
-     * =====================================================
-     */
+    /* =====================================================
+       NAVIGATION
+    ===================================================== */
 
-    logoutButton.addEventListener(
-        "click",
-        function() {
+    document
+        .getElementById(
+            "backButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-            localStorage.removeItem(
-                "lainolive_logged_in"
-            );
-
-            localStorage.removeItem(
-                "lainolive_username"
-            );
-
-            window.location.replace(
-                "/login.html"
-            );
-        }
-    );
+                window.location.href =
+                    "/index.html";
+            }
+        );
 
 
-    /*
-     * =====================================================
-     * HOME
-     * =====================================================
-     */
+    document
+        .getElementById(
+            "homeButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-    homeButton.addEventListener(
-        "click",
-        function() {
-
-            window.location.href =
-                "/index.html";
-
-        }
-    );
+                window.location.href =
+                    "/index.html";
+            }
+        );
 
 
-    backButton.addEventListener(
-        "click",
-        function() {
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
 
-            window.location.href =
-                "/index.html";
+    document
+        .getElementById(
+            "logoutButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-        }
-    );
+                const accepted =
+                    window.confirm(
+                        "آیا مطمئنی می‌خواهی از حساب خارج شوی؟"
+                    );
 
 
-    /*
-     * =====================================================
-     * START
-     * =====================================================
-     */
+                if (
+                    !accepted
+                ) {
+                    return;
+                }
 
-    renderProfile();
+
+                localStorage.removeItem(
+                    "lainolive_logged_in"
+                );
+
+
+                localStorage.removeItem(
+                    "lainolive_username"
+                );
+
+
+                sessionStorage.removeItem(
+                    "lainolive_current_stream"
+                );
+
+
+                sessionStorage.removeItem(
+                    "lainolive_view_stream"
+                );
+
+
+                showToast(
+                    "از حساب خارج شدی."
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        window.location.replace(
+                            "/login.html"
+                        );
+
+                    },
+                    300
+                );
+            }
+        );
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    loadProfile();
 
 </script>
 
 </body>
 
 </html>
+```
