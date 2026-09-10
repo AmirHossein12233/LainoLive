@@ -1,8 +1,13 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>ورود | لاینو</title>
 
     <style>
@@ -14,7 +19,11 @@
             margin: 0;
             min-height: 100vh;
             font-family: Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #111827, #1e293b);
+            background: linear-gradient(
+                135deg,
+                #111827,
+                #1e293b
+            );
             color: #fff;
             display: flex;
             justify-content: center;
@@ -38,9 +47,9 @@
 
         .logo {
             text-align: center;
-            font-size: 38px;
+            font-size: 40px;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 7px;
         }
 
         .subtitle {
@@ -48,6 +57,31 @@
             color: #cbd5e1;
             font-size: 15px;
             margin-bottom: 25px;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: rgba(255,255,255,0.06);
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+        }
+
+        .tab {
+            border: 0;
+            padding: 11px;
+            border-radius: 10px;
+            background: transparent;
+            color: #cbd5e1;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: #22c55e;
+            color: white;
         }
 
         label {
@@ -69,17 +103,19 @@
             color: #111827;
         }
 
-        .username {
+        .ltr {
             direction: ltr;
             text-align: left;
         }
 
-        .password {
-            direction: ltr;
-            text-align: left;
+        .password-help {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: -7px;
+            margin-bottom: 14px;
         }
 
-        button {
+        .main-button {
             width: 100%;
             border: none;
             border-radius: 14px;
@@ -91,7 +127,7 @@
             color: white;
         }
 
-        button:disabled {
+        .main-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
@@ -128,50 +164,142 @@
             font-size: 12px;
             margin-top: 18px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 
 <div class="container">
+
     <div class="card">
 
         <div class="logo">لاینو</div>
 
         <div class="subtitle">
-            ورود به LainoLive
+            LainoLive
         </div>
 
-        <label for="username">
-            نام کاربری
-        </label>
+        <div class="tabs">
 
-        <input
-            id="username"
-            class="username"
-            type="text"
-            autocomplete="username"
-            placeholder="admin"
+            <button
+                id="loginTab"
+                class="tab active"
+                type="button"
+            >
+                ورود
+            </button>
+
+            <button
+                id="registerTab"
+                class="tab"
+                type="button"
+            >
+                ثبت‌نام
+            </button>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div id="loginForm">
+
+            <label for="loginUsername">
+                نام کاربری
+            </label>
+
+            <input
+                id="loginUsername"
+                class="ltr"
+                type="text"
+                autocomplete="username"
+                placeholder="نام کاربری"
+            >
+
+            <label for="loginPassword">
+                رمز عبور
+            </label>
+
+            <input
+                id="loginPassword"
+                class="ltr"
+                type="password"
+                autocomplete="current-password"
+                placeholder="رمز عبور"
+            >
+
+            <button
+                id="loginButton"
+                class="main-button"
+                type="button"
+            >
+                ورود
+            </button>
+
+        </div>
+
+
+        <!-- REGISTER -->
+
+        <div
+            id="registerForm"
+            class="hidden"
         >
 
-        <label for="password">
-            رمز عبور
-        </label>
+            <label for="registerUsername">
+                نام کاربری
+            </label>
 
-        <input
-            id="password"
-            class="password"
-            type="password"
-            autocomplete="current-password"
-            placeholder="رمز عبور"
-        >
+            <input
+                id="registerUsername"
+                class="ltr"
+                type="text"
+                autocomplete="username"
+                placeholder="مثلاً amir123"
+            >
 
-        <button
-            id="loginButton"
-            type="button"
-        >
-            ورود
-        </button>
+            <label for="registerPassword">
+                رمز عبور
+            </label>
+
+            <input
+                id="registerPassword"
+                class="ltr"
+                type="password"
+                autocomplete="new-password"
+                placeholder="حداقل 6 کاراکتر"
+            >
+
+            <div class="password-help">
+                رمز عبور باید حداقل 6 کاراکتر باشد.
+            </div>
+
+            <label for="registerConfirm">
+                تکرار رمز عبور
+            </label>
+
+            <input
+                id="registerConfirm"
+                class="ltr"
+                type="password"
+                autocomplete="new-password"
+                placeholder="تکرار رمز عبور"
+            >
+
+            <button
+                id="registerButton"
+                class="main-button"
+                type="button"
+            >
+                ساخت حساب
+            </button>
+
+        </div>
+
 
         <div
             id="message"
@@ -186,17 +314,44 @@
         </div>
 
     </div>
+
 </div>
 
-<script>
-    const usernameInput =
-        document.getElementById("username");
 
-    const passwordInput =
-        document.getElementById("password");
+<script>
+
+    const loginTab =
+        document.getElementById("loginTab");
+
+    const registerTab =
+        document.getElementById("registerTab");
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const registerForm =
+        document.getElementById("registerForm");
+
+    const loginUsername =
+        document.getElementById("loginUsername");
+
+    const loginPassword =
+        document.getElementById("loginPassword");
+
+    const registerUsername =
+        document.getElementById("registerUsername");
+
+    const registerPassword =
+        document.getElementById("registerPassword");
+
+    const registerConfirm =
+        document.getElementById("registerConfirm");
 
     const loginButton =
         document.getElementById("loginButton");
+
+    const registerButton =
+        document.getElementById("registerButton");
 
     const messageBox =
         document.getElementById("message");
@@ -205,38 +360,93 @@
         document.getElementById("serverStatus");
 
 
-    function showMessage(text, type) {
+    function showMessage(
+        text,
+        type = "error"
+    ) {
         messageBox.className =
             "message show " + type;
 
-        messageBox.textContent = text;
+        messageBox.textContent =
+            text;
     }
 
 
-    async function checkServer() {
-        try {
-            const response = await fetch(
-                "/health",
-                {
-                    method: "GET",
-                    cache: "no-store"
-                }
-            );
+    function clearMessage() {
+        messageBox.className =
+            "message";
 
-            const data = await response.json();
+        messageBox.textContent = "";
+    }
+
+
+    function showLogin() {
+
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+
+        loginForm.classList.remove("hidden");
+        registerForm.classList.add("hidden");
+
+        clearMessage();
+    }
+
+
+    function showRegister() {
+
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+
+        registerForm.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+
+        clearMessage();
+    }
+
+
+    loginTab.addEventListener(
+        "click",
+        showLogin
+    );
+
+
+    registerTab.addEventListener(
+        "click",
+        showRegister
+    );
+
+
+    async function checkServer() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/health",
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+            const data =
+                await response.json();
 
             if (
                 response.ok &&
                 data.status === "ok"
             ) {
+
                 serverStatus.textContent =
                     "سرور آنلاین است";
+
             } else {
+
                 serverStatus.textContent =
                     "خطا در سرور";
             }
 
         } catch (error) {
+
             serverStatus.textContent =
                 "اتصال به سرور برقرار نشد";
         }
@@ -244,50 +454,57 @@
 
 
     async function login() {
-        messageBox.className = "message";
-        messageBox.textContent = "";
+
+        clearMessage();
 
         const username =
-            usernameInput.value.trim();
+            loginUsername.value.trim();
 
         const password =
-            passwordInput.value;
+            loginPassword.value;
 
         if (!username) {
+
             showMessage(
-                "نام کاربری را وارد کنید.",
-                "error"
+                "نام کاربری را وارد کنید."
             );
+
             return;
         }
 
         if (!password) {
+
             showMessage(
-                "رمز عبور را وارد کنید.",
-                "error"
+                "رمز عبور را وارد کنید."
             );
+
             return;
         }
 
         loginButton.disabled = true;
+
         loginButton.textContent =
             "در حال ورود...";
 
         try {
-            const response = await fetch(
-                "/api/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    })
-                }
-            );
+
+            const response =
+                await fetch(
+                    "/api/login",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            username: username,
+                            password: password
+                        })
+                    }
+                );
 
             const data =
                 await response.json();
@@ -296,11 +513,12 @@
                 !response.ok ||
                 !data.success
             ) {
+
                 showMessage(
                     data.message ||
-                    "نام کاربری یا رمز عبور اشتباه است.",
-                    "error"
+                    "نام کاربری یا رمز عبور اشتباه است."
                 );
+
                 return;
             }
 
@@ -319,20 +537,155 @@
                 "success"
             );
 
-            setTimeout(() => {
-                window.location.href =
-                    "/index.html";
-            }, 500);
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/index.html";
+                },
+                500
+            );
 
         } catch (error) {
+
             showMessage(
-                "خطا در ارتباط با سرور.",
-                "error"
+                "خطا در ارتباط با سرور."
             );
 
         } finally {
+
             loginButton.disabled = false;
-            loginButton.textContent = "ورود";
+
+            loginButton.textContent =
+                "ورود";
+        }
+    }
+
+
+    async function register() {
+
+        clearMessage();
+
+        const username =
+            registerUsername.value.trim();
+
+        const password =
+            registerPassword.value;
+
+        const confirmPassword =
+            registerConfirm.value;
+
+        if (!username) {
+
+            showMessage(
+                "نام کاربری را وارد کنید."
+            );
+
+            return;
+        }
+
+        if (!password) {
+
+            showMessage(
+                "رمز عبور را وارد کنید."
+            );
+
+            return;
+        }
+
+        if (password.length < 6) {
+
+            showMessage(
+                "رمز عبور باید حداقل 6 کاراکتر باشد."
+            );
+
+            return;
+        }
+
+        if (password !== confirmPassword) {
+
+            showMessage(
+                "تکرار رمز عبور یکسان نیست."
+            );
+
+            return;
+        }
+
+        registerButton.disabled = true;
+
+        registerButton.textContent =
+            "در حال ساخت حساب...";
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            username: username,
+                            password: password,
+                            confirm_password:
+                                confirmPassword
+                        })
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                showMessage(
+                    data.message ||
+                    "ثبت‌نام ناموفق بود."
+                );
+
+                return;
+            }
+
+            showMessage(
+                "ثبت‌نام با موفقیت انجام شد. اکنون وارد شوید.",
+                "success"
+            );
+
+            loginUsername.value =
+                username;
+
+            loginPassword.value = "";
+
+            registerUsername.value = "";
+            registerPassword.value = "";
+            registerConfirm.value = "";
+
+            setTimeout(
+                () => {
+                    showLogin();
+                },
+                800
+            );
+
+        } catch (error) {
+
+            showMessage(
+                "خطا در ارتباط با سرور."
+            );
+
+        } finally {
+
+            registerButton.disabled = false;
+
+            registerButton.textContent =
+                "ساخت حساب";
         }
     }
 
@@ -343,7 +696,13 @@
     );
 
 
-    passwordInput.addEventListener(
+    registerButton.addEventListener(
+        "click",
+        register
+    );
+
+
+    loginPassword.addEventListener(
         "keydown",
         function(event) {
             if (event.key === "Enter") {
@@ -353,8 +712,20 @@
     );
 
 
+    registerConfirm.addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                register();
+            }
+        }
+    );
+
+
     checkServer();
+
 </script>
 
 </body>
 </html>
+```
