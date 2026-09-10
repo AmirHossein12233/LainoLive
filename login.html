@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>ورود | لاینو</title>
 
@@ -79,6 +84,7 @@
             color: #16171b;
             font-size: 15px;
             transition: 0.18s ease;
+            font-family: inherit;
         }
 
         .login-input:focus {
@@ -113,6 +119,7 @@
             cursor: pointer;
             transition: 0.15s ease;
             box-shadow: 0 9px 18px rgba(255, 48, 79, 0.20);
+            font-family: inherit;
         }
 
         .login-button:hover {
@@ -169,6 +176,7 @@
             font-size: 13px;
             font-weight: 800;
             cursor: pointer;
+            font-family: inherit;
         }
 
         .back-button:hover {
@@ -191,11 +199,22 @@
             font-weight: 900;
             cursor: pointer;
             padding: 0;
+            font-family: inherit;
         }
 
-        .resend-button:disabled {
-            color: #a5a8b1;
-            cursor: not-allowed;
+        .server-status {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 11px;
+            color: #8a8e98;
+        }
+
+        .status-online {
+            color: #18894b;
+        }
+
+        .status-offline {
+            color: #e42140;
         }
 
         @keyframes fadeIn {
@@ -232,16 +251,20 @@
 
     <section class="login-box">
 
-        <div class="login-icon">📺</div>
+        <div class="login-icon">
+            📺
+        </div>
 
-        <div class="login-logo">لاینو</div>
+        <div class="login-logo">
+            لاینو
+        </div>
 
         <p class="login-subtitle">
             برای ورود، شماره موبایل خود را وارد کنید.
         </p>
 
         <!-- ==============================
-             Phone Section
+             شماره موبایل
              ============================== -->
 
         <section id="phoneSection">
@@ -273,8 +296,9 @@
 
         </section>
 
+
         <!-- ==============================
-             Code Section
+             کد تأیید
              ============================== -->
 
         <section
@@ -315,97 +339,155 @@
                 تغییر شماره موبایل
             </button>
 
-            <div class="timer" id="timer"></div>
+            <div
+                class="timer"
+                id="timer"
+            ></div>
 
         </section>
+
 
         <div
             id="loginMessage"
             class="login-message"
         ></div>
 
+
+        <div
+            id="serverStatus"
+            class="server-status"
+        >
+            در حال بررسی سرور...
+        </div>
+
     </section>
 
 </main>
 
+
 <script>
 
-    // =========================================
-    // تنظیمات
-    // =========================================
+    // =====================================================
+    // مهم:
+    // API روی همان دامنه اجرا می‌شود.
+    //
+    // محلی:
+    // http://127.0.0.1:5000
+    //
+    // آنلاین:
+    // https://mygapino.shop
+    //
+    // بنابراین API_BASE نباید آدرس localhost باشد.
+    // =====================================================
 
-    // برای اجرای محلی:
-    const API_BASE = "http://127.0.0.1:5000";
+    const API_BASE = "";
 
-    // =========================================
-    // عناصر صفحه
-    // =========================================
+
+    // =====================================================
+    // عناصر
+    // =====================================================
 
     const phoneSection =
-        document.getElementById("phoneSection");
+        document.getElementById(
+            "phoneSection"
+        );
 
     const codeSection =
-        document.getElementById("codeSection");
+        document.getElementById(
+            "codeSection"
+        );
 
     const phoneInput =
-        document.getElementById("phoneInput");
+        document.getElementById(
+            "phoneInput"
+        );
 
     const codeInput =
-        document.getElementById("codeInput");
+        document.getElementById(
+            "codeInput"
+        );
 
     const sendCodeButton =
-        document.getElementById("sendCodeButton");
+        document.getElementById(
+            "sendCodeButton"
+        );
 
     const verifyCodeButton =
-        document.getElementById("verifyCodeButton");
+        document.getElementById(
+            "verifyCodeButton"
+        );
 
     const backButton =
-        document.getElementById("backButton");
+        document.getElementById(
+            "backButton"
+        );
 
     const loginMessage =
-        document.getElementById("loginMessage");
+        document.getElementById(
+            "loginMessage"
+        );
 
     const timer =
-        document.getElementById("timer");
+        document.getElementById(
+            "timer"
+        );
+
+    const serverStatus =
+        document.getElementById(
+            "serverStatus"
+        );
 
 
-    // =========================================
+    // =====================================================
     // وضعیت
-    // =========================================
+    // =====================================================
 
     let currentPhone = "";
 
     let countdownInterval = null;
 
 
-    // =========================================
-    // نمایش پیام
-    // =========================================
+    // =====================================================
+    // پیام
+    // =====================================================
 
-    function showMessage(text, type = "info") {
+    function showMessage(
+        text,
+        type = "info"
+    ) {
 
-        loginMessage.textContent = text;
+        loginMessage.textContent =
+            text;
 
         loginMessage.className =
             "login-message " + type;
     }
 
 
-    // =========================================
-    // فعال/غیرفعال کردن دکمه
-    // =========================================
+    // =====================================================
+    // Loading Button
+    // =====================================================
 
-    function setButtonLoading(button, loading, text) {
+    function setButtonLoading(
+        button,
+        loading,
+        text
+    ) {
 
-        button.disabled = loading;
+        button.disabled =
+            loading;
 
         if (loading) {
+
             button.dataset.oldText =
                 button.textContent;
 
-            button.textContent = text;
+            button.textContent =
+                text;
 
-        } else if (button.dataset.oldText) {
+        } else if (
+            button.dataset.oldText
+        ) {
 
             button.textContent =
                 button.dataset.oldText;
@@ -415,35 +497,47 @@
     }
 
 
-    // =========================================
-    // اعتبارسنجی شماره
-    // =========================================
+    // =====================================================
+    // Normalize Phone
+    // =====================================================
 
     function normalizePhone(phone) {
 
-        phone = String(phone || "").trim();
+        phone =
+            String(phone || "")
+                .trim()
+                .replace(/\s+/g, "")
+                .replace(/-/g, "")
+                .replace(/[()]/g, "");
 
-        if (phone.startsWith("+98")) {
-            phone = "0" + phone.substring(3);
-        }
+        phone =
+            phone.replace(
+                /[۰-۹]/g,
+                digit =>
+                    String(
+                        "۰۱۲۳۴۵۶۷۸۹"
+                            .indexOf(digit)
+                    )
+            );
 
         if (
+            phone.startsWith("+98")
+        ) {
+
+            phone =
+                "0" +
+                phone.substring(3);
+        }
+
+        else if (
             phone.startsWith("98") &&
             phone.length === 12
         ) {
-            phone = "0" + phone.substring(2);
+
+            phone =
+                "0" +
+                phone.substring(2);
         }
-
-        // حذف فاصله
-        phone = phone.replace(/\s+/g, "");
-
-        // تبدیل اعداد فارسی
-        phone = phone
-            .replace(/[۰-۹]/g, digit =>
-                String(
-                    "۰۱۲۳۴۵۶۷۸۹".indexOf(digit)
-                )
-            );
 
         return phone;
     }
@@ -451,32 +545,96 @@
 
     function isValidPhone(phone) {
 
-        return /^09\d{9}$/.test(phone);
+        return /^09\d{9}$/.test(
+            phone
+        );
     }
 
 
-    // =========================================
+    // =====================================================
+    // بررسی سرور
+    // =====================================================
+
+    async function checkServer() {
+
+        try {
+
+            const response =
+                await fetch(
+                    API_BASE +
+                    "/health",
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (
+                response.ok &&
+                result.status === "ok"
+            ) {
+
+                serverStatus.textContent =
+                    result.sms_configured
+                        ? "سرور آنلاین است • پیامک فعال"
+                        : "سرور آنلاین است • پیامک تنظیم نشده";
+
+                serverStatus.className =
+                    "server-status status-online";
+
+            } else {
+
+                throw new Error(
+                    "Server health failed"
+                );
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Health check:",
+                error
+            );
+
+            serverStatus.textContent =
+                "ارتباط با سرور برقرار نیست";
+
+            serverStatus.className =
+                "server-status status-offline";
+        }
+    }
+
+
+    // =====================================================
     // نمایش بخش کد
-    // =========================================
+    // =====================================================
 
     function showCodeSection(phone) {
 
-        currentPhone = phone;
+        currentPhone =
+            phone;
 
-        phoneSection.classList.add("hidden");
+        phoneSection.classList.add(
+            "hidden"
+        );
 
-        codeSection.classList.remove("hidden");
+        codeSection.classList.remove(
+            "hidden"
+        );
 
-        codeInput.value = "";
+        codeInput.value =
+            "";
 
         codeInput.focus();
-
     }
 
 
-    // =========================================
+    // =====================================================
     // برگشت
-    // =========================================
+    // =====================================================
 
     backButton.addEventListener(
         "click",
@@ -484,29 +642,41 @@
 
             stopTimer();
 
-            codeSection.classList.add("hidden");
+            codeSection.classList.add(
+                "hidden"
+            );
 
-            phoneSection.classList.remove("hidden");
+            phoneSection.classList.remove(
+                "hidden"
+            );
 
-            codeInput.value = "";
+            codeInput.value =
+                "";
 
-            showMessage("", "info");
+            showMessage(
+                "",
+                "info"
+            );
 
             phoneInput.focus();
         }
     );
 
 
-    // =========================================
-    // ارسال OTP
-    // =========================================
+    // =====================================================
+    // Request OTP
+    // =====================================================
 
     async function requestCode() {
 
         const phone =
-            normalizePhone(phoneInput.value);
+            normalizePhone(
+                phoneInput.value
+            );
 
-        phoneInput.value = phone;
+        phoneInput.value =
+            phone;
+
 
         if (!isValidPhone(phone)) {
 
@@ -520,22 +690,26 @@
             return;
         }
 
+
         setButtonLoading(
             sendCodeButton,
             true,
             "در حال ارسال..."
         );
 
+
         showMessage(
             "در حال ارسال کد تأیید...",
             "info"
         );
 
+
         try {
 
             const response =
                 await fetch(
-                    API_BASE + "/api/request-code",
+                    API_BASE +
+                    "/api/request-code",
                     {
                         method: "POST",
 
@@ -544,16 +718,23 @@
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
-                            phone: phone
-                        })
+                        body:
+                            JSON.stringify({
+                                phone:
+                                    phone
+                            })
                     }
                 );
+
 
             const result =
                 await response.json();
 
-            if (!response.ok || !result.success) {
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
 
                 showMessage(
                     result.message ||
@@ -564,20 +745,33 @@
                 return;
             }
 
-            showCodeSection(phone);
+
+            showCodeSection(
+                phone
+            );
+
 
             showMessage(
-                "کد تأیید برای شما ارسال شد.",
+                "کد تأیید ارسال شد.",
                 "success"
             );
 
+
             startTimer(
-                Number(result.expires_in || 120)
+                Number(
+                    result.expires_in ||
+                    120
+                )
             );
+
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Request OTP:",
+                error
+            );
+
 
             showMessage(
                 "اتصال به سرور برقرار نشد.",
@@ -594,18 +788,32 @@
     }
 
 
-    // =========================================
-    // تأیید OTP
-    // =========================================
+    // =====================================================
+    // Verify OTP
+    // =====================================================
 
     async function verifyCode() {
 
         const code =
             codeInput.value
-                .replace(/\s+/g, "")
-                .trim();
+                .trim()
+                .replace(
+                    /[۰-۹]/g,
+                    digit =>
+                        String(
+                            "۰۱۲۳۴۵۶۷۸۹"
+                                .indexOf(digit)
+                        )
+                );
 
-        if (!/^\d{6}$/.test(code)) {
+
+        codeInput.value =
+            code;
+
+
+        if (
+            !/^\d{6}$/.test(code)
+        ) {
 
             showMessage(
                 "کد تأیید باید ۶ رقمی باشد.",
@@ -617,22 +825,26 @@
             return;
         }
 
+
         setButtonLoading(
             verifyCodeButton,
             true,
             "در حال بررسی..."
         );
 
+
         showMessage(
             "در حال بررسی کد...",
             "info"
         );
 
+
         try {
 
             const response =
                 await fetch(
-                    API_BASE + "/api/verify-code",
+                    API_BASE +
+                    "/api/verify-code",
                     {
                         method: "POST",
 
@@ -641,17 +853,26 @@
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
-                            phone: currentPhone,
-                            code: code
-                        })
+                        body:
+                            JSON.stringify({
+                                phone:
+                                    currentPhone,
+
+                                code:
+                                    code
+                            })
                     }
                 );
+
 
             const result =
                 await response.json();
 
-            if (!response.ok || !result.success) {
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
 
                 showMessage(
                     result.message ||
@@ -662,34 +883,46 @@
                 return;
             }
 
-            // ذخیره وضعیت ورود محلی
+
             localStorage.setItem(
                 "laino_logged_in",
                 "true"
             );
+
 
             localStorage.setItem(
                 "laino_phone",
                 currentPhone
             );
 
+
             stopTimer();
+
 
             showMessage(
                 "ورود با موفقیت انجام شد.",
                 "success"
             );
 
-            setTimeout(() => {
 
-                window.location.href =
-                    "index.html";
+            setTimeout(
+                () => {
 
-            }, 700);
+                    window.location.href =
+                        "/index.html";
+
+                },
+                700
+            );
+
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Verify OTP:",
+                error
+            );
+
 
             showMessage(
                 "اتصال به سرور برقرار نشد.",
@@ -706,89 +939,128 @@
     }
 
 
-    // =========================================
-    // تایمر
-    // =========================================
+    // =====================================================
+    // Timer
+    // =====================================================
 
-    function startTimer(seconds) {
+    function startTimer(
+        seconds
+    ) {
 
         stopTimer();
 
-        let remaining =
-            Math.max(0, Number(seconds));
 
-        updateTimer(remaining);
+        let remaining =
+            Math.max(
+                0,
+                Number(seconds)
+            );
+
+
+        updateTimer(
+            remaining
+        );
+
 
         countdownInterval =
-            setInterval(() => {
+            setInterval(
+                () => {
 
-                remaining--;
+                    remaining--;
 
-                if (remaining <= 0) {
 
-                    stopTimer();
+                    if (
+                        remaining <= 0
+                    ) {
 
-                    timer.innerHTML =
-                        `<button
-                            class="resend-button"
-                            id="resendButton"
-                            type="button">
-                            ارسال دوباره کد
-                        </button>`;
+                        stopTimer();
 
-                    document
-                        .getElementById("resendButton")
-                        .addEventListener(
-                            "click",
-                            requestCode
-                        );
 
-                    return;
-                }
+                        timer.innerHTML =
+                            `
+                            <button
+                                class="resend-button"
+                                id="resendButton"
+                                type="button"
+                            >
+                                ارسال دوباره کد
+                            </button>
+                            `;
 
-                updateTimer(remaining);
 
-            }, 1000);
+                        const resendButton =
+                            document.getElementById(
+                                "resendButton"
+                            );
+
+
+                        if (resendButton) {
+
+                            resendButton.addEventListener(
+                                "click",
+                                requestCode
+                            );
+                        }
+
+                        return;
+                    }
+
+
+                    updateTimer(
+                        remaining
+                    );
+
+                },
+                1000
+            );
     }
 
 
-    function updateTimer(seconds) {
+    function updateTimer(
+        seconds
+    ) {
 
         const minutes =
-            Math.floor(seconds / 60);
+            Math.floor(
+                seconds / 60
+            );
 
         const secs =
             seconds % 60;
 
-        const formattedSeconds =
-            String(secs).padStart(2, "0");
 
         timer.textContent =
-            `اعتبار کد: ${minutes}:${formattedSeconds}`;
+            `اعتبار کد: ${minutes}:${String(
+                secs
+            ).padStart(2, "0")}`;
     }
 
 
     function stopTimer() {
 
-        if (countdownInterval !== null) {
+        if (
+            countdownInterval !== null
+        ) {
 
             clearInterval(
                 countdownInterval
             );
 
-            countdownInterval = null;
+            countdownInterval =
+                null;
         }
     }
 
 
-    // =========================================
-    // رویدادها
-    // =========================================
+    // =====================================================
+    // Events
+    // =====================================================
 
     sendCodeButton.addEventListener(
         "click",
         requestCode
     );
+
 
     verifyCodeButton.addEventListener(
         "click",
@@ -802,8 +1074,10 @@
 
             phoneInput.value =
                 phoneInput.value
-                    .replace(/[^\d۰-۹+]/g, "");
-
+                    .replace(
+                        /[^\d۰-۹+]/g,
+                        ""
+                    );
         }
     );
 
@@ -814,9 +1088,14 @@
 
             codeInput.value =
                 codeInput.value
-                    .replace(/[^\d]/g, "")
-                    .slice(0, 6);
-
+                    .replace(
+                        /[^\d۰-۹]/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        6
+                    );
         }
     );
 
@@ -825,8 +1104,12 @@
         "keydown",
         event => {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
+
                 event.preventDefault();
+
                 requestCode();
             }
         }
@@ -837,12 +1120,23 @@
         "keydown",
         event => {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
+
                 event.preventDefault();
+
                 verifyCode();
             }
         }
     );
+
+
+    // =====================================================
+    // شروع
+    // =====================================================
+
+    checkServer();
 
 </script>
 
