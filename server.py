@@ -4,8 +4,12 @@ import json
 import mimetypes
 import os
 import secrets
+import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
+
 
 HOST = "0.0.0.0"
 PORT = int(os.getenv("PORT", "5000"))
@@ -13,27 +17,30 @@ PORT = int(os.getenv("PORT", "5000"))
 BASE_DIR = Path(__file__).resolve().parent
 USERS_FILE = BASE_DIR / "users.json"
 
-DEFAULT_USERNAME = os.getenv("LAINO_USERNAME", "admin")
-DEFAULT_PASSWORD = os.getenv("LAINO_PASSWORD", "123456")
-
 PBKDF2_ITERATIONS = 200_000
 
+DEFAULT_USERNAME = os.getenv(
+    "LAINO_USERNAME",
+    "admin"
+)
+
+DEFAULT_PASSWORD = os.getenv(
+    "LAINO_PASSWORD",
+    "123456"
+)
 
 # =========================================================
-# PASSWORD
+# USERS
 # =========================================================
 
 def hash_password(password, salt=None):
     if salt is None:
         salt = secrets.token_hex(16)
 
-    password_bytes = password.encode("utf-8")
-    salt_bytes = salt.encode("utf-8")
-
     password_hash = hashlib.pbkdf2_hmac(
         "sha256",
-        password_bytes,
-        salt_bytes,
+        password.encode("utf-8"),
+        salt.encode("utf-8"),
         PBKDF2_ITERATIONS
     ).hex()
 
@@ -54,12 +61,15 @@ def verify_password(password, password_data):
     if not salt or not saved_hash:
         return False
 
-    iterations = int(
-        password_data.get(
-            "iterations",
-            PBKDF2_ITERATIONS
+    try:
+        iterations = int(
+            password_data.get(
+                "iterations",
+                PBKDF2_ITERATIONS
+            )
         )
-    )
+    except (TypeError, ValueError):
+        return False
 
     entered_hash = hashlib.pbkdf2_hmac(
         "sha256",
@@ -73,10 +83,6 @@ def verify_password(password, password_data):
         saved_hash
     )
 
-
-# =========================================================
-# USERS
-# =========================================================
 
 def load_users():
     if not USERS_FILE.exists():
@@ -132,6 +138,183 @@ def ensure_default_user():
 
 
 # =========================================================
+# LIVE STREAMS
+# =========================================================
+
+streams = {}
+streams_lock = threading.Lock()
+
+next_stream_id = 1
+
+
+def create_stream(username, title, category):
+    global next_stream_id
+
+    with streams_lock:
+        stream_id = str(next_stream_id)
+        next_stream_id += 1
+
+        stream = {
+            "id": stream_id,
+            "title": title,
+            "category": category,
+            "username": username,
+            "viewers": 0,
+            "likes": 0,
+            "created_at": time.time(),
+            "active": True
+        }
+
+        streams[stream_id] = stream
+
+        return stream.copy()
+
+
+def get_streams():
+    with streams_lock:
+        return [
+            stream.copy()
+            for stream in streams.values()
+            if stream.get("active") is True
+        ]
+
+
+def get_stream(stream_id):
+    with streams_lock:
+        stream = streams.get(str(stream_id))
+
+        if stream is None:
+            return None
+
+        return stream.copy()
+
+
+def update_stream_viewers(stream_id, change):
+    with streams_lock:
+        stream = streams.get(str(stream_id))
+
+        if stream is None:
+            return None
+
+        current = int(
+            stream.get("viewers", 0)
+        )
+
+        stream["viewers"] = max(
+            0,
+            current + change
+        )
+
+        return stream.copy()
+
+
+def stop_stream(stream_id, username):
+    with streams_lock:
+        stream = streams.get(str(stream_id))
+
+        if stream is None:
+            return False
+
+        if stream.get("username") != username:
+            return False
+
+        stream["active"] = False
+
+        return True
+
+
+# =========================================================
+# CHAT
+# =========================================================
+
+chat_messages = {}
+chat_lock = threading.Lock()
+
+CHAT_MAX_MESSAGES = 200
+CHAT_MESSAGE_MAX_LENGTH = 500
+
+
+def add_chat_message(
+    stream_id,
+    username,
+    text
+):
+    stream_id = str(stream_id)
+
+    username = str(
+        username or ""
+    ).strip()
+
+    text = str(
+        text or ""
+    ).strip()
+
+    if not username or not text:
+        return None
+
+    if len(text) > CHAT_MESSAGE_MAX_LENGTH:
+        return None
+
+    with chat_lock:
+        messages = chat_messages.setdefault(
+            stream_id,
+            []
+        )
+
+        message = {
+            "id": (
+                str(int(time.time() * 1000))
+                + "-"
+                + secrets.token_hex(4)
+            ),
+            "username": username,
+            "text": text,
+            "created_at": time.time()
+        }
+
+        messages.append(message)
+
+        if len(messages) > CHAT_MAX_MESSAGES:
+            del messages[
+                :len(messages) - CHAT_MAX_MESSAGES
+            ]
+
+        return message.copy()
+
+
+def get_chat_messages(
+    stream_id,
+    after_id=None
+):
+    stream_id = str(stream_id)
+
+    with chat_lock:
+        messages = list(
+            chat_messages.get(
+                stream_id,
+                []
+            )
+        )
+
+    if after_id:
+        after_id = str(after_id)
+
+        found_index = -1
+
+        for index, message in enumerate(messages):
+            if str(message.get("id")) == after_id:
+                found_index = index
+                break
+
+        if found_index >= 0:
+            messages = messages[
+                found_index + 1:
+            ]
+
+    return messages
+
+
+# =========================================================
 # JSON
 # =========================================================
 
@@ -155,18 +338,8 @@ def send_json(handler, status_code, data):
     )
 
     handler.send_header(
-        "Access-Control-Allow-Origin",
-        "*"
-    )
-
-    handler.send_header(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS"
-    )
-
-    handler.send_header(
-        "Access-Control-Allow-Headers",
-        "Content-Type"
+        "Cache-Control",
+        "no-store"
     )
 
     handler.end_headers()
@@ -193,15 +366,21 @@ def read_json(handler):
             content_length
         )
 
-        return json.loads(
+        data = json.loads(
             raw.decode("utf-8")
         )
 
+        if isinstance(data, dict):
+            return data
+
     except (
         json.JSONDecodeError,
-        UnicodeDecodeError
+        UnicodeDecodeError,
+        OSError
     ):
-        return {}
+        pass
+
+    return {}
 
 
 # =========================================================
@@ -214,14 +393,15 @@ def get_content_type(path):
     )
 
     if not content_type:
-        content_type = (
-            "application/octet-stream"
-        )
+        return "application/octet-stream"
 
     return content_type
 
 
-def serve_static_file(handler, relative_path):
+def serve_static_file(
+    handler,
+    relative_path
+):
     requested = Path(relative_path)
 
     if (
@@ -242,7 +422,9 @@ def serve_static_file(handler, relative_path):
     ).resolve()
 
     try:
-        file_path.relative_to(BASE_DIR)
+        file_path.relative_to(
+            BASE_DIR
+        )
     except ValueError:
         return send_json(
             handler,
@@ -275,21 +457,20 @@ def serve_static_file(handler, relative_path):
             }
         )
 
-    content_type = get_content_type(file_path)
+    content_type = get_content_type(
+        file_path
+    )
 
     extension = file_path.suffix.lower()
 
     if extension == ".html":
         content_type = "text/html; charset=utf-8"
-
     elif extension == ".css":
         content_type = "text/css; charset=utf-8"
-
     elif extension == ".js":
         content_type = (
             "application/javascript; charset=utf-8"
         )
-
     elif extension == ".json":
         content_type = (
             "application/json; charset=utf-8"
@@ -323,15 +504,19 @@ def serve_static_file(handler, relative_path):
 
 class LainoHandler(BaseHTTPRequestHandler):
 
-    def log_message(self, format_string, *args):
+    def log_message(
+        self,
+        format_string,
+        *args
+    ):
         print(
             f"{self.address_string()} - "
             f"{format_string % args}"
         )
 
-    # -----------------------------------------------------
+    # =====================================================
     # OPTIONS
-    # -----------------------------------------------------
+    # =====================================================
 
     def do_OPTIONS(self):
         self.send_response(204)
@@ -353,12 +538,17 @@ class LainoHandler(BaseHTTPRequestHandler):
 
         self.end_headers()
 
-    # -----------------------------------------------------
+    # =====================================================
     # GET
-    # -----------------------------------------------------
+    # =====================================================
 
     def do_GET(self):
-        path = self.path.split("?", 1)[0]
+        parsed = urlparse(self.path)
+        path = parsed.path
+
+        # ---------------------------------------------
+        # HEALTH
+        # ---------------------------------------------
 
         if path == "/health":
             return send_json(
@@ -367,10 +557,18 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "status": "ok",
                     "service": "LainoLive",
-                    "login_method": "username_password",
-                    "registration": True
+                    "login_method": (
+                        "username_password"
+                    ),
+                    "registration": True,
+                    "live": True,
+                    "chat": True
                 }
             )
+
+        # ---------------------------------------------
+        # STATUS
+        # ---------------------------------------------
 
         if path == "/api/status":
             return send_json(
@@ -379,12 +577,105 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "service": "LainoLive API",
                     "status": "online",
-                    "login_method": "username_password",
+                    "login_method": (
+                        "username_password"
+                    ),
                     "registration": True,
+                    "live": True,
+                    "chat": True,
                     "sms": False,
                     "otp": False
                 }
             )
+
+        # ---------------------------------------------
+        # STREAM LIST
+        # ---------------------------------------------
+
+        if path == "/api/streams":
+            return send_json(
+                self,
+                200,
+                {
+                    "success": True,
+                    "streams": get_streams()
+                }
+            )
+
+        # ---------------------------------------------
+        # CHAT MESSAGES
+        # ---------------------------------------------
+
+        if path == "/api/chat/messages":
+
+            query = parse_qs(
+                parsed.query
+            )
+
+            stream_id = (
+                query.get(
+                    "stream_id",
+                    [""]
+                )[0]
+            )
+
+            after_id = (
+                query.get(
+                    "after_id",
+                    [""]
+                )[0]
+            )
+
+            if not stream_id:
+                return send_json(
+                    self,
+                    400,
+                    {
+                        "success": False,
+                        "message": (
+                            "شناسه لایو "
+                            "مشخص نشده است."
+                        )
+                    }
+                )
+
+            stream = get_stream(
+                stream_id
+            )
+
+            if (
+                stream is None
+                or not stream.get("active")
+            ):
+                return send_json(
+                    self,
+                    404,
+                    {
+                        "success": False,
+                        "message": (
+                            "لایو پیدا نشد "
+                            "یا دیگر فعال نیست."
+                        )
+                    }
+                )
+
+            messages = get_chat_messages(
+                stream_id,
+                after_id
+            )
+
+            return send_json(
+                self,
+                200,
+                {
+                    "success": True,
+                    "messages": messages
+                }
+            )
+
+        # ---------------------------------------------
+        # HOME
+        # ---------------------------------------------
 
         if path == "/":
             return serve_static_file(
@@ -392,10 +683,18 @@ class LainoHandler(BaseHTTPRequestHandler):
                 "index.html"
             )
 
+        # ---------------------------------------------
+        # FAVICON
+        # ---------------------------------------------
+
         if path == "/favicon.ico":
             self.send_response(204)
             self.end_headers()
             return
+
+        # ---------------------------------------------
+        # STATIC
+        # ---------------------------------------------
 
         relative_path = path.lstrip("/")
 
@@ -436,18 +735,33 @@ class LainoHandler(BaseHTTPRequestHandler):
             }
         )
 
-    # -----------------------------------------------------
+    # =====================================================
     # POST
-    # -----------------------------------------------------
+    # =====================================================
 
     def do_POST(self):
-        path = self.path.split("?", 1)[0]
+        path = self.path.split(
+            "?",
+            1
+        )[0]
 
         if path == "/api/login":
             return self.login()
 
         if path == "/api/register":
             return self.register()
+
+        if path == "/api/streams/create":
+            return self.create_stream_api()
+
+        if path == "/api/streams/stop":
+            return self.stop_stream_api()
+
+        if path == "/api/streams/viewer":
+            return self.viewer_stream_api()
+
+        if path == "/api/chat/send":
+            return self.chat_send()
 
         return send_json(
             self,
@@ -458,19 +772,25 @@ class LainoHandler(BaseHTTPRequestHandler):
             }
         )
 
-    # -----------------------------------------------------
+    # =====================================================
     # LOGIN
-    # -----------------------------------------------------
+    # =====================================================
 
     def login(self):
         data = read_json(self)
 
         username = str(
-            data.get("username", "")
+            data.get(
+                "username",
+                ""
+            )
         ).strip()
 
         password = str(
-            data.get("password", "")
+            data.get(
+                "password",
+                ""
+            )
         )
 
         if not username:
@@ -501,14 +821,15 @@ class LainoHandler(BaseHTTPRequestHandler):
 
         user = users.get(username)
 
-        if not user:
+        if not isinstance(user, dict):
             return send_json(
                 self,
                 401,
                 {
                     "success": False,
                     "message": (
-                        "نام کاربری یا رمز عبور اشتباه است."
+                        "نام کاربری یا رمز عبور "
+                        "اشتباه است."
                     )
                 }
             )
@@ -523,7 +844,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "نام کاربری یا رمز عبور اشتباه است."
+                        "نام کاربری یا رمز عبور "
+                        "اشتباه است."
                     )
                 }
             )
@@ -540,19 +862,25 @@ class LainoHandler(BaseHTTPRequestHandler):
             }
         )
 
-    # -----------------------------------------------------
+    # =====================================================
     # REGISTER
-    # -----------------------------------------------------
+    # =====================================================
 
     def register(self):
         data = read_json(self)
 
         username = str(
-            data.get("username", "")
+            data.get(
+                "username",
+                ""
+            )
         ).strip()
 
         password = str(
-            data.get("password", "")
+            data.get(
+                "password",
+                ""
+            )
         )
 
         confirm_password = str(
@@ -648,7 +976,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "رمز عبور بیش از حد طولانی است."
+                        "رمز عبور بیش از حد "
+                        "طولانی است."
                     )
                 }
             )
@@ -660,7 +989,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "تکرار رمز عبور یکسان نیست."
+                        "تکرار رمز عبور "
+                        "یکسان نیست."
                     )
                 }
             )
@@ -674,7 +1004,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "این نام کاربری قبلاً ثبت شده است."
+                        "این نام کاربری قبلاً "
+                        "ثبت شده است."
                     )
                 }
             )
@@ -688,7 +1019,6 @@ class LainoHandler(BaseHTTPRequestHandler):
 
         try:
             save_users(users)
-
         except OSError:
             return send_json(
                 self,
@@ -696,7 +1026,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "ذخیره حساب کاربری ناموفق بود."
+                        "ذخیره حساب کاربری "
+                        "ناموفق بود."
                     )
                 }
             )
@@ -710,6 +1041,343 @@ class LainoHandler(BaseHTTPRequestHandler):
                     "ثبت‌نام با موفقیت انجام شد."
                 ),
                 "username": username
+            }
+        )
+
+    # =====================================================
+    # CREATE STREAM
+    # =====================================================
+
+    def create_stream_api(self):
+        data = read_json(self)
+
+        username = str(
+            data.get(
+                "username",
+                ""
+            )
+        ).strip()
+
+        title = str(
+            data.get(
+                "title",
+                ""
+            )
+        ).strip()
+
+        category = str(
+            data.get(
+                "category",
+                "عمومی"
+            )
+        ).strip()
+
+        if not username:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "کاربر مشخص نشده است."
+                    )
+                }
+            )
+
+        if not title:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "عنوان لایو را وارد کنید."
+                    )
+                }
+            )
+
+        if len(title) > 100:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "عنوان لایو بیش از حد "
+                        "طولانی است."
+                    )
+                }
+            )
+
+        stream = create_stream(
+            username,
+            title,
+            category
+        )
+
+        return send_json(
+            self,
+            201,
+            {
+                "success": True,
+                "stream": stream
+            }
+        )
+
+    # =====================================================
+    # STOP STREAM
+    # =====================================================
+
+    def stop_stream_api(self):
+        data = read_json(self)
+
+        stream_id = str(
+            data.get(
+                "stream_id",
+                ""
+            )
+        ).strip()
+
+        username = str(
+            data.get(
+                "username",
+                ""
+            )
+        ).strip()
+
+        if not stream_id:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "شناسه لایو مشخص نشده است."
+                    )
+                }
+            )
+
+        if not username:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "کاربر مشخص نشده است."
+                    )
+                }
+            )
+
+        if not stop_stream(
+            stream_id,
+            username
+        ):
+            return send_json(
+                self,
+                403,
+                {
+                    "success": False,
+                    "message": (
+                        "توقف این لایو مجاز نیست."
+                    )
+                }
+            )
+
+        return send_json(
+            self,
+            200,
+            {
+                "success": True,
+                "message": (
+                    "لایو متوقف شد."
+                )
+            }
+        )
+
+    # =====================================================
+    # VIEWER
+    # =====================================================
+
+    def viewer_stream_api(self):
+        data = read_json(self)
+
+        stream_id = str(
+            data.get(
+                "stream_id",
+                ""
+            )
+        ).strip()
+
+        action = str(
+            data.get(
+                "action",
+                "join"
+            )
+        ).strip()
+
+        if not stream_id:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "شناسه لایو مشخص نشده است."
+                    )
+                }
+            )
+
+        if action == "leave":
+            change = -1
+        else:
+            change = 1
+
+        stream = update_stream_viewers(
+            stream_id,
+            change
+        )
+
+        if stream is None:
+            return send_json(
+                self,
+                404,
+                {
+                    "success": False,
+                    "message": (
+                        "لایو پیدا نشد."
+                    )
+                }
+            )
+
+        return send_json(
+            self,
+            200,
+            {
+                "success": True,
+                "stream": stream
+            }
+        )
+
+    # =====================================================
+    # SEND CHAT
+    # =====================================================
+
+    def chat_send(self):
+        data = read_json(self)
+
+        stream_id = str(
+            data.get(
+                "stream_id",
+                ""
+            )
+        ).strip()
+
+        username = str(
+            data.get(
+                "username",
+                ""
+            )
+        ).strip()
+
+        text = str(
+            data.get(
+                "text",
+                ""
+            )
+        ).strip()
+
+        if not stream_id:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "شناسه لایو مشخص نشده است."
+                    )
+                }
+            )
+
+        stream = get_stream(
+            stream_id
+        )
+
+        if (
+            stream is None
+            or not stream.get("active")
+        ):
+            return send_json(
+                self,
+                404,
+                {
+                    "success": False,
+                    "message": (
+                        "این لایو فعال نیست."
+                    )
+                }
+            )
+
+        if not username:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "نام کاربری مشخص نشده است."
+                    )
+                }
+            )
+
+        if not text:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "پیام خالی است."
+                    )
+                }
+            )
+
+        if len(text) > CHAT_MESSAGE_MAX_LENGTH:
+            return send_json(
+                self,
+                400,
+                {
+                    "success": False,
+                    "message": (
+                        "پیام بیش از حد طولانی است."
+                    )
+                }
+            )
+
+        message = add_chat_message(
+            stream_id,
+            username,
+            text
+        )
+
+        if message is None:
+            return send_json(
+                self,
+                500,
+                {
+                    "success": False,
+                    "message": (
+                        "ثبت پیام ناموفق بود."
+                    )
+                }
+            )
+
+        return send_json(
+            self,
+            201,
+            {
+                "success": True,
+                "message": message
             }
         )
 
@@ -752,6 +1420,14 @@ def main():
 
     print(
         "Registration: enabled"
+    )
+
+    print(
+        "Live: enabled"
+    )
+
+    print(
+        "Chat: enabled"
     )
 
     print(
