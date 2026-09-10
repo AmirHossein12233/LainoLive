@@ -1,180 +1,198 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#0f172a"
+    >
+
     <title>پروفایل | لاینو</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
 
     <style>
         .profile-page {
-            min-height: 100vh;
-            padding: 24px 16px 110px;
-        }
-
-        .profile-container {
-            width: 100%;
-            max-width: 560px;
+            width: min(700px, calc(100% - 20px));
             margin: 0 auto;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 22px;
-        }
-
-        .profile-back {
-            width: 42px;
-            height: 42px;
-            border: none;
-            border-radius: 14px;
-            background: #ffffff;
-            box-shadow: 0 6px 18px rgba(20, 25, 40, 0.07);
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .profile-header h1 {
-            font-size: 23px;
-            font-weight: 900;
+            padding-top: 25px;
         }
 
         .profile-card {
-            background: #ffffff;
-            border: 1px solid #e9ebf1;
-            border-radius: 24px;
-            padding: 24px 18px;
-            box-shadow: 0 12px 32px rgba(20, 25, 40, 0.07);
+            background: #172033;
+            border: 1px solid #273449;
+            border-radius: 22px;
+            padding: 24px;
         }
 
-        .avatar-section {
+        .profile-header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 25px;
         }
 
-        .profile-avatar {
-            width: 104px;
-            height: 104px;
-            margin: 0 auto 12px;
+        .avatar {
+            width: 105px;
+            height: 105px;
+            margin: 0 auto 14px;
             border-radius: 50%;
+            background: #1e293b;
+            border: 3px solid #22c55e;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background: #f0f1f6;
-            border: 4px solid #ffffff;
-            box-shadow:
-                0 8px 25px rgba(20, 25, 40, 0.10);
-            font-size: 42px;
+            font-size: 48px;
         }
 
-        .profile-avatar img {
+        .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .change-photo-btn {
-            border: none;
-            background: transparent;
-            color: #ff304f;
+        .profile-header h1 {
+            margin: 0 0 7px;
+            font-size: 24px;
+        }
+
+        .profile-header p {
+            margin: 0;
+            color: #94a3b8;
             font-size: 13px;
-            font-weight: 900;
-            cursor: pointer;
         }
 
-        .field {
-            margin-bottom: 18px;
+        .profile-form {
+            margin-top: 20px;
         }
 
-        .field label {
+        .profile-form label {
             display: block;
-            margin-bottom: 8px;
+            margin: 15px 0 8px;
+            color: #cbd5e1;
             font-size: 13px;
-            font-weight: 800;
-            color: #41444e;
         }
 
-        .field input {
+        .profile-form input {
             width: 100%;
-            height: 52px;
-            border: 1px solid #e1e4ea;
-            border-radius: 15px;
-            padding: 0 14px;
+            padding: 14px;
+            border: 1px solid #334155;
+            border-radius: 13px;
             outline: none;
-            background: #fafbfc;
-            color: #151515;
+            background: #1e293b;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .profile-form input:focus {
+            border-color: #22c55e;
+        }
+
+        .upload-button {
+            display: block;
+            width: 100%;
+            margin-top: 12px;
+            padding: 13px;
+            border: 1px solid #334155;
+            border-radius: 13px;
+            background: #1e293b;
+            color: #ffffff;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .upload-button:hover {
+            background: #273449;
+        }
+
+        .save-button {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .logout-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 13px;
+            border: 1px solid #7f1d1d;
+            border-radius: 13px;
+            background: #450a0a;
+            color: #fecaca;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .logout-button:hover {
+            background: #7f1d1d;
+        }
+
+        .back-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 13px;
+            border: 1px solid #334155;
+            border-radius: 13px;
+            background: #1e293b;
+            color: #ffffff;
+            cursor: pointer;
             font-size: 14px;
         }
 
-        .field input:focus {
-            background: #ffffff;
-            border-color: #ff304f;
-            box-shadow:
-                0 0 0 4px rgba(255, 48, 79, 0.08);
+        .back-button:hover {
+            background: #273449;
         }
 
-        .phone-field input {
-            direction: ltr;
-            text-align: left;
-        }
-
-        .save-profile-btn {
-            width: 100%;
-            height: 52px;
-            margin-top: 4px;
-            border: none;
-            border-radius: 15px;
-            background: #ff304f;
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow:
-                0 8px 18px rgba(255, 48, 79, 0.20);
-        }
-
-        .save-profile-btn:active {
-            transform: scale(0.98);
-        }
-
-        .logout-btn {
-            width: 100%;
-            height: 48px;
-            margin-top: 12px;
-            border: 1px solid #e4e6ec;
-            border-radius: 15px;
-            background: #ffffff;
-            color: #e42140;
+        .message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 12px;
             font-size: 13px;
-            font-weight: 900;
-            cursor: pointer;
+            line-height: 1.7;
         }
 
-        .profile-message {
-            min-height: 22px;
-            margin-top: 12px;
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #132b1d;
+            border: 1px solid #166534;
+            color: #bbf7d0;
+        }
+
+        .message.error {
+            background: #3f0a0a;
+            border: 1px solid #7f1d1d;
+            color: #fecaca;
+        }
+
+        .username-box {
+            padding: 12px;
+            margin-top: 18px;
+            border-radius: 12px;
+            background: #0f172a;
+            color: #94a3b8;
             text-align: center;
             font-size: 13px;
-            font-weight: 800;
         }
 
-        .profile-message.success {
-            color: #18894b;
+        .username-box strong {
+            color: #86efac;
         }
 
-        .profile-message.error {
-            color: #e42140;
-        }
-
-        #photoInput {
+        .hidden-input {
             display: none;
         }
     </style>
@@ -182,340 +200,507 @@
 
 <body>
 
+<script>
+    const loggedIn =
+        localStorage.getItem(
+            "lainolive_logged_in"
+        );
+
+    const username =
+        localStorage.getItem(
+            "lainolive_username"
+        );
+
+    if (
+        loggedIn !== "true" ||
+        !username
+    ) {
+        window.location.replace(
+            "/login.html"
+        );
+    }
+</script>
+
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <div class="logo">
+            لاینو
+        </div>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <button
+            id="homeButton"
+            class="icon-button"
+            type="button"
+        >
+            🏠
+        </button>
+
+    </div>
+
+</header>
+
+
 <main class="profile-page">
 
-    <div class="profile-container">
+    <section class="profile-card">
 
-        <header class="profile-header">
+        <div class="profile-header">
 
-            <button
-                type="button"
-                class="profile-back"
-                id="backButton"
-                aria-label="بازگشت"
+            <div
+                id="avatar"
+                class="avatar"
             >
-                ←
-            </button>
-
-            <h1>پروفایل</h1>
-
-        </header>
-
-        <section class="profile-card">
-
-            <div class="avatar-section">
-
-                <div
-                    class="profile-avatar"
-                    id="profileAvatar"
-                >
-                    👤
-                </div>
-
-                <button
-                    type="button"
-                    class="change-photo-btn"
-                    id="changePhotoButton"
-                >
-                    تغییر عکس پروفایل
-                </button>
-
-                <input
-                    id="photoInput"
-                    type="file"
-                    accept="image/*"
-                >
-
+                👤
             </div>
 
-            <div class="field">
+            <h1 id="displayName">
+                کاربر
+            </h1>
 
-                <label for="displayName">
-                    نام نمایشی
-                </label>
+            <p>
+                پروفایل LainoLive
+            </p>
 
-                <input
-                    id="displayName"
-                    type="text"
-                    maxlength="40"
-                    placeholder="مثلاً امیر"
-                >
+        </div>
 
-            </div>
 
-            <div class="field phone-field">
+        <div class="username-box">
+            نام کاربری:
+            <strong id="usernameText">
+                کاربر
+            </strong>
+        </div>
 
-                <label for="phone">
-                    شماره موبایل
-                </label>
 
-                <input
-                    id="phone"
-                    type="tel"
-                    readonly
-                >
+        <div class="profile-form">
 
-            </div>
+            <label for="nameInput">
+                نام نمایشی
+            </label>
+
+            <input
+                id="nameInput"
+                type="text"
+                maxlength="40"
+                placeholder="نام نمایشی"
+            >
+
+
+            <label>
+                عکس پروفایل
+            </label>
+
+            <label
+                for="avatarInput"
+                class="upload-button"
+            >
+                انتخاب عکس
+            </label>
+
+            <input
+                id="avatarInput"
+                class="hidden-input"
+                type="file"
+                accept="image/*"
+            >
+
 
             <button
-                type="button"
-                class="save-profile-btn"
                 id="saveButton"
+                class="primary-button save-button"
+                type="button"
             >
-                ذخیره پروفایل
+                ذخیره تغییرات
             </button>
 
+
             <button
+                id="backButton"
+                class="back-button"
                 type="button"
-                class="logout-btn"
+            >
+                برگشت به صفحه اصلی
+            </button>
+
+
+            <button
                 id="logoutButton"
+                class="logout-button"
+                type="button"
             >
                 خروج از حساب
             </button>
 
-            <div
-                class="profile-message"
-                id="profileMessage"
-            ></div>
+        </div>
 
-        </section>
 
-    </div>
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+    </section>
 
 </main>
 
+
 <script>
 
-    // =========================================
-    // بررسی ورود
-    // =========================================
-
-    const loggedIn =
-        localStorage.getItem("laino_logged_in");
-
-    if (loggedIn !== "true") {
-        window.location.href = "login.html";
-    }
+    const currentUsername =
+        localStorage.getItem(
+            "lainolive_username"
+        ) || "کاربر";
 
 
-    // =========================================
-    // عناصر
-    // =========================================
+    const displayNameElement =
+        document.getElementById(
+            "displayName"
+        );
 
-    const displayName =
-        document.getElementById("displayName");
 
-    const phone =
-        document.getElementById("phone");
+    const usernameText =
+        document.getElementById(
+            "usernameText"
+        );
 
-    const profileAvatar =
-        document.getElementById("profileAvatar");
 
-    const photoInput =
-        document.getElementById("photoInput");
+    const nameInput =
+        document.getElementById(
+            "nameInput"
+        );
 
-    const changePhotoButton =
-        document.getElementById("changePhotoButton");
+
+    const avatar =
+        document.getElementById(
+            "avatar"
+        );
+
+
+    const avatarInput =
+        document.getElementById(
+            "avatarInput"
+        );
+
 
     const saveButton =
-        document.getElementById("saveButton");
+        document.getElementById(
+            "saveButton"
+        );
 
-    const logoutButton =
-        document.getElementById("logoutButton");
 
     const backButton =
-        document.getElementById("backButton");
+        document.getElementById(
+            "backButton"
+        );
 
-    const profileMessage =
-        document.getElementById("profileMessage");
+
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
 
 
-    // =========================================
-    // اطلاعات اولیه
-    // =========================================
+    const homeButton =
+        document.getElementById(
+            "homeButton"
+        );
 
-    phone.value =
-        localStorage.getItem("laino_phone") || "";
 
-    displayName.value =
-        localStorage.getItem("laino_display_name") || "";
+    const message =
+        document.getElementById(
+            "message"
+        );
 
-    const savedAvatar =
-        localStorage.getItem("laino_avatar");
 
-    if (savedAvatar) {
-        profileAvatar.innerHTML =
-            `<img src="${savedAvatar}" alt="عکس پروفایل">`;
+    /*
+     * =====================================================
+     * USER DATA
+     * =====================================================
+     */
+
+    const storageKey =
+        "lainolive_profile_" +
+        currentUsername;
+
+
+    let profileData =
+        JSON.parse(
+            localStorage.getItem(
+                storageKey
+            ) || "null"
+        );
+
+
+    if (!profileData) {
+
+        profileData = {
+            displayName:
+                currentUsername,
+
+            avatar:
+                ""
+        };
+
     }
 
 
-    // =========================================
-    // تغییر عکس
-    // =========================================
+    /*
+     * =====================================================
+     * RENDER
+     * =====================================================
+     */
 
-    changePhotoButton.addEventListener(
-        "click",
-        () => {
-            photoInput.click();
+    function renderProfile() {
+
+        const name =
+            profileData.displayName ||
+            currentUsername;
+
+
+        displayNameElement.textContent =
+            name;
+
+
+        usernameText.textContent =
+            currentUsername;
+
+
+        nameInput.value =
+            name;
+
+
+        if (
+            profileData.avatar
+        ) {
+
+            avatar.innerHTML =
+                `
+                <img
+                    src="${profileData.avatar}"
+                    alt="پروفایل"
+                >
+                `;
+
+        } else {
+
+            avatar.textContent =
+                "👤";
         }
-    );
+    }
 
 
-    photoInput.addEventListener(
+    /*
+     * =====================================================
+     * MESSAGE
+     * =====================================================
+     */
+
+    function showMessage(
+        text,
+        type = "success"
+    ) {
+
+        message.className =
+            "message show " +
+            type;
+
+        message.textContent =
+            text;
+
+        setTimeout(
+            () => {
+                message.className =
+                    "message";
+            },
+            2500
+        );
+    }
+
+
+    /*
+     * =====================================================
+     * AVATAR
+     * =====================================================
+     */
+
+    avatarInput.addEventListener(
         "change",
-        () => {
+        function() {
 
             const file =
-                photoInput.files[0];
+                avatarInput.files[0];
 
             if (!file) {
                 return;
             }
 
-            if (!file.type.startsWith("image/")) {
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
 
                 showMessage(
-                    "لطفاً یک تصویر انتخاب کنید.",
+                    "فقط فایل تصویری انتخاب کن.",
                     "error"
                 );
 
+                avatarInput.value =
+                    "";
+
                 return;
             }
+
 
             const reader =
                 new FileReader();
 
-            reader.onload = () => {
 
-                const imageData =
-                    reader.result;
+            reader.onload =
+                function(event) {
 
-                try {
+                    profileData.avatar =
+                        event.target.result;
 
-                    localStorage.setItem(
-                        "laino_avatar",
-                        imageData
-                    );
-
-                    profileAvatar.innerHTML =
-                        `<img
-                            src="${imageData}"
-                            alt="عکس پروفایل"
-                        >`;
+                    renderProfile();
 
                     showMessage(
-                        "عکس پروفایل تغییر کرد.",
-                        "success"
+                        "عکس آماده ذخیره است."
                     );
+                };
 
-                } catch (error) {
 
-                    showMessage(
-                        "حجم عکس زیاد است.",
-                        "error"
-                    );
-                }
-            };
-
-            reader.readAsDataURL(file);
-
+            reader.readAsDataURL(
+                file
+            );
         }
     );
 
 
-    // =========================================
-    // ذخیره پروفایل
-    // =========================================
+    /*
+     * =====================================================
+     * SAVE
+     * =====================================================
+     */
 
     saveButton.addEventListener(
         "click",
-        () => {
+        function() {
 
             const name =
-                displayName.value.trim();
+                nameInput.value.trim();
+
 
             if (!name) {
 
                 showMessage(
-                    "لطفاً نام نمایشی را وارد کنید.",
+                    "نام نمایشی را وارد کن.",
                     "error"
                 );
-
-                displayName.focus();
 
                 return;
             }
 
+
+            profileData.displayName =
+                name;
+
+
             localStorage.setItem(
-                "laino_display_name",
+                storageKey,
+                JSON.stringify(
+                    profileData
+                )
+            );
+
+
+            localStorage.setItem(
+                "lainolive_display_name",
                 name
             );
 
+
             showMessage(
-                "پروفایل ذخیره شد.",
-                "success"
+                "پروفایل ذخیره شد."
             );
+
+
+            renderProfile();
         }
     );
 
 
-    // =========================================
-    // خروج
-    // =========================================
+    /*
+     * =====================================================
+     * LOGOUT
+     * =====================================================
+     */
 
     logoutButton.addEventListener(
         "click",
-        () => {
+        function() {
 
             localStorage.removeItem(
-                "laino_logged_in"
+                "lainolive_logged_in"
             );
 
             localStorage.removeItem(
-                "laino_phone"
+                "lainolive_username"
             );
 
-            window.location.href =
-                "login.html";
+            window.location.replace(
+                "/login.html"
+            );
         }
     );
 
 
-    // =========================================
-    // بازگشت
-    // =========================================
+    /*
+     * =====================================================
+     * HOME
+     * =====================================================
+     */
+
+    homeButton.addEventListener(
+        "click",
+        function() {
+
+            window.location.href =
+                "/index.html";
+
+        }
+    );
+
 
     backButton.addEventListener(
         "click",
-        () => {
+        function() {
 
             window.location.href =
-                "index.html";
+                "/index.html";
+
         }
     );
 
 
-    // =========================================
-    // پیام
-    // =========================================
+    /*
+     * =====================================================
+     * START
+     * =====================================================
+     */
 
-    function showMessage(text, type) {
-
-        profileMessage.textContent = text;
-
-        profileMessage.className =
-            "profile-message " + type;
-
-        setTimeout(() => {
-
-            profileMessage.textContent = "";
-            profileMessage.className =
-                "profile-message";
-
-        }, 2500);
-    }
+    renderProfile();
 
 </script>
 
 </body>
+
 </html>
