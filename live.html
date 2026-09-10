@@ -2,7 +2,6 @@
 <html lang="fa" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -10,1121 +9,1339 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>پخش زنده | لاینو</title>
+    <meta
+        name="theme-color"
+        content="#020617"
+    >
+
+    <title>پخش زنده | LainoLive</title>
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
 
     <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
         body {
             margin: 0;
-            width: 100%;
-            min-height: 100%;
-            background: #08090d;
-            color: #ffffff;
-            font-family:
-                Tahoma,
-                Arial,
-                sans-serif;
-        }
-
-        body {
+            padding: 0;
             min-height: 100vh;
-        }
-
-        .live-page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* =========================================
-           HEADER
-           ========================================= */
-
-        .live-header {
-            height: 64px;
-            flex: 0 0 64px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 14px;
-
-            background: #11131a;
-            border-bottom: 1px solid #252733;
-        }
-
-        .live-brand {
-            font-size: 21px;
-            font-weight: 900;
-        }
-
-        .live-status {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-
-            font-size: 12px;
-            color: #b2b5c0;
-        }
-
-        .status-dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: #777b87;
-        }
-
-        .status-dot.live {
-            background: #ff304f;
-            box-shadow:
-                0 0 0 5px rgba(255, 48, 79, 0.10);
-        }
-
-        /* =========================================
-           VIDEO AREA
-           ========================================= */
-
-        .video-area {
-            position: relative;
-
-            width: 100%;
-            flex: 1;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    #282b38 0%,
-                    #151720 45%,
-                    #07080c 100%
-                );
-
+            background: #020617;
             overflow: hidden;
         }
 
-        #localVideo,
-        #remoteVideo {
-            width: 100%;
-            height: 100%;
-
-            object-fit: cover;
-
-            display: block;
-
-            background: #05060a;
-        }
-
-        #localVideo {
-            transform: scaleX(-1);
-        }
-
-        .video-placeholder {
-            position: absolute;
-            inset: 0;
-
+        .live-page {
+            height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        .live-header {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 14px;
+            background: #111827;
+            border-bottom: 1px solid #273449;
+        }
+
+        .live-header-left,
+        .live-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .live-title-area {
+            min-width: 0;
+        }
+
+        .live-title {
+            font-size: 16px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .live-user {
+            margin-top: 3px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .live-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #fecaca;
+            font-size: 11px;
+            background: #3f0a0a;
+            padding: 6px 8px;
+            border-radius: 8px;
+        }
+
+        .live-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+
+        .live-main {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+        }
+
+        .camera-area {
+            min-width: 0;
+            min-height: 0;
+            position: relative;
+            background: #000000;
+            display: flex;
             align-items: center;
             justify-content: center;
+        }
 
-            gap: 12px;
+        #cameraPreview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #000000;
+        }
 
+        .camera-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-
+            padding: 20px;
             pointer-events: none;
         }
 
-        .video-placeholder-icon {
-            width: 72px;
-            height: 72px;
-
-            border-radius: 22px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: rgba(255,255,255,0.08);
-
-            font-size: 31px;
+        .camera-placeholder-box {
+            max-width: 340px;
+            padding: 25px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid #273449;
         }
 
-        .video-placeholder-title {
-            font-size: 17px;
-            font-weight: 900;
+        .camera-icon {
+            font-size: 60px;
+            margin-bottom: 12px;
         }
 
-        .video-placeholder-text {
-            max-width: 300px;
+        .camera-placeholder h2 {
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
 
-            color: #9ca0ad;
-
-            font-size: 12px;
+        .camera-placeholder p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 13px;
             line-height: 1.8;
         }
 
-        /* =========================================
-           TOP OVERLAY
-           ========================================= */
-
-        .live-badge {
+        .camera-controls {
             position: absolute;
-
-            top: 14px;
-            right: 14px;
-
-            z-index: 4;
-
-            padding: 7px 10px;
-
-            border-radius: 11px;
-
-            background: #ff304f;
-
-            font-size: 12px;
-            font-weight: 900;
+            left: 50%;
+            bottom: 16px;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
         }
 
-        .viewer-count {
-            position: absolute;
-
-            top: 14px;
-            left: 14px;
-
-            z-index: 4;
-
-            padding: 7px 10px;
-
-            border-radius: 11px;
-
-            background: rgba(0,0,0,0.46);
-
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        /* =========================================
-           CONTROL PANEL
-           ========================================= */
-
-        .control-panel {
-            width: 100%;
-
-            padding: 13px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 9px;
-
-            background: #11131a;
-
-            border-top: 1px solid #252733;
-        }
-
-        .control-button {
-            min-height: 48px;
-
-            border: 1px solid #292c37;
-            border-radius: 14px;
-
-            background: #1a1c25;
+        .camera-button {
+            border: 0;
+            border-radius: 12px;
+            padding: 12px 15px;
             color: #ffffff;
-
-            font-size: 12px;
-            font-weight: 800;
-
+            background: #1e293b;
+            border: 1px solid #334155;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .control-button:active {
-            transform: scale(0.97);
+        .camera-button:hover {
+            background: #273449;
         }
 
-        .control-button.active {
-            background: #282b35;
+        .camera-button.start {
+            background: #22c55e;
+            border-color: #22c55e;
         }
 
-        .control-button.danger {
-            background: #ff304f;
-            border-color: #ff304f;
+        .camera-button.start:hover {
+            background: #16a34a;
         }
 
-        /* =========================================
-           TITLE PANEL
-           ========================================= */
-
-        .title-panel {
-            padding: 12px 13px;
-
-            background: #0d0f15;
-            border-top: 1px solid #1e2029;
+        .camera-button.stop {
+            background: #ef4444;
+            border-color: #ef4444;
         }
 
-        .title-input {
-            width: 100%;
-            height: 46px;
-
-            padding: 0 13px;
-
-            border: 1px solid #2b2e39;
-            border-radius: 13px;
-
-            outline: none;
-
-            background: #171922;
-            color: #ffffff;
-
-            font-size: 13px;
-
-            direction: rtl;
+        .chat-panel {
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: #111827;
+            border-right: 1px solid #273449;
         }
 
-        .title-input:focus {
-            border-color: #ff304f;
-        }
-
-        /* =========================================
-           INFO
-           ========================================= */
-
-        .info-panel {
-            padding: 13px;
-
-            background: #11131a;
-        }
-
-        .info-title {
-            font-size: 15px;
-            font-weight: 900;
-
-            margin-bottom: 6px;
-        }
-
-        .info-subtitle {
-            color: #969aa6;
-            font-size: 12px;
-        }
-
-        /* =========================================
-           MODAL
-           ========================================= */
-
-        .message-overlay {
-            position: fixed;
-            inset: 0;
-
-            z-index: 100;
-
+        .chat-header {
+            min-height: 54px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-bottom: 1px solid #273449;
+        }
 
-            padding: 20px;
+        .chat-header-title {
+            font-weight: bold;
+        }
 
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(6px);
+        .chat-online {
+            color: #86efac;
+            font-size: 11px;
+        }
 
+        .chat-messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .chat-empty {
+            text-align: center;
+            color: #64748b;
+            padding: 70px 10px;
+            font-size: 13px;
+        }
+
+        .chat-message {
+            margin-bottom: 12px;
+        }
+
+        .chat-user {
+            color: #86efac;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .chat-owner {
+            color: #fbbf24;
+        }
+
+        .chat-text {
+            color: #e2e8f0;
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 7px;
+            padding: 9px;
+            border-top: 1px solid #273449;
+        }
+
+        .chat-input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid #334155;
+            outline: none;
+            border-radius: 11px;
+            padding: 12px;
+            background: #1e293b;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        .chat-input:focus {
+            border-color: #22c55e;
+        }
+
+        .chat-send {
+            border: 0;
+            border-radius: 11px;
+            padding: 0 15px;
+            background: #22c55e;
+            color: #ffffff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .chat-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .info-bar {
+            padding: 9px 12px;
+            background: #0f172a;
+            border-top: 1px solid #273449;
+            color: #94a3b8;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translate(-50%, 20px);
             opacity: 0;
-            visibility: hidden;
-
+            pointer-events: none;
+            z-index: 1000;
+            padding: 10px 15px;
+            border-radius: 11px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #ffffff;
+            font-size: 13px;
             transition: 0.2s ease;
         }
 
-        .message-overlay.show {
+        .toast.show {
             opacity: 1;
-            visibility: visible;
+            transform: translate(-50%, 0);
         }
 
-        .message-box {
-            width: 100%;
-            max-width: 390px;
-
-            padding: 22px;
-
-            border-radius: 22px;
-
-            background: #171922;
-            border: 1px solid #2a2d39;
-        }
-
-        .message-box h2 {
-            margin: 0 0 10px;
-
-            font-size: 18px;
-        }
-
-        .message-box p {
-            margin: 0;
-
-            color: #a5a8b3;
-
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        .message-close {
-            width: 100%;
-            height: 46px;
-
-            margin-top: 16px;
-
-            border: none;
-            border-radius: 13px;
-
-            background: #ff304f;
-            color: #ffffff;
-
-            font-size: 13px;
-            font-weight: 900;
-
-            cursor: pointer;
-        }
-
-        /* =========================================
-           DESKTOP
-           ========================================= */
-
-        @media (min-width: 700px) {
+        @media (max-width: 800px) {
+            body {
+                overflow: auto;
+            }
 
             .live-page {
-                max-width: 1000px;
-                margin: 0 auto;
-
-                border-left: 1px solid #1c1e26;
-                border-right: 1px solid #1c1e26;
+                height: auto;
+                min-height: 100vh;
             }
 
-            .video-area {
-                min-height: 560px;
-                max-height: calc(100vh - 230px);
+            .live-main {
+                grid-template-columns: 1fr;
+                grid-template-rows: minmax(300px, 55vh) minmax(340px, 45vh);
             }
 
+            .chat-panel {
+                border-right: 0;
+                border-top: 1px solid #273449;
+            }
+
+            .live-header {
+                position: sticky;
+                top: 0;
+                z-index: 20;
+            }
+
+            .camera-area {
+                min-height: 300px;
+            }
         }
-
     </style>
-
 </head>
 
 <body>
+
+<script>
+    const loggedIn =
+        localStorage.getItem(
+            "lainolive_logged_in"
+        );
+
+    const currentUsername =
+        localStorage.getItem(
+            "lainolive_username"
+        );
+
+    if (
+        loggedIn !== "true" ||
+        !currentUsername
+    ) {
+        window.location.replace(
+            "/login.html"
+        );
+    }
+</script>
+
 
 <div class="live-page">
 
     <header class="live-header">
 
-        <div class="live-brand">
-            لاینو
+        <div class="live-header-left">
+
+            <button
+                id="backButton"
+                class="icon-button"
+                type="button"
+            >
+                ←
+            </button>
+
+            <div class="live-title-area">
+
+                <div
+                    id="liveTitle"
+                    class="live-title"
+                >
+                    پخش زنده
+                </div>
+
+                <div
+                    id="liveUser"
+                    class="live-user"
+                >
+                    در حال آماده‌سازی
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="live-status">
 
-            <span
-                class="status-dot"
-                id="statusDot"
-            ></span>
+        <div class="live-header-right">
 
-            <span id="statusText">
-                آماده
-            </span>
+            <div
+                id="liveStatus"
+                class="live-status"
+            >
+                <span
+                    class="live-status-dot"
+                ></span>
+
+                <span>
+                    آماده
+                </span>
+            </div>
 
         </div>
 
     </header>
 
 
-    <main class="video-area">
+    <main class="live-main">
 
-        <video
-            id="localVideo"
-            autoplay
-            muted
-            playsinline
-            style="display: none;"
-        ></video>
+        <!-- CAMERA -->
 
-        <video
-            id="remoteVideo"
-            autoplay
-            playsinline
-            style="display: none;"
-        ></video>
+        <section class="camera-area">
+
+            <video
+                id="cameraPreview"
+                autoplay
+                muted
+                playsinline
+            ></video>
 
 
-        <div
-            class="video-placeholder"
-            id="videoPlaceholder"
-        >
+            <div
+                id="cameraPlaceholder"
+                class="camera-placeholder"
+            >
 
-            <div class="video-placeholder-icon">
-                📺
+                <div class="camera-placeholder-box">
+
+                    <div class="camera-icon">
+                        📹
+                    </div>
+
+                    <h2>
+                        آماده پخش زنده
+                    </h2>
+
+                    <p>
+                        برای فعال کردن دوربین و میکروفون،
+                        روی «شروع دوربین» بزن.
+                    </p>
+
+                </div>
+
             </div>
 
-            <div class="video-placeholder-title">
-                پخش زنده
+
+            <div class="camera-controls">
+
+                <button
+                    id="cameraButton"
+                    class="camera-button start"
+                    type="button"
+                >
+                    🎥 شروع دوربین
+                </button>
+
+                <button
+                    id="stopLiveButton"
+                    class="camera-button stop"
+                    type="button"
+                >
+                    ⛔ پایان لایو
+                </button>
+
             </div>
 
-            <div class="video-placeholder-text">
-                برای شروع پخش، اجازه دسترسی
-                به دوربین و میکروفون را بدهید.
+        </section>
+
+
+        <!-- CHAT -->
+
+        <section class="chat-panel">
+
+            <div class="chat-header">
+
+                <div class="chat-header-title">
+                    💬 چت زنده
+                </div>
+
+                <div
+                    id="chatOnline"
+                    class="chat-online"
+                >
+                    آنلاین
+                </div>
+
             </div>
 
-        </div>
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+            >
+
+                <div class="chat-empty">
+                    هنوز پیامی ارسال نشده است.
+                </div>
+
+            </div>
 
 
-        <div
-            class="live-badge"
-            id="liveBadge"
-            style="display: none;"
-        >
-            🔴 زنده
-        </div>
+            <form
+                id="chatForm"
+                class="chat-form"
+            >
+
+                <input
+                    id="chatInput"
+                    class="chat-input"
+                    type="text"
+                    maxlength="500"
+                    autocomplete="off"
+                    placeholder="پیام بنویس..."
+                >
+
+                <button
+                    id="chatSend"
+                    class="chat-send"
+                    type="submit"
+                >
+                    ارسال
+                </button>
+
+            </form>
 
 
-        <div
-            class="viewer-count"
-            id="viewerCount"
-            style="display: none;"
-        >
-            👥 1
-        </div>
+            <div class="info-bar">
+                پیام‌های این لایو از سرور دریافت می‌شوند.
+            </div>
+
+        </section>
 
     </main>
-
-
-    <section class="title-panel">
-
-        <input
-            class="title-input"
-            id="liveTitle"
-            type="text"
-            maxlength="80"
-            placeholder="عنوان پخش زنده"
-        >
-
-    </section>
-
-
-    <section class="info-panel">
-
-        <div
-            class="info-title"
-            id="infoTitle"
-        >
-            هنوز پخش را شروع نکرده‌اید
-        </div>
-
-        <div
-            class="info-subtitle"
-            id="infoSubtitle"
-        >
-            دوربین و میکروفون را روشن کنید.
-        </div>
-
-    </section>
-
-
-    <section class="control-panel">
-
-        <button
-            class="control-button"
-            id="cameraButton"
-            type="button"
-        >
-            📷 دوربین
-        </button>
-
-        <button
-            class="control-button"
-            id="micButton"
-            type="button"
-        >
-            🎙️ میکروفون
-        </button>
-
-        <button
-            class="control-button"
-            id="startButton"
-            type="button"
-        >
-            🔴 شروع پخش
-        </button>
-
-        <button
-            class="control-button danger"
-            id="backButton"
-            type="button"
-        >
-            خروج
-        </button>
-
-    </section>
 
 </div>
 
 
 <div
-    class="message-overlay"
-    id="messageOverlay"
->
-
-    <div class="message-box">
-
-        <h2 id="messageTitle">
-            لاینو
-        </h2>
-
-        <p id="messageText"></p>
-
-        <button
-            class="message-close"
-            id="messageClose"
-            type="button"
-        >
-            متوجه شدم
-        </button>
-
-    </div>
-
-</div>
+    id="toast"
+    class="toast"
+></div>
 
 
 <script>
 
-    // =========================================
-    // عناصر
-    // =========================================
+    const currentStreamRaw =
+        sessionStorage.getItem(
+            "lainolive_current_stream"
+        );
 
-    const localVideo =
-        document.getElementById("localVideo");
 
-    const remoteVideo =
-        document.getElementById("remoteVideo");
+    let currentStream = null;
 
-    const videoPlaceholder =
-        document.getElementById("videoPlaceholder");
 
-    const liveBadge =
-        document.getElementById("liveBadge");
+    if (currentStreamRaw) {
 
-    const viewerCount =
-        document.getElementById("viewerCount");
+        try {
+            currentStream =
+                JSON.parse(
+                    currentStreamRaw
+                );
+        } catch (error) {
+
+            currentStream = null;
+        }
+    }
+
 
     const liveTitle =
-        document.getElementById("liveTitle");
+        document.getElementById(
+            "liveTitle"
+        );
 
-    const infoTitle =
-        document.getElementById("infoTitle");
+    const liveUser =
+        document.getElementById(
+            "liveUser"
+        );
 
-    const infoSubtitle =
-        document.getElementById("infoSubtitle");
+    const liveStatus =
+        document.getElementById(
+            "liveStatus"
+        );
 
-    const statusDot =
-        document.getElementById("statusDot");
+    const cameraPreview =
+        document.getElementById(
+            "cameraPreview"
+        );
 
-    const statusText =
-        document.getElementById("statusText");
+    const cameraPlaceholder =
+        document.getElementById(
+            "cameraPlaceholder"
+        );
 
     const cameraButton =
-        document.getElementById("cameraButton");
+        document.getElementById(
+            "cameraButton"
+        );
 
-    const micButton =
-        document.getElementById("micButton");
+    const stopLiveButton =
+        document.getElementById(
+            "stopLiveButton"
+        );
 
-    const startButton =
-        document.getElementById("startButton");
+    const chatMessages =
+        document.getElementById(
+            "chatMessages"
+        );
 
-    const backButton =
-        document.getElementById("backButton");
+    const chatForm =
+        document.getElementById(
+            "chatForm"
+        );
 
-    const messageOverlay =
-        document.getElementById("messageOverlay");
+    const chatInput =
+        document.getElementById(
+            "chatInput"
+        );
 
-    const messageTitle =
-        document.getElementById("messageTitle");
+    const chatSend =
+        document.getElementById(
+            "chatSend"
+        );
 
-    const messageText =
-        document.getElementById("messageText");
+    const toast =
+        document.getElementById(
+            "toast"
+        );
 
-    const messageClose =
-        document.getElementById("messageClose");
-
-
-    // =========================================
-    // وضعیت
-    // =========================================
 
     let mediaStream = null;
 
-    let cameraEnabled = false;
+    let lastChatId = "";
 
-    let micEnabled = false;
+    let chatInterval = null;
 
-    let liveStarted = false;
+    let cameraStarted = false;
 
 
-    // =========================================
-    // پیام
-    // =========================================
+    /*
+     * =====================================================
+     * NO STREAM
+     * =====================================================
+     */
 
-    function showMessage(title, text) {
+    if (!currentStream) {
 
-        messageTitle.textContent = title;
+        liveTitle.textContent =
+            "لایوی انتخاب نشده";
 
-        messageText.textContent = text;
+        liveUser.textContent =
+            currentUsername;
 
-        messageOverlay.classList.add("show");
+        cameraButton.disabled =
+            true;
+
+        stopLiveButton.disabled =
+            true;
+
+        cameraPlaceholder.innerHTML = `
+            <div class="camera-placeholder-box">
+
+                <div class="camera-icon">
+                    ⚠️
+                </div>
+
+                <h2>
+                    لایو پیدا نشد
+                </h2>
+
+                <p>
+                    ابتدا از صفحه اصلی یک لایو بساز.
+                </p>
+
+            </div>
+        `;
+
+    } else {
+
+        liveTitle.textContent =
+            currentStream.title;
+
+        liveUser.textContent =
+            "صاحب لایو: " +
+            currentStream.username;
     }
 
 
-    function hideMessage() {
+    /*
+     * =====================================================
+     * TOAST
+     * =====================================================
+     */
 
-        messageOverlay.classList.remove("show");
-    }
+    function showToast(text) {
 
+        toast.textContent =
+            text;
 
-    messageClose.addEventListener(
-        "click",
-        hideMessage
-    );
-
-
-    // =========================================
-    // بررسی ورود
-    // =========================================
-
-    const loggedIn =
-        localStorage.getItem(
-            "laino_logged_in"
+        toast.classList.add(
+            "show"
         );
 
-    if (loggedIn !== "true") {
+        setTimeout(
+            () => {
 
-        window.location.href =
-            "login.html";
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
     }
 
 
-    // =========================================
-    // دوربین و میکروفون
-    // =========================================
+    /*
+     * =====================================================
+     * ESCAPE
+     * =====================================================
+     */
 
-    async function startMedia() {
+    function escapeHtml(text) {
 
-        if (!navigator.mediaDevices) {
-
-            showMessage(
-                "دوربین در دسترس نیست",
-                "مرورگر شما دسترسی مورد نیاز "
-                + "برای دوربین و میکروفون را ندارد."
+        return String(text)
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
             );
+    }
 
-            return false;
+
+    /*
+     * =====================================================
+     * STATUS
+     * =====================================================
+     */
+
+    function setLiveStatus(
+        text,
+        color,
+        background
+    ) {
+
+        liveStatus.innerHTML = `
+            <span
+                class="live-status-dot"
+                style="background:${color};"
+            ></span>
+
+            <span>
+                ${escapeHtml(text)}
+            </span>
+        `;
+
+        liveStatus.style.background =
+            background;
+    }
+
+
+    /*
+     * =====================================================
+     * CAMERA
+     * =====================================================
+     */
+
+    async function startCamera() {
+
+        if (cameraStarted) {
+            return;
         }
 
+        if (
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia
+        ) {
+
+            showToast(
+                "مرورگر از دوربین پشتیبانی نمی‌کند."
+            );
+
+            return;
+        }
+
+        cameraButton.disabled =
+            true;
+
+        cameraButton.textContent =
+            "در حال فعال‌سازی...";
 
         try {
 
             mediaStream =
                 await navigator.mediaDevices.getUserMedia(
                     {
-                        video: {
-                            width: {
-                                ideal: 1280
-                            },
-
-                            height: {
-                                ideal: 720
-                            },
-
-                            facingMode: "user"
-                        },
-
+                        video: true,
                         audio: true
                     }
                 );
 
 
-            localVideo.srcObject =
+            cameraPreview.srcObject =
                 mediaStream;
 
-            localVideo.style.display =
-                "block";
 
-            remoteVideo.style.display =
-                "none";
-
-            videoPlaceholder.style.display =
+            cameraPlaceholder.style.display =
                 "none";
 
 
-            const videoTracks =
-                mediaStream.getVideoTracks();
-
-            const audioTracks =
-                mediaStream.getAudioTracks();
+            cameraStarted = true;
 
 
-            cameraEnabled =
-                videoTracks.length > 0;
+            cameraButton.textContent =
+                "✅ دوربین فعال است";
 
-            micEnabled =
-                audioTracks.length > 0;
-
-
-            updateControls();
-
-            updateStatus(
-                "آماده پخش",
-                false
+            cameraButton.classList.remove(
+                "start"
             );
 
 
-            return true;
+            setLiveStatus(
+                "LIVE",
+                "#22c55e",
+                "#132b1d"
+            );
+
+
+            showToast(
+                "دوربین و میکروفون فعال شدند."
+            );
 
         } catch (error) {
 
             console.error(error);
 
-            showMessage(
-                "دسترسی رد شد",
-                "برای پخش زنده باید اجازه استفاده "
-                + "از دوربین و میکروفون را به مرورگر بدهید."
-            );
+            cameraButton.disabled =
+                false;
 
-            return false;
-        }
-    }
+            cameraButton.textContent =
+                "🎥 شروع دوربین";
 
-
-    // =========================================
-    // وضعیت
-    // =========================================
-
-    function updateStatus(text, isLive) {
-
-        statusText.textContent =
-            text;
-
-        if (isLive) {
-
-            statusDot.classList.add(
-                "live"
-            );
-
-        } else {
-
-            statusDot.classList.remove(
-                "live"
+            showToast(
+                "دسترسی دوربین یا میکروفون داده نشد."
             );
         }
     }
 
 
-    function updateControls() {
+    function stopCamera() {
+
+        if (!mediaStream) {
+            return;
+        }
+
+        mediaStream
+            .getTracks()
+            .forEach(
+                track => track.stop()
+            );
+
+
+        mediaStream = null;
+
+        cameraPreview.srcObject =
+            null;
+
+        cameraStarted = false;
+
+        cameraPlaceholder.style.display =
+            "flex";
+
+        cameraButton.disabled =
+            false;
 
         cameraButton.textContent =
-            cameraEnabled
-                ? "📷 دوربین روشن"
-                : "📷 دوربین خاموش";
+            "🎥 شروع دوربین";
 
-        micButton.textContent =
-            micEnabled
-                ? "🎙️ میکروفون روشن"
-                : "🎙️ میکروفون خاموش";
-
-
-        cameraButton.classList.toggle(
-            "active",
-            cameraEnabled
+        cameraButton.classList.add(
+            "start"
         );
 
-        micButton.classList.toggle(
-            "active",
-            micEnabled
+
+        setLiveStatus(
+            "متوقف",
+            "#94a3b8",
+            "#1e293b"
         );
     }
 
-
-    // =========================================
-    // دوربین
-    // =========================================
 
     cameraButton.addEventListener(
         "click",
-        async () => {
-
-            if (!mediaStream) {
-
-                const started =
-                    await startMedia();
-
-                if (!started) {
-                    return;
-                }
-
-                return;
-            }
-
-            const videoTracks =
-                mediaStream.getVideoTracks();
-
-            if (videoTracks.length === 0) {
-
-                showMessage(
-                    "دوربین وجود ندارد",
-                    "هیچ دوربینی در دستگاه پیدا نشد."
-                );
-
-                return;
-            }
-
-            cameraEnabled =
-                !cameraEnabled;
-
-            videoTracks.forEach(
-                track => {
-                    track.enabled =
-                        cameraEnabled;
-                }
-            );
-
-            updateControls();
-        }
+        startCamera
     );
 
 
-    // =========================================
-    // میکروفون
-    // =========================================
+    /*
+     * =====================================================
+     * LOAD CHAT
+     * =====================================================
+     */
 
-    micButton.addEventListener(
-        "click",
-        async () => {
+    async function loadChat() {
 
-            if (!mediaStream) {
+        if (!currentStream) {
+            return;
+        }
 
-                const started =
-                    await startMedia();
+        try {
 
-                if (!started) {
-                    return;
-                }
+            const params =
+                new URLSearchParams();
 
-                return;
+            params.set(
+                "stream_id",
+                currentStream.id
+            );
+
+
+            if (lastChatId) {
+
+                params.set(
+                    "after_id",
+                    lastChatId
+                );
             }
 
-            const audioTracks =
-                mediaStream.getAudioTracks();
 
-            if (audioTracks.length === 0) {
-
-                showMessage(
-                    "میکروفون وجود ندارد",
-                    "هیچ میکروفونی در دستگاه پیدا نشد."
+            const response =
+                await fetch(
+                    "/api/chat/messages?" +
+                    params.toString(),
+                    {
+                        cache: "no-store"
+                    }
                 );
 
-                return;
-            }
 
-            micEnabled =
-                !micEnabled;
-
-            audioTracks.forEach(
-                track => {
-                    track.enabled =
-                        micEnabled;
-                }
-            );
-
-            updateControls();
-        }
-    );
+            const data =
+                await response.json();
 
 
-    // =========================================
-    // شروع پخش
-    // =========================================
-
-    startButton.addEventListener(
-        "click",
-        async () => {
-
-            if (liveStarted) {
-
-                stopLive();
-
+            if (
+                !response.ok ||
+                !data.success
+            ) {
                 return;
             }
 
 
-            if (!mediaStream) {
+            const messages =
+                data.messages || [];
 
-                const started =
-                    await startMedia();
 
-                if (!started) {
-                    return;
-                }
+            if (!messages.length) {
+                return;
             }
 
 
-            const title =
-                liveTitle.value.trim();
-
-
-            if (!title) {
-
-                showMessage(
-                    "عنوان پخش",
-                    "لطفاً ابتدا یک عنوان برای "
-                    + "پخش زنده وارد کنید."
+            const empty =
+                chatMessages.querySelector(
+                    ".chat-empty"
                 );
 
-                liveTitle.focus();
 
-                return;
+            if (empty) {
+                empty.remove();
             }
 
 
-            liveStarted = true;
+            messages.forEach(
+                message => {
+
+                    const element =
+                        document.createElement(
+                            "div"
+                        );
+
+                    element.className =
+                        "chat-message";
 
 
-            startButton.textContent =
-                "⏹ پایان پخش";
-
-            startButton.classList.add(
-                "danger"
-            );
+                    const isOwner =
+                        message.username ===
+                        currentUsername;
 
 
-            liveBadge.style.display =
-                "block";
+                    element.innerHTML = `
+                        <div
+                            class="${
+                                isOwner
+                                    ? "chat-user chat-owner"
+                                    : "chat-user"
+                            }"
+                        >
+                            ${
+                                escapeHtml(
+                                    message.username
+                                )
+                            }
+                            ${
+                                isOwner
+                                    ? " 👑"
+                                    : ""
+                            }
+                        </div>
 
-            viewerCount.style.display =
-                "block";
-
-
-            infoTitle.textContent =
-                title;
-
-            infoSubtitle.textContent =
-                "پخش زنده در حال اجرا است.";
-
-
-            updateStatus(
-                "در حال پخش",
-                true
-            );
-
-
-            localStorage.setItem(
-                "laino_last_live_title",
-                title
-            );
-
-
-            /*
-             * در این مرحله هنوز اتصال واقعی
-             * به بیننده‌ها وجود ندارد.
-             *
-             * مرحله بعد WebRTC signaling
-             * را به سرور اضافه می‌کنیم.
-             */
-
-        }
-    );
+                        <div class="chat-text">
+                            ${
+                                escapeHtml(
+                                    message.text
+                                )
+                            }
+                        </div>
+                    `;
 
 
-    // =========================================
-    // توقف پخش
-    // =========================================
-
-    function stopLive() {
-
-        liveStarted = false;
-
-
-        startButton.textContent =
-            "🔴 شروع پخش";
-
-
-        liveBadge.style.display =
-            "none";
-
-        viewerCount.style.display =
-            "none";
-
-
-        infoTitle.textContent =
-            "پخش متوقف شد";
-
-        infoSubtitle.textContent =
-            "برای شروع دوباره، دکمه شروع پخش را بزنید.";
-
-
-        updateStatus(
-            "متوقف",
-            false
-        );
-    }
-
-
-    // =========================================
-    // خروج
-    // =========================================
-
-    backButton.addEventListener(
-        "click",
-        () => {
-
-            if (mediaStream) {
-
-                mediaStream
-                    .getTracks()
-                    .forEach(
-                        track =>
-                            track.stop()
+                    chatMessages.appendChild(
+                        element
                     );
 
-                mediaStream = null;
+
+                    lastChatId =
+                        message.id;
+                }
+            );
+
+
+            chatMessages.scrollTop =
+                chatMessages.scrollHeight;
+
+        } catch (error) {
+
+            console.error(
+                "Chat error:",
+                error
+            );
+        }
+    }
+
+
+    /*
+     * =====================================================
+     * SEND CHAT
+     * =====================================================
+     */
+
+    chatForm.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            if (!currentStream) {
+                return;
             }
 
-            window.location.href =
-                "index.html";
+
+            const text =
+                chatInput.value.trim();
+
+
+            if (!text) {
+                return;
+            }
+
+
+            chatSend.disabled =
+                true;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/chat/send",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                stream_id:
+                                    currentStream.id,
+
+                                username:
+                                    currentUsername,
+
+                                text:
+                                    text
+
+                            })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    showToast(
+                        data.message ||
+                        "ارسال پیام ناموفق بود."
+                    );
+
+                    return;
+                }
+
+
+                chatInput.value = "";
+
+
+                await loadChat();
+
+            } catch (error) {
+
+                showToast(
+                    "خطا در ارسال پیام."
+                );
+
+            } finally {
+
+                chatSend.disabled =
+                    false;
+
+                chatInput.focus();
+            }
         }
     );
 
 
-    // =========================================
-    // عنوان قبلی
-    // =========================================
+    /*
+     * =====================================================
+     * STOP LIVE
+     * =====================================================
+     */
 
-    const previousTitle =
-        localStorage.getItem(
-            "laino_last_live_title"
+    stopLiveButton.addEventListener(
+        "click",
+        async () => {
+
+            if (!currentStream) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/streams/stop",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                stream_id:
+                                    currentStream.id,
+
+                                username:
+                                    currentUsername
+
+                            })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    showToast(
+                        data.message ||
+                        "توقف لایو ناموفق بود."
+                    );
+
+                    return;
+                }
+
+
+                stopCamera();
+
+
+                clearInterval(
+                    chatInterval
+                );
+
+
+                sessionStorage.removeItem(
+                    "lainolive_current_stream"
+                );
+
+
+                showToast(
+                    "لایو پایان یافت."
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        window.location.href =
+                            "/index.html";
+
+                    },
+                    700
+                );
+
+
+            } catch (error) {
+
+                showToast(
+                    "خطا در پایان لایو."
+                );
+            }
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * BACK
+     * =====================================================
+     */
+
+    document
+        .getElementById(
+            "backButton"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                stopCamera();
+
+                clearInterval(
+                    chatInterval
+                );
+
+                window.location.href =
+                    "/index.html";
+            }
         );
 
-    if (previousTitle) {
 
-        liveTitle.value =
-            previousTitle;
+    /*
+     * =====================================================
+     * CLEANUP
+     * =====================================================
+     */
+
+    window.addEventListener(
+        "beforeunload",
+        () => {
+
+            stopCamera();
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * START CHAT POLLING
+     * =====================================================
+     */
+
+    if (currentStream) {
+
+        loadChat();
+
+
+        chatInterval =
+            setInterval(
+                loadChat,
+                2000
+            );
     }
-
-
-    // =========================================
-    // مقدار اولیه
-    // =========================================
-
-    updateControls();
 
 </script>
 
 </body>
+
 </html>
