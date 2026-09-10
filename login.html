@@ -2,11 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ورود | لاینو</title>
 
     <style>
@@ -17,17 +13,9 @@
         body {
             margin: 0;
             min-height: 100vh;
-            font-family:
-                Tahoma,
-                Arial,
-                sans-serif;
-            background:
-                linear-gradient(
-                    135deg,
-                    #111827,
-                    #1e293b
-                );
-            color: #ffffff;
+            font-family: Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #111827, #1e293b);
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,15 +28,12 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid
-                rgba(255, 255, 255, 0.12);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
             backdrop-filter: blur(16px);
             border-radius: 24px;
             padding: 28px 22px;
-            box-shadow:
-                0 20px 50px
-                rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
         .logo {
@@ -62,35 +47,7 @@
             text-align: center;
             color: #cbd5e1;
             font-size: 15px;
-            margin-bottom: 28px;
-        }
-
-        .status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 20px;
-            color: #cbd5e1;
-            font-size: 13px;
-        }
-
-        .dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: #f59e0b;
-        }
-
-        .dot.online {
-            background: #22c55e;
-        }
-
-        .dot.offline {
-            background: #ef4444;
+            margin-bottom: 25px;
         }
 
         label {
@@ -106,10 +63,18 @@
             outline: none;
             border-radius: 14px;
             padding: 15px;
-            margin-bottom: 14px;
-            font-size: 17px;
+            margin-bottom: 15px;
+            font-size: 16px;
             background: #f8fafc;
             color: #111827;
+        }
+
+        .username {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .password {
             direction: ltr;
             text-align: left;
         }
@@ -123,12 +88,7 @@
             font-weight: bold;
             cursor: pointer;
             background: #22c55e;
-            color: #ffffff;
-            transition: 0.2s;
-        }
-
-        button:hover {
-            opacity: 0.9;
+            color: white;
         }
 
         button:disabled {
@@ -136,34 +96,13 @@
             cursor: not-allowed;
         }
 
-        .secondary {
-            background: #334155;
-        }
-
-        .otp-section {
-            display: none;
-            margin-top: 18px;
-        }
-
-        .otp-section.show {
-            display: block;
-        }
-
-        .timer {
-            text-align: center;
-            color: #cbd5e1;
-            font-size: 13px;
-            margin: 12px 0;
-        }
-
         .message {
-            white-space: pre-wrap;
-            word-break: break-word;
-            border-radius: 14px;
-            padding: 13px;
-            margin-top: 16px;
             display: none;
-            line-height: 1.8;
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 14px;
+            white-space: pre-wrap;
+            line-height: 1.7;
             font-size: 13px;
         }
 
@@ -171,38 +110,23 @@
             display: block;
         }
 
-        .message.error {
-            background: rgba(239, 68, 68, 0.14);
-            border: 1px solid
-                rgba(239, 68, 68, 0.3);
+        .error {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
             color: #fecaca;
         }
 
-        .message.success {
-            background: rgba(34, 197, 94, 0.14);
-            border: 1px solid
-                rgba(34, 197, 94, 0.3);
+        .success {
+            background: rgba(34,197,94,0.15);
+            border: 1px solid rgba(34,197,94,0.3);
             color: #bbf7d0;
         }
 
-        .details {
-            direction: ltr;
-            text-align: left;
-            font-family: monospace;
-            font-size: 12px;
-            margin-top: 10px;
-            overflow-wrap: anywhere;
-        }
-
-        .small {
+        .server-status {
             text-align: center;
             color: #94a3b8;
             font-size: 12px;
-            margin-top: 20px;
-        }
-
-        .hidden {
-            display: none !important;
+            margin-top: 18px;
         }
     </style>
 </head>
@@ -210,680 +134,221 @@
 <body>
 
 <div class="container">
-
     <div class="card">
 
-        <div class="logo">
-            لاینو
-        </div>
+        <div class="logo">لاینو</div>
 
         <div class="subtitle">
             ورود به LainoLive
         </div>
 
-        <div class="status">
-            <span
-                id="statusDot"
-                class="dot"
-            ></span>
+        <label for="username">
+            نام کاربری
+        </label>
 
-            <span id="serverStatus">
-                در حال بررسی سرور...
-            </span>
-        </div>
-
-        <div id="phoneSection">
-
-            <label for="phone">
-                شماره موبایل
-            </label>
-
-            <input
-                id="phone"
-                type="tel"
-                inputmode="numeric"
-                autocomplete="tel"
-                placeholder="09123456789"
-            >
-
-            <button
-                id="sendCodeButton"
-                type="button"
-            >
-                ارسال کد ورود
-            </button>
-
-        </div>
-
-        <div
-            id="otpSection"
-            class="otp-section"
+        <input
+            id="username"
+            class="username"
+            type="text"
+            autocomplete="username"
+            placeholder="admin"
         >
 
-            <label for="code">
-                کد تأیید
-            </label>
+        <label for="password">
+            رمز عبور
+        </label>
 
-            <input
-                id="code"
-                type="tel"
-                inputmode="numeric"
-                maxlength="6"
-                autocomplete="one-time-code"
-                placeholder="123456"
-            >
+        <input
+            id="password"
+            class="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="رمز عبور"
+        >
 
-            <button
-                id="verifyButton"
-                type="button"
-            >
-                ورود
-            </button>
-
-            <div
-                id="timer"
-                class="timer"
-            ></div>
-
-            <button
-                id="backButton"
-                class="secondary"
-                type="button"
-            >
-                تغییر شماره
-            </button>
-
-        </div>
+        <button
+            id="loginButton"
+            type="button"
+        >
+            ورود
+        </button>
 
         <div
             id="message"
             class="message"
         ></div>
 
-        <div class="small">
-            ورود با پیامک انجام می‌شود.
+        <div
+            id="serverStatus"
+            class="server-status"
+        >
+            در حال بررسی سرور...
         </div>
 
     </div>
-
 </div>
 
-
 <script>
-    const API_BASE = "";
+    const usernameInput =
+        document.getElementById("username");
 
-    const phoneInput =
-        document.getElementById("phone");
+    const passwordInput =
+        document.getElementById("password");
 
-    const codeInput =
-        document.getElementById("code");
-
-    const sendCodeButton =
-        document.getElementById("sendCodeButton");
-
-    const verifyButton =
-        document.getElementById("verifyButton");
-
-    const backButton =
-        document.getElementById("backButton");
-
-    const phoneSection =
-        document.getElementById("phoneSection");
-
-    const otpSection =
-        document.getElementById("otpSection");
+    const loginButton =
+        document.getElementById("loginButton");
 
     const messageBox =
         document.getElementById("message");
-
-    const timerElement =
-        document.getElementById("timer");
-
-    const statusDot =
-        document.getElementById("statusDot");
 
     const serverStatus =
         document.getElementById("serverStatus");
 
 
-    let countdownInterval = null;
-
-
-    function normalizeDigits(value) {
-        const persian =
-            "۰۱۲۳۴۵۶۷۸۹";
-
-        const arabic =
-            "٠١٢٣٤٥٦٧٨٩";
-
-        const english =
-            "0123456789";
-
-        value = String(value || "");
-
-        for (let i = 0; i < 10; i++) {
-            value = value.replaceAll(
-                persian[i],
-                english[i]
-            );
-
-            value = value.replaceAll(
-                arabic[i],
-                english[i]
-            );
-        }
-
-        return value;
-    }
-
-
-    function normalizePhone(value) {
-
-        value = normalizeDigits(value)
-            .replace(/\s/g, "")
-            .replace(/-/g, "")
-            .replace(/\(/g, "")
-            .replace(/\)/g, "");
-
-        if (value.startsWith("+98")) {
-            value = "0" + value.slice(3);
-        }
-
-        if (
-            value.startsWith("98")
-            && value.length === 12
-        ) {
-            value = "0" + value.slice(2);
-        }
-
-        return value;
-    }
-
-
-    function showMessage(
-        text,
-        type = "error",
-        details = null
-    ) {
-
+    function showMessage(text, type) {
         messageBox.className =
             "message show " + type;
 
-        messageBox.textContent =
-            text;
-
-        if (details) {
-
-            const detailsElement =
-                document.createElement("div");
-
-            detailsElement.className =
-                "details";
-
-            detailsElement.textContent =
-                details;
-
-            messageBox.appendChild(
-                detailsElement
-            );
-        }
-    }
-
-
-    function clearMessage() {
-
-        messageBox.className =
-            "message";
-
-        messageBox.textContent = "";
-    }
-
-
-    async function parseResponse(response) {
-
-        const raw =
-            await response.text();
-
-        let data;
-
-        try {
-
-            data = JSON.parse(raw);
-
-        } catch {
-
-            data = {
-                success: false,
-                message:
-                    "پاسخ نامعتبر از سرور دریافت شد.",
-                raw: raw
-            };
-
-        }
-
-        return data;
-    }
-
-
-    function formatAmootError(data) {
-
-        if (!data) {
-            return "";
-        }
-
-        if (data.amoot_error) {
-
-            return JSON.stringify(
-                data.amoot_error,
-                null,
-                2
-            );
-        }
-
-        if (data.details) {
-
-            return JSON.stringify(
-                data.details,
-                null,
-                2
-            );
-        }
-
-        return "";
+        messageBox.textContent = text;
     }
 
 
     async function checkServer() {
-
         try {
+            const response = await fetch(
+                "/health",
+                {
+                    method: "GET",
+                    cache: "no-store"
+                }
+            );
 
-            const response =
-                await fetch(
-                    API_BASE + "/health",
-                    {
-                        method: "GET",
-                        cache: "no-store"
-                    }
-                );
-
-            const data =
-                await parseResponse(response);
+            const data = await response.json();
 
             if (
-                response.ok
-                && data.status === "ok"
+                response.ok &&
+                data.status === "ok"
             ) {
-
-                statusDot.className =
-                    "dot online";
-
                 serverStatus.textContent =
-                    data.sms_configured
-                        ? "سرور و پیامک فعال است"
-                        : "سرور فعال است ولی پیامک تنظیم نشده";
-
-                return true;
+                    "سرور آنلاین است";
+            } else {
+                serverStatus.textContent =
+                    "خطا در سرور";
             }
-
-            throw new Error(
-                "پاسخ سرور معتبر نیست."
-            );
 
         } catch (error) {
-
-            statusDot.className =
-                "dot offline";
-
             serverStatus.textContent =
-                "اتصال به سرور برقرار نشد.";
-
-            return false;
+                "اتصال به سرور برقرار نشد";
         }
     }
 
 
-    function startTimer(seconds) {
+    async function login() {
+        messageBox.className = "message";
+        messageBox.textContent = "";
 
-        clearInterval(
-            countdownInterval
-        );
+        const username =
+            usernameInput.value.trim();
 
-        let remaining =
-            Number(seconds) || 120;
+        const password =
+            passwordInput.value;
 
-        function update() {
-
-            if (remaining <= 0) {
-
-                timerElement.textContent =
-                    "کد منقضی شده است.";
-
-                clearInterval(
-                    countdownInterval
-                );
-
-                return;
-            }
-
-            timerElement.textContent =
-                "اعتبار کد: "
-                + remaining
-                + " ثانیه";
-
-            remaining--;
-        }
-
-        update();
-
-        countdownInterval =
-            setInterval(
-                update,
-                1000
+        if (!username) {
+            showMessage(
+                "نام کاربری را وارد کنید.",
+                "error"
             );
-    }
-
-
-    sendCodeButton.addEventListener(
-        "click",
-        async function () {
-
-            clearMessage();
-
-            const phone =
-                normalizePhone(
-                    phoneInput.value
-                );
-
-            if (
-                phone.length !== 11
-                || !phone.startsWith("09")
-            ) {
-
-                showMessage(
-                    "شماره موبایل را به صورت 09123456789 وارد کنید."
-                );
-
-                return;
-            }
-
-            sendCodeButton.disabled = true;
-
-            sendCodeButton.textContent =
-                "در حال ارسال...";
-
-            try {
-
-                const response =
-                    await fetch(
-                        API_BASE
-                        + "/api/request-code",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body: JSON.stringify({
-                                phone: phone
-                            })
-                        }
-                    );
-
-                const data =
-                    await parseResponse(
-                        response
-                    );
-
-                if (
-                    !response.ok
-                    || !data.success
-                ) {
-
-                    const amootDetails =
-                        formatAmootError(
-                            data
-                        );
-
-                    showMessage(
-                        data.message
-                        || "ارسال کد ناموفق بود.",
-                        "error",
-                        amootDetails
-                            ? "پاسخ آمو‌ت:\n"
-                              + amootDetails
-                            : null
-                    );
-
-                    return;
-                }
-
-                phoneSection.classList.add(
-                    "hidden"
-                );
-
-                otpSection.classList.add(
-                    "show"
-                );
-
-                codeInput.focus();
-
-                showMessage(
-                    "کد تأیید ارسال شد.",
-                    "success"
-                );
-
-                startTimer(
-                    data.expires_in || 120
-                );
-
-            } catch (error) {
-
-                showMessage(
-                    "خطا در ارتباط با سرور.",
-                    "error",
-                    String(error)
-                );
-
-            } finally {
-
-                sendCodeButton.disabled =
-                    false;
-
-                sendCodeButton.textContent =
-                    "ارسال کد ورود";
-            }
+            return;
         }
-    );
 
+        if (!password) {
+            showMessage(
+                "رمز عبور را وارد کنید.",
+                "error"
+            );
+            return;
+        }
 
-    verifyButton.addEventListener(
-        "click",
-        async function () {
+        loginButton.disabled = true;
+        loginButton.textContent =
+            "در حال ورود...";
 
-            clearMessage();
-
-            const phone =
-                normalizePhone(
-                    phoneInput.value
-                );
-
-            const code =
-                normalizeDigits(
-                    codeInput.value
-                ).replace(
-                    /\D/g,
-                    ""
-                );
-
-            if (
-                phone.length !== 11
-                || !phone.startsWith("09")
-            ) {
-
-                showMessage(
-                    "شماره موبایل نامعتبر است."
-                );
-
-                return;
-            }
-
-            if (
-                code.length !== 6
-            ) {
-
-                showMessage(
-                    "کد تأیید باید 6 رقمی باشد."
-                );
-
-                return;
-            }
-
-            verifyButton.disabled =
-                true;
-
-            verifyButton.textContent =
-                "در حال بررسی...";
-
-            try {
-
-                const response =
-                    await fetch(
-                        API_BASE
-                        + "/api/verify-code",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body: JSON.stringify({
-                                phone: phone,
-                                code: code
-                            })
-                        }
-                    );
-
-                const data =
-                    await parseResponse(
-                        response
-                    );
-
-                if (
-                    !response.ok
-                    || !data.success
-                ) {
-
-                    showMessage(
-                        data.message
-                        || "کد صحیح نیست."
-                    );
-
-                    return;
-                }
-
-                clearInterval(
-                    countdownInterval
-                );
-
-                localStorage.setItem(
-                    "lainolive_logged_in",
-                    "true"
-                );
-
-                localStorage.setItem(
-                    "lainolive_phone",
-                    phone
-                );
-
-                showMessage(
-                    "ورود با موفقیت انجام شد. در حال انتقال...",
-                    "success"
-                );
-
-                setTimeout(
-                    function () {
-
-                        window.location.href =
-                            "/index.html";
-
+        try {
+            const response = await fetch(
+                "/api/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
                     },
-                    700
-                );
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                }
+            );
 
-            } catch (error) {
+            const data =
+                await response.json();
 
+            if (
+                !response.ok ||
+                !data.success
+            ) {
                 showMessage(
-                    "خطا در ارتباط با سرور.",
-                    "error",
-                    String(error)
+                    data.message ||
+                    "نام کاربری یا رمز عبور اشتباه است.",
+                    "error"
                 );
-
-            } finally {
-
-                verifyButton.disabled =
-                    false;
-
-                verifyButton.textContent =
-                    "ورود";
+                return;
             }
+
+            localStorage.setItem(
+                "lainolive_logged_in",
+                "true"
+            );
+
+            localStorage.setItem(
+                "lainolive_username",
+                data.username
+            );
+
+            showMessage(
+                "ورود با موفقیت انجام شد.",
+                "success"
+            );
+
+            setTimeout(() => {
+                window.location.href =
+                    "/index.html";
+            }, 500);
+
+        } catch (error) {
+            showMessage(
+                "خطا در ارتباط با سرور.",
+                "error"
+            );
+
+        } finally {
+            loginButton.disabled = false;
+            loginButton.textContent = "ورود";
         }
-    );
+    }
 
 
-    backButton.addEventListener(
+    loginButton.addEventListener(
         "click",
-        function () {
-
-            clearInterval(
-                countdownInterval
-            );
-
-            clearMessage();
-
-            otpSection.classList.remove(
-                "show"
-            );
-
-            phoneSection.classList.remove(
-                "hidden"
-            );
-
-            codeInput.value = "";
-
-        }
+        login
     );
 
 
-    codeInput.addEventListener(
-        "input",
-        function () {
-
-            codeInput.value =
-                normalizeDigits(
-                    codeInput.value
-                ).replace(
-                    /\D/g,
-                    ""
-                ).slice(0, 6);
-        }
-    );
-
-
-    phoneInput.addEventListener(
-        "input",
-        function () {
-
-            phoneInput.value =
-                normalizeDigits(
-                    phoneInput.value
-                ).replace(
-                    /\D/g,
-                    ""
-                ).slice(0, 11);
+    passwordInput.addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                login();
+            }
         }
     );
 
