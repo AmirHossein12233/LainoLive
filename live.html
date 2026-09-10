@@ -14,7 +14,7 @@
         content="#020617"
     >
 
-    <title>تماشای لایو | LainoLive</title>
+    <title>پخش زنده | LainoLive</title>
 
     <link
         rel="stylesheet"
@@ -41,14 +41,14 @@
             overflow: hidden;
         }
 
-        .viewer-page {
+        .live-page {
             width: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        .viewer-header {
+        .live-header {
             min-height: 62px;
             display: flex;
             align-items: center;
@@ -57,11 +57,10 @@
             padding: 10px 14px;
             background: #111827;
             border-bottom: 1px solid #273449;
-            z-index: 20;
         }
 
-        .viewer-left,
-        .viewer-right {
+        .live-left,
+        .live-right {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -78,11 +77,11 @@
             font-size: 18px;
         }
 
-        .viewer-title-area {
+        .live-title-area {
             min-width: 0;
         }
 
-        .viewer-title {
+        .live-title {
             max-width: 320px;
             font-size: 16px;
             font-weight: bold;
@@ -91,7 +90,7 @@
             text-overflow: ellipsis;
         }
 
-        .viewer-user {
+        .live-user {
             margin-top: 3px;
             color: #94a3b8;
             font-size: 11px;
@@ -103,8 +102,8 @@
             gap: 7px;
             padding: 7px 10px;
             border-radius: 9px;
-            background: #3f0a0a;
-            color: #fecaca;
+            background: #132b1d;
+            color: #bbf7d0;
             font-size: 11px;
         }
 
@@ -112,10 +111,21 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #ef4444;
+            background: #22c55e;
         }
 
-        .viewer-main {
+        .stop-button {
+            border: 0;
+            border-radius: 10px;
+            padding: 10px 15px;
+            background: #dc2626;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .live-main {
             flex: 1;
             min-height: 0;
             display: grid;
@@ -132,67 +142,40 @@
             justify-content: center;
         }
 
-        #remoteVideo {
+        #localVideo {
             width: 100%;
             height: 100%;
             object-fit: contain;
             background: #000000;
         }
 
-        .video-placeholder {
+        .video-overlay {
             position: absolute;
-            inset: 0;
+            left: 14px;
+            top: 14px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            pointer-events: none;
-        }
-
-        .video-placeholder-box {
-            width: min(380px, 100%);
-            padding: 25px;
-            border-radius: 20px;
-            background: rgba(15, 23, 42, 0.90);
-            border: 1px solid #273449;
-        }
-
-        .video-icon {
-            font-size: 65px;
-            margin-bottom: 12px;
-        }
-
-        .video-placeholder h2 {
-            margin: 0 0 8px;
-            font-size: 20px;
-        }
-
-        .video-placeholder p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        .video-controls {
-            position: absolute;
-            left: 50%;
-            bottom: 16px;
-            transform: translateX(-50%);
+            gap: 8px;
             z-index: 10;
         }
 
-        .control-button {
+        .live-badge,
+        .viewer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 9px;
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid #334155;
-            border-radius: 11px;
-            padding: 11px 15px;
-            background: #1e293b;
-            color: #ffffff;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
+        }
+
+        .live-badge {
+            color: #fca5a5;
+        }
+
+        .viewer-badge {
+            color: #bfdbfe;
         }
 
         .chat-panel {
@@ -333,12 +316,12 @@
                 overflow: auto;
             }
 
-            .viewer-page {
+            .live-page {
                 height: auto;
                 min-height: 100vh;
             }
 
-            .viewer-main {
+            .live-main {
                 grid-template-columns: 1fr;
                 grid-template-rows: minmax(300px, 52vh) minmax(350px, 48vh);
             }
@@ -348,8 +331,12 @@
                 border-top: 1px solid #273449;
             }
 
-            .viewer-title {
+            .live-title {
                 max-width: 180px;
+            }
+
+            .viewer-badge {
+                display: none;
             }
         }
     </style>
@@ -379,11 +366,11 @@
 </script>
 
 
-<div class="viewer-page">
+<div class="live-page">
 
-    <header class="viewer-header">
+    <header class="live-header">
 
-        <div class="viewer-left">
+        <div class="live-left">
 
             <button
                 id="backButton"
@@ -393,20 +380,20 @@
                 ←
             </button>
 
-            <div class="viewer-title-area">
+            <div class="live-title-area">
 
                 <div
-                    id="viewerTitle"
-                    class="viewer-title"
+                    id="liveTitle"
+                    class="live-title"
                 >
                     پخش زنده
                 </div>
 
                 <div
-                    id="viewerUser"
-                    class="viewer-user"
+                    id="liveUser"
+                    class="live-user"
                 >
-                    صاحب لایو
+                    شما
                 </div>
 
             </div>
@@ -414,74 +401,59 @@
         </div>
 
 
-        <div class="viewer-right">
+        <div class="live-right">
 
             <div
                 id="status"
                 class="status"
             >
-
                 <span
                     id="statusDot"
                     class="status-dot"
                 ></span>
 
                 <span id="statusText">
-                    در حال اتصال
+                    در حال آماده‌سازی
                 </span>
-
             </div>
+
+            <button
+                id="stopButton"
+                class="stop-button"
+                type="button"
+            >
+                پایان لایو
+            </button>
 
         </div>
 
     </header>
 
 
-    <main class="viewer-main">
+    <main class="live-main">
 
         <section class="video-area">
 
             <video
-                id="remoteVideo"
+                id="localVideo"
                 autoplay
+                muted
                 playsinline
-                controls
             ></video>
 
 
-            <div
-                id="videoPlaceholder"
-                class="video-placeholder"
-            >
+            <div class="video-overlay">
 
-                <div class="video-placeholder-box">
-
-                    <div class="video-icon">
-                        📺
-                    </div>
-
-                    <h2>
-                        در حال اتصال
-                    </h2>
-
-                    <p id="videoStatusText">
-                        منتظر تصویر صاحب لایو...
-                    </p>
-
+                <div class="live-badge">
+                    🔴 LIVE
                 </div>
 
-            </div>
-
-
-            <div class="video-controls">
-
-                <button
-                    id="audioButton"
-                    class="control-button"
-                    type="button"
+                <div
+                    id="viewerBadge"
+                    class="viewer-badge"
                 >
-                    🔊 فعال‌کردن صدا
-                </button>
+                    👁 بیننده: 0
+                </div>
 
             </div>
 
@@ -500,7 +472,7 @@
                     id="chatState"
                     class="chat-state"
                 >
-                    آنلاین
+                    آماده
                 </div>
 
             </div>
@@ -571,12 +543,10 @@
 
     const streamRaw =
         sessionStorage.getItem(
-            "lainolive_view_stream"
+            "lainolive_current_stream"
         );
 
-
     let currentStream = null;
-
 
     try {
 
@@ -590,7 +560,6 @@
         currentStream = null;
     }
 
-
     if (!currentStream) {
 
         window.location.replace(
@@ -603,14 +572,14 @@
        ELEMENTS
     ===================================================== */
 
-    const viewerTitle =
+    const liveTitle =
         document.getElementById(
-            "viewerTitle"
+            "liveTitle"
         );
 
-    const viewerUser =
+    const liveUser =
         document.getElementById(
-            "viewerUser"
+            "liveUser"
         );
 
     const status =
@@ -628,24 +597,24 @@
             "statusText"
         );
 
-    const remoteVideo =
+    const localVideo =
         document.getElementById(
-            "remoteVideo"
+            "localVideo"
         );
 
-    const videoPlaceholder =
+    const viewerBadge =
         document.getElementById(
-            "videoPlaceholder"
+            "viewerBadge"
         );
 
-    const videoStatusText =
+    const stopButton =
         document.getElementById(
-            "videoStatusText"
+            "stopButton"
         );
 
-    const audioButton =
+    const chatState =
         document.getElementById(
-            "audioButton"
+            "chatState"
         );
 
     const chatMessages =
@@ -668,11 +637,6 @@
             "chatSend"
         );
 
-    const chatState =
-        document.getElementById(
-            "chatState"
-        );
-
     const connectionInfo =
         document.getElementById(
             "connectionInfo"
@@ -684,16 +648,15 @@
         );
 
 
-    viewerTitle.textContent =
+    liveTitle.textContent =
         currentStream?.title ||
         "پخش زنده";
 
-
-    viewerUser.textContent =
+    liveUser.textContent =
         "صاحب لایو: " +
         (
             currentStream?.username ||
-            "کاربر"
+            currentUsername
         );
 
 
@@ -703,7 +666,6 @@
 
     const SIGNALING_URL =
         "wss://lainolive-signaling.onrender.com";
-
 
     const RTC_CONFIGURATION = {
         iceServers: [
@@ -721,17 +683,22 @@
 
     let websocket = null;
 
-    let peerConnection = null;
+    let localStream = null;
 
     let myPeerId = null;
-
-    let ownerPeerId = null;
 
     let lastChatId = "";
 
     let chatTimer = null;
 
-    const pendingCandidates = [];
+    let viewerTimer = null;
+
+    let stopped = false;
+
+
+    const peers = new Map();
+
+    const pendingCandidates = new Map();
 
 
     /* =====================================================
@@ -749,11 +716,9 @@
 
         setTimeout(
             () => {
-
                 toast.classList.remove(
                     "show"
                 );
-
             },
             2500
         );
@@ -801,79 +766,56 @@
             return false;
         }
 
-
         websocket.send(
             JSON.stringify(data)
         );
-
 
         return true;
     }
 
 
     /* =====================================================
-       PEER CONNECTION
+       PEER
     ===================================================== */
 
-    function createPeerConnection() {
+    function createPeer(
+        peerId
+    ) {
 
-        if (peerConnection) {
-            return peerConnection;
+        if (
+            peers.has(peerId)
+        ) {
+            return peers.get(peerId);
         }
 
 
-        peerConnection =
+        const pc =
             new RTCPeerConnection(
                 RTC_CONFIGURATION
             );
 
 
-        peerConnection.ontrack =
-            event => {
+        if (localStream) {
 
-                if (
-                    !event.streams ||
-                    !event.streams[0]
-                ) {
-                    return;
-                }
+            localStream
+                .getTracks()
+                .forEach(
+                    track => {
 
-
-                remoteVideo.srcObject =
-                    event.streams[0];
-
-
-                videoPlaceholder.style.display =
-                    "none";
-
-
-                videoStatusText.textContent =
-                    "تصویر و صدا دریافت شد.";
-
-
-                setStatus(
-                    "LIVE",
-                    true
+                        pc.addTrack(
+                            track,
+                            localStream
+                        );
+                    }
                 );
+        }
 
 
-                remoteVideo.play()
-                    .catch(
-                        () => {
-                            showToast(
-                                "برای فعال‌کردن صدا روی دکمه صدا بزن."
-                            );
-                        }
-                    );
-            };
-
-
-        peerConnection.onicecandidate =
+        pc.onicecandidate =
             event => {
 
                 if (
-                    !event.candidate ||
-                    !ownerPeerId
+                    !event.candidate
                 ) {
                     return;
                 }
@@ -885,20 +827,19 @@
                         "ice-candidate",
 
                     target_peer_id:
-                        ownerPeerId,
+                        peerId,
 
                     candidate:
                         event.candidate
-
                 });
             };
 
 
-        peerConnection.onconnectionstatechange =
+        pc.onconnectionstatechange =
             () => {
 
                 const state =
-                    peerConnection.connectionState;
+                    pc.connectionState;
 
 
                 connectionInfo.textContent =
@@ -907,62 +848,105 @@
 
 
                 if (
-                    state === "connected"
+                    state ===
+                    "connected"
                 ) {
 
                     setStatus(
-                        "متصل",
+                        "در حال پخش",
                         true
                     );
 
                 } else if (
-                    state === "failed"
+                    state ===
+                    "failed"
                 ) {
 
-                    setStatus(
-                        "اتصال ناموفق",
-                        false
-                    );
-
-
                     showToast(
-                        "اتصال WebRTC ناموفق بود."
+                        "اتصال یکی از بیننده‌ها ناموفق شد."
                     );
                 }
             };
 
 
-        peerConnection.oniceconnectionstatechange =
+        pc.oniceconnectionstatechange =
             () => {
 
                 connectionInfo.textContent =
                     "ICE: " +
-                    peerConnection.iceConnectionState;
+                    pc.iceConnectionState;
             };
 
 
-        return peerConnection;
+        peers.set(
+            peerId,
+            pc
+        );
+
+
+        return pc;
     }
 
 
-    async function applyPendingCandidates() {
+    function removePeer(
+        peerId
+    ) {
 
-        if (!peerConnection) {
+        const pc =
+            peers.get(peerId);
+
+
+        if (pc) {
+
+            try {
+                pc.close();
+            } catch (error) {
+            }
+
+        }
+
+
+        peers.delete(
+            peerId
+        );
+
+        pendingCandidates.delete(
+            peerId
+        );
+    }
+
+
+    async function applyPendingCandidates(
+        peerId
+    ) {
+
+        const pc =
+            peers.get(
+                peerId
+            );
+
+        if (!pc) {
             return;
         }
 
 
+        const list =
+            pendingCandidates.get(
+                peerId
+            ) || [];
+
+
         while (
-            pendingCandidates.length
+            list.length
         ) {
 
             const candidate =
-                pendingCandidates.shift();
+                list.shift();
 
 
             try {
 
-                await peerConnection.addIceCandidate(
+                await pc.addIceCandidate(
                     candidate
                 );
 
@@ -973,6 +957,115 @@
                     error
                 );
             }
+        }
+
+
+        pendingCandidates.delete(
+            peerId
+        );
+    }
+
+
+    async function makeOffer(
+        peerId
+    ) {
+
+        if (!localStream) {
+            return;
+        }
+
+
+        const pc =
+            createPeer(
+                peerId
+            );
+
+
+        try {
+
+            const offer =
+                await pc.createOffer();
+
+
+            await pc.setLocalDescription(
+                offer
+            );
+
+
+            sendSignal({
+
+                type:
+                    "offer",
+
+                target_peer_id:
+                    peerId,
+
+                offer:
+                    pc.localDescription
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Make offer:",
+                error
+            );
+
+            showToast(
+                "ساخت اتصال WebRTC ناموفق بود."
+            );
+        }
+    }
+
+
+    async function addTrackToExistingPeers() {
+
+        if (!localStream) {
+            return;
+        }
+
+
+        for (
+            const [
+                peerId,
+                pc
+            ]
+            of peers
+        ) {
+
+            const senders =
+                pc.getSenders();
+
+
+            localStream
+                .getTracks()
+                .forEach(
+                    track => {
+
+                        const exists =
+                            senders.some(
+                                sender =>
+                                    sender.track &&
+                                    sender.track.kind ===
+                                    track.kind
+                            );
+
+
+                        if (!exists) {
+
+                            pc.addTrack(
+                                track,
+                                localStream
+                            );
+                        }
+                    }
+                );
+
+
+            await makeOffer(
+                peerId
+            );
         }
     }
 
@@ -1007,7 +1100,7 @@
 
 
             setStatus(
-                "منتظر صاحب لایو",
+                "در حال پخش",
                 true
             );
 
@@ -1017,25 +1110,28 @@
 
 
         if (
-            type === "owner_available"
+            type === "peer_joined"
         ) {
 
-            ownerPeerId =
-                message.peer_id ||
-                null;
-
-
-            if (!ownerPeerId) {
+            if (
+                message.role !==
+                "viewer"
+            ) {
                 return;
             }
 
 
-            createPeerConnection();
+            const viewerPeerId =
+                message.peer_id;
 
 
-            setStatus(
-                "صاحب لایو پیدا شد",
-                true
+            if (!viewerPeerId) {
+                return;
+            }
+
+
+            await makeOffer(
+                viewerPeerId
             );
 
 
@@ -1044,74 +1140,48 @@
 
 
         if (
-            type === "offer"
+            type === "answer"
         ) {
 
-            ownerPeerId =
-                message.peer_id ||
-                ownerPeerId;
+            const viewerPeerId =
+                message.peer_id;
 
 
-            if (!ownerPeerId) {
+            if (!viewerPeerId) {
                 return;
             }
 
 
             const pc =
-                createPeerConnection();
+                peers.get(
+                    viewerPeerId
+                );
+
+
+            if (!pc) {
+                return;
+            }
 
 
             try {
 
                 await pc.setRemoteDescription(
                     new RTCSessionDescription(
-                        message.offer
+                        message.answer
                     )
                 );
 
 
-                await applyPendingCandidates();
-
-
-                const answer =
-                    await pc.createAnswer();
-
-
-                await pc.setLocalDescription(
-                    answer
-                );
-
-
-                sendSignal({
-
-                    type:
-                        "answer",
-
-                    target_peer_id:
-                        ownerPeerId,
-
-                    answer:
-                        pc.localDescription
-
-                });
-
-
-                setStatus(
-                    "در حال اتصال",
-                    true
+                await applyPendingCandidates(
+                    viewerPeerId
                 );
 
 
             } catch (error) {
 
                 console.error(
-                    "Offer:",
+                    "Answer:",
                     error
-                );
-
-
-                showToast(
-                    "پردازش اتصال WebRTC ناموفق بود."
                 );
             }
 
@@ -1124,20 +1194,35 @@
             type === "ice-candidate"
         ) {
 
+            const viewerPeerId =
+                message.peer_id;
+
+
+            if (!viewerPeerId) {
+                return;
+            }
+
+
             const candidate =
                 new RTCIceCandidate(
                     message.candidate
                 );
 
 
+            const pc =
+                peers.get(
+                    viewerPeerId
+                );
+
+
             if (
-                peerConnection &&
-                peerConnection.remoteDescription
+                pc &&
+                pc.remoteDescription
             ) {
 
                 try {
 
-                    await peerConnection.addIceCandidate(
+                    await pc.addIceCandidate(
                         candidate
                     );
 
@@ -1151,9 +1236,26 @@
 
             } else {
 
-                pendingCandidates.push(
-                    candidate
-                );
+                if (
+                    !pendingCandidates.has(
+                        viewerPeerId
+                    )
+                ) {
+
+                    pendingCandidates.set(
+                        viewerPeerId,
+                        []
+                    );
+                }
+
+
+                pendingCandidates
+                    .get(
+                        viewerPeerId
+                    )
+                    .push(
+                        candidate
+                    );
             }
 
 
@@ -1165,23 +1267,15 @@
             type === "peer_left"
         ) {
 
-            if (
-                message.peer_id ===
-                ownerPeerId
-            ) {
+            const peerId =
+                message.peer_id;
 
-                setStatus(
-                    "پخش پایان یافت",
-                    false
+
+            if (peerId) {
+
+                removePeer(
+                    peerId
                 );
-
-
-                videoPlaceholder.style.display =
-                    "flex";
-
-
-                videoStatusText.textContent =
-                    "صاحب لایو خارج شد.";
             }
 
 
@@ -1222,7 +1316,7 @@
             );
 
             showToast(
-                "اتصال WebRTC برقرار نشد."
+                "اتصال سیگنالینگ برقرار نشد."
             );
 
             return;
@@ -1244,7 +1338,7 @@
                         currentUsername,
 
                     role:
-                        "viewer"
+                        "owner"
 
                 });
             };
@@ -1285,7 +1379,7 @@
 
 
                 setStatus(
-                    "خطا",
+                    "خطای سیگنالینگ",
                     false
                 );
             };
@@ -1293,6 +1387,11 @@
 
         websocket.onclose =
             () => {
+
+                if (stopped) {
+                    return;
+                }
+
 
                 setStatus(
                     "سیگنالینگ قطع شد",
@@ -1307,37 +1406,98 @@
 
 
     /* =====================================================
-       AUDIO
+       CAMERA
     ===================================================== */
 
-    audioButton.addEventListener(
-        "click",
-        async () => {
+    async function startCamera() {
 
-            remoteVideo.muted =
-                false;
+        if (
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia
+        ) {
 
-            remoteVideo.volume =
-                1;
+            showToast(
+                "مرورگر اجازه دسترسی به دوربین را نمی‌دهد."
+            );
 
-
-            try {
-
-                await remoteVideo.play();
-
-
-                audioButton.textContent =
-                    "🔊 صدا فعال است";
-
-
-            } catch (error) {
-
-                showToast(
-                    "برای پخش ویدیو دوباره امتحان کن."
-                );
-            }
+            return;
         }
-    );
+
+
+        try {
+
+            localStream =
+                await navigator.mediaDevices.getUserMedia({
+
+                    video: {
+                        width: {
+                            ideal: 1280
+                        },
+                        height: {
+                            ideal: 720
+                        },
+                        frameRate: {
+                            ideal: 30,
+                            max: 30
+                        }
+                    },
+
+                    audio: {
+                        echoCancellation:
+                            true,
+
+                        noiseSuppression:
+                            true,
+
+                        autoGainControl:
+                            true
+                    }
+
+                });
+
+
+            localVideo.srcObject =
+                localStream;
+
+
+            await localVideo.play()
+                .catch(
+                    () => {}
+                );
+
+
+            setStatus(
+                "در حال پخش",
+                true
+            );
+
+
+            connectionInfo.textContent =
+                "دوربین: آماده";
+
+
+            await addTrackToExistingPeers();
+
+
+        } catch (error) {
+
+            console.error(
+                "Camera:",
+                error
+            );
+
+
+            setStatus(
+                "دسترسی به دوربین ناموفق",
+                false
+            );
+
+
+            showToast(
+                "دسترسی به دوربین یا میکروفون انجام نشد."
+            );
+        }
+    }
 
 
     /* =====================================================
@@ -1346,7 +1506,10 @@
 
     async function loadChat() {
 
-        if (!currentStream) {
+        if (
+            !currentStream ||
+            stopped
+        ) {
             return;
         }
 
@@ -1573,37 +1736,68 @@
 
 
     /* =====================================================
-       VIEWER COUNT
+       VIEWERS
     ===================================================== */
 
-    async function joinViewerCount() {
+    async function updateViewerCount() {
+
+        if (
+            !currentStream ||
+            stopped
+        ) {
+            return;
+        }
+
 
         try {
 
-            await fetch(
-                "/api/streams/viewer",
-                {
-                    method:
-                        "POST",
+            const response =
+                await fetch(
+                    "/api/streams",
+                    {
+                        cache:
+                            "no-store"
+                    }
+                );
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
 
-                    body:
-                        JSON.stringify({
+            const data =
+                await response.json();
 
-                            stream_id:
-                                currentStream.id,
 
-                            action:
-                                "join"
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+                return;
+            }
 
-                        })
-                }
-            );
 
+            const stream =
+                (data.streams || [])
+                    .find(
+                        item =>
+                            String(
+                                item.id
+                            ) ===
+                            String(
+                                currentStream.id
+                            )
+                    );
+
+
+            if (!stream) {
+                return;
+            }
+
+
+            viewerBadge.textContent =
+                "👁 بیننده: " +
+                (
+                    stream.viewer_count ??
+                    0
+                );
+                
         } catch (error) {
 
             console.error(
@@ -1614,17 +1808,34 @@
     }
 
 
-    async function leaveViewerCount() {
+    /* =====================================================
+       STOP
+    ===================================================== */
 
-        if (!currentStream) {
+    async function stopLive() {
+
+        if (stopped) {
             return;
         }
+
+
+        stopped = true;
+
+
+        stopButton.disabled =
+            true;
+
+
+        setStatus(
+            "در حال پایان...",
+            false
+        );
 
 
         try {
 
             await fetch(
-                "/api/streams/viewer",
+                "/api/streams/stop",
                 {
                     method:
                         "POST",
@@ -1640,8 +1851,8 @@
                             stream_id:
                                 currentStream.id,
 
-                            action:
-                                "leave"
+                            username:
+                                currentUsername
 
                         })
                 }
@@ -1650,10 +1861,74 @@
         } catch (error) {
 
             console.error(
-                "Leave viewer:",
+                "Stop live:",
                 error
             );
         }
+
+
+        if (chatTimer) {
+
+            clearInterval(
+                chatTimer
+            );
+        }
+
+
+        if (viewerTimer) {
+
+            clearInterval(
+                viewerTimer
+            );
+        }
+
+
+        peers.forEach(
+            pc => {
+
+                try {
+                    pc.close();
+                } catch (error) {
+                }
+
+            }
+        );
+
+
+        peers.clear();
+
+
+        if (localStream) {
+
+            localStream
+                .getTracks()
+                .forEach(
+                    track => {
+                        track.stop();
+                    }
+                );
+
+            localStream = null;
+        }
+
+
+        if (websocket) {
+
+            try {
+                websocket.close();
+            } catch (error) {
+            }
+
+        }
+
+
+        sessionStorage.removeItem(
+            "lainolive_current_stream"
+        );
+
+
+        window.location.href =
+            "/index.html";
     }
 
 
@@ -1667,14 +1942,33 @@
         )
         .addEventListener(
             "click",
-            async () => {
+            () => {
 
-                await leaveViewerCount();
-
-                window.location.href =
-                    "/index.html";
+                showToast(
+                    "برای خروج ابتدا لایو را پایان بده."
+                );
             }
         );
+
+
+    stopButton.addEventListener(
+        "click",
+        async () => {
+
+            const accepted =
+                window.confirm(
+                    "آیا مطمئنی می‌خواهی لایو را پایان بدهی؟"
+                );
+
+
+            if (!accepted) {
+                return;
+            }
+
+
+            await stopLive();
+        }
+    );
 
 
     /* =====================================================
@@ -1686,42 +1980,59 @@
         () => {
 
             if (
+                !stopped &&
                 currentStream
             ) {
 
-                navigator.sendBeacon(
-                    "/api/streams/viewer",
-                    new Blob(
-                        [
-                            JSON.stringify({
-
-                                stream_id:
-                                    currentStream.id,
-
-                                action:
-                                    "leave"
-
-                            })
-                        ],
-                        {
-                            type:
-                                "application/json"
-                        }
-                    )
-                );
-            }
-
-
-            if (
-                peerConnection
-            ) {
-
                 try {
-                    peerConnection.close();
+
+                    navigator.sendBeacon(
+                        "/api/streams/stop",
+                        new Blob(
+                            [
+                                JSON.stringify({
+
+                                    stream_id:
+                                        currentStream.id,
+
+                                    username:
+                                        currentUsername
+
+                                })
+                            ],
+                            {
+                                type:
+                                    "application/json"
+                            }
+                        )
+                    );
+
                 } catch (error) {
                 }
-
             }
+
+
+            if (localStream) {
+
+                localStream
+                    .getTracks()
+                    .forEach(
+                        track => {
+                            track.stop();
+                        }
+                    );
+            }
+
+
+            peers.forEach(
+                pc => {
+
+                    try {
+                        pc.close();
+                    } catch (error) {
+                    }
+                }
+            );
 
 
             if (websocket) {
@@ -1739,19 +2050,26 @@
        START
     ===================================================== */
 
-    createPeerConnection();
-
     connectSignaling();
 
-    joinViewerCount();
+    startCamera();
 
     loadChat();
+
+    updateViewerCount();
 
 
     chatTimer =
         setInterval(
             loadChat,
             2000
+        );
+
+
+    viewerTimer =
+        setInterval(
+            updateViewerCount,
+            3000
         );
 
 </script>
