@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>لاینو</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =====================================
+         بررسی ورود
+         ===================================== -->
+
+    <script>
+        const isLoggedIn =
+            localStorage.getItem("laino_logged_in");
+
+        if (isLoggedIn !== "true") {
+            window.location.replace("login.html");
+        }
+    </script>
+
+
+    <!-- =====================================
+         Header
+         ===================================== -->
+
+    <header class="top-bar">
+
+        <div class="logo">
+            لاینو
+        </div>
+
+        <button
+            class="start-live-btn"
+            id="startLiveBtn"
+            type="button"
+        >
+            🔴 شروع پخش
+        </button>
+
+    </header>
+
+
+    <!-- =====================================
+         Main
+         ===================================== -->
+
+    <main class="main">
+
+        <section class="page-title">
+
+            <h1>
+                پخش‌های زنده
+            </h1>
+
+            <p>
+                همین حالا ببین چه کسانی در حال پخش هستند
+            </p>
+
+        </section>
+
+
+        <!-- =================================
+             Live List
+             ================================= -->
+
+        <section
+            class="live-list"
+            id="liveList"
+        >
+
+            <div
+                class="live-card"
+                data-live-id="1"
+            >
+
+                <div class="live-preview">
+
+                    <div class="live-badge">
+                        🔴 زنده
+                    </div>
+
+                    <div class="viewer-count">
+                        👥 125
+                    </div>
+
+                    <div class="play-icon">
+                        ▶
+                    </div>
+
+                </div>
+
+
+                <div class="live-info">
+
+                    <div class="avatar">
+                        🎙️
+                    </div>
+
+                    <div class="live-text">
+
+                        <h2>
+                            موزیک زنده امشب
+                        </h2>
+
+                        <p>
+                            رادیو آوا
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="live-card"
+                data-live-id="2"
+            >
+
+                <div class="live-preview">
+
+                    <div class="live-badge">
+                        🔴 زنده
+                    </div>
+
+                    <div class="viewer-count">
+                        👥 72
+                    </div>
+
+                    <div class="play-icon">
+                        ▶
+                    </div>
+
+                </div>
+
+
+                <div class="live-info">
+
+                    <div class="avatar">
+                        🎮
+                    </div>
+
+                    <div class="live-text">
+
+                        <h2>
+                            بازی و گفت‌وگو
+                        </h2>
+
+                        <p>
+                            گیمر ایرانی
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="live-card"
+                data-live-id="3"
+            >
+
+                <div class="live-preview">
+
+                    <div class="live-badge">
+                        🔴 زنده
+                    </div>
+
+                    <div class="viewer-count">
+                        👥 41
+                    </div>
+
+                    <div class="play-icon">
+                        ▶
+                    </div>
+
+                </div>
+
+
+                <div class="live-info">
+
+                    <div class="avatar">
+                        🎤
+                    </div>
+
+                    <div class="live-text">
+
+                        <h2>
+                            گفت‌وگوی شبانه
+                        </h2>
+
+                        <p>
+                            استودیو لاینو
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             Empty State
+             ================================= -->
+
+        <section
+            class="empty-state"
+            id="emptyState"
+        >
+
+            <div class="empty-icon">
+                📺
+            </div>
+
+            <h2>
+                فعلاً پخش دیگری وجود ندارد
+            </h2>
+
+            <p>
+                وقتی کسی شروع به پخش کند،
+                اینجا نمایش داده می‌شود.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         Bottom Navigation
+         ===================================== -->
+
+    <nav class="bottom-nav">
+
+        <button
+            class="nav-item active"
+            id="homeBtn"
+            type="button"
+        >
+            <span>🏠</span>
+            <small>لایوها</small>
+        </button>
+
+
+        <button
+            class="nav-item"
+            id="liveNavBtn"
+            type="button"
+        >
+            <span>🔴</span>
+            <small>شروع پخش</small>
+        </button>
+
+
+        <button
+            class="nav-item"
+            id="notificationsBtn"
+            type="button"
+        >
+            <span>🔔</span>
+            <small>اعلان‌ها</small>
+        </button>
+
+
+        <button
+            class="nav-item"
+            id="profileBtn"
+            type="button"
+        >
+            <span id="profileIcon">
+                👤
+            </span>
+
+            <small>
+                پروفایل
+            </small>
+        </button>
+
+    </nav>
+
+
+    <!-- =====================================
+         Start Live Modal
+         ===================================== -->
+
+    <div
+        class="modal hidden"
+        id="startLiveModal"
+    >
+
+        <div class="modal-box">
+
+            <button
+                class="close-btn"
+                id="closeModalBtn"
+                type="button"
+                aria-label="بستن"
+            >
+                ✕
+            </button>
+
+
+            <h2>
+                شروع پخش زنده
+            </h2>
+
+
+            <label for="liveTitle">
+                عنوان پخش
+            </label>
+
+
+            <input
+                type="text"
+                id="liveTitle"
+                placeholder="مثلاً موزیک زنده امشب"
+                maxlength="80"
+                autocomplete="off"
+            >
+
+
+            <button
+                class="confirm-live-btn"
+                id="confirmLiveBtn"
+                type="button"
+            >
+                🔴 شروع پخش
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="app.js"></script>
+
+
+    <!-- =====================================
+         Profile Navigation
+         ===================================== -->
+
+    <script>
+
+        const profileBtn =
+            document.getElementById("profileBtn");
+
+        if (profileBtn) {
+
+            profileBtn.addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "profile.html";
+
+                }
+            );
+
+        }
+
+
+        const homeBtn =
+            document.getElementById("homeBtn");
+
+        if (homeBtn) {
+
+            homeBtn.addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+        }
+
+    </script>
+
+</body>
+</html>

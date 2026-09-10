@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>پروفایل | لاینو</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .profile-page {
+            min-height: 100vh;
+            padding: 24px 16px 110px;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .profile-back {
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(20, 25, 40, 0.07);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .profile-header h1 {
+            font-size: 23px;
+            font-weight: 900;
+        }
+
+        .profile-card {
+            background: #ffffff;
+            border: 1px solid #e9ebf1;
+            border-radius: 24px;
+            padding: 24px 18px;
+            box-shadow: 0 12px 32px rgba(20, 25, 40, 0.07);
+        }
+
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 104px;
+            height: 104px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #f0f1f6;
+            border: 4px solid #ffffff;
+            box-shadow:
+                0 8px 25px rgba(20, 25, 40, 0.10);
+            font-size: 42px;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .change-photo-btn {
+            border: none;
+            background: transparent;
+            color: #ff304f;
+            font-size: 13px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #41444e;
+        }
+
+        .field input {
+            width: 100%;
+            height: 52px;
+            border: 1px solid #e1e4ea;
+            border-radius: 15px;
+            padding: 0 14px;
+            outline: none;
+            background: #fafbfc;
+            color: #151515;
+            font-size: 14px;
+        }
+
+        .field input:focus {
+            background: #ffffff;
+            border-color: #ff304f;
+            box-shadow:
+                0 0 0 4px rgba(255, 48, 79, 0.08);
+        }
+
+        .phone-field input {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .save-profile-btn {
+            width: 100%;
+            height: 52px;
+            margin-top: 4px;
+            border: none;
+            border-radius: 15px;
+            background: #ff304f;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow:
+                0 8px 18px rgba(255, 48, 79, 0.20);
+        }
+
+        .save-profile-btn:active {
+            transform: scale(0.98);
+        }
+
+        .logout-btn {
+            width: 100%;
+            height: 48px;
+            margin-top: 12px;
+            border: 1px solid #e4e6ec;
+            border-radius: 15px;
+            background: #ffffff;
+            color: #e42140;
+            font-size: 13px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .profile-message {
+            min-height: 22px;
+            margin-top: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .profile-message.success {
+            color: #18894b;
+        }
+
+        .profile-message.error {
+            color: #e42140;
+        }
+
+        #photoInput {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="profile-page">
+
+    <div class="profile-container">
+
+        <header class="profile-header">
+
+            <button
+                type="button"
+                class="profile-back"
+                id="backButton"
+                aria-label="بازگشت"
+            >
+                ←
+            </button>
+
+            <h1>پروفایل</h1>
+
+        </header>
+
+        <section class="profile-card">
+
+            <div class="avatar-section">
+
+                <div
+                    class="profile-avatar"
+                    id="profileAvatar"
+                >
+                    👤
+                </div>
+
+                <button
+                    type="button"
+                    class="change-photo-btn"
+                    id="changePhotoButton"
+                >
+                    تغییر عکس پروفایل
+                </button>
+
+                <input
+                    id="photoInput"
+                    type="file"
+                    accept="image/*"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="displayName">
+                    نام نمایشی
+                </label>
+
+                <input
+                    id="displayName"
+                    type="text"
+                    maxlength="40"
+                    placeholder="مثلاً امیر"
+                >
+
+            </div>
+
+            <div class="field phone-field">
+
+                <label for="phone">
+                    شماره موبایل
+                </label>
+
+                <input
+                    id="phone"
+                    type="tel"
+                    readonly
+                >
+
+            </div>
+
+            <button
+                type="button"
+                class="save-profile-btn"
+                id="saveButton"
+            >
+                ذخیره پروفایل
+            </button>
+
+            <button
+                type="button"
+                class="logout-btn"
+                id="logoutButton"
+            >
+                خروج از حساب
+            </button>
+
+            <div
+                class="profile-message"
+                id="profileMessage"
+            ></div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<script>
+
+    // =========================================
+    // بررسی ورود
+    // =========================================
+
+    const loggedIn =
+        localStorage.getItem("laino_logged_in");
+
+    if (loggedIn !== "true") {
+        window.location.href = "login.html";
+    }
+
+
+    // =========================================
+    // عناصر
+    // =========================================
+
+    const displayName =
+        document.getElementById("displayName");
+
+    const phone =
+        document.getElementById("phone");
+
+    const profileAvatar =
+        document.getElementById("profileAvatar");
+
+    const photoInput =
+        document.getElementById("photoInput");
+
+    const changePhotoButton =
+        document.getElementById("changePhotoButton");
+
+    const saveButton =
+        document.getElementById("saveButton");
+
+    const logoutButton =
+        document.getElementById("logoutButton");
+
+    const backButton =
+        document.getElementById("backButton");
+
+    const profileMessage =
+        document.getElementById("profileMessage");
+
+
+    // =========================================
+    // اطلاعات اولیه
+    // =========================================
+
+    phone.value =
+        localStorage.getItem("laino_phone") || "";
+
+    displayName.value =
+        localStorage.getItem("laino_display_name") || "";
+
+    const savedAvatar =
+        localStorage.getItem("laino_avatar");
+
+    if (savedAvatar) {
+        profileAvatar.innerHTML =
+            `<img src="${savedAvatar}" alt="عکس پروفایل">`;
+    }
+
+
+    // =========================================
+    // تغییر عکس
+    // =========================================
+
+    changePhotoButton.addEventListener(
+        "click",
+        () => {
+            photoInput.click();
+        }
+    );
+
+
+    photoInput.addEventListener(
+        "change",
+        () => {
+
+            const file =
+                photoInput.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+
+                showMessage(
+                    "لطفاً یک تصویر انتخاب کنید.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const reader =
+                new FileReader();
+
+            reader.onload = () => {
+
+                const imageData =
+                    reader.result;
+
+                try {
+
+                    localStorage.setItem(
+                        "laino_avatar",
+                        imageData
+                    );
+
+                    profileAvatar.innerHTML =
+                        `<img
+                            src="${imageData}"
+                            alt="عکس پروفایل"
+                        >`;
+
+                    showMessage(
+                        "عکس پروفایل تغییر کرد.",
+                        "success"
+                    );
+
+                } catch (error) {
+
+                    showMessage(
+                        "حجم عکس زیاد است.",
+                        "error"
+                    );
+                }
+            };
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+
+    // =========================================
+    // ذخیره پروفایل
+    // =========================================
+
+    saveButton.addEventListener(
+        "click",
+        () => {
+
+            const name =
+                displayName.value.trim();
+
+            if (!name) {
+
+                showMessage(
+                    "لطفاً نام نمایشی را وارد کنید.",
+                    "error"
+                );
+
+                displayName.focus();
+
+                return;
+            }
+
+            localStorage.setItem(
+                "laino_display_name",
+                name
+            );
+
+            showMessage(
+                "پروفایل ذخیره شد.",
+                "success"
+            );
+        }
+    );
+
+
+    // =========================================
+    // خروج
+    // =========================================
+
+    logoutButton.addEventListener(
+        "click",
+        () => {
+
+            localStorage.removeItem(
+                "laino_logged_in"
+            );
+
+            localStorage.removeItem(
+                "laino_phone"
+            );
+
+            window.location.href =
+                "login.html";
+        }
+    );
+
+
+    // =========================================
+    // بازگشت
+    // =========================================
+
+    backButton.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "index.html";
+        }
+    );
+
+
+    // =========================================
+    // پیام
+    // =========================================
+
+    function showMessage(text, type) {
+
+        profileMessage.textContent = text;
+
+        profileMessage.className =
+            "profile-message " + type;
+
+        setTimeout(() => {
+
+            profileMessage.textContent = "";
+            profileMessage.className =
+                "profile-message";
+
+        }, 2500);
+    }
+
+</script>
+
+</body>
+</html>
