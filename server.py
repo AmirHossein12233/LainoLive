@@ -11,9 +11,16 @@ from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+
 HOST = "0.0.0.0"
 PORT = int(os.getenv("PORT", "5000"))
+
 BASE_DIR = Path(__file__).resolve().parent
+
+
+# =========================================================
+# AMOOT SMS
+# =========================================================
 
 AMOOT_API_TOKEN = os.getenv("AMOOT_API_TOKEN", "").strip()
 
@@ -25,14 +32,27 @@ AMOOT_SEND_SIMPLE_URL = (
     "https://portal.amootsms.com/rest/SendSimple"
 )
 
+# شناسه الگوی تاییدشده در پنل آموت
+AMOOT_OTP_MESSAGE_ID = "6406"
+
+
+# =========================================================
+# OTP SETTINGS
+# =========================================================
+
 OTP_LENGTH = 6
 OTP_EXPIRE_SECONDS = 120
 OTP_RESEND_SECONDS = 30
 OTP_MAX_ATTEMPTS = 5
 
+
 otp_store = {}
 otp_lock = threading.Lock()
 
+
+# =========================================================
+# JSON RESPONSE
+# =========================================================
 
 def send_json(handler, status_code, data):
     body = json.dumps(
@@ -42,36 +62,50 @@ def send_json(handler, status_code, data):
     ).encode("utf-8")
 
     handler.send_response(status_code)
+
     handler.send_header(
         "Content-Type",
         "application/json; charset=utf-8"
     )
+
     handler.send_header(
         "Content-Length",
         str(len(body))
     )
+
     handler.send_header(
         "Access-Control-Allow-Origin",
         "*"
     )
+
     handler.send_header(
         "Access-Control-Allow-Methods",
         "GET, POST, OPTIONS"
     )
+
     handler.send_header(
         "Access-Control-Allow-Headers",
         "Content-Type, Authorization"
     )
+
     handler.end_headers()
 
     handler.wfile.write(body)
 
 
+# =========================================================
+# JSON REQUEST
+# =========================================================
+
 def read_json(handler):
     try:
         content_length = int(
-            handler.headers.get("Content-Length", "0")
+            handler.headers.get(
+                "Content-Length",
+                "0"
+            )
         )
+
     except ValueError:
         return {}
 
@@ -79,7 +113,9 @@ def read_json(handler):
         return {}
 
     try:
-        raw = handler.rfile.read(content_length)
+        raw = handler.rfile.read(
+            content_length
+        )
 
         return json.loads(
             raw.decode("utf-8")
@@ -91,6 +127,10 @@ def read_json(handler):
     ):
         return {}
 
+
+# =========================================================
+# PHONE NORMALIZATION
+# =========================================================
 
 def normalize_phone(phone):
     phone = str(phone or "").strip()
@@ -104,6 +144,7 @@ def normalize_phone(phone):
     )
 
     persian_digits = "۰۱۲۳۴۵۶۷۸۹"
+    arabic_digits = "٠١٢٣٤٥٦٧٨٩"
     english_digits = "0123456789"
 
     for persian, english in zip(
@@ -115,10 +156,22 @@ def normalize_phone(phone):
             english
         )
 
+    for arabic, english in zip(
+        arabic_digits,
+        english_digits
+    ):
+        phone = phone.replace(
+            arabic,
+            english
+        )
+
     if phone.startswith("+98"):
         phone = "0" + phone[3:]
 
-    elif phone.startswith("98") and len(phone) == 12:
+    elif (
+        phone.startswith("98")
+        and len(phone) == 12
+    ):
         phone = "0" + phone[2:]
 
     return phone
@@ -141,10 +194,15 @@ def amoot_mobile(phone):
     return phone
 
 
+# =========================================================
+# CODE NORMALIZATION
+# =========================================================
+
 def normalize_code(code):
     code = str(code or "").strip()
 
     persian_digits = "۰۱۲۳۴۵۶۷۸۹"
+    arabic_digits = "٠١٢٣٤٥٦٧٨٩"
     english_digits = "0123456789"
 
     for persian, english in zip(
@@ -156,13 +214,27 @@ def normalize_code(code):
             english
         )
 
+    for arabic, english in zip(
+        arabic_digits,
+        english_digits
+    ):
+        code = code.replace(
+            arabic,
+            english
+        )
+
     return code
 
+
+# =========================================================
+# OTP CLEANUP
+# =========================================================
 
 def cleanup_expired_otps():
     now = time.time()
 
     with otp_lock:
+
         expired = [
             phone
             for phone, item in otp_store.items()
@@ -170,13 +242,24 @@ def cleanup_expired_otps():
         ]
 
         for phone in expired:
-            otp_store.pop(phone, None)
+            otp_store.pop(
+                phone,
+                None
+            )
 
+
+# =========================================================
+# AMOOT POST FORM
+# =========================================================
 
 def amoot_post_form(url, form_data):
+
     if not AMOOT_API_TOKEN:
+
         return False, {
-            "message": "AMOOT_API_TOKEN تنظیم نشده است."
+            "message": (
+                "AMOOT_API_TOKEN تنظیم نشده است."
+            )
         }
 
     body = urllib.parse.urlencode(
@@ -205,6 +288,7 @@ def amoot_post_form(url, form_data):
     )
 
     try:
+
         with urllib.request.urlopen(
             request,
             timeout=30
@@ -218,9 +302,12 @@ def amoot_post_form(url, form_data):
             )
 
             try:
-                response_data = json.loads(raw)
+                response_data = json.loads(
+                    raw
+                )
 
             except json.JSONDecodeError:
+
                 response_data = {
                     "raw": raw
                 }
@@ -238,9 +325,13 @@ def amoot_post_form(url, form_data):
         )
 
         try:
-            response_data = json.loads(raw)
+
+            response_data = json.loads(
+                raw
+            )
 
         except json.JSONDecodeError:
+
             response_data = {
                 "raw": raw
             }
@@ -253,23 +344,39 @@ def amoot_post_form(url, form_data):
     except urllib.error.URLError as error:
 
         return False, {
-            "message": "اتصال به سرور آمو‌ت برقرار نشد.",
+            "message": (
+                "اتصال به سرور آمو‌ت برقرار نشد."
+            ),
             "error": str(error.reason)
         }
 
     except Exception as error:
 
         return False, {
-            "message": "خطای داخلی هنگام ارتباط با آمو‌ت.",
+            "message": (
+                "خطای داخلی هنگام ارتباط با آمو‌ت."
+            ),
             "error": str(error)
         }
 
 
+# =========================================================
+# SEND QUICK OTP
+# =========================================================
+
 def send_quick_otp(phone):
+
     form_data = {
         "Mobile": amoot_mobile(phone),
-        "CodeLength": str(OTP_LENGTH),
-        "OptionalCode": ""
+
+        "CodeLength": str(
+            OTP_LENGTH
+        ),
+
+        "OptionalCode": "",
+
+        # الگوی تاییدشده آموت
+        "MessageID": AMOOT_OTP_MESSAGE_ID
     }
 
     success, result = amoot_post_form(
@@ -280,28 +387,40 @@ def send_quick_otp(phone):
     if not success:
         return False, result
 
-    response_data = result.get("data") or {}
+    response_data = (
+        result.get("data") or {}
+    )
 
-    if response_data.get("Status") != "Success":
+    amoot_status = response_data.get(
+        "Status"
+    )
+
+    if amoot_status != "Success":
 
         return False, {
-            "amoot_status": response_data.get("Status"),
+            "amoot_status": amoot_status,
             "response": response_data
         }
 
-    data = response_data.get("Data") or {}
+    data = (
+        response_data.get("Data")
+        or {}
+    )
 
     amoot_code = normalize_code(
         data.get("Code", "")
     )
 
-    if not amoot_code or "*" in amoot_code:
+    if (
+        not amoot_code
+        or "*" in amoot_code
+    ):
 
         return False, {
             "response": response_data,
             "reason": (
-                "آمو‌ت کد واقعی را در پاسخ API "
-                "برنگردانده است."
+                "آمو‌ت کد واقعی را در پاسخ "
+                "API برنگردانده است."
             )
         }
 
@@ -312,7 +431,9 @@ def send_quick_otp(phone):
 
         return False, {
             "response": response_data,
-            "reason": "کد OTP معتبر نیست."
+            "reason": (
+                "کد OTP دریافتی معتبر نیست."
+            )
         }
 
     return True, {
@@ -321,7 +442,12 @@ def send_quick_otp(phone):
     }
 
 
+# =========================================================
+# SEND NORMAL SMS
+# =========================================================
+
 def send_simple_sms(phone, message):
+
     mobile = amoot_mobile(phone)
 
     send_datetime = datetime.now().strftime(
@@ -343,12 +469,16 @@ def send_simple_sms(phone, message):
     if not success:
         return False, result
 
-    response_data = result.get("data") or {}
+    response_data = (
+        result.get("data") or {}
+    )
 
     if response_data.get("Status") != "Success":
 
         return False, {
-            "amoot_status": response_data.get("Status"),
+            "amoot_status": response_data.get(
+                "Status"
+            ),
             "response": response_data
         }
 
@@ -357,30 +487,43 @@ def send_simple_sms(phone, message):
     }
 
 
+# =========================================================
+# STATIC FILES
+# =========================================================
+
 def get_content_type(path):
+
     content_type, _ = mimetypes.guess_type(
         str(path)
     )
 
     if not content_type:
-        content_type = "application/octet-stream"
+        content_type = (
+            "application/octet-stream"
+        )
 
     return content_type
 
 
 def serve_static_file(handler, relative_path):
-    requested = Path(relative_path)
+
+    requested = Path(
+        relative_path
+    )
 
     if (
         ".." in requested.parts
         or requested.is_absolute()
     ):
+
         return send_json(
             handler,
             403,
             {
                 "success": False,
-                "message": "دسترسی غیرمجاز."
+                "message": (
+                    "دسترسی غیرمجاز."
+                )
             }
         )
 
@@ -389,56 +532,82 @@ def serve_static_file(handler, relative_path):
     ).resolve()
 
     try:
-        file_path.relative_to(BASE_DIR)
+
+        file_path.relative_to(
+            BASE_DIR
+        )
 
     except ValueError:
+
         return send_json(
             handler,
             403,
             {
                 "success": False,
-                "message": "دسترسی غیرمجاز."
+                "message": (
+                    "دسترسی غیرمجاز."
+                )
             }
         )
 
     if not file_path.is_file():
+
         return send_json(
             handler,
             404,
             {
                 "success": False,
-                "message": "فایل پیدا نشد."
+                "message": (
+                    "فایل پیدا نشد."
+                )
             }
         )
 
     try:
+
         data = file_path.read_bytes()
 
     except OSError:
+
         return send_json(
             handler,
             500,
             {
                 "success": False,
-                "message": "خواندن فایل ناموفق بود."
+                "message": (
+                    "خواندن فایل ناموفق بود."
+                )
             }
         )
 
-    content_type = get_content_type(file_path)
+    content_type = get_content_type(
+        file_path
+    )
 
-    extension = file_path.suffix.lower()
+    extension = (
+        file_path.suffix.lower()
+    )
 
     if extension == ".html":
-        content_type = "text/html; charset=utf-8"
+        content_type = (
+            "text/html; charset=utf-8"
+        )
 
     elif extension == ".css":
-        content_type = "text/css; charset=utf-8"
+        content_type = (
+            "text/css; charset=utf-8"
+        )
 
     elif extension == ".js":
-        content_type = "application/javascript; charset=utf-8"
+        content_type = (
+            "application/javascript; "
+            "charset=utf-8"
+        )
 
     elif extension == ".json":
-        content_type = "application/json; charset=utf-8"
+        content_type = (
+            "application/json; charset=utf-8"
+        )
 
     handler.send_response(200)
 
@@ -462,15 +631,30 @@ def serve_static_file(handler, relative_path):
     handler.wfile.write(data)
 
 
-class LainoHandler(BaseHTTPRequestHandler):
+# =========================================================
+# HTTP HANDLER
+# =========================================================
 
-    def log_message(self, format_string, *args):
+class LainoHandler(
+    BaseHTTPRequestHandler
+):
+
+    def log_message(
+        self,
+        format_string,
+        *args
+    ):
         print(
             f"{self.address_string()} - "
             f"{format_string % args}"
         )
 
+    # -----------------------------------------------------
+    # OPTIONS
+    # -----------------------------------------------------
+
     def do_OPTIONS(self):
+
         self.send_response(204)
 
         self.send_header(
@@ -490,11 +674,20 @@ class LainoHandler(BaseHTTPRequestHandler):
 
         self.end_headers()
 
+    # -----------------------------------------------------
+    # GET
+    # -----------------------------------------------------
+
     def do_GET(self):
+
         cleanup_expired_otps()
 
-        path = self.path.split("?", 1)[0]
+        path = self.path.split(
+            "?",
+            1
+        )[0]
 
+        # HEALTH
         if path == "/health":
 
             return send_json(
@@ -504,10 +697,14 @@ class LainoHandler(BaseHTTPRequestHandler):
                     "status": "ok",
                     "sms_configured": bool(
                         AMOOT_API_TOKEN
+                    ),
+                    "otp_pattern": (
+                        AMOOT_OTP_MESSAGE_ID
                     )
                 }
             )
 
+        # API STATUS
         if path == "/api/status":
 
             return send_json(
@@ -519,13 +716,21 @@ class LainoHandler(BaseHTTPRequestHandler):
                     "sms_configured": bool(
                         AMOOT_API_TOKEN
                     ),
-                    "otp_method": "SendQuickOTP",
-                    "normal_sms_method": "SendSimple",
+                    "otp_method": (
+                        "SendQuickOTP"
+                    ),
+                    "otp_message_id": (
+                        AMOOT_OTP_MESSAGE_ID
+                    ),
+                    "normal_sms_method": (
+                        "SendSimple"
+                    ),
                     "webhook": False,
                     "sandbox": False
                 }
             )
 
+        # HOME
         if path == "/":
 
             return serve_static_file(
@@ -533,13 +738,16 @@ class LainoHandler(BaseHTTPRequestHandler):
                 "index.html"
             )
 
+        # FAVICON
         if path == "/favicon.ico":
 
             self.send_response(204)
+
             self.end_headers()
 
             return
 
+        # STATIC FILE
         relative_path = path.lstrip("/")
 
         allowed_extensions = {
@@ -576,14 +784,24 @@ class LainoHandler(BaseHTTPRequestHandler):
             404,
             {
                 "success": False,
-                "message": "مسیر پیدا نشد."
+                "message": (
+                    "مسیر پیدا نشد."
+                )
             }
         )
 
+    # -----------------------------------------------------
+    # POST
+    # -----------------------------------------------------
+
     def do_POST(self):
+
         cleanup_expired_otps()
 
-        path = self.path.split("?", 1)[0]
+        path = self.path.split(
+            "?",
+            1
+        )[0]
 
         if path == "/api/request-code":
 
@@ -602,13 +820,21 @@ class LainoHandler(BaseHTTPRequestHandler):
             404,
             {
                 "success": False,
-                "message": "مسیر پیدا نشد."
+                "message": (
+                    "مسیر پیدا نشد."
+                )
             }
         )
 
+    # -----------------------------------------------------
+    # REQUEST OTP CODE
+    # -----------------------------------------------------
+
     def request_code(self):
 
-        data = read_json(self)
+        data = read_json(
+            self
+        )
 
         phone = normalize_phone(
             data.get("phone")
@@ -621,7 +847,9 @@ class LainoHandler(BaseHTTPRequestHandler):
                 400,
                 {
                     "success": False,
-                    "message": "شماره موبایل نامعتبر است."
+                    "message": (
+                        "شماره موبایل نامعتبر است."
+                    )
                 }
             )
 
@@ -633,7 +861,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "AMOOT_API_TOKEN تنظیم نشده است."
+                        "AMOOT_API_TOKEN "
+                        "تنظیم نشده است."
                     )
                 }
             )
@@ -642,13 +871,16 @@ class LainoHandler(BaseHTTPRequestHandler):
 
         with otp_lock:
 
-            previous = otp_store.get(phone)
+            previous = otp_store.get(
+                phone
+            )
 
             if previous:
 
                 remaining = int(
-                    previous["resend_available_at"]
-                    - now
+                    previous[
+                        "resend_available_at"
+                    ] - now
                 )
 
                 if remaining > 0:
@@ -662,11 +894,15 @@ class LainoHandler(BaseHTTPRequestHandler):
                                 f"لطفاً {remaining} "
                                 "ثانیه صبر کنید."
                             ),
-                            "retry_after": remaining
+                            "retry_after": (
+                                remaining
+                            )
                         }
                     )
 
-        success, result = send_quick_otp(phone)
+        success, result = (
+            send_quick_otp(phone)
+        )
 
         if not success:
 
@@ -676,7 +912,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "ارسال کد از طریق آمو‌ت ناموفق بود."
+                        "ارسال کد از طریق "
+                        "آمو‌ت ناموفق بود."
                     ),
                     "amoot_error": result
                 }
@@ -692,10 +929,12 @@ class LainoHandler(BaseHTTPRequestHandler):
                 "code": amoot_code,
                 "created_at": now,
                 "expires_at": (
-                    now + OTP_EXPIRE_SECONDS
+                    now
+                    + OTP_EXPIRE_SECONDS
                 ),
                 "resend_available_at": (
-                    now + OTP_RESEND_SECONDS
+                    now
+                    + OTP_RESEND_SECONDS
                 ),
                 "attempts": 0
             }
@@ -705,21 +944,34 @@ class LainoHandler(BaseHTTPRequestHandler):
             200,
             {
                 "success": True,
-                "message": "کد تأیید ارسال شد.",
-                "expires_in": OTP_EXPIRE_SECONDS
+                "message": (
+                    "کد تأیید ارسال شد."
+                ),
+                "expires_in": (
+                    OTP_EXPIRE_SECONDS
+                )
             }
         )
 
+    # -----------------------------------------------------
+    # VERIFY OTP
+    # -----------------------------------------------------
+
     def verify_code(self):
 
-        data = read_json(self)
+        data = read_json(
+            self
+        )
 
         phone = normalize_phone(
             data.get("phone")
         )
 
         entered_code = normalize_code(
-            data.get("code", "")
+            data.get(
+                "code",
+                ""
+            )
         )
 
         if not valid_phone(phone):
@@ -729,13 +981,16 @@ class LainoHandler(BaseHTTPRequestHandler):
                 400,
                 {
                     "success": False,
-                    "message": "شماره موبایل نامعتبر است."
+                    "message": (
+                        "شماره موبایل نامعتبر است."
+                    )
                 }
             )
 
         if (
             not entered_code.isdigit()
-            or len(entered_code) != OTP_LENGTH
+            or len(entered_code)
+            != OTP_LENGTH
         ):
 
             return send_json(
@@ -751,7 +1006,9 @@ class LainoHandler(BaseHTTPRequestHandler):
 
         with otp_lock:
 
-            record = otp_store.get(phone)
+            record = otp_store.get(
+                phone
+            )
 
             if not record:
 
@@ -761,12 +1018,16 @@ class LainoHandler(BaseHTTPRequestHandler):
                     {
                         "success": False,
                         "message": (
-                            "کد منقضی شده یا وجود ندارد."
+                            "کد منقضی شده یا "
+                            "وجود ندارد."
                         )
                     }
                 )
 
-            if record["expires_at"] <= time.time():
+            if (
+                record["expires_at"]
+                <= time.time()
+            ):
 
                 otp_store.pop(
                     phone,
@@ -786,7 +1047,10 @@ class LainoHandler(BaseHTTPRequestHandler):
 
             record["attempts"] += 1
 
-            if record["attempts"] > OTP_MAX_ATTEMPTS:
+            if (
+                record["attempts"]
+                > OTP_MAX_ATTEMPTS
+            ):
 
                 otp_store.pop(
                     phone,
@@ -799,14 +1063,17 @@ class LainoHandler(BaseHTTPRequestHandler):
                     {
                         "success": False,
                         "message": (
-                            "تعداد تلاش‌ها بیش از "
-                            "حد مجاز است."
+                            "تعداد تلاش‌ها "
+                            "بیش از حد مجاز است."
                         )
                     }
                 )
 
             saved_code = normalize_code(
-                record.get("code", "")
+                record.get(
+                    "code",
+                    ""
+                )
             )
 
             if secrets.compare_digest(
@@ -825,7 +1092,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                     {
                         "success": True,
                         "message": (
-                            "ورود با موفقیت انجام شد."
+                            "ورود با موفقیت "
+                            "انجام شد."
                         ),
                         "phone": phone
                     }
@@ -842,16 +1110,25 @@ class LainoHandler(BaseHTTPRequestHandler):
             }
         )
 
+    # -----------------------------------------------------
+    # NORMAL SMS
+    # -----------------------------------------------------
+
     def send_message(self):
 
-        data = read_json(self)
+        data = read_json(
+            self
+        )
 
         phone = normalize_phone(
             data.get("phone")
         )
 
         message = str(
-            data.get("message", "")
+            data.get(
+                "message",
+                ""
+            )
         ).strip()
 
         if not valid_phone(phone):
@@ -888,7 +1165,8 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "متن پیام بیش از حد طولانی است."
+                        "متن پیام بیش از حد "
+                        "طولانی است."
                     )
                 }
             )
@@ -901,14 +1179,17 @@ class LainoHandler(BaseHTTPRequestHandler):
                 {
                     "success": False,
                     "message": (
-                        "AMOOT_API_TOKEN تنظیم نشده است."
+                        "AMOOT_API_TOKEN "
+                        "تنظیم نشده است."
                     )
                 }
             )
 
-        success, result = send_simple_sms(
-            phone,
-            message
+        success, result = (
+            send_simple_sms(
+                phone,
+                message
+            )
         )
 
         if not success:
@@ -926,7 +1207,8 @@ class LainoHandler(BaseHTTPRequestHandler):
             )
 
         response_data = (
-            result.get("response") or {}
+            result.get("response")
+            or {}
         )
 
         return send_json(
@@ -934,7 +1216,9 @@ class LainoHandler(BaseHTTPRequestHandler):
             200,
             {
                 "success": True,
-                "message": "پیامک ارسال شد.",
+                "message": (
+                    "پیامک ارسال شد."
+                ),
                 "campaign_id": (
                     response_data.get(
                         "CampaignID"
@@ -948,6 +1232,10 @@ class LainoHandler(BaseHTTPRequestHandler):
             }
         )
 
+
+# =========================================================
+# MAIN
+# =========================================================
 
 def main():
 
@@ -988,8 +1276,13 @@ def main():
     )
 
     print(
-        "OTP:",
+        "OTP method:",
         "SendQuickOTP"
+    )
+
+    print(
+        "OTP MessageID:",
+        AMOOT_OTP_MESSAGE_ID
     )
 
     print(
@@ -1016,7 +1309,10 @@ def main():
     except KeyboardInterrupt:
 
         print()
-        print("LainoLive stopped.")
+
+        print(
+            "LainoLive stopped."
+        )
 
     finally:
 
