@@ -1,0 +1,849 @@
+/* =========================================
+   LainoLive - Mobile App Style
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --text: #151515;
+    --muted: #777b87;
+    --border: #e9ebf1;
+    --primary: #ff304f;
+    --primary-dark: #e42140;
+    --shadow: 0 10px 30px rgba(20, 25, 40, 0.08);
+    --radius: 20px;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    background: var(--bg);
+    font-family:
+        Tahoma,
+        Arial,
+        "Segoe UI",
+        sans-serif;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 84px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* جلوگیری از انتخاب ناخواسته متن هنگام کار با اپ */
+button,
+.live-card,
+.nav-item {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* =========================================
+   TOP BAR
+   ========================================= */
+
+.top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    width: 100%;
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 18px;
+
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom: 1px solid rgba(230, 232, 238, 0.9);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: -0.8px;
+    color: var(--text);
+}
+
+.start-live-btn {
+    border: none;
+    outline: none;
+
+    min-height: 44px;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    border-radius: 14px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow: 0 7px 16px rgba(255, 48, 79, 0.22);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.start-live-btn:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 9px 20px rgba(255, 48, 79, 0.28);
+}
+
+.start-live-btn:active {
+    transform: scale(0.96);
+}
+
+/* =========================================
+   MAIN
+   ========================================= */
+
+.main {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 22px 16px 28px;
+}
+
+/* =========================================
+   PAGE TITLE
+   ========================================= */
+
+.page-title {
+    margin-bottom: 22px;
+}
+
+.page-title h1 {
+    font-size: 25px;
+    font-weight: 900;
+    margin-bottom: 7px;
+    line-height: 1.5;
+}
+
+.page-title p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+}
+
+/* =========================================
+   LIVE LIST
+   ========================================= */
+
+.live-list {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+/* =========================================
+   LIVE CARD
+   ========================================= */
+
+.live-card {
+    width: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    background: var(--card);
+    box-shadow: var(--shadow);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.live-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 35px rgba(20, 25, 40, 0.12);
+}
+
+.live-card:active {
+    transform: scale(0.985);
+}
+
+/* =========================================
+   LIVE PREVIEW
+   ========================================= */
+
+.live-preview {
+    position: relative;
+
+    width: 100%;
+    height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1d1e27 0%,
+            #2d303e 50%,
+            #13141b 100%
+        );
+
+    overflow: hidden;
+}
+
+/* نور نرم پس زمینه */
+.live-preview::before,
+.live-preview::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.live-preview::before {
+    width: 180px;
+    height: 180px;
+
+    top: -50px;
+    left: -40px;
+
+    background: rgba(255, 48, 79, 0.13);
+    filter: blur(35px);
+}
+
+.live-preview::after {
+    width: 150px;
+    height: 150px;
+
+    right: -35px;
+    bottom: -45px;
+
+    background: rgba(89, 92, 255, 0.16);
+    filter: blur(35px);
+}
+
+/* =========================================
+   LIVE BADGE
+   ========================================= */
+
+.live-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+
+    padding: 7px 10px;
+
+    border-radius: 10px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    box-shadow: 0 6px 14px rgba(255, 48, 79, 0.25);
+}
+
+/* =========================================
+   VIEWERS
+   ========================================= */
+
+.viewer-count {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+
+    padding: 7px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* =========================================
+   PLAY BUTTON
+   ========================================= */
+
+.play-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 66px;
+    height: 66px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--primary);
+
+    font-size: 23px;
+
+    padding-right: 2px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease;
+}
+
+.live-card:hover .play-icon {
+    transform: scale(1.06);
+    background: #ffffff;
+}
+
+/* =========================================
+   LIVE INFO
+   ========================================= */
+
+.live-info {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px 14px 16px;
+}
+
+.avatar {
+    flex: 0 0 auto;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f0f1f6;
+
+    font-size: 23px;
+}
+
+.live-text {
+    min-width: 0;
+}
+
+.live-text h2 {
+    font-size: 16px;
+    font-weight: 900;
+
+    margin-bottom: 4px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.live-text p {
+    font-size: 13px;
+    color: var(--muted);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================================
+   EMPTY STATE
+   ========================================= */
+
+.empty-state {
+    display: none;
+
+    text-align: center;
+
+    padding: 55px 20px;
+}
+
+.empty-icon {
+    width: 74px;
+    height: 74px;
+
+    margin: 0 auto 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background: #ffffff;
+    box-shadow: var(--shadow);
+
+    font-size: 32px;
+}
+
+.empty-state h2 {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted);
+}
+
+/* =========================================
+   BOTTOM NAVIGATION
+   ========================================= */
+
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 50;
+
+    width: 100%;
+    min-height: 74px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: stretch;
+
+    padding:
+        6px
+        max(6px, env(safe-area-inset-right))
+        max(6px, env(safe-area-inset-bottom))
+        max(6px, env(safe-area-inset-left));
+
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid var(--border);
+
+    box-shadow: 0 -8px 25px rgba(20, 25, 40, 0.06);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.nav-item {
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #969aa5;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.16s ease,
+        background 0.16s ease,
+        transform 0.16s ease;
+}
+
+.nav-item span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.nav-item small {
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.nav-item:hover {
+    background: #f7f7fa;
+}
+
+.nav-item:active {
+    transform: scale(0.94);
+}
+
+.nav-item.active {
+    color: var(--primary);
+}
+
+.nav-item.active span {
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   MODAL
+   ========================================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    padding: 14px;
+
+    background: rgba(12, 14, 20, 0.48);
+
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    opacity: 1;
+    visibility: visible;
+
+    transition:
+        opacity 0.22s ease,
+        visibility 0.22s ease;
+}
+
+.modal.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.modal-box {
+    position: relative;
+
+    width: 100%;
+    max-width: 500px;
+
+    padding: 24px 18px 18px;
+
+    border-radius: 26px 26px 20px 20px;
+
+    background: #ffffff;
+
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+
+    transform: translateY(0);
+
+    transition: transform 0.22s ease;
+}
+
+.modal.hidden .modal-box {
+    transform: translateY(24px);
+}
+
+/* =========================================
+   CLOSE BUTTON
+   ========================================= */
+
+.close-btn {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    outline: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f2f3f7;
+    color: #676b76;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.close-btn:hover {
+    background: #e9eaf0;
+}
+
+.close-btn:active {
+    transform: scale(0.92);
+}
+
+/* =========================================
+   MODAL CONTENT
+   ========================================= */
+
+.modal-box h2 {
+    font-size: 22px;
+    font-weight: 900;
+
+    margin-bottom: 22px;
+
+    padding-left: 42px;
+}
+
+.modal-box label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 800;
+    color: #555966;
+}
+
+.modal-box input {
+    width: 100%;
+    height: 52px;
+
+    border: 1px solid #e2e4eb;
+    outline: none;
+
+    border-radius: 15px;
+
+    padding: 0 14px;
+
+    background: #fafbfc;
+    color: var(--text);
+
+    font-size: 14px;
+
+    direction: rtl;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+.modal-box input::placeholder {
+    color: #a4a7b1;
+}
+
+.modal-box input:focus {
+    background: #ffffff;
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 4px rgba(255, 48, 79, 0.08);
+}
+
+/* =========================================
+   CONFIRM LIVE BUTTON
+   ========================================= */
+
+.confirm-live-btn {
+    width: 100%;
+    height: 52px;
+
+    margin-top: 16px;
+
+    border: none;
+    outline: none;
+
+    border-radius: 15px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow: 0 9px 18px rgba(255, 48, 79, 0.22);
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+}
+
+.confirm-live-btn:hover {
+    background: var(--primary-dark);
+}
+
+.confirm-live-btn:active {
+    transform: scale(0.98);
+}
+
+/* =========================================
+   DESKTOP / TABLET
+   ========================================= */
+
+@media (min-width: 650px) {
+    .main {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .live-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .live-preview {
+        height: 210px;
+    }
+
+    .bottom-nav {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+
+        width: min(720px, 100%);
+
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal {
+        align-items: center;
+    }
+
+    .modal-box {
+        border-radius: 24px;
+    }
+}
+
+/* =========================================
+   LARGE DESKTOP
+   ========================================= */
+
+@media (min-width: 1000px) {
+    body {
+        padding-bottom: 88px;
+    }
+
+    .main {
+        max-width: 940px;
+        padding-top: 30px;
+    }
+
+    .live-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .live-preview {
+        height: 200px;
+    }
+}
+
+/* =========================================
+   SMALL PHONES
+   ========================================= */
+
+@media (max-width: 360px) {
+    .top-bar {
+        min-height: 66px;
+        padding: 12px;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .start-live-btn {
+        padding: 0 12px;
+        min-height: 40px;
+        font-size: 12px;
+    }
+
+    .main {
+        padding: 18px 12px 24px;
+    }
+
+    .page-title h1 {
+        font-size: 22px;
+    }
+
+    .page-title p {
+        font-size: 12px;
+    }
+
+    .live-preview {
+        height: 190px;
+    }
+
+    .live-info {
+        padding: 13px 12px 14px;
+    }
+
+    .avatar {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    .live-text h2 {
+        font-size: 14px;
+    }
+
+    .live-text p {
+        font-size: 12px;
+    }
+
+    .nav-item span {
+        font-size: 18px;
+    }
+
+    .nav-item small {
+        font-size: 10px;
+    }
+}
+
+/* =========================================
+   SAFE AREA - PHONES
+   ========================================= */
+
+@supports (padding: max(0px)) {
+    .top-bar {
+        padding-top: max(14px, env(safe-area-inset-top));
+    }
+
+    .bottom-nav {
+        padding-bottom: max(6px, env(safe-area-inset-bottom));
+    }
+}

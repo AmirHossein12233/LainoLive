@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ورود | لاینو</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            margin: 0;
+            background: #f6f7fb;
+        }
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 430px;
+            background: #ffffff;
+            border: 1px solid #e9ebf1;
+            border-radius: 28px;
+            padding: 30px 22px 24px;
+            box-shadow: 0 15px 40px rgba(20, 25, 40, 0.08);
+        }
+
+        .login-icon {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            background: #fff0f3;
+            font-size: 35px;
+        }
+
+        .login-logo {
+            text-align: center;
+            font-size: 34px;
+            font-weight: 900;
+            color: #151515;
+            margin-bottom: 7px;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.9;
+            color: #777b87;
+            margin-bottom: 27px;
+        }
+
+        .login-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #333640;
+        }
+
+        .login-input {
+            width: 100%;
+            height: 54px;
+            border: 1px solid #e1e4ea;
+            border-radius: 15px;
+            outline: none;
+            padding: 0 15px;
+            background: #fafbfc;
+            color: #16171b;
+            font-size: 15px;
+            transition: 0.18s ease;
+        }
+
+        .login-input:focus {
+            border-color: #ff304f;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(255, 48, 79, 0.08);
+        }
+
+        .phone-input {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .code-input {
+            direction: ltr;
+            text-align: center;
+            letter-spacing: 9px;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 54px;
+            margin-top: 16px;
+            border: none;
+            border-radius: 15px;
+            background: #ff304f;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.15s ease;
+            box-shadow: 0 9px 18px rgba(255, 48, 79, 0.20);
+        }
+
+        .login-button:hover {
+            background: #e42140;
+        }
+
+        .login-button:active {
+            transform: scale(0.98);
+        }
+
+        .login-button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-message {
+            min-height: 22px;
+            margin-top: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.7;
+        }
+
+        .login-message.error {
+            color: #e42140;
+        }
+
+        .login-message.success {
+            color: #18894b;
+        }
+
+        .login-message.info {
+            color: #636875;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .code-section {
+            animation: fadeIn 0.2s ease;
+        }
+
+        .back-button {
+            width: 100%;
+            height: 48px;
+            margin-top: 10px;
+            border: 1px solid #e2e4eb;
+            border-radius: 15px;
+            background: #ffffff;
+            color: #555966;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background: #f7f7fa;
+        }
+
+        .timer {
+            margin-top: 13px;
+            text-align: center;
+            color: #777b87;
+            font-size: 12px;
+            min-height: 20px;
+        }
+
+        .resend-button {
+            border: none;
+            background: transparent;
+            color: #ff304f;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .resend-button:disabled {
+            color: #a5a8b1;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-box {
+                padding: 25px 16px 20px;
+            }
+
+            .login-logo {
+                font-size: 30px;
+            }
+
+            .code-input {
+                letter-spacing: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="login-page">
+
+    <section class="login-box">
+
+        <div class="login-icon">📺</div>
+
+        <div class="login-logo">لاینو</div>
+
+        <p class="login-subtitle">
+            برای ورود، شماره موبایل خود را وارد کنید.
+        </p>
+
+        <!-- ==============================
+             Phone Section
+             ============================== -->
+
+        <section id="phoneSection">
+
+            <label
+                class="login-label"
+                for="phoneInput"
+            >
+                شماره موبایل
+            </label>
+
+            <input
+                id="phoneInput"
+                class="login-input phone-input"
+                type="tel"
+                inputmode="numeric"
+                autocomplete="tel"
+                maxlength="11"
+                placeholder="09xxxxxxxxx"
+            >
+
+            <button
+                id="sendCodeButton"
+                class="login-button"
+                type="button"
+            >
+                دریافت کد تأیید
+            </button>
+
+        </section>
+
+        <!-- ==============================
+             Code Section
+             ============================== -->
+
+        <section
+            id="codeSection"
+            class="code-section hidden"
+        >
+
+            <label
+                class="login-label"
+                for="codeInput"
+            >
+                کد ۶ رقمی ارسال‌شده
+            </label>
+
+            <input
+                id="codeInput"
+                class="login-input code-input"
+                type="tel"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="6"
+                placeholder="------"
+            >
+
+            <button
+                id="verifyCodeButton"
+                class="login-button"
+                type="button"
+            >
+                تأیید و ورود
+            </button>
+
+            <button
+                id="backButton"
+                class="back-button"
+                type="button"
+            >
+                تغییر شماره موبایل
+            </button>
+
+            <div class="timer" id="timer"></div>
+
+        </section>
+
+        <div
+            id="loginMessage"
+            class="login-message"
+        ></div>
+
+    </section>
+
+</main>
+
+<script>
+
+    // =========================================
+    // تنظیمات
+    // =========================================
+
+    // برای اجرای محلی:
+    const API_BASE = "http://127.0.0.1:5000";
+
+    // =========================================
+    // عناصر صفحه
+    // =========================================
+
+    const phoneSection =
+        document.getElementById("phoneSection");
+
+    const codeSection =
+        document.getElementById("codeSection");
+
+    const phoneInput =
+        document.getElementById("phoneInput");
+
+    const codeInput =
+        document.getElementById("codeInput");
+
+    const sendCodeButton =
+        document.getElementById("sendCodeButton");
+
+    const verifyCodeButton =
+        document.getElementById("verifyCodeButton");
+
+    const backButton =
+        document.getElementById("backButton");
+
+    const loginMessage =
+        document.getElementById("loginMessage");
+
+    const timer =
+        document.getElementById("timer");
+
+
+    // =========================================
+    // وضعیت
+    // =========================================
+
+    let currentPhone = "";
+
+    let countdownInterval = null;
+
+
+    // =========================================
+    // نمایش پیام
+    // =========================================
+
+    function showMessage(text, type = "info") {
+
+        loginMessage.textContent = text;
+
+        loginMessage.className =
+            "login-message " + type;
+    }
+
+
+    // =========================================
+    // فعال/غیرفعال کردن دکمه
+    // =========================================
+
+    function setButtonLoading(button, loading, text) {
+
+        button.disabled = loading;
+
+        if (loading) {
+            button.dataset.oldText =
+                button.textContent;
+
+            button.textContent = text;
+
+        } else if (button.dataset.oldText) {
+
+            button.textContent =
+                button.dataset.oldText;
+
+            delete button.dataset.oldText;
+        }
+    }
+
+
+    // =========================================
+    // اعتبارسنجی شماره
+    // =========================================
+
+    function normalizePhone(phone) {
+
+        phone = String(phone || "").trim();
+
+        if (phone.startsWith("+98")) {
+            phone = "0" + phone.substring(3);
+        }
+
+        if (
+            phone.startsWith("98") &&
+            phone.length === 12
+        ) {
+            phone = "0" + phone.substring(2);
+        }
+
+        // حذف فاصله
+        phone = phone.replace(/\s+/g, "");
+
+        // تبدیل اعداد فارسی
+        phone = phone
+            .replace(/[۰-۹]/g, digit =>
+                String(
+                    "۰۱۲۳۴۵۶۷۸۹".indexOf(digit)
+                )
+            );
+
+        return phone;
+    }
+
+
+    function isValidPhone(phone) {
+
+        return /^09\d{9}$/.test(phone);
+    }
+
+
+    // =========================================
+    // نمایش بخش کد
+    // =========================================
+
+    function showCodeSection(phone) {
+
+        currentPhone = phone;
+
+        phoneSection.classList.add("hidden");
+
+        codeSection.classList.remove("hidden");
+
+        codeInput.value = "";
+
+        codeInput.focus();
+
+    }
+
+
+    // =========================================
+    // برگشت
+    // =========================================
+
+    backButton.addEventListener(
+        "click",
+        () => {
+
+            stopTimer();
+
+            codeSection.classList.add("hidden");
+
+            phoneSection.classList.remove("hidden");
+
+            codeInput.value = "";
+
+            showMessage("", "info");
+
+            phoneInput.focus();
+        }
+    );
+
+
+    // =========================================
+    // ارسال OTP
+    // =========================================
+
+    async function requestCode() {
+
+        const phone =
+            normalizePhone(phoneInput.value);
+
+        phoneInput.value = phone;
+
+        if (!isValidPhone(phone)) {
+
+            showMessage(
+                "شماره موبایل را درست وارد کنید.",
+                "error"
+            );
+
+            phoneInput.focus();
+
+            return;
+        }
+
+        setButtonLoading(
+            sendCodeButton,
+            true,
+            "در حال ارسال..."
+        );
+
+        showMessage(
+            "در حال ارسال کد تأیید...",
+            "info"
+        );
+
+        try {
+
+            const response =
+                await fetch(
+                    API_BASE + "/api/request-code",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            phone: phone
+                        })
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (!response.ok || !result.success) {
+
+                showMessage(
+                    result.message ||
+                    "ارسال کد ناموفق بود.",
+                    "error"
+                );
+
+                return;
+            }
+
+            showCodeSection(phone);
+
+            showMessage(
+                "کد تأیید برای شما ارسال شد.",
+                "success"
+            );
+
+            startTimer(
+                Number(result.expires_in || 120)
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "اتصال به سرور برقرار نشد.",
+                "error"
+            );
+
+        } finally {
+
+            setButtonLoading(
+                sendCodeButton,
+                false
+            );
+        }
+    }
+
+
+    // =========================================
+    // تأیید OTP
+    // =========================================
+
+    async function verifyCode() {
+
+        const code =
+            codeInput.value
+                .replace(/\s+/g, "")
+                .trim();
+
+        if (!/^\d{6}$/.test(code)) {
+
+            showMessage(
+                "کد تأیید باید ۶ رقمی باشد.",
+                "error"
+            );
+
+            codeInput.focus();
+
+            return;
+        }
+
+        setButtonLoading(
+            verifyCodeButton,
+            true,
+            "در حال بررسی..."
+        );
+
+        showMessage(
+            "در حال بررسی کد...",
+            "info"
+        );
+
+        try {
+
+            const response =
+                await fetch(
+                    API_BASE + "/api/verify-code",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            phone: currentPhone,
+                            code: code
+                        })
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (!response.ok || !result.success) {
+
+                showMessage(
+                    result.message ||
+                    "کد صحیح نیست.",
+                    "error"
+                );
+
+                return;
+            }
+
+            // ذخیره وضعیت ورود محلی
+            localStorage.setItem(
+                "laino_logged_in",
+                "true"
+            );
+
+            localStorage.setItem(
+                "laino_phone",
+                currentPhone
+            );
+
+            stopTimer();
+
+            showMessage(
+                "ورود با موفقیت انجام شد.",
+                "success"
+            );
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "index.html";
+
+            }, 700);
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "اتصال به سرور برقرار نشد.",
+                "error"
+            );
+
+        } finally {
+
+            setButtonLoading(
+                verifyCodeButton,
+                false
+            );
+        }
+    }
+
+
+    // =========================================
+    // تایمر
+    // =========================================
+
+    function startTimer(seconds) {
+
+        stopTimer();
+
+        let remaining =
+            Math.max(0, Number(seconds));
+
+        updateTimer(remaining);
+
+        countdownInterval =
+            setInterval(() => {
+
+                remaining--;
+
+                if (remaining <= 0) {
+
+                    stopTimer();
+
+                    timer.innerHTML =
+                        `<button
+                            class="resend-button"
+                            id="resendButton"
+                            type="button">
+                            ارسال دوباره کد
+                        </button>`;
+
+                    document
+                        .getElementById("resendButton")
+                        .addEventListener(
+                            "click",
+                            requestCode
+                        );
+
+                    return;
+                }
+
+                updateTimer(remaining);
+
+            }, 1000);
+    }
+
+
+    function updateTimer(seconds) {
+
+        const minutes =
+            Math.floor(seconds / 60);
+
+        const secs =
+            seconds % 60;
+
+        const formattedSeconds =
+            String(secs).padStart(2, "0");
+
+        timer.textContent =
+            `اعتبار کد: ${minutes}:${formattedSeconds}`;
+    }
+
+
+    function stopTimer() {
+
+        if (countdownInterval !== null) {
+
+            clearInterval(
+                countdownInterval
+            );
+
+            countdownInterval = null;
+        }
+    }
+
+
+    // =========================================
+    // رویدادها
+    // =========================================
+
+    sendCodeButton.addEventListener(
+        "click",
+        requestCode
+    );
+
+    verifyCodeButton.addEventListener(
+        "click",
+        verifyCode
+    );
+
+
+    phoneInput.addEventListener(
+        "input",
+        () => {
+
+            phoneInput.value =
+                phoneInput.value
+                    .replace(/[^\d۰-۹+]/g, "");
+
+        }
+    );
+
+
+    codeInput.addEventListener(
+        "input",
+        () => {
+
+            codeInput.value =
+                codeInput.value
+                    .replace(/[^\d]/g, "")
+                    .slice(0, 6);
+
+        }
+    );
+
+
+    phoneInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key === "Enter") {
+                event.preventDefault();
+                requestCode();
+            }
+        }
+    );
+
+
+    codeInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key === "Enter") {
+                event.preventDefault();
+                verifyCode();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>
