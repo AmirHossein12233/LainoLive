@@ -1,397 +1,1209 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>لاینو</title>
+    <meta
+        name="theme-color"
+        content="#111827"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>لاینو | LainoLive</title>
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
 </head>
 
 <body>
 
-    <!-- =====================================
-         بررسی ورود
-         ===================================== -->
+<script>
+    /*
+     * بررسی ورود کاربر
+     * سیستم جدید فقط با username کار می‌کند.
+     */
+    const loggedIn =
+        localStorage.getItem("lainolive_logged_in");
 
-    <script>
-        const isLoggedIn =
-            localStorage.getItem("laino_logged_in");
+    const username =
+        localStorage.getItem("lainolive_username");
 
-        if (isLoggedIn !== "true") {
-            window.location.replace("login.html");
-        }
-    </script>
+    if (
+        loggedIn !== "true" ||
+        !username
+    ) {
+        window.location.replace(
+            "/login.html"
+        );
+    }
+</script>
 
 
-    <!-- =====================================
-         Header
-         ===================================== -->
+<header class="topbar">
 
-    <header class="top-bar">
+    <div class="topbar-left">
 
         <div class="logo">
             لاینو
         </div>
 
+    </div>
+
+    <div class="topbar-right">
+
         <button
-            class="start-live-btn"
-            id="startLiveBtn"
+            id="notificationButton"
+            class="icon-button"
             type="button"
         >
-            🔴 شروع پخش
+            🔔
         </button>
 
-    </header>
+        <button
+            id="profileButton"
+            class="user-button"
+            type="button"
+        >
+            <span id="userName">
+                کاربر
+            </span>
+        </button>
+
+    </div>
+
+</header>
 
 
-    <!-- =====================================
-         Main
-         ===================================== -->
+<main class="main-content">
 
-    <main class="main">
+    <section class="welcome-section">
 
-        <section class="page-title">
+        <div>
 
-            <h1>
-                پخش‌های زنده
+            <h1 id="welcomeTitle">
+                سلام 👋
             </h1>
 
             <p>
-                همین حالا ببین چه کسانی در حال پخش هستند
+                به LainoLive خوش آمدی
             </p>
 
-        </section>
+        </div>
 
-
-        <!-- =================================
-             Live List
-             ================================= -->
-
-        <section
-            class="live-list"
-            id="liveList"
+        <button
+            id="startLiveButton"
+            class="primary-button"
+            type="button"
         >
+            🔴 شروع پخش زنده
+        </button>
 
-            <div
-                class="live-card"
-                data-live-id="1"
-            >
-
-                <div class="live-preview">
-
-                    <div class="live-badge">
-                        🔴 زنده
-                    </div>
-
-                    <div class="viewer-count">
-                        👥 125
-                    </div>
-
-                    <div class="play-icon">
-                        ▶
-                    </div>
-
-                </div>
+    </section>
 
 
-                <div class="live-info">
+    <section class="section">
 
-                    <div class="avatar">
-                        🎙️
-                    </div>
-
-                    <div class="live-text">
-
-                        <h2>
-                            موزیک زنده امشب
-                        </h2>
-
-                        <p>
-                            رادیو آوا
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="live-card"
-                data-live-id="2"
-            >
-
-                <div class="live-preview">
-
-                    <div class="live-badge">
-                        🔴 زنده
-                    </div>
-
-                    <div class="viewer-count">
-                        👥 72
-                    </div>
-
-                    <div class="play-icon">
-                        ▶
-                    </div>
-
-                </div>
-
-
-                <div class="live-info">
-
-                    <div class="avatar">
-                        🎮
-                    </div>
-
-                    <div class="live-text">
-
-                        <h2>
-                            بازی و گفت‌وگو
-                        </h2>
-
-                        <p>
-                            گیمر ایرانی
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="live-card"
-                data-live-id="3"
-            >
-
-                <div class="live-preview">
-
-                    <div class="live-badge">
-                        🔴 زنده
-                    </div>
-
-                    <div class="viewer-count">
-                        👥 41
-                    </div>
-
-                    <div class="play-icon">
-                        ▶
-                    </div>
-
-                </div>
-
-
-                <div class="live-info">
-
-                    <div class="avatar">
-                        🎤
-                    </div>
-
-                    <div class="live-text">
-
-                        <h2>
-                            گفت‌وگوی شبانه
-                        </h2>
-
-                        <p>
-                            استودیو لاینو
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================
-             Empty State
-             ================================= -->
-
-        <section
-            class="empty-state"
-            id="emptyState"
-        >
-
-            <div class="empty-icon">
-                📺
-            </div>
+        <div class="section-header">
 
             <h2>
-                فعلاً پخش دیگری وجود ندارد
+                پخش‌های زنده
             </h2>
 
-            <p>
-                وقتی کسی شروع به پخش کند،
-                اینجا نمایش داده می‌شود.
-            </p>
-
-        </section>
-
-    </main>
-
-
-    <!-- =====================================
-         Bottom Navigation
-         ===================================== -->
-
-    <nav class="bottom-nav">
-
-        <button
-            class="nav-item active"
-            id="homeBtn"
-            type="button"
-        >
-            <span>🏠</span>
-            <small>لایوها</small>
-        </button>
-
-
-        <button
-            class="nav-item"
-            id="liveNavBtn"
-            type="button"
-        >
-            <span>🔴</span>
-            <small>شروع پخش</small>
-        </button>
-
-
-        <button
-            class="nav-item"
-            id="notificationsBtn"
-            type="button"
-        >
-            <span>🔔</span>
-            <small>اعلان‌ها</small>
-        </button>
-
-
-        <button
-            class="nav-item"
-            id="profileBtn"
-            type="button"
-        >
-            <span id="profileIcon">
-                👤
+            <span
+                id="liveCount"
+                class="section-count"
+            >
+                0 پخش
             </span>
 
-            <small>
-                پروفایل
-            </small>
-        </button>
-
-    </nav>
+        </div>
 
 
-    <!-- =====================================
-         Start Live Modal
-         ===================================== -->
+        <div
+            id="liveList"
+            class="live-list"
+        >
 
-    <div
-        class="modal hidden"
-        id="startLiveModal"
+            <div class="empty-live">
+
+                <div class="empty-icon">
+                    📺
+                </div>
+
+                <h3>
+                    هنوز پخش زنده‌ای وجود ندارد
+                </h3>
+
+                <p>
+                    اولین پخش زنده را تو شروع کن!
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-item active"
+        type="button"
+        data-page="home"
     >
+        <span class="nav-icon">
+            🏠
+        </span>
 
-        <div class="modal-box">
+        <span>
+            خانه
+        </span>
+    </button>
 
-            <button
-                class="close-btn"
-                id="closeModalBtn"
-                type="button"
-                aria-label="بستن"
-            >
-                ✕
-            </button>
 
+    <button
+        class="nav-item"
+        type="button"
+        id="searchButton"
+    >
+        <span class="nav-icon">
+            🔎
+        </span>
+
+        <span>
+            جستجو
+        </span>
+    </button>
+
+
+    <button
+        class="nav-item"
+        type="button"
+        id="createButton"
+    >
+        <span class="nav-icon">
+            ➕
+        </span>
+
+        <span>
+            ایجاد
+        </span>
+    </button>
+
+
+    <button
+        class="nav-item"
+        type="button"
+        id="messagesButton"
+    >
+        <span class="nav-icon">
+            💬
+        </span>
+
+        <span>
+            پیام‌ها
+        </span>
+    </button>
+
+
+    <button
+        class="nav-item"
+        type="button"
+        id="bottomProfileButton"
+    >
+        <span class="nav-icon">
+            👤
+        </span>
+
+        <span>
+            پروفایل
+        </span>
+    </button>
+
+</nav>
+
+
+<!-- Start Live Modal -->
+
+<div
+    id="liveModal"
+    class="modal hidden"
+>
+
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
 
             <h2>
                 شروع پخش زنده
             </h2>
 
-
-            <label for="liveTitle">
-                عنوان پخش
-            </label>
-
-
-            <input
-                type="text"
-                id="liveTitle"
-                placeholder="مثلاً موزیک زنده امشب"
-                maxlength="80"
-                autocomplete="off"
-            >
-
-
             <button
-                class="confirm-live-btn"
-                id="confirmLiveBtn"
+                id="closeLiveModal"
+                class="close-button"
                 type="button"
             >
-                🔴 شروع پخش
+                ✕
+            </button>
+
+        </div>
+
+        <label for="liveTitle">
+            عنوان پخش
+        </label>
+
+        <input
+            id="liveTitle"
+            type="text"
+            placeholder="مثلاً بازی آنلاین 🎮"
+            maxlength="100"
+        >
+
+        <label for="liveCategory">
+            دسته‌بندی
+        </label>
+
+        <select
+            id="liveCategory"
+        >
+            <option value="general">
+                عمومی
+            </option>
+
+            <option value="gaming">
+                بازی
+            </option>
+
+            <option value="music">
+                موسیقی
+            </option>
+
+            <option value="chat">
+                گفتگو
+            </option>
+
+            <option value="education">
+                آموزشی
+            </option>
+        </select>
+
+        <button
+            id="confirmLiveButton"
+            class="primary-button full"
+            type="button"
+        >
+            ادامه
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- Viewer Modal -->
+
+<div
+    id="viewerModal"
+    class="viewer-overlay hidden"
+>
+
+    <div class="viewer-content">
+
+        <div class="viewer-top">
+
+            <button
+                id="closeViewerButton"
+                class="viewer-close"
+                type="button"
+            >
+                ✕
+            </button>
+
+            <div
+                id="viewerTitle"
+                class="viewer-title"
+            >
+                پخش زنده
+            </div>
+
+        </div>
+
+
+        <div class="viewer-screen">
+
+            <div class="viewer-placeholder">
+
+                <div class="viewer-camera">
+                    📹
+                </div>
+
+                <h2>
+                    پخش زنده
+                </h2>
+
+                <p>
+                    این بخش برای پخش واقعی آنلاین آماده شده است.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="viewer-bottom">
+
+            <button
+                id="likeButton"
+                type="button"
+            >
+                ❤️ 0
+            </button>
+
+            <button
+                id="followButton"
+                type="button"
+            >
+                دنبال کردن
+            </button>
+
+            <button
+                id="shareButton"
+                type="button"
+            >
+                اشتراک‌گذاری
             </button>
 
         </div>
 
     </div>
 
+</div>
 
-    <script src="app.js"></script>
+
+<div
+    id="toast"
+    class="toast"
+></div>
 
 
-    <!-- =====================================
-         Profile Navigation
-         ===================================== -->
+<script>
 
-    <script>
+    /*
+     * =====================================================
+     * USER
+     * =====================================================
+     */
 
-        const profileBtn =
-            document.getElementById("profileBtn");
+    const currentUsername =
+        localStorage.getItem(
+            "lainolive_username"
+        ) || "کاربر";
 
-        if (profileBtn) {
 
-            profileBtn.addEventListener(
-                "click",
-                () => {
+    const userNameElement =
+        document.getElementById(
+            "userName"
+        );
 
-                    window.location.href =
-                        "profile.html";
 
-                }
-            );
+    const welcomeTitle =
+        document.getElementById(
+            "welcomeTitle"
+        );
 
+
+    userNameElement.textContent =
+        currentUsername;
+
+
+    welcomeTitle.textContent =
+        "سلام " +
+        currentUsername +
+        " 👋";
+
+
+    /*
+     * =====================================================
+     * ELEMENTS
+     * =====================================================
+     */
+
+    const liveList =
+        document.getElementById(
+            "liveList"
+        );
+
+
+    const liveCount =
+        document.getElementById(
+            "liveCount"
+        );
+
+
+    const liveModal =
+        document.getElementById(
+            "liveModal"
+        );
+
+
+    const viewerModal =
+        document.getElementById(
+            "viewerModal"
+        );
+
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    const liveTitle =
+        document.getElementById(
+            "liveTitle"
+        );
+
+
+    const liveCategory =
+        document.getElementById(
+            "liveCategory"
+        );
+
+
+    const startLiveButton =
+        document.getElementById(
+            "startLiveButton"
+        );
+
+
+    const closeLiveModal =
+        document.getElementById(
+            "closeLiveModal"
+        );
+
+
+    const confirmLiveButton =
+        document.getElementById(
+            "confirmLiveButton"
+        );
+
+
+    const closeViewerButton =
+        document.getElementById(
+            "closeViewerButton"
+        );
+
+
+    const viewerTitle =
+        document.getElementById(
+            "viewerTitle"
+        );
+
+
+    const likeButton =
+        document.getElementById(
+            "likeButton"
+        );
+
+
+    const followButton =
+        document.getElementById(
+            "followButton"
+        );
+
+
+    const shareButton =
+        document.getElementById(
+            "shareButton"
+        );
+
+
+    /*
+     * =====================================================
+     * DATA
+     * =====================================================
+     */
+
+    let liveStreams =
+        JSON.parse(
+            localStorage.getItem(
+                "lainolive_streams"
+            ) || "[]"
+        );
+
+
+    let currentViewer =
+        null;
+
+
+    /*
+     * =====================================================
+     * TOAST
+     * =====================================================
+     */
+
+    function showToast(text) {
+
+        toast.textContent =
+            text;
+
+        toast.classList.add(
+            "show"
+        );
+
+        setTimeout(
+            () => {
+                toast.classList.remove(
+                    "show"
+                );
+            },
+            2200
+        );
+    }
+
+
+    /*
+     * =====================================================
+     * SAVE STREAMS
+     * =====================================================
+     */
+
+    function saveStreams() {
+
+        localStorage.setItem(
+            "lainolive_streams",
+            JSON.stringify(
+                liveStreams
+            )
+        );
+    }
+
+
+    /*
+     * =====================================================
+     * RENDER STREAMS
+     * =====================================================
+     */
+
+    function renderStreams() {
+
+        liveList.innerHTML = "";
+
+        if (
+            !liveStreams.length
+        ) {
+
+            liveList.innerHTML = `
+                <div class="empty-live">
+
+                    <div class="empty-icon">
+                        📺
+                    </div>
+
+                    <h3>
+                        هنوز پخش زنده‌ای وجود ندارد
+                    </h3>
+
+                    <p>
+                        اولین پخش زنده را تو شروع کن!
+                    </p>
+
+                </div>
+            `;
+
+            liveCount.textContent =
+                "0 پخش";
+
+            return;
         }
 
 
-        const homeBtn =
-            document.getElementById("homeBtn");
+        liveCount.textContent =
+            liveStreams.length +
+            " پخش";
 
-        if (homeBtn) {
 
-            homeBtn.addEventListener(
-                "click",
+        liveStreams.forEach(
+            stream => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "live-card";
+
+
+                card.innerHTML = `
+
+                    <div class="live-thumbnail">
+
+                        <div class="live-badge">
+                            LIVE
+                        </div>
+
+                        <div class="thumbnail-icon">
+                            📹
+                        </div>
+
+                        <div class="viewer-count">
+                            👁 ${stream.viewers || 0}
+                        </div>
+
+                    </div>
+
+
+                    <div class="live-info">
+
+                        <div class="stream-title">
+                            ${escapeHtml(
+                                stream.title
+                            )}
+                        </div>
+
+                        <div class="stream-user">
+                            👤
+                            ${escapeHtml(
+                                stream.username
+                            )}
+                        </div>
+
+                        <div class="stream-category">
+                            ${escapeHtml(
+                                stream.category
+                            )}
+                        </div>
+
+                    </div>
+                `;
+
+
+                card.addEventListener(
+                    "click",
+                    () => {
+                        openViewer(
+                            stream
+                        );
+                    }
+                );
+
+
+                liveList.appendChild(
+                    card
+                );
+            }
+        );
+    }
+
+
+    /*
+     * =====================================================
+     * ESCAPE HTML
+     * =====================================================
+     */
+
+    function escapeHtml(text) {
+
+        return String(text)
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+    }
+
+
+    /*
+     * =====================================================
+     * OPEN LIVE MODAL
+     * =====================================================
+     */
+
+    function openLiveModal() {
+
+        liveModal.classList.remove(
+            "hidden"
+        );
+
+        liveTitle.focus();
+    }
+
+
+    function closeLive() {
+
+        liveModal.classList.add(
+            "hidden"
+        );
+    }
+
+
+    startLiveButton.addEventListener(
+        "click",
+        openLiveModal
+    );
+
+
+    closeLiveModal.addEventListener(
+        "click",
+        closeLive
+    );
+
+
+    liveModal
+        .querySelector(
+            ".modal-backdrop"
+        )
+        .addEventListener(
+            "click",
+            closeLive
+        );
+
+
+    /*
+     * =====================================================
+     * CREATE LIVE
+     * =====================================================
+     */
+
+    confirmLiveButton.addEventListener(
+        "click",
+        () => {
+
+            const title =
+                liveTitle.value.trim();
+
+            const category =
+                liveCategory.value;
+
+
+            if (!title) {
+
+                showToast(
+                    "عنوان پخش را وارد کن."
+                );
+
+                return;
+            }
+
+
+            const stream = {
+
+                id:
+                    Date.now().toString(),
+
+                title:
+                    title,
+
+                category:
+                    category,
+
+                username:
+                    currentUsername,
+
+                viewers:
+                    0,
+
+                likes:
+                    0,
+
+                following:
+                    false,
+
+                createdAt:
+                    new Date().toISOString()
+
+            };
+
+
+            liveStreams.unshift(
+                stream
+            );
+
+
+            saveStreams();
+
+            renderStreams();
+
+            closeLive();
+
+
+            liveTitle.value =
+                "";
+
+
+            showToast(
+                "پخش زنده ساخته شد."
+            );
+
+
+            /*
+             * انتقال به صفحه دوربین
+             */
+            setTimeout(
                 () => {
 
                     window.location.href =
-                        "index.html";
+                        "/live.html";
 
-                }
+                },
+                500
+            );
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * VIEWER
+     * =====================================================
+     */
+
+    function openViewer(stream) {
+
+        currentViewer =
+            stream;
+
+
+        stream.viewers =
+            Number(
+                stream.viewers || 0
+            ) + 1;
+
+
+        saveStreams();
+
+        viewerTitle.textContent =
+            stream.title;
+
+
+        likeButton.textContent =
+            "❤️ " +
+            Number(
+                stream.likes || 0
             );
 
-        }
 
-    </script>
+        followButton.textContent =
+            stream.following
+                ? "دنبال می‌کنی ✓"
+                : "دنبال کردن";
+
+
+        viewerModal.classList.remove(
+            "hidden"
+        );
+    }
+
+
+    closeViewerButton.addEventListener(
+        "click",
+        () => {
+
+            viewerModal.classList.add(
+                "hidden"
+            );
+
+            currentViewer =
+                null;
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * LIKE
+     * =====================================================
+     */
+
+    likeButton.addEventListener(
+        "click",
+        () => {
+
+            if (!currentViewer) {
+                return;
+            }
+
+
+            currentViewer.likes =
+                Number(
+                    currentViewer.likes || 0
+                ) + 1;
+
+
+            likeButton.textContent =
+                "❤️ " +
+                currentViewer.likes;
+
+
+            saveStreams();
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * FOLLOW
+     * =====================================================
+     */
+
+    followButton.addEventListener(
+        "click",
+        () => {
+
+            if (!currentViewer) {
+                return;
+            }
+
+
+            currentViewer.following =
+                !currentViewer.following;
+
+
+            followButton.textContent =
+                currentViewer.following
+                    ? "دنبال می‌کنی ✓"
+                    : "دنبال کردن";
+
+
+            saveStreams();
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * SHARE
+     * =====================================================
+     */
+
+    shareButton.addEventListener(
+        "click",
+        async () => {
+
+            const text =
+                currentViewer
+                    ? currentViewer.title
+                    : "LainoLive";
+
+
+            try {
+
+                if (
+                    navigator.share
+                ) {
+
+                    await navigator.share({
+                        title:
+                            "LainoLive",
+                        text:
+                            text,
+                        url:
+                            window.location.href
+                    });
+
+                } else {
+
+                    await navigator.clipboard.writeText(
+                        window.location.href
+                    );
+
+                    showToast(
+                        "لینک کپی شد."
+                    );
+                }
+
+            } catch (error) {
+                // کاربر پنجره اشتراک‌گذاری را بسته است.
+            }
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * PROFILE
+     * =====================================================
+     */
+
+    function openProfile() {
+
+        window.location.href =
+            "/profile.html";
+    }
+
+
+    document
+        .getElementById(
+            "profileButton"
+        )
+        .addEventListener(
+            "click",
+            openProfile
+        );
+
+
+    document
+        .getElementById(
+            "bottomProfileButton"
+        )
+        .addEventListener(
+            "click",
+            openProfile
+        );
+
+
+    /*
+     * =====================================================
+     * NOTIFICATIONS
+     * =====================================================
+     */
+
+    document
+        .getElementById(
+            "notificationButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                showToast(
+                    "فعلاً اعلان جدیدی نداری."
+                );
+
+            }
+        );
+
+
+    /*
+     * =====================================================
+     * SEARCH
+     * =====================================================
+     */
+
+    document
+        .getElementById(
+            "searchButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                showToast(
+                    "جستجو در نسخه بعدی فعال می‌شود."
+                );
+
+            }
+        );
+
+
+    /*
+     * =====================================================
+     * CREATE
+     * =====================================================
+     */
+
+    document
+        .getElementById(
+            "createButton"
+        )
+        .addEventListener(
+            "click",
+            openLiveModal
+        );
+
+
+    /*
+     * =====================================================
+     * MESSAGES
+     * =====================================================
+     */
+
+    document
+        .getElementById(
+            "messagesButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                showToast(
+                    "پیام‌ها در نسخه بعدی فعال می‌شوند."
+                );
+
+            }
+        );
+
+
+    /*
+     * =====================================================
+     * LOGOUT SAFETY
+     * =====================================================
+     */
+
+    window.addEventListener(
+        "pageshow",
+        () => {
+
+            const logged =
+                localStorage.getItem(
+                    "lainolive_logged_in"
+                );
+
+            const user =
+                localStorage.getItem(
+                    "lainolive_username"
+                );
+
+            if (
+                logged !== "true" ||
+                !user
+            ) {
+
+                window.location.replace(
+                    "/login.html"
+                );
+            }
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * INITIAL
+     * =====================================================
+     */
+
+    renderStreams();
+
+</script>
 
 </body>
 </html>
