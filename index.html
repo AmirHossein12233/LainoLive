@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -61,12 +62,54 @@
         .empty-live {
             grid-column: 1 / -1;
         }
+
+        .logout-button {
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 9px 12px;
+            background: #1e293b;
+            color: #fca5a5;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .logout-button:hover {
+            background: #3f0a0a;
+        }
+
+        .logout-button:active {
+            transform: scale(0.98);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .logout-button {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+
+            .user-button {
+                max-width: 150px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
 <script>
+    /* =====================================================
+       AUTH CHECK
+    ===================================================== */
+
     const loggedIn =
         localStorage.getItem(
             "lainolive_logged_in"
@@ -81,6 +124,7 @@
         loggedIn !== "true" ||
         !currentUsername
     ) {
+
         window.location.replace(
             "/login.html"
         );
@@ -101,16 +145,28 @@
 
     <div class="topbar-right">
 
-        <button
-            id="profileButton"
-            class="user-button"
-            type="button"
-        >
-            👤
-            <span id="userName">
-                کاربر
-            </span>
-        </button>
+        <div class="user-actions">
+
+            <button
+                id="profileButton"
+                class="user-button"
+                type="button"
+            >
+                👤
+                <span id="userName">
+                    کاربر
+                </span>
+            </button>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button"
+            >
+                خروج از حساب
+            </button>
+
+        </div>
 
     </div>
 
@@ -400,6 +456,12 @@
         );
 
 
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
+
+
     /* =====================================================
        USER UI
     ===================================================== */
@@ -422,7 +484,9 @@
        TOAST
     ===================================================== */
 
-    function showToast(text) {
+    function showToast(
+        text
+    ) {
 
         toast.textContent =
             text;
@@ -448,9 +512,13 @@
        ESCAPE
     ===================================================== */
 
-    function escapeHtml(text) {
+    function escapeHtml(
+        text
+    ) {
 
-        return String(text)
+        return String(
+            text ?? ""
+        )
             .replaceAll(
                 "&",
                 "&amp;"
@@ -563,7 +631,7 @@
 
 
     /* =====================================================
-       RENDER
+       RENDER STREAMS
     ===================================================== */
 
     function renderStreams(
@@ -579,7 +647,9 @@
             " پخش";
 
 
-        if (!streams.length) {
+        if (
+            !streams.length
+        ) {
 
             liveList.innerHTML = `
                 <div class="empty-live">
@@ -613,8 +683,12 @@
 
 
                 const isOwner =
-                    stream.username ===
-                    currentUsername;
+                    String(
+                        stream.username
+                    ) ===
+                    String(
+                        currentUsername
+                    );
 
 
                 card.className =
@@ -641,7 +715,8 @@
                         <div class="viewer-count">
                             👁
                             ${Number(
-                                stream.viewers ||
+                                stream.viewer_count ??
+                                stream.viewers ??
                                 0
                             )}
                         </div>
@@ -717,7 +792,11 @@
         stream
     ) {
 
-        if (!stream || !stream.id) {
+        if (
+            !stream ||
+            stream.id === undefined ||
+            stream.id === null
+        ) {
             return;
         }
 
@@ -730,14 +809,13 @@
         );
 
 
-        /*
-         * اگر خود کاربر صاحب لایو باشد،
-         * وارد صفحه صاحب لایو می‌شود.
-         */
-
         if (
-            stream.username ===
-            currentUsername
+            String(
+                stream.username
+            ) ===
+            String(
+                currentUsername
+            )
         ) {
 
             sessionStorage.setItem(
@@ -751,13 +829,10 @@
             window.location.href =
                 "/live.html";
 
+
             return;
         }
 
-
-        /*
-         * سایر کاربران وارد viewer.html می‌شوند.
-         */
 
         window.location.href =
             "/viewer.html?id=" +
@@ -768,7 +843,7 @@
 
 
     /* =====================================================
-       START LIVE
+       START LIVE MODAL
     ===================================================== */
 
     function openLiveModal() {
@@ -777,7 +852,13 @@
             "hidden"
         );
 
-        liveTitle.focus();
+
+        setTimeout(
+            () => {
+                liveTitle.focus();
+            },
+            50
+        );
     }
 
 
@@ -841,7 +922,9 @@
                 liveCategory.value;
 
 
-            if (!title) {
+            if (
+                !title
+            ) {
 
                 showToast(
                     "عنوان لایو را وارد کن."
@@ -928,6 +1011,7 @@
             } catch (error) {
 
                 console.error(
+                    "Create stream:",
                     error
                 );
 
@@ -944,6 +1028,65 @@
                 button.textContent =
                     "شروع لایو";
             }
+        }
+    );
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    logoutButton.addEventListener(
+        "click",
+        function() {
+
+            const accepted =
+                window.confirm(
+                    "آیا مطمئنی می‌خواهی از حساب خارج شوی؟"
+                );
+
+
+            if (
+                !accepted
+            ) {
+                return;
+            }
+
+
+            /*
+             * فقط اطلاعات ورود پاک می‌شود.
+             * تنظیمات و داده‌های دیگر سایت دست‌نخورده می‌مانند.
+             */
+
+            localStorage.removeItem(
+                "lainolive_logged_in"
+            );
+
+
+            localStorage.removeItem(
+                "lainolive_username"
+            );
+
+
+            /*
+             * اطلاعات موقت لایو پاک می‌شود
+             * تا بعد از ورود دوباره، لایو قبلی
+             * اشتباهاً باز نشود.
+             */
+
+            sessionStorage.removeItem(
+                "lainolive_current_stream"
+            );
+
+
+            sessionStorage.removeItem(
+                "lainolive_view_stream"
+            );
+
+
+            window.location.replace(
+                "/login.html"
+            );
         }
     );
 
@@ -1027,3 +1170,4 @@
 </body>
 
 </html>
+```
