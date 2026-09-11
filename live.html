@@ -282,8 +282,7 @@
             min-height: 44px;
 
             padding:
-                0
-                13px;
+                0 13px;
 
             border: none;
 
@@ -1578,7 +1577,23 @@ function updateAudioDiagnostic() {
         setDiagnostic(
             "⚠️ <strong>صدای منبع:</strong> دریافت نشد<br>" +
             "✅ <strong>میکروفن:</strong> فعال<br>" +
-            "در حالت «تب + صدای تب» باید صدای تب هنگام انتخاب تب در دسترس باشد.",
+            "در حال حاضر Capture مرورگر هیچ Audio Track برای منبع برنگردانده است.",
+            "warning"
+        );
+
+
+        return;
+    }
+
+
+    if (
+        hasSystem &&
+        !hasMic
+    ) {
+
+        setDiagnostic(
+            "✅ <strong>صدای منبع:</strong> دریافت شد<br>" +
+            "⚠️ <strong>میکروفن:</strong> دریافت نشد.",
             "warning"
         );
 
@@ -1782,66 +1797,36 @@ async function startScreen() {
     stopAllMedia();
 
 
-    const advancedOptions = {
-        video: true,
-
-        audio: {
-            suppressLocalAudioPlayback:
-                false
-        },
-
-        systemAudio:
-            "include",
-
-        windowAudio:
-            "system",
-
-        surfaceSwitching:
-            "include",
-
-        selfBrowserSurface:
-            "exclude",
-
-        monitorTypeSurfaces:
-            "include"
-    };
-
-
     try {
 
-        let displayStream;
+        const displayStream =
+            await navigator.mediaDevices.getDisplayMedia(
+                {
+                    video: {
+                        displaySurface: "monitor"
+                    },
 
+                    audio: {
+                        suppressLocalAudioPlayback:
+                            false
+                    },
 
-        try {
+                    systemAudio:
+                        "include",
 
-            displayStream =
-                await navigator.mediaDevices.getDisplayMedia(
-                    advancedOptions
-                );
+                    windowAudio:
+                        "system",
 
-        } catch (
-            advancedError
-        ) {
+                    surfaceSwitching:
+                        "include",
 
-            console.warn(
-                "Advanced capture failed:",
-                advancedError
+                    selfBrowserSurface:
+                        "exclude",
+
+                    monitorTypeSurfaces:
+                        "include"
+                }
             );
-
-
-            /*
-               fallback برای مرورگرهایی که
-               بعضی hintها را قبول نمی‌کنند.
-            */
-
-            displayStream =
-                await navigator.mediaDevices.getDisplayMedia(
-                    {
-                        video: true,
-                        audio: true
-                    }
-                );
-        }
 
 
         const videoTracks =
@@ -1861,6 +1846,12 @@ async function startScreen() {
         console.log(
             "SCREEN AUDIO TRACKS:",
             audioTracks.length
+        );
+
+
+        console.log(
+            "SCREEN VIDEO TRACK:",
+            videoTracks[0] || null
         );
 
 
@@ -1919,6 +1910,7 @@ async function startScreen() {
 
                         startCamera();
                     }
+
                 }
             );
         }
@@ -1928,7 +1920,6 @@ async function startScreen() {
 
             systemAudioTrack.enabled =
                 true;
-
         }
 
 
@@ -1937,6 +1928,29 @@ async function startScreen() {
             microphoneTrack.enabled =
                 true;
         }
+
+
+        const settings =
+            screenTrack
+                ? screenTrack.getSettings()
+                : {};
+
+
+        const selectedSurface =
+            settings.displaySurface ||
+            "unknown";
+
+
+        console.log(
+            "SELECTED DISPLAY SURFACE:",
+            selectedSurface
+        );
+
+
+        console.log(
+            "SELECTED DISPLAY SETTINGS:",
+            settings
+        );
 
 
         cameraBtn.classList.remove(
@@ -1984,8 +1998,7 @@ async function startScreen() {
 
 
         if (
-            systemAudioTrack
-            &&
+            systemAudioTrack &&
             microphoneTrack
         ) {
 
@@ -1993,9 +2006,21 @@ async function startScreen() {
                 "صفحه + صدای سیستم + میکروفن فعال"
             );
 
-        } else if (
-            microphoneTrack
-        ) {
+
+            setDiagnostic(
+                "✅ <strong>صدای منبع:</strong> دریافت شد<br>" +
+                "✅ <strong>میکروفن:</strong> فعال<br>" +
+                "🖥️ <strong>نوع منبع:</strong> " +
+                escapeHtml(
+                    selectedSurface
+                ) +
+                "<br>" +
+                "🎵 <strong>Audio Track:</strong> " +
+                audioTracks.length,
+                "ok"
+            );
+
+        } else {
 
             setStatus(
                 "صفحه + میکروفن فعال"
@@ -2003,7 +2028,24 @@ async function startScreen() {
 
 
             showNotice(
-                "صفحه گرفته شد، ولی ترک صدای سیستم توسط مرورگر برنگشت."
+                "صفحه دریافت شد، اما مرورگر Audio Track برای صدای سیستم برنگرداند."
+            );
+
+
+            setDiagnostic(
+                "⚠️ <strong>صدای منبع:</strong> دریافت نشد<br>" +
+                "✅ <strong>میکروفن:</strong> فعال<br>" +
+                "🖥️ <strong>نوع منبع:</strong> " +
+                escapeHtml(
+                    selectedSurface
+                ) +
+                "<br>" +
+                "🎵 <strong>تعداد ترک صوتی Capture:</strong> " +
+                audioTracks.length +
+                "<br>" +
+                "🎬 <strong>تعداد ترک تصویری:</strong> " +
+                videoTracks.length,
+                "warning"
             );
         }
 
@@ -2064,7 +2106,7 @@ async function startTabShare() {
 
 
     setStatus(
-        "در حال باز کردن انتخاب تب..."
+        "تب دارای صدا را انتخاب کنید..."
     );
 
 
@@ -2075,60 +2117,32 @@ async function startTabShare() {
 
     try {
 
-        let tabStream;
+        const tabStream =
+            await navigator.mediaDevices.getDisplayMedia(
+                {
+                    video: {
+                        displaySurface:
+                            "browser"
+                    },
 
+                    audio: {
+                        suppressLocalAudioPlayback:
+                            false
+                    },
 
-        const tabOptions = {
-            video: {
-                displaySurface:
-                    "browser"
-            },
+                    preferCurrentTab:
+                        false,
 
-            audio: true,
+                    selfBrowserSurface:
+                        "exclude",
 
-            preferCurrentTab:
-                true,
+                    surfaceSwitching:
+                        "include",
 
-            selfBrowserSurface:
-                "include",
-
-            surfaceSwitching:
-                "include",
-
-            systemAudio:
-                "exclude"
-        };
-
-
-        try {
-
-            tabStream =
-                await navigator.mediaDevices.getDisplayMedia(
-                    tabOptions
-                );
-
-        } catch (
-            advancedError
-        ) {
-
-            console.warn(
-                "Advanced tab capture failed:",
-                advancedError
+                    systemAudio:
+                        "exclude"
+                }
             );
-
-
-            /*
-               fallback
-            */
-
-            tabStream =
-                await navigator.mediaDevices.getDisplayMedia(
-                    {
-                        video: true,
-                        audio: true
-                    }
-                );
-        }
 
 
         const videoTracks =
@@ -2152,9 +2166,14 @@ async function startTabShare() {
 
 
         console.log(
+            "TAB VIDEO TRACK:",
+            videoTracks[0] || null
+        );
+
+
+        console.log(
             "TAB AUDIO TRACK:",
-            audioTracks[0]
-                || null
+            audioTracks[0] || null
         );
 
 
@@ -2162,12 +2181,6 @@ async function startTabShare() {
             videoTracks[0]
             || null;
 
-
-        /*
-           صدای تب به عنوان
-           systemAudioTrack نگه داشته می‌شود
-           تا viewer آن را جدا دریافت کند.
-        */
 
         systemAudioTrack =
             audioTracks[0]
@@ -2217,6 +2230,45 @@ async function startTabShare() {
         }
 
 
+        if (screenTrack) {
+
+            screenTrack.addEventListener(
+                "ended",
+                () => {
+
+                    if (!ending) {
+
+                        startCamera();
+                    }
+
+                }
+            );
+        }
+
+
+        const settings =
+            screenTrack
+                ? screenTrack.getSettings()
+                : {};
+
+
+        const selectedSurface =
+            settings.displaySurface ||
+            "unknown";
+
+
+        console.log(
+            "SELECTED TAB SURFACE:",
+            selectedSurface
+        );
+
+
+        console.log(
+            "SELECTED TAB SETTINGS:",
+            settings
+        );
+
+
         cameraBtn.classList.remove(
             "active"
         );
@@ -2261,24 +2313,8 @@ async function startTabShare() {
         updateAudioDiagnostic();
 
 
-        if (screenTrack) {
-
-            screenTrack.addEventListener(
-                "ended",
-                () => {
-
-                    if (!ending) {
-
-                        startCamera();
-                    }
-                }
-            );
-        }
-
-
         if (
-            systemAudioTrack
-            &&
+            systemAudioTrack &&
             microphoneTrack
         ) {
 
@@ -2286,12 +2322,18 @@ async function startTabShare() {
                 "تب + صدای تب + میکروفن فعال"
             );
 
-        } else if (
-            systemAudioTrack
-        ) {
 
-            setStatus(
-                "تب + صدای تب فعال"
+            setDiagnostic(
+                "✅ <strong>صدای تب:</strong> دریافت شد<br>" +
+                "✅ <strong>میکروفن:</strong> فعال<br>" +
+                "🌐 <strong>نوع منبع:</strong> " +
+                escapeHtml(
+                    selectedSurface
+                ) +
+                "<br>" +
+                "🎵 <strong>Audio Track:</strong> " +
+                audioTracks.length,
+                "ok"
             );
 
         } else {
@@ -2302,7 +2344,30 @@ async function startTabShare() {
 
 
             showNotice(
-                "تب گرفته شد، اما مرورگر ترک صدای تب را برنگرداند."
+                "تب گرفته شد، ولی Chrome هیچ Audio Track از تب برنگرداند."
+            );
+
+
+            setDiagnostic(
+                "⚠️ <strong>صدای تب:</strong> دریافت نشد<br>" +
+                "✅ <strong>میکروفن:</strong> " +
+                (
+                    microphoneTrack
+                        ? "فعال"
+                        : "دریافت نشد"
+                ) +
+                "<br>" +
+                "🌐 <strong>نوع منبع:</strong> " +
+                escapeHtml(
+                    selectedSurface
+                ) +
+                "<br>" +
+                "🎵 <strong>تعداد Audio Track:</strong> " +
+                audioTracks.length +
+                "<br>" +
+                "🎬 <strong>تعداد Video Track:</strong> " +
+                videoTracks.length,
+                "warning"
             );
         }
 
@@ -3221,12 +3286,6 @@ systemVolume.addEventListener(
             );
 
 
-        /*
-           این کنترل برای ترک منبع
-           است؛ صدای واقعی viewer نیز
-           جداگانه قابل کنترل است.
-        */
-
         if (
             systemAudioTrack
         ) {
@@ -3347,6 +3406,14 @@ stopBtn.addEventListener(
         systemAudioBtn.classList.remove(
             "active"
         );
+
+
+        systemValue.textContent =
+            "خاموش";
+
+
+        micValue.textContent =
+            "خاموش";
 
 
         setStatus(
@@ -3679,6 +3746,7 @@ window.addEventListener(
 ===================================================== */
 
 initialize();
+
 </script>
 
 </body>
