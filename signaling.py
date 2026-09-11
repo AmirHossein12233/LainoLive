@@ -1,219 +1,141 @@
 import asyncio
 import json
 import os
+import uuid
 from collections import defaultdict
-from typing import Dict, Set
 
 import websockets
-from websockets.server import ServerConnection
 
-
-# =========================================================
-# تنظیمات
-# =========================================================
 
 HOST = "0.0.0.0"
-PORT = int(os.getenv("PORT", "10000"))
-
-# حداکثر اندازه پیام WebSocket
-MAX_MESSAGE_SIZE = 1024 * 1024
-
-# =========================================================
-# اتاق‌ها
-# =========================================================
-
-# room_id -> set of connected websocket clients
-rooms: Dict[str, Set[ServerConnection]] = defaultdict(set)
-
-# websocket -> اطلاعات اتصال
-connections: Dict[ServerConnection, dict] = {}
-
-rooms_lock = asyncio.Lock()
+PORT = int(os.environ.get("PORT", "10000"))
 
 
 # =========================================================
-# JSON
+# ROOMS
 # =========================================================
 
-def safe_json_loads(raw):
-    try:
-        data = json.loads(raw)
-
-        if isinstance(data, dict):
-            return data
-
-    except (
-        json.JSONDecodeError,
-        TypeError,
-        ValueError
-    ):
-        pass
-
-    return None
+rooms = defaultdict(
+    lambda: {
+        "host": None,
+        "viewers": {}
+    }
+)
 
 
-def json_message(data):
-    return json.dumps(
-        data,
-        ensure_ascii=False,
-        separators=(",", ":")
-    )
+# websocket_info[websocket] = {
+#     "room_id": "...",
+#     "role": "host" or "viewer",
+#     "viewer_id": "..."
+# }
+
+websocket_info = {}
 
 
 # =========================================================
-# ارسال پیام
+# SEND JSON
 # =========================================================
 
-async def send_json(
-    websocket,
-    data
-):
+async def send_json(websocket, payload):
+    if websocket is None:
+        return False
+
     try:
         await websocket.send(
-            json_message(data)
+            json.dumps(
+                payload,
+                ensure_ascii=False
+            )
         )
         return True
 
-    except Exception:
+    except Exception as error:
+        print("[SEND ERROR]", error)
         return False
 
 
-async def send_to_room(
-    room_id,
-    data,
-    exclude=None
-):
-    async with rooms_lock:
+# =========================================================
+# REMOVE CONNECTION
+# =========================================================
 
-        clients = list(
-            rooms.get(
-                room_id,
-                set()
-            )
+def remove_connection(websocket):
+    info = websocket_info.pop(
+        websocket,
+        None
+    )
+
+    if not info:
+        return None
+
+    room_id = str(
+        info.get("room_id", "")
+    )
+
+    role = info.get(
+        "role"
+    )
+
+    viewer_id = info.get(
+        "viewer_id"
+    )
+
+    room = rooms.get(
+        room_id
+    )
+
+    if room is None:
+        return info
+
+    if role == "host":
+
+        if room.get("host") is websocket:
+            room["host"] = None
+
+    elif role == "viewer":
+
+        viewers = room.get(
+            "viewers",
+            {}
         )
 
-    if not clients:
-        return
+        if viewer_id in viewers:
 
-    message = json_message(data)
+            if viewers[viewer_id] is websocket:
+                del viewers[viewer_id]
 
-    dead_clients = []
-
-    for client in clients:
-
-        if client is exclude:
-            continue
-
-        try:
-
-            await client.send(
-                message
-            )
-
-        except Exception:
-
-            dead_clients.append(
-                client
-            )
-
-    if dead_clients:
-
-        await remove_dead_clients(
+    if (
+        room.get("host") is None
+        and not room.get("viewers")
+    ):
+        rooms.pop(
             room_id,
-            dead_clients
+            None
         )
 
+    return info
 
-async def remove_dead_clients(
-    room_id,
-    clients
+
+# =========================================================
+# JOIN
+# =========================================================
+
+async def handle_join(
+    websocket,
+    message
 ):
-
-    async with rooms_lock:
-
-        room = rooms.get(
-            room_id
+    room_id = str(
+        message.get(
+            "room_id",
+            ""
         )
-
-        if not room:
-            return
-
-        for client in clients:
-
-            room.discard(
-                client
-            )
-
-            connections.pop(
-                client,
-                None
-            )
-
-        if not room:
-
-            rooms.pop(
-                room_id,
-                None
-            )
-
-
-# =========================================================
-# پیدا کردن کلاینت‌های اتاق
-# =========================================================
-
-async def get_room_clients(
-    room_id
-):
-    async with rooms_lock:
-
-        return list(
-            rooms.get(
-                room_id,
-                set()
-            )
-        )
-
-
-# =========================================================
-# تعیین نقش
-# =========================================================
-
-def normalize_role(role):
+    ).strip()
 
     role = str(
-        role or ""
+        message.get(
+            "role",
+            ""
+        )
     ).strip().lower()
-
-    if role in {
-        "host",
-        "broadcaster",
-        "publisher",
-        "streamer",
-        "live"
-    }:
-
-        return "host"
-
-    if role in {
-        "viewer",
-        "watcher",
-        "audience"
-    }:
-
-        return "viewer"
-
-    return role
-
-
-# =========================================================
-# JOIN ROOM
-# =========================================================
-
-async def join_room(
-    websocket,
-    room_id,
-    role
-):
 
     if not room_id:
 
@@ -225,536 +147,418 @@ async def join_room(
             }
         )
 
-        return False
+        return
 
-    role = normalize_role(
-        role
-    )
-
-    if role not in {
+    if role not in (
         "host",
         "viewer"
-    }:
+    ):
 
         await send_json(
             websocket,
             {
                 "type": "error",
-                "message": "invalid role"
+                "message": "role must be host or viewer"
             }
         )
 
-        return False
+        return
 
-    old_room = connections.get(
-        websocket,
-        {}
-    ).get(
-        "room_id"
-    )
+    room = rooms[
+        room_id
+    ]
 
-    if old_room:
+    # =====================================================
+    # HOST
+    # =====================================================
 
-        await leave_room(
-            websocket,
-            notify=True
+    if role == "host":
+
+        old_host = room.get(
+            "host"
         )
 
-    async with rooms_lock:
+        if (
+            old_host is not None
+            and old_host is not websocket
+        ):
 
-        room = rooms[
-            room_id
-        ]
+            await send_json(
+                old_host,
+                {
+                    "type": "host-replaced"
+                }
+            )
 
-        existing_clients = list(
-            room
-        )
+            try:
+                await old_host.close()
+            except Exception:
+                pass
 
-        room.add(
-            websocket
-        )
+            websocket_info.pop(
+                old_host,
+                None
+            )
 
-        connections[
+        room["host"] = websocket
+
+        websocket_info[
             websocket
         ] = {
-            "room_id":
-                room_id,
-
-            "role":
-                role
+            "room_id": room_id,
+            "role": "host",
+            "viewer_id": None
         }
 
-    # اطلاعات اتاق برای تازه‌وارد
-    await send_json(
-        websocket,
-        {
-            "type":
-                "joined",
+        await send_json(
+            websocket,
+            {
+                "type": "joined",
+                "room_id": room_id,
+                "role": "host"
+            }
+        )
 
-            "room_id":
-                room_id,
-
-            "role":
-                role,
-
-            "members":
-                len(existing_clients) + 1
-        }
-    )
-
-    # اگر viewer وارد شد، host را خبر کن
-    if role == "viewer":
-
-        host_clients = []
-
-        for client in existing_clients:
-
-            info = connections.get(
-                client,
-                {}
-            )
-
-            if info.get(
-                "role"
-            ) == "host":
-
-                host_clients.append(
-                    client
-                )
-
-        for host in host_clients:
-
-            await send_json(
-                host,
-                {
-                    "type":
-                        "viewer-joined",
-
-                    "room_id":
-                        room_id
-                }
-            )
-
-        # اگر host از قبل داخل اتاق بود
-        # به viewer هم اطلاع بده
-        if host_clients:
-
-            await send_json(
-                websocket,
-                {
-                    "type":
-                        "host-present",
-
-                    "room_id":
-                        room_id
-                }
-            )
-
-    # اگر host بعد از viewer وارد شد
-    elif role == "host":
-
-        viewer_clients = []
-
-        for client in existing_clients:
-
-            info = connections.get(
-                client,
-                {}
-            )
-
-            if info.get(
-                "role"
-            ) == "viewer":
-
-                viewer_clients.append(
-                    client
-                )
-
-        for viewer in viewer_clients:
+        # Inform existing viewers
+        for viewer_id, viewer in list(
+            room["viewers"].items()
+        ):
 
             await send_json(
                 viewer,
                 {
-                    "type":
-                        "host-present",
-
-                    "room_id":
-                        room_id
+                    "type": "host-present",
+                    "viewer_id": viewer_id
                 }
             )
 
-    return True
+        print(
+            f"[HOST JOIN] room={room_id}"
+        )
 
+        return
 
-# =========================================================
-# LEAVE ROOM
-# =========================================================
+    # =====================================================
+    # VIEWER
+    # =====================================================
 
-async def leave_room(
-    websocket,
-    notify=True
-):
+    viewer_id = uuid.uuid4().hex[:12]
 
-    info = connections.get(
-        websocket,
-        {}
+    room["viewers"][
+        viewer_id
+    ] = websocket
+
+    websocket_info[
+        websocket
+    ] = {
+        "room_id": room_id,
+        "role": "viewer",
+        "viewer_id": viewer_id
+    }
+
+    host = room.get(
+        "host"
     )
 
-    room_id = info.get(
-        "room_id"
+    await send_json(
+        websocket,
+        {
+            "type": "joined",
+            "room_id": room_id,
+            "role": "viewer",
+            "viewer_id": viewer_id,
+            "host_present": host is not None
+        }
+    )
+
+    if host is not None:
+
+        await send_json(
+            websocket,
+            {
+                "type": "host-present",
+                "viewer_id": viewer_id
+            }
+        )
+
+        await send_json(
+            host,
+            {
+                "type": "viewer-joined",
+                "viewer_id": viewer_id
+            }
+        )
+
+    else:
+
+        await send_json(
+            websocket,
+            {
+                "type": "host-not-present",
+                "viewer_id": viewer_id
+            }
+        )
+
+    print(
+        f"[VIEWER JOIN] room={room_id} viewer={viewer_id}"
+    )
+
+
+# =========================================================
+# WEBRTC ROUTING
+# =========================================================
+
+async def route_webrtc_message(
+    websocket,
+    message
+):
+    info = websocket_info.get(
+        websocket
+    )
+
+    if not info:
+        return
+
+    room_id = str(
+        info.get(
+            "room_id",
+            ""
+        )
     )
 
     role = info.get(
         "role"
     )
 
-    if not room_id:
+    sender_viewer_id = info.get(
+        "viewer_id"
+    )
 
-        connections.pop(
-            websocket,
-            None
-        )
+    room = rooms.get(
+        room_id
+    )
 
+    if room is None:
         return
 
-    async with rooms_lock:
+    message_type = message.get(
+        "type"
+    )
 
-        room = rooms.get(
-            room_id
-        )
+    # =====================================================
+    # HOST -> SPECIFIC VIEWER
+    # =====================================================
 
-        if room:
+    if role == "host":
 
-            room.discard(
-                websocket
+        viewer_id = str(
+            message.get(
+                "viewer_id",
+                ""
+            )
+        ).strip()
+
+        if not viewer_id:
+
+            print(
+                f"[WEBRTC] host {message_type} "
+                f"without viewer_id"
             )
 
-            if not room:
+            return
 
-                rooms.pop(
-                    room_id,
-                    None
-                )
-
-        connections.pop(
-            websocket,
-            None
+        viewer = room[
+            "viewers"
+        ].get(
+            viewer_id
         )
 
-    if not notify:
+        if viewer is None:
+            return
+
+        payload = dict(
+            message
+        )
+
+        payload["from_role"] = "host"
+        payload["viewer_id"] = viewer_id
+
+        await send_json(
+            viewer,
+            payload
+        )
+
         return
+
+    # =====================================================
+    # VIEWER -> HOST
+    # =====================================================
 
     if role == "viewer":
 
-        await send_to_room(
-            room_id,
-            {
-                "type":
-                    "viewer-left",
-
-                "room_id":
-                    room_id
-            }
+        host = room.get(
+            "host"
         )
 
-    elif role == "host":
+        if host is None:
+            return
 
-        await send_to_room(
-            room_id,
-            {
-                "type":
-                    "host-left",
+        payload = dict(
+            message
+        )
 
-                "room_id":
-                    room_id
-            }
+        payload["from_role"] = "viewer"
+        payload["viewer_id"] = sender_viewer_id
+
+        await send_json(
+            host,
+            payload
         )
 
 
 # =========================================================
-# RELAY پیام WebRTC
+# ROOM INFO
 # =========================================================
 
-async def relay_message(
-    websocket,
-    data
+async def handle_room_info(
+    websocket
 ):
-
-    info = connections.get(
-        websocket,
-        {}
+    info = websocket_info.get(
+        websocket
     )
 
-    room_id = info.get(
-        "room_id"
+    if not info:
+        return
+
+    room_id = str(
+        info.get(
+            "room_id",
+            ""
+        )
     )
 
-    if not room_id:
+    room = rooms.get(
+        room_id
+    )
+
+    if room is None:
 
         await send_json(
             websocket,
             {
-                "type":
-                    "error",
-
-                "message":
-                    "join a room first"
+                "type": "room-info",
+                "host_present": False,
+                "viewer_count": 0
             }
         )
 
         return
 
-    message_type = str(
-        data.get(
-            "type",
-            ""
-        )
-    ).strip().lower()
-
-    # پیام‌های معتبر برای WebRTC
-    allowed_types = {
-        "offer",
-        "answer",
-        "ice-candidate",
-        "candidate",
-        "ice",
-        "negotiationneeded"
-    }
-
-    if message_type not in allowed_types:
-
-        return
-
-    # مشخصات فرستنده
-    data["room_id"] = room_id
-
-    # بعضی کلاینت‌ها از sender استفاده می‌کنند
-    if "sender_role" not in data:
-
-        data["sender_role"] = (
-            info.get(
-                "role"
-            )
-        )
-
-    # relay به همه اعضای دیگر
-    await send_to_room(
-        room_id,
-        data,
-        exclude=websocket
+    await send_json(
+        websocket,
+        {
+            "type": "room-info",
+            "host_present":
+                room.get("host") is not None,
+            "viewer_count":
+                len(
+                    room.get(
+                        "viewers",
+                        {}
+                    )
+                )
+        }
     )
 
 
 # =========================================================
-# پیام‌های کمکی
+# PING
 # =========================================================
 
 async def handle_ping(
     websocket
 ):
-
     await send_json(
         websocket,
         {
-            "type":
-                "pong"
+            "type": "pong"
         }
     )
 
 
-async def send_room_info(
+# =========================================================
+# LEAVE
+# =========================================================
+
+async def handle_leave(
     websocket
 ):
-
-    info = connections.get(
-        websocket,
-        {}
+    info = websocket_info.get(
+        websocket
     )
 
-    room_id = info.get(
-        "room_id"
-    )
-
-    if not room_id:
-
-        await send_json(
-            websocket,
-            {
-                "type":
-                    "room-info",
-
-                "room_id":
-                    None,
-
-                "members":
-                    0
-            }
-        )
-
+    if not info:
         return
 
-    clients = await get_room_clients(
+    room_id = str(
+        info.get(
+            "room_id",
+            ""
+        )
+    )
+
+    role = info.get(
+        "role"
+    )
+
+    viewer_id = info.get(
+        "viewer_id"
+    )
+
+    room = rooms.get(
         room_id
     )
 
-    roles = []
+    if room is None:
+        return
 
-    for client in clients:
+    # Viewer leaving
+    if (
+        role == "viewer"
+        and viewer_id
+    ):
 
-        client_info = connections.get(
-            client,
-            {}
+        host = room.get(
+            "host"
         )
 
-        roles.append(
-            client_info.get(
-                "role"
+        if host is not None:
+
+            await send_json(
+                host,
+                {
+                    "type": "viewer-left",
+                    "viewer_id": viewer_id
+                }
             )
-        )
 
-    await send_json(
-        websocket,
-        {
-            "type":
-                "room-info",
+    # Host leaving
+    elif role == "host":
 
-            "room_id":
-                room_id,
+        for current_viewer_id, viewer in list(
+            room.get(
+                "viewers",
+                {}
+            ).items()
+        ):
 
-            "members":
-                len(clients),
-
-            "hosts":
-                roles.count(
-                    "host"
-                ),
-
-            "viewers":
-                roles.count(
-                    "viewer"
-                )
-        }
-    )
-
-
-# =========================================================
-# MESSAGE HANDLER
-# =========================================================
-
-async def handle_message(
-    websocket,
-    data
-):
-
-    message_type = str(
-        data.get(
-            "type",
-            ""
-        )
-    ).strip().lower()
-
-    # JOIN
-    if message_type in {
-        "join",
-        "room-join"
-    }:
-
-        room_id = str(
-            data.get(
-                "room_id",
-                data.get(
-                    "stream_id",
-                    ""
-                )
+            await send_json(
+                viewer,
+                {
+                    "type": "host-left",
+                    "viewer_id": current_viewer_id
+                }
             )
-        ).strip()
-
-        role = normalize_role(
-            data.get(
-                "role",
-                data.get(
-                    "mode",
-                    ""
-                )
-            )
-        )
-
-        await join_room(
-            websocket,
-            room_id,
-            role
-        )
-
-        return
-
-    # LEAVE
-    if message_type in {
-        "leave",
-        "room-leave"
-    }:
-
-        await leave_room(
-            websocket,
-            notify=True
-        )
-
-        return
-
-    # PING
-    if message_type in {
-        "ping",
-        "heartbeat"
-    }:
-
-        await handle_ping(
-            websocket
-        )
-
-        return
-
-    # ROOM INFO
-    if message_type in {
-        "room-info",
-        "get-room-info"
-    }:
-
-        await send_room_info(
-            websocket
-        )
-
-        return
-
-    # WebRTC
-    if message_type in {
-        "offer",
-        "answer",
-        "ice-candidate",
-        "candidate",
-        "ice",
-        "negotiationneeded"
-    }:
-
-        await relay_message(
-            websocket,
-            data
-        )
-
-        return
-
-    # Unknown
-    await send_json(
-        websocket,
-        {
-            "type":
-                "error",
-
-            "message":
-                "unknown message type",
-
-            "received":
-                message_type
-        }
-    )
 
 
 # =========================================================
@@ -762,195 +566,220 @@ async def handle_message(
 # =========================================================
 
 async def client_handler(
-    websocket: ServerConnection
+    websocket
 ):
-
-    remote = None
+    print("[CONNECT]")
 
     try:
 
-        remote = websocket.remote_address
-
-        print(
-            f"[CONNECT] {remote}"
-        )
-
-        await send_json(
-            websocket,
-            {
-                "type":
-                    "connected",
-
-                "service":
-                    "LainoLive Signaling",
-
-                "version":
-                    "1.0"
-            }
-        )
-
         async for raw_message in websocket:
 
-            # جلوگیری از پیام بسیار بزرگ
-            if (
-                isinstance(
-                    raw_message,
-                    str
+            try:
+
+                message = json.loads(
+                    raw_message
                 )
-                and len(raw_message.encode(
-                    "utf-8"
-                )) > MAX_MESSAGE_SIZE
-            ):
+
+            except json.JSONDecodeError:
 
                 await send_json(
                     websocket,
                     {
-                        "type":
-                            "error",
-
-                        "message":
-                            "message too large"
+                        "type": "error",
+                        "message": "invalid JSON"
                     }
                 )
 
                 continue
 
-            data = safe_json_loads(
-                raw_message
+            message_type = message.get(
+                "type"
             )
 
-            if data is None:
+            # -------------------------------------------------
+            # JOIN
+            # -------------------------------------------------
 
-                await send_json(
+            if message_type == "join":
+
+                await handle_join(
                     websocket,
-                    {
-                        "type":
-                            "error",
-
-                        "message":
-                            "invalid json"
-                    }
+                    message
                 )
 
                 continue
 
-            await handle_message(
+            # -------------------------------------------------
+            # WEBRTC
+            # -------------------------------------------------
+
+            if message_type in (
+                "offer",
+                "answer",
+                "ice-candidate",
+                "candidate",
+                "ice"
+            ):
+
+                await route_webrtc_message(
+                    websocket,
+                    message
+                )
+
+                continue
+
+            # -------------------------------------------------
+            # ROOM INFO
+            # -------------------------------------------------
+
+            if message_type == "room-info":
+
+                await handle_room_info(
+                    websocket
+                )
+
+                continue
+
+            # -------------------------------------------------
+            # PING
+            # -------------------------------------------------
+
+            if message_type == "ping":
+
+                await handle_ping(
+                    websocket
+                )
+
+                continue
+
+            # -------------------------------------------------
+            # LEAVE
+            # -------------------------------------------------
+
+            if message_type == "leave":
+
+                await handle_leave(
+                    websocket
+                )
+
+                remove_connection(
+                    websocket
+                )
+
+                continue
+
+            # -------------------------------------------------
+            # NEGOTIATION NEEDED
+            # -------------------------------------------------
+
+            if message_type == "negotiationneeded":
+
+                await route_webrtc_message(
+                    websocket,
+                    message
+                )
+
+                continue
+
+            # -------------------------------------------------
+            # UNKNOWN
+            # -------------------------------------------------
+
+            await send_json(
                 websocket,
-                data
+                {
+                    "type": "error",
+                    "message":
+                        "unknown message type"
+                }
             )
 
     except websockets.exceptions.ConnectionClosed:
-
         pass
 
     except Exception as error:
 
         print(
-            f"[CLIENT ERROR] {remote}: {error}"
+            "[CLIENT ERROR]",
+            repr(error)
         )
 
     finally:
 
-        await leave_room(
-            websocket,
-            notify=True
+        info = websocket_info.get(
+            websocket
         )
 
-        print(
-            f"[DISCONNECT] {remote}"
-        )
+        if info:
 
-
-# =========================================================
-# CLEAN EMPTY ROOMS
-# =========================================================
-
-async def cleanup_rooms():
-
-    while True:
-
-        try:
-
-            await asyncio.sleep(
-                60
+            room_id = str(
+                info.get(
+                    "room_id",
+                    ""
+                )
             )
 
-            async with rooms_lock:
+            role = info.get(
+                "role"
+            )
 
-                empty_rooms = [
-                    room_id
-                    for room_id, clients
-                    in rooms.items()
-                    if not clients
-                ]
+            viewer_id = info.get(
+                "viewer_id"
+            )
 
-                for room_id in empty_rooms:
+            room = rooms.get(
+                room_id
+            )
 
-                    rooms.pop(
-                        room_id,
-                        None
+            if room is not None:
+
+                # Viewer disconnected
+                if (
+                    role == "viewer"
+                    and viewer_id
+                ):
+
+                    host = room.get(
+                        "host"
                     )
 
-            if empty_rooms:
+                    if host is not None:
 
-                print(
-                    "[CLEANUP] Removed rooms:",
-                    empty_rooms
-                )
+                        await send_json(
+                            host,
+                            {
+                                "type":
+                                    "viewer-left",
+                                "viewer_id":
+                                    viewer_id
+                            }
+                        )
 
-        except asyncio.CancelledError:
+                # Host disconnected
+                elif role == "host":
 
-            break
+                    for current_viewer_id, viewer in list(
+                        room.get(
+                            "viewers",
+                            {}
+                        ).items()
+                    ):
 
-        except Exception as error:
+                        await send_json(
+                            viewer,
+                            {
+                                "type":
+                                    "host-left",
+                                "viewer_id":
+                                    current_viewer_id
+                            }
+                        )
 
-            print(
-                "[CLEANUP ERROR]",
-                error
-            )
+        remove_connection(
+            websocket
+        )
 
-
-# =========================================================
-# STATUS LOG
-# =========================================================
-
-async def status_logger():
-
-    while True:
-
-        try:
-
-            await asyncio.sleep(
-                30
-            )
-
-            async with rooms_lock:
-
-                room_count = len(
-                    rooms
-                )
-
-                client_count = sum(
-                    len(clients)
-                    for clients
-                    in rooms.values()
-                )
-
-            print(
-                f"[STATUS] rooms={room_count} "
-                f"clients={client_count}"
-            )
-
-        except asyncio.CancelledError:
-
-            break
-
-        except Exception as error:
-
-            print(
-                "[STATUS ERROR]",
-                error
-            )
+        print("[DISCONNECT]")
 
 
 # =========================================================
@@ -959,79 +788,24 @@ async def status_logger():
 
 async def main():
 
-    print("=" * 60)
-
+    print("=" * 45)
     print("LainoLive Signaling Server")
-
-    print("=" * 60)
-
+    print("=" * 45)
     print(
-        f"Listening on: "
-        f"0.0.0.0:{PORT}"
+        f"Listening on {HOST}:{PORT}"
     )
 
-    print(
-        f"WebSocket URL: "
-        f"ws://127.0.0.1:{PORT}"
-    )
+    async with websockets.serve(
+        client_handler,
+        HOST,
+        PORT,
+        max_size=1024 * 1024,
+        ping_interval=20,
+        ping_timeout=20,
+        close_timeout=10
+    ):
+        await asyncio.Future()
 
-    print(
-        "WebRTC signaling: ENABLED"
-    )
-
-    print(
-        "Multi-room: ENABLED"
-    )
-
-    print("=" * 60)
-
-    cleanup_task = asyncio.create_task(
-        cleanup_rooms()
-    )
-
-    status_task = asyncio.create_task(
-        status_logger()
-    )
-
-    try:
-
-        async with websockets.serve(
-            client_handler,
-            HOST,
-            PORT,
-            max_size=MAX_MESSAGE_SIZE,
-            ping_interval=20,
-            ping_timeout=20,
-            close_timeout=10
-        ):
-
-            print(
-                "Signaling server started."
-            )
-
-            await asyncio.Future()
-
-    except KeyboardInterrupt:
-
-        print(
-            "\nSignaling server stopped."
-        )
-
-    finally:
-
-        cleanup_task.cancel()
-        status_task.cancel()
-
-        await asyncio.gather(
-            cleanup_task,
-            status_task,
-            return_exceptions=True
-        )
-
-
-# =========================================================
-# START
-# =========================================================
 
 if __name__ == "__main__":
 
@@ -1044,5 +818,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
 
         print(
-            "\nStopped."
+            "Server stopped."
         )
