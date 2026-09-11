@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -18,6 +20,7 @@
     </title>
 
     <style>
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -27,7 +30,6 @@
         body {
             margin: 0;
             padding: 0;
-
             min-height: 100%;
 
             font-family:
@@ -71,15 +73,11 @@
 
         .header {
             position: sticky;
-
             top: 0;
-
             z-index: 100;
 
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             padding:
@@ -116,15 +114,12 @@
 
         .header-title {
             font-size: 20px;
-
             font-weight: 900;
         }
 
         .header-subtitle {
             margin-top: 4px;
-
             color: #9898a5;
-
             font-size: 10px;
         }
 
@@ -133,7 +128,6 @@
             height: 42px;
 
             border: none;
-
             border-radius: 13px;
 
             background:
@@ -145,14 +139,15 @@
                 );
 
             color: white;
-
             font-size: 18px;
+
+            transition:
+                opacity .2s ease;
         }
 
-        .refresh-btn.loading {
-            opacity: .55;
-
-            pointer-events: none;
+        .refresh-btn:disabled {
+            opacity: .5;
+            cursor: default;
         }
 
         /* =========================
@@ -161,7 +156,6 @@
 
         .hero {
             margin: 16px;
-
             padding: 20px;
 
             border-radius: 22px;
@@ -195,7 +189,6 @@
 
         .hero-title {
             font-size: 21px;
-
             font-weight: 900;
         }
 
@@ -205,7 +198,6 @@
             color: #a8a8b6;
 
             font-size: 12px;
-
             line-height: 1.8;
         }
 
@@ -341,7 +333,6 @@
                 #ff1d4d;
 
             font-size: 9px;
-
             font-weight: 900;
         }
 
@@ -379,7 +370,6 @@
                 );
 
             font-size: 13px;
-
             font-weight: 900;
         }
 
@@ -416,13 +406,10 @@
 
         .card-title {
             font-size: 14px;
-
             font-weight: 900;
 
             white-space: nowrap;
-
             overflow: hidden;
-
             text-overflow: ellipsis;
         }
 
@@ -430,7 +417,6 @@
             margin-top: 7px;
 
             color: #a8a8b5;
-
             font-size: 11px;
         }
 
@@ -469,9 +455,7 @@
             font-size: 9px;
 
             white-space: nowrap;
-
             overflow: hidden;
-
             text-overflow: ellipsis;
         }
 
@@ -479,14 +463,13 @@
             color: #ffb7c5;
 
             font-size: 9px;
-
             font-weight: 700;
 
             white-space: nowrap;
         }
 
         /* =========================
-           EMPTY / ERROR
+           EMPTY
            ========================= */
 
         .empty {
@@ -520,7 +503,6 @@
                 );
 
             font-size: 13px;
-
             line-height: 1.9;
         }
 
@@ -583,11 +565,9 @@
             min-height: 52px;
 
             border: none;
-
             border-radius: 15px;
 
             color: #8f8f9d;
-
             background: transparent;
 
             display: flex;
@@ -595,13 +575,11 @@
             flex-direction: column;
 
             align-items: center;
-
             justify-content: center;
 
             gap: 4px;
 
             font-size: 10px;
-
             font-weight: 700;
         }
 
@@ -638,10 +616,7 @@
 
             .page {
                 max-width: 1100px;
-
-                margin:
-                    0
-                    auto;
+                margin: 0 auto;
             }
 
             .list {
@@ -785,7 +760,17 @@
 </nav>
 
 
+<script src="/streams-cache.js"></script>
+
+
 <script>
+
+"use strict";
+
+
+/* =========================
+   STORAGE KEYS
+   ========================= */
 
 const LOGIN_KEY =
     "lainolive_logged_in";
@@ -841,24 +826,12 @@ const profileButton =
 
 
 /* =========================
-   REQUEST CONTROL
+   STATE
    ========================= */
 
-/*
- * جلوگیری از اجرای هم‌زمان
- * چند درخواست /api/streams
- */
-let streamsRequestInProgress =
-    false;
+let allStreams = [];
 
-
-/*
- * شماره درخواست فعلی.
- * اگر پاسخی دیر برسد و درخواست
- * جدیدتری اجرا شده باشد، نتیجه قدیمی
- * روی صفحه اعمال نمی‌شود.
- */
-let latestRequestId = 0;
+let loading = false;
 
 
 /* =========================
@@ -896,8 +869,7 @@ function escapeHtml(value) {
 function getId(stream) {
 
     return (
-        stream?.id
-        ??
+        stream?.id ??
         stream?.stream_id
     );
 }
@@ -906,8 +878,7 @@ function getId(stream) {
 function getTitle(stream) {
 
     return (
-        stream?.title
-        ||
+        stream?.title ||
         "لایو بدون عنوان"
     );
 }
@@ -916,10 +887,8 @@ function getTitle(stream) {
 function getUsername(stream) {
 
     return (
-        stream?.username
-        ||
-        stream?.user
-        ||
+        stream?.username ||
+        stream?.user ||
         "کاربر"
     );
 }
@@ -928,8 +897,7 @@ function getUsername(stream) {
 function getCategory(stream) {
 
     return (
-        stream?.category
-        ||
+        stream?.category ||
         "عمومی"
     );
 }
@@ -937,25 +905,25 @@ function getCategory(stream) {
 
 function getViewers(stream) {
 
-    return Number(
-        stream?.viewer_count
-        ??
-        stream?.viewers
-        ??
-        0
-    );
+    const value =
+        Number(
+            stream?.viewer_count ??
+            stream?.viewers ??
+            0
+        );
+
+    return Number.isFinite(value)
+        ? Math.max(0, value)
+        : 0;
 }
 
 
 function getCover(stream) {
 
     return (
-        stream?.cover_url
-        ||
-        stream?.cover
-        ||
-        stream?.thumbnail
-        ||
+        stream?.cover_url ||
+        stream?.cover ||
+        stream?.thumbnail ||
         ""
     );
 }
@@ -963,24 +931,15 @@ function getCover(stream) {
 
 function getRankIcon(index) {
 
-    if (
-        index === 0
-    ) {
-
+    if (index === 0) {
         return "🥇";
     }
 
-    if (
-        index === 1
-    ) {
-
+    if (index === 1) {
         return "🥈";
     }
 
-    if (
-        index === 2
-    ) {
-
+    if (index === 2) {
         return "🥉";
     }
 
@@ -991,129 +950,79 @@ function getRankIcon(index) {
 
 
 /* =========================
-   LOAD POPULAR
+   LOAD
    ========================= */
 
 async function loadPopular(
-    options = {}
+    force = false
 ) {
 
-    /*
-     * اگر درخواست قبلی هنوز باز است،
-     * درخواست جدید ایجاد نکن.
-     */
+    if (loading) {
+        return;
+    }
+
     if (
-        streamsRequestInProgress
+        !window.LainoLiveStreams ||
+        typeof
+            window.LainoLiveStreams.fetch !==
+            "function"
     ) {
+
+        console.error(
+            "streams-cache.js not loaded"
+        );
+
+        popularList.innerHTML =
+            `
+                <div class="empty">
+                    فایل streams-cache.js پیدا نشد.
+                </div>
+            `;
 
         return;
     }
 
 
-    streamsRequestInProgress =
-        true;
+    loading = true;
 
-
-    const requestId =
-        ++latestRequestId;
-
-
-    /*
-     * اگر با دکمه دستی اجرا شده،
-     * دکمه را موقتاً غیرفعال کن.
-     */
-    const manual =
-        options.manual === true;
-
-
-    if (
-        manual
-    ) {
-
-        refreshButton.classList.add(
-            "loading"
-        );
-    }
+    refreshButton.disabled = true;
 
 
     try {
 
-        const response =
-            await fetch(
-                "/api/streams",
+        const streams =
+            await window.LainoLiveStreams.fetch(
                 {
-                    method:
-                        "GET",
+                    force:
+                        force,
 
-                    cache:
-                        "no-store",
-
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    }
+                    ttl:
+                        1000
                 }
             );
 
 
-        if (
-            !response.ok
-        ) {
-
-            throw new Error(
-                "streams request failed: " +
-                response.status
-            );
-        }
-
-
-        const data =
-            await response.json();
-
-
-        /*
-         * اگر در فاصله دریافت پاسخ،
-         * درخواست جدیدتری ثبت شده باشد،
-         * پاسخ قدیمی را نمایش نده.
-         */
-        if (
-            requestId !==
-            latestRequestId
-        ) {
-
-            return;
-        }
-
-
-        const streams =
+        allStreams =
             Array.isArray(
-                data?.streams
+                streams
             )
-                ? data.streams
-                : Array.isArray(data)
-                    ? data
-                    : [];
+                ? [...streams]
+                : [];
 
 
-        /*
-         * محبوب‌ترین =
-         * بیشترین بیننده
-         */
-        streams.sort(
+        allStreams.sort(
             (
                 a,
                 b
             ) =>
-                getViewers(b)
-                -
+                getViewers(b) -
                 getViewers(a)
         );
 
 
         renderPopular(
-            streams
+            allStreams
         );
-
 
     } catch (error) {
 
@@ -1123,45 +1032,25 @@ async function loadPopular(
         );
 
 
-        /*
-         * خطای موقت را روی صفحه
-         * تنها وقتی نشان بده که لیست
-         * قبلی خالی است.
-         */
         if (
-            !popularList.querySelector(
-                ".card"
-            )
+            !allStreams.length
         ) {
 
             popularList.innerHTML =
                 `
                     <div class="empty">
-
                         دریافت لایوهای محبوب انجام نشد.
-
                         <br>
-
                         اتصال سرور را بررسی کنید.
-
                     </div>
                 `;
         }
 
     } finally {
 
-        streamsRequestInProgress =
-            false;
+        loading = false;
 
-
-        if (
-            manual
-        ) {
-
-            refreshButton.classList.remove(
-                "loading"
-            );
-        }
+        refreshButton.disabled = false;
     }
 }
 
@@ -1174,17 +1063,13 @@ function renderPopular(
     streams
 ) {
 
-    if (
-        !streams.length
-    ) {
+    if (!streams.length) {
 
         popularList.innerHTML =
             `
                 <div class="empty">
-
                     فعلاً هیچ لایوی
                     در حال پخش نیست. 🎥
-
                 </div>
             `;
 
@@ -1201,10 +1086,7 @@ function renderPopular(
                 ) => {
 
                     const id =
-                        getId(
-                            stream
-                        );
-
+                        getId(stream);
 
                     const title =
                         escapeHtml(
@@ -1213,14 +1095,12 @@ function renderPopular(
                             )
                         );
 
-
                     const username =
                         escapeHtml(
                             getUsername(
                                 stream
                             )
                         );
-
 
                     const category =
                         escapeHtml(
@@ -1229,23 +1109,74 @@ function renderPopular(
                             )
                         );
 
-
                     const viewers =
                         getViewers(
                             stream
                         );
-
 
                     const cover =
                         getCover(
                             stream
                         );
 
-
                     const safeId =
                         escapeHtml(
-                            id
+                            String(
+                                id ?? ""
+                            )
                         );
+
+
+                    let coverHtml;
+
+
+                    if (cover) {
+
+                        coverHtml =
+                            `
+                                <img
+                                    src="${escapeHtml(
+                                        cover
+                                    )}"
+                                    alt="${title}"
+                                    loading="lazy"
+                                    onerror="
+                                        this.style.display='none';
+                                        const fallback =
+                                            this.parentElement
+                                                .querySelector(
+                                                    '.cover-placeholder'
+                                                );
+
+                                        if (fallback) {
+                                            fallback.style.display='flex';
+                                        }
+                                    "
+                                >
+
+                                <div
+                                    class="cover-placeholder"
+                                    style="
+                                        display:none;
+                                        position:absolute;
+                                        inset:0;
+                                    "
+                                >
+                                    📺
+                                </div>
+                            `;
+
+                    } else {
+
+                        coverHtml =
+                            `
+                                <div
+                                    class="cover-placeholder"
+                                >
+                                    📺
+                                </div>
+                            `;
+                    }
 
 
                     return `
@@ -1256,44 +1187,7 @@ function renderPopular(
 
                             <div class="cover">
 
-                                ${
-                                    cover
-                                        ? `
-                                            <img
-                                                src="${escapeHtml(
-                                                    cover
-                                                )}"
-                                                alt="${title}"
-                                                loading="lazy"
-                                                onerror="
-                                                    this.style.display='none';
-                                                    this.parentElement
-                                                        .querySelector(
-                                                            '.cover-placeholder'
-                                                        )
-                                                        .style.display='flex';
-                                                "
-                                            >
-
-                                            <div
-                                                class="cover-placeholder"
-                                                style="
-                                                    display:none;
-                                                    position:absolute;
-                                                    inset:0;
-                                                "
-                                            >
-                                                📺
-                                            </div>
-                                        `
-                                        : `
-                                            <div
-                                                class="cover-placeholder"
-                                            >
-                                                📺
-                                            </div>
-                                        `
-                                }
+                                ${coverHtml}
 
                                 <div class="rank">
                                     ${getRankIcon(index)}
@@ -1344,133 +1238,123 @@ function renderPopular(
             .join("");
 
 
-    /*
-     * Click handlers
-     */
+    bindCards();
+}
 
-    popularList
-        .querySelectorAll(
+
+/* =========================
+   CARD EVENTS
+   ========================= */
+
+function bindCards() {
+
+    const cards =
+        popularList.querySelectorAll(
             "[data-id]"
-        )
-        .forEach(
-            card => {
-
-                card.addEventListener(
-                    "click",
-                    () => {
-
-                        const id =
-                            card.dataset.id;
+        );
 
 
-                        const stream =
-                            streams.find(
-                                item =>
-                                    String(
-                                        getId(
-                                            item
-                                        )
+    cards.forEach(
+        card => {
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    const id =
+                        card.dataset.id;
+
+
+                    const stream =
+                        allStreams.find(
+                            item =>
+                                String(
+                                    getId(
+                                        item
                                     )
-                                    ===
-                                    String(
-                                        id
-                                    )
-                            );
+                                )
+                                ===
+                                String(
+                                    id
+                                )
+                        );
 
 
-                        if (
-                            !stream
-                        ) {
-
-                            return;
-                        }
+                    if (!stream) {
+                        return;
+                    }
 
 
-                        const username =
-                            localStorage.getItem(
-                                USERNAME_KEY
-                            )
-                            ||
-                            "";
+                    const username =
+                        localStorage.getItem(
+                            USERNAME_KEY
+                        ) || "";
 
 
-                        /*
-                         * Save selected
-                         * stream for fallback.
-                         */
+                    sessionStorage.setItem(
+                        VIEW_STREAM_KEY,
+                        JSON.stringify(
+                            stream
+                        )
+                    );
+
+
+                    const owner =
+                        getUsername(
+                            stream
+                        );
+
+
+                    /*
+                     * FIX:
+                     * پرانتز کامل و شرط صحیح.
+                     */
+
+                    if (
+                        String(
+                            owner
+                        ) ===
+                        String(
+                            username
+                        )
+                    ) {
 
                         sessionStorage.setItem(
-                            VIEW_STREAM_KEY,
+                            CURRENT_STREAM_KEY,
                             JSON.stringify(
                                 stream
                             )
                         );
 
 
-                        const streamUsername =
-                            getUsername(
-                                stream
-                            );
-
-
-                        /*
-                         * Own live
-                         */
-
-                        if (
-                            String(
-                                streamUsername
-                            )
-                            ===
-                            String(
-                                username
-                            )
-                        ) {
-
-                            sessionStorage.setItem(
-                                CURRENT_STREAM_KEY,
-                                JSON.stringify(
-                                    stream
-                                )
-                            );
-
-
-                            window.location.href =
-                                "/live.html";
-
-                            return;
-                        }
-
-
-                        /*
-                         * Other user's live
-                         */
-
                         window.location.href =
-                            "/viewer.html?id="
-                            +
-                            encodeURIComponent(
-                                id
-                            );
+                            "/live.html";
+
+                        return;
                     }
-                );
-            }
-        );
+
+
+                    window.location.href =
+                        "/viewer.html?id=" +
+                        encodeURIComponent(
+                            String(id)
+                        );
+                }
+            );
+        }
+    );
 }
 
 
 /* =========================
-   REFRESH BUTTON
+   REFRESH
    ========================= */
 
 refreshButton.addEventListener(
     "click",
     async () => {
 
-        if (
-            streamsRequestInProgress
-        ) {
-
+        if (loading) {
             return;
         }
 
@@ -1483,7 +1367,6 @@ refreshButton.addEventListener(
                         transform:
                             "rotate(0deg)"
                     },
-
                     {
                         transform:
                             "rotate(360deg)"
@@ -1497,10 +1380,9 @@ refreshButton.addEventListener(
         } catch {}
 
 
-        await loadPopular({
-            manual:
-                true
-        });
+        await loadPopular(
+            true
+        );
     }
 );
 
@@ -1530,26 +1412,24 @@ profileButton.addEventListener(
 
 
 /* =========================
-   FIRST LOAD
+   START
    ========================= */
 
 loadPopular();
 
 
-/* =========================
-   AUTO REFRESH
-   ========================= */
-
 /*
- * هر 2 ثانیه درخواست می‌کنیم،
- * اما اگر درخواست قبلی هنوز
- * تمام نشده باشد، درخواست جدید
- * ارسال نخواهد شد.
+ * هر 2 ثانیه بررسی می‌کنیم.
+ * streams-cache.js اجازه نمی‌دهد
+ * درخواست‌های هم‌زمان تکراری ایجاد شوند.
  */
+
 setInterval(
     () => {
 
-        loadPopular();
+        loadPopular(
+            false
+        );
 
     },
     2000

@@ -2,10 +2,20 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#09090f">
 
-    <title>جستجو - LainoLive</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#09090f"
+    >
+
+    <title>
+        جستجوی لایو - LainoLive
+    </title>
 
     <style>
         * {
@@ -18,7 +28,11 @@
             margin: 0;
             padding: 0;
             min-height: 100%;
-            font-family: Tahoma, Arial, sans-serif;
+
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
 
             background:
                 radial-gradient(
@@ -28,7 +42,7 @@
                     #050508 100%
                 );
 
-            color: #fff;
+            color: white;
         }
 
         body {
@@ -36,8 +50,7 @@
         }
 
         button,
-        input,
-        select {
+        input {
             font-family: inherit;
         }
 
@@ -47,16 +60,13 @@
 
         .page {
             min-height: 100vh;
+
             padding-bottom:
                 calc(
-                    92px +
+                    90px +
                     env(safe-area-inset-bottom)
                 );
         }
-
-        /* =========================
-           HEADER
-        ========================= */
 
         .header {
             position: sticky;
@@ -71,12 +81,13 @@
                 16px
                 14px;
 
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
             background:
-                rgba(8,8,15,.9);
+                rgba(
+                    8,
+                    8,
+                    15,
+                    .92
+                );
 
             backdrop-filter:
                 blur(18px);
@@ -86,227 +97,172 @@
 
             border-bottom:
                 1px solid
-                rgba(255,255,255,.07);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
+        }
+
+        .header-row {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
         }
 
         .back-btn {
             width: 42px;
             height: 42px;
 
-            flex-shrink: 0;
+            flex: 0 0 auto;
 
             border: none;
+
             border-radius: 13px;
 
             background:
-                rgba(255,255,255,.07);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
 
             color: white;
 
-            font-size: 20px;
-        }
-
-        .header-info {
-            min-width: 0;
+            font-size: 18px;
         }
 
         .header-title {
             font-size: 20px;
+
             font-weight: 900;
         }
 
         .header-subtitle {
             margin-top: 4px;
 
-            color: #9797a5;
+            color: #92929f;
 
             font-size: 10px;
         }
 
-        /* =========================
-           SEARCH
-        ========================= */
-
-        .search-area {
-            padding:
-                18px
-                16px
-                10px;
+        .search-main {
+            margin: 16px;
         }
 
         .search-box {
-            position: relative;
-        }
+            display: flex;
 
-        .search-input {
-            width: 100%;
-            height: 54px;
+            align-items: center;
+
+            gap: 8px;
 
             padding:
-                0
-                48px
-                0
-                48px;
+                13px;
+
+            border-radius: 16px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
 
             border:
                 1px solid
-                rgba(255,255,255,.08);
-
-            border-radius: 17px;
-
-            outline: none;
-
-            background:
-                rgba(255,255,255,.055);
-
-            color: white;
-
-            font-size: 14px;
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
         }
 
-        .search-input:focus {
-            border-color:
-                rgba(139,53,255,.75);
-
-            box-shadow:
-                0 0 0 3px
-                rgba(139,53,255,.1);
-        }
-
-        .search-icon {
-            position: absolute;
-
-            right: 16px;
-            top: 50%;
-
-            transform:
-                translateY(-50%);
-
-            font-size: 19px;
-
-            pointer-events: none;
-
-            opacity: .75;
-        }
-
-        .clear-button {
-            position: absolute;
-
-            left: 8px;
-            top: 50%;
-
-            transform:
-                translateY(-50%);
-
-            width: 38px;
-            height: 38px;
+        .search-box input {
+            width: 100%;
 
             border: none;
 
-            border-radius: 11px;
+            outline: none;
 
-            background:
-                rgba(255,255,255,.06);
+            background: transparent;
 
-            color: #aaaab6;
+            color: white;
 
-            display: none;
+            font-size: 13px;
         }
 
-        .clear-button.show {
-            display: block;
+        .search-box input::placeholder {
+            color: #777784;
         }
-
-        /* =========================
-           FILTERS
-        ========================= */
 
         .filters {
-            padding:
-                4px
-                16px
-                14px;
-
             display: flex;
+
             gap: 8px;
+
+            margin-top: 12px;
 
             overflow-x: auto;
 
-            scrollbar-width: none;
-        }
-
-        .filters::-webkit-scrollbar {
-            display: none;
+            padding-bottom: 3px;
         }
 
         .filter-btn {
-            flex-shrink: 0;
+            flex:
+                0 0 auto;
+
+            min-height: 36px;
 
             border: none;
 
             border-radius: 999px;
 
             padding:
-                8px
+                0
                 13px;
 
             background:
-                rgba(255,255,255,.055);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
 
-            color: #a9a9b5;
+            color: #9d9daa;
 
-            font-size: 11px;
+            font-size: 10px;
+
+            font-weight: 800;
         }
 
         .filter-btn.active {
-            color: white;
-
             background:
                 linear-gradient(
                     135deg,
                     #ff2757,
                     #8b35ff
                 );
-        }
-
-        /* =========================
-           RESULT INFO
-        ========================= */
-
-        .result-bar {
-            padding:
-                6px
-                16px
-                12px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .result-text {
-            color: #9a9aa8;
-            font-size: 11px;
-        }
-
-        .refresh-btn {
-            width: 40px;
-            height: 40px;
-
-            border: none;
-            border-radius: 12px;
-
-            background:
-                rgba(255,255,255,.06);
 
             color: white;
         }
 
-        /* =========================
-           RESULTS
-        ========================= */
+        .results-info {
+            margin-top: 12px;
 
-        .results {
+            color: #858592;
+
+            font-size: 10px;
+        }
+
+        .list {
             padding:
                 0
                 16px;
@@ -316,7 +272,10 @@
             grid-template-columns:
                 repeat(
                     2,
-                    minmax(0,1fr)
+                    minmax(
+                        0,
+                        1fr
+                    )
                 );
 
             gap: 12px;
@@ -330,35 +289,45 @@
             background:
                 linear-gradient(
                     180deg,
-                    rgba(255,255,255,.055),
-                    rgba(255,255,255,.025)
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .055
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .025
+                    )
                 );
 
             border:
                 1px solid
-                rgba(255,255,255,.07);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
 
             transition:
-                transform .18s ease,
-                border-color .18s ease;
+                transform .18s ease;
         }
 
         .card:active {
-            transform: scale(.98);
-        }
-
-        .card:hover {
-            border-color:
-                rgba(139,53,255,.42);
+            transform:
+                scale(.98);
         }
 
         .cover {
             position: relative;
 
-            overflow: hidden;
-
             aspect-ratio:
                 16 / 10;
+
+            overflow: hidden;
 
             background:
                 linear-gradient(
@@ -369,15 +338,15 @@
         }
 
         .cover img {
-            display: block;
-
             width: 100%;
             height: 100%;
+
+            display: block;
 
             object-fit: cover;
         }
 
-        .placeholder {
+        .cover-placeholder {
             width: 100%;
             height: 100%;
 
@@ -386,9 +355,9 @@
             align-items: center;
             justify-content: center;
 
-            font-size: 38px;
+            font-size: 34px;
 
-            opacity: .45;
+            opacity: .48;
         }
 
         .live-badge {
@@ -399,20 +368,19 @@
 
             padding:
                 5px
-                9px;
+                8px;
 
             border-radius: 999px;
 
             background:
-                #ff1e48;
-
-            color: white;
+                #ff1d4d;
 
             font-size: 9px;
+
             font-weight: 900;
         }
 
-        .viewer-badge {
+        .viewer-count {
             position: absolute;
 
             left: 8px;
@@ -425,9 +393,12 @@
             border-radius: 999px;
 
             background:
-                rgba(0,0,0,.65);
-
-            color: white;
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .68
+                );
 
             font-size: 10px;
         }
@@ -438,34 +409,39 @@
 
         .card-title {
             font-size: 14px;
+
             font-weight: 900;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
         .card-user {
             margin-top: 7px;
 
-            color: #aaaab6;
+            color: #a8a8b5;
 
             font-size: 11px;
         }
 
-        .card-footer {
+        .card-bottom {
             margin-top: 9px;
 
             display: flex;
+
             align-items: center;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
 
             gap: 8px;
         }
 
         .category {
-            min-width: 0;
-            max-width: 60%;
+            max-width: 55%;
 
             padding:
                 4px
@@ -474,28 +450,35 @@
             border-radius: 999px;
 
             background:
-                rgba(139,53,255,.12);
+                rgba(
+                    139,
+                    53,
+                    255,
+                    .12
+                );
 
-            color: #cdb4ff;
+            color: #ceb5ff;
 
             font-size: 9px;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
-        .viewer-text {
-            color: #ffb6c5;
+        .views {
+            color: #ffb7c5;
 
             font-size: 9px;
-            font-weight: 700;
 
             white-space: nowrap;
         }
 
         .empty {
-            grid-column: 1 / -1;
+            grid-column:
+                1 / -1;
 
             padding:
                 45px
@@ -503,25 +486,31 @@
 
             text-align: center;
 
-            color: #91919e;
-
             border-radius: 18px;
 
+            color: #9292a0;
+
             background:
-                rgba(255,255,255,.025);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
 
             border:
                 1px dashed
-                rgba(255,255,255,.09);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
 
             font-size: 13px;
 
             line-height: 1.9;
         }
-
-        /* =========================
-           BOTTOM NAV
-        ========================= */
 
         .bottom-nav {
             position: fixed;
@@ -543,16 +532,29 @@
             display: grid;
 
             grid-template-columns:
-                repeat(4,1fr);
+                repeat(
+                    3,
+                    1fr
+                );
 
             gap: 8px;
 
             background:
-                rgba(7,7,12,.93);
+                rgba(
+                    7,
+                    7,
+                    12,
+                    .93
+                );
 
             border-top:
                 1px solid
-                rgba(255,255,255,.07);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
 
             backdrop-filter:
                 blur(18px);
@@ -568,19 +570,22 @@
 
             border-radius: 15px;
 
+            color: #8f8f9d;
+
             background: transparent;
 
-            color: #8f8f9c;
-
             display: flex;
+
             flex-direction: column;
 
             align-items: center;
+
             justify-content: center;
 
             gap: 4px;
 
             font-size: 10px;
+
             font-weight: 700;
         }
 
@@ -594,14 +599,20 @@
             background:
                 linear-gradient(
                     135deg,
-                    rgba(255,39,87,.14),
-                    rgba(139,53,255,.16)
+                    rgba(
+                        255,
+                        39,
+                        87,
+                        .14
+                    ),
+                    rgba(
+                        139,
+                        53,
+                        255,
+                        .16
+                    )
                 );
         }
-
-        /* =========================
-           DESKTOP
-        ========================= */
 
         @media (min-width:700px) {
 
@@ -610,11 +621,14 @@
                 margin: 0 auto;
             }
 
-            .results {
+            .list {
                 grid-template-columns:
                     repeat(
                         3,
-                        minmax(0,1fr)
+                        minmax(
+                            0,
+                            1fr
+                        )
                     );
             }
 
@@ -624,7 +638,7 @@
 
                 width:
                     min(
-                        700px,
+                        650px,
                         calc(100% - 30px)
                     );
 
@@ -635,7 +649,12 @@
 
                 border:
                     1px solid
-                    rgba(255,255,255,.07);
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .07
+                    );
 
                 border-radius: 22px;
 
@@ -645,8 +664,9 @@
 
         @media (max-width:390px) {
 
-            .results {
-                grid-template-columns: 1fr;
+            .list {
+                grid-template-columns:
+                    1fr;
             }
         }
     </style>
@@ -658,22 +678,26 @@
 
     <header class="header">
 
-        <button
-            id="backButton"
-            class="back-btn"
-            type="button"
-        >
-            ←
-        </button>
+        <div class="header-row">
 
-        <div class="header-info">
+            <button
+                id="backButton"
+                class="back-btn"
+                type="button"
+            >
+                ←
+            </button>
 
-            <div class="header-title">
-                🔎 جستجوی لایو
-            </div>
+            <div>
 
-            <div class="header-subtitle">
-                لایو موردنظرت را پیدا کن
+                <div class="header-title">
+                    🔎 جستجوی لایو
+                </div>
+
+                <div class="header-subtitle">
+                    عنوان، کاربر یا دسته‌بندی
+                </div>
+
             </div>
 
         </div>
@@ -681,132 +705,102 @@
     </header>
 
 
-    <!-- SEARCH -->
-    <section class="search-area">
+    <main class="search-main">
 
         <div class="search-box">
 
-            <span class="search-icon">
+            <span>
                 🔎
             </span>
 
             <input
                 id="searchInput"
-                class="search-input"
                 type="search"
-                placeholder="عنوان، نام کاربری یا دسته‌بندی..."
+                maxlength="100"
+                placeholder="مثلاً موسیقی یا گیم..."
                 autocomplete="off"
             >
 
+        </div>
+
+
+        <div
+            id="filters"
+            class="filters"
+        >
+
             <button
-                id="clearButton"
-                class="clear-button"
+                class="filter-btn active"
+                data-category=""
                 type="button"
-                title="پاک کردن"
             >
-                ✕
+                همه
+            </button>
+
+            <button
+                class="filter-btn"
+                data-category="عمومی"
+                type="button"
+            >
+                عمومی
+            </button>
+
+            <button
+                class="filter-btn"
+                data-category="گیم"
+                type="button"
+            >
+                گیم
+            </button>
+
+            <button
+                class="filter-btn"
+                data-category="موسیقی"
+                type="button"
+            >
+                موسیقی
+            </button>
+
+            <button
+                class="filter-btn"
+                data-category="گفتگو"
+                type="button"
+            >
+                گفتگو
+            </button>
+
+            <button
+                class="filter-btn"
+                data-category="آموزشی"
+                type="button"
+            >
+                آموزشی
+            </button>
+
+            <button
+                class="filter-btn"
+                data-category="سرگرمی"
+                type="button"
+            >
+                سرگرمی
             </button>
 
         </div>
 
-    </section>
-
-
-    <!-- FILTERS -->
-    <div class="filters">
-
-        <button
-            class="filter-btn active"
-            data-filter="all"
-            type="button"
-        >
-            همه
-        </button>
-
-        <button
-            class="filter-btn"
-            data-filter="گیم"
-            type="button"
-        >
-            🎮 گیم
-        </button>
-
-        <button
-            class="filter-btn"
-            data-filter="موسیقی"
-            type="button"
-        >
-            🎵 موسیقی
-        </button>
-
-        <button
-            class="filter-btn"
-            data-filter="گفتگو"
-            type="button"
-        >
-            💬 گفتگو
-        </button>
-
-        <button
-            class="filter-btn"
-            data-filter="سرگرمی"
-            type="button"
-        >
-            😂 سرگرمی
-        </button>
-
-        <button
-            class="filter-btn"
-            data-filter="آموزش"
-            type="button"
-        >
-            📚 آموزش
-        </button>
-
-        <button
-            class="filter-btn"
-            data-filter="ورزش"
-            type="button"
-        >
-            ⚽ ورزش
-        </button>
-
-        <button
-            class="filter-btn"
-            data-filter="فناوری"
-            type="button"
-        >
-            💻 فناوری
-        </button>
-
-    </div>
-
-
-    <!-- RESULT BAR -->
-    <div class="result-bar">
 
         <div
-            id="resultText"
-            class="result-text"
+            id="resultsInfo"
+            class="results-info"
         >
             در حال دریافت...
         </div>
 
-        <button
-            id="refreshButton"
-            class="refresh-btn"
-            type="button"
-        >
-            🔄
-        </button>
-
-    </div>
+    </main>
 
 
-    <!-- RESULTS -->
     <main
-        id="results"
-        class="results"
+        id="searchList"
+        class="list"
     >
 
         <div class="empty">
@@ -818,7 +812,6 @@
 </div>
 
 
-<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
 
     <button
@@ -828,15 +821,6 @@
     >
         <span>🏠</span>
         <span>خانه</span>
-    </button>
-
-    <button
-        id="searchNavButton"
-        class="nav-btn active"
-        type="button"
-    >
-        <span>🔎</span>
-        <span>جستجو</span>
     </button>
 
     <button
@@ -860,795 +844,773 @@
 </nav>
 
 
+<script
+    src="/streams-cache.js"
+></script>
+
+
 <script>
-    /* =====================================================
-       CONFIG
-    ====================================================== */
 
-    const LOGIN_KEY =
-        "lainolive_logged_in";
+const LOGIN_KEY =
+    "lainolive_logged_in";
 
-    const USERNAME_KEY =
-        "lainolive_username";
+const USERNAME_KEY =
+    "lainolive_username";
 
-    const VIEW_STREAM_KEY =
-        "lainolive_view_stream";
+const VIEW_STREAM_KEY =
+    "lainolive_view_stream";
 
-    const CURRENT_STREAM_KEY =
-        "lainolive_current_stream";
+const CURRENT_STREAM_KEY =
+    "lainolive_current_stream";
 
 
-    /* =====================================================
-       AUTH
-    ====================================================== */
+if (
+    localStorage.getItem(
+        LOGIN_KEY
+    ) !== "true"
+) {
+
+    window.location.href =
+        "/login.html";
+}
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+const searchList =
+    document.getElementById(
+        "searchList"
+    );
+
+const resultsInfo =
+    document.getElementById(
+        "resultsInfo"
+    );
+
+const filters =
+    document.getElementById(
+        "filters"
+    );
+
+const currentUsername =
+    localStorage.getItem(
+        USERNAME_KEY
+    )
+    ||
+    "";
+
+
+let allStreams = [];
+
+let selectedCategory = "";
+
+let loading = false;
+
+
+/* =========================
+   HELPERS
+   ========================= */
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function normalizeText(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .trim()
+        .toLowerCase();
+}
+
+
+function getId(stream) {
+
+    return (
+        stream?.id
+        ??
+        stream?.stream_id
+    );
+}
+
+
+function getTitle(stream) {
+
+    return (
+        stream?.title
+        ||
+        "لایو بدون عنوان"
+    );
+}
+
+
+function getUsername(stream) {
+
+    return (
+        stream?.username
+        ||
+        stream?.user
+        ||
+        "کاربر"
+    );
+}
+
+
+function getCategory(stream) {
+
+    return (
+        stream?.category
+        ||
+        "عمومی"
+    );
+}
+
+
+function getViewers(stream) {
+
+    return Number(
+        stream?.viewer_count
+        ??
+        stream?.viewers
+        ??
+        0
+    );
+}
+
+
+function getCover(stream) {
+
+    return (
+        stream?.cover_url
+        ||
+        stream?.cover
+        ||
+        stream?.thumbnail
+        ||
+        ""
+    );
+}
+
+
+/* =========================
+   QUERY URL
+   ========================= */
+
+function loadInitialQuery() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const query =
+        params.get(
+            "q"
+        );
+
+
+    if (query) {
+
+        searchInput.value =
+            query;
+    }
+}
+
+
+/* =========================
+   FILTER
+   ========================= */
+
+function getFilteredStreams() {
+
+    const query =
+        normalizeText(
+            searchInput.value
+        );
+
+
+    return allStreams.filter(
+        stream => {
+
+            const title =
+                normalizeText(
+                    getTitle(
+                        stream
+                    )
+                );
+
+            const username =
+                normalizeText(
+                    getUsername(
+                        stream
+                    )
+                );
+
+            const category =
+                normalizeText(
+                    getCategory(
+                        stream
+                    )
+                );
+
+
+            const matchesText =
+                !query
+                ||
+                title.includes(
+                    query
+                )
+                ||
+                username.includes(
+                    query
+                )
+                ||
+                category.includes(
+                    query
+                );
+
+
+            const matchesCategory =
+                !selectedCategory
+                ||
+                normalizeText(
+                    getCategory(
+                        stream
+                    )
+                )
+                ===
+                normalizeText(
+                    selectedCategory
+                );
+
+
+            return (
+                matchesText
+                &&
+                matchesCategory
+            );
+        }
+    );
+}
+
+
+/* =========================
+   RENDER
+   ========================= */
+
+function renderSearchResults() {
+
+    const streams =
+        getFilteredStreams();
+
+
+    resultsInfo.textContent =
+        streams.length +
+        " لایو پیدا شد";
+
 
     if (
-        localStorage.getItem(
-            LOGIN_KEY
-        ) !== "true"
+        !streams.length
     ) {
 
-        window.location.href =
-            "/login.html";
-    }
-
-
-    /* =====================================================
-       ELEMENTS
-    ====================================================== */
-
-    const searchInput =
-        document.getElementById(
-            "searchInput"
-        );
-
-    const clearButton =
-        document.getElementById(
-            "clearButton"
-        );
-
-    const results =
-        document.getElementById(
-            "results"
-        );
-
-    const resultText =
-        document.getElementById(
-            "resultText"
-        );
-
-    const refreshButton =
-        document.getElementById(
-            "refreshButton"
-        );
-
-
-    /* =====================================================
-       STATE
-    ====================================================== */
-
-    let allStreams = [];
-
-    let activeFilter = "all";
-
-
-    /* =====================================================
-       HELPERS
-    ====================================================== */
-
-    function normalize(value) {
-
-        return String(
-            value ?? ""
-        )
-            .trim()
-            .toLowerCase();
-    }
-
-
-    function escapeHtml(value) {
-
-        return String(
-            value ?? ""
-        )
-            .replaceAll(
-                "&",
-                "&amp;"
-            )
-            .replaceAll(
-                "<",
-                "&lt;"
-            )
-            .replaceAll(
-                ">",
-                "&gt;"
-            )
-            .replaceAll(
-                '"',
-                "&quot;"
-            )
-            .replaceAll(
-                "'",
-                "&#039;"
-            );
-    }
-
-
-    function getId(stream) {
-
-        return (
-            stream.id
-            ??
-            stream.stream_id
-        );
-    }
-
-
-    function getTitle(stream) {
-
-        return (
-            stream.title
-            ||
-            "لایو بدون عنوان"
-        );
-    }
-
-
-    function getUsername(stream) {
-
-        return (
-            stream.username
-            ||
-            stream.user
-            ||
-            stream.owner
-            ||
-            "کاربر"
-        );
-    }
-
-
-    function getCategory(stream) {
-
-        return (
-            stream.category
-            ||
-            "عمومی"
-        );
-    }
-
-
-    function getViewers(stream) {
-
-        return Number(
-            stream.viewer_count
-            ??
-            stream.viewers
-            ??
-            0
-        );
-    }
-
-
-    function getCover(stream) {
-
-        return (
-            stream.cover_url
-            ||
-            stream.cover
-            ||
-            stream.thumbnail
-            ||
-            ""
-        );
-    }
-
-
-    /* =====================================================
-       LOAD
-    ====================================================== */
-
-    async function loadStreams() {
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/streams"
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "خطا در دریافت لایوها"
-                );
-            }
-
-
-            const data =
-                await response.json();
-
-
-            allStreams =
-                Array.isArray(
-                    data.streams
-                )
-                    ? data.streams
-                    : (
-                        Array.isArray(
-                            data
-                        )
-                            ? data
-                            : []
-                    );
-
-
-            render();
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-            resultText.textContent =
-                "خطا در دریافت اطلاعات";
-
-            results.innerHTML = `
+        searchList.innerHTML =
+            `
                 <div class="empty">
-                    دریافت لایوها انجام نشد.<br>
-                    اتصال سرور را بررسی کنید.
-                </div>
-            `;
-        }
-    }
-
-
-    /* =====================================================
-       FILTER
-    ====================================================== */
-
-    function getFilteredStreams() {
-
-        const query =
-            normalize(
-                searchInput.value
-            );
-
-
-        return allStreams.filter(
-            stream => {
-
-                const title =
-                    normalize(
-                        getTitle(
-                            stream
-                        )
-                    );
-
-                const username =
-                    normalize(
-                        getUsername(
-                            stream
-                        )
-                    );
-
-                const category =
-                    normalize(
-                        getCategory(
-                            stream
-                        )
-                    );
-
-
-                const matchesSearch =
-                    !query
-                    ||
-                    title.includes(
-                        query
-                    )
-                    ||
-                    username.includes(
-                        query
-                    )
-                    ||
-                    category.includes(
-                        query
-                    );
-
-
-                const matchesCategory =
-                    activeFilter ===
-                    "all"
-                    ||
-                    normalize(
-                        getCategory(
-                            stream
-                        )
-                    )
-                    ===
-                    normalize(
-                        activeFilter
-                    );
-
-
-                return (
-                    matchesSearch
-                    &&
-                    matchesCategory
-                );
-            }
-        );
-    }
-
-
-    /* =====================================================
-       RENDER
-    ====================================================== */
-
-    function render() {
-
-        const filtered =
-            getFilteredStreams();
-
-
-        resultText.textContent =
-            filtered.length
-            + " لایو پیدا شد";
-
-
-        clearButton.classList.toggle(
-            "show",
-            !!searchInput.value
-        );
-
-
-        if (!filtered.length) {
-
-            results.innerHTML = `
-                <div class="empty">
-                    ${
-                        searchInput.value.trim()
-                            || activeFilter !== "all"
-                            ? "لایوی با این جستجو پیدا نشد. 🔎"
-                            : "فعلاً هیچ لایوی در حال پخش نیست. 🎥"
-                    }
+                    هیچ لایوی مطابق جستجوی شما پیدا نشد.
                 </div>
             `;
 
-            return;
-        }
+        return;
+    }
 
 
-        results.innerHTML =
-            filtered
-                .map(
-                    stream =>
-                        createCard(
+    searchList.innerHTML =
+        streams
+            .map(
+                stream => {
+
+                    const id =
+                        getId(
                             stream
-                        )
-                )
-                .join("");
+                        );
 
-
-        results
-            .querySelectorAll(
-                "[data-stream-id]"
-            )
-            .forEach(
-                card => {
-
-                    card.addEventListener(
-                        "click",
-                        () => {
-
-                            const id =
-                                card.dataset.streamId;
-
-                            const stream =
-                                filtered.find(
-                                    item =>
-                                        String(
-                                            getId(
-                                                item
-                                            )
-                                        )
-                                        ===
-                                        String(
-                                            id
-                                        )
-                                );
-
-
-                            if (!stream) {
-                                return;
-                            }
-
-
-                            openStream(
+                    const title =
+                        escapeHtml(
+                            getTitle(
                                 stream
-                            );
-                        }
-                    );
-                }
-            );
-    }
+                            )
+                        );
+
+                    const username =
+                        escapeHtml(
+                            getUsername(
+                                stream
+                            )
+                        );
+
+                    const category =
+                        escapeHtml(
+                            getCategory(
+                                stream
+                            )
+                        );
+
+                    const viewers =
+                        getViewers(
+                            stream
+                        );
+
+                    const cover =
+                        getCover(
+                            stream
+                        );
 
 
-    /* =====================================================
-       CARD
-    ====================================================== */
+                    return `
+                        <article
+                            class="card"
+                            data-id="${escapeHtml(id)}"
+                        >
 
-    function createCard(
-        stream
-    ) {
+                            <div class="cover">
 
-        const id =
-            getId(
-                stream
-            );
+                                ${
+                                    cover
+                                        ? `
+                                            <img
+                                                src="${escapeHtml(
+                                                    cover
+                                                )}"
+                                                alt="${title}"
+                                                loading="lazy"
+                                                onerror="
+                                                    this.style.display='none';
+                                                    this.parentElement
+                                                        .querySelector(
+                                                            '.cover-placeholder'
+                                                        )
+                                                        .style.display='flex';
+                                                "
+                                            >
 
-        const title =
-            escapeHtml(
-                getTitle(
-                    stream
-                )
-            );
+                                            <div
+                                                class="cover-placeholder"
+                                                style="
+                                                    display:none;
+                                                    position:absolute;
+                                                    inset:0;
+                                                "
+                                            >
+                                                📺
+                                            </div>
+                                        `
+                                        : `
+                                            <div class="cover-placeholder">
+                                                📺
+                                            </div>
+                                        `
+                                }
 
-        const username =
-            escapeHtml(
-                getUsername(
-                    stream
-                )
-            );
-
-        const category =
-            escapeHtml(
-                getCategory(
-                    stream
-                )
-            );
-
-        const viewers =
-            getViewers(
-                stream
-            );
-
-        const cover =
-            getCover(
-                stream
-            );
-
-
-        return `
-            <article
-                class="card"
-                data-stream-id="${escapeHtml(id)}"
-            >
-
-                <div class="cover">
-
-                    ${
-                        cover
-                            ? `
-                                <img
-                                    src="${escapeHtml(
-                                        cover
-                                    )}"
-                                    alt="${title}"
-                                    loading="lazy"
-                                >
-                            `
-                            : `
-                                <div
-                                    class="placeholder"
-                                >
-                                    📺
+                                <div class="live-badge">
+                                    ● LIVE
                                 </div>
-                            `
-                    }
 
-                    <div class="live-badge">
-                        ● LIVE
-                    </div>
+                                <div class="viewer-count">
+                                    👁 ${viewers}
+                                </div>
 
-                    <div class="viewer-badge">
-                        👁 ${viewers}
-                    </div>
-
-                </div>
+                            </div>
 
 
-                <div class="card-body">
+                            <div class="card-body">
 
-                    <div class="card-title">
-                        ${title}
-                    </div>
+                                <div class="card-title">
+                                    ${title}
+                                </div>
 
-                    <div class="card-user">
-                        👤 ${username}
-                    </div>
+                                <div class="card-user">
+                                    👤 ${username}
+                                </div>
 
-                    <div class="card-footer">
+                                <div class="card-bottom">
 
-                        <div class="category">
-                            ${category}
-                        </div>
+                                    <div class="category">
+                                        ${category}
+                                    </div>
 
-                        <div class="viewer-text">
-                            ${viewers} بیننده
-                        </div>
+                                    <div class="views">
+                                        ${viewers}
+                                        بیننده
+                                    </div>
 
-                    </div>
+                                </div>
 
-                </div>
+                            </div>
 
-            </article>
-        `;
-    }
-
-
-    /* =====================================================
-       OPEN
-    ====================================================== */
-
-    function openStream(
-        stream
-    ) {
-
-        const id =
-            getId(
-                stream
-            );
-
-        const currentUsername =
-            localStorage.getItem(
-                USERNAME_KEY
-            );
-
-
-        sessionStorage.setItem(
-            VIEW_STREAM_KEY,
-            JSON.stringify(
-                stream
+                        </article>
+                    `;
+                }
             )
-        );
+            .join("");
 
 
-        if (
-            String(
-                getUsername(
-                    stream
-                )
-            )
-            ===
-            String(
-                currentUsername
-            )
-        ) {
-
-            sessionStorage.setItem(
-                CURRENT_STREAM_KEY,
-                JSON.stringify(
-                    stream
-                )
-            );
-
-            window.location.href =
-                "/live.html";
-
-            return;
-        }
-
-
-        window.location.href =
-            "/viewer.html?id="
-            +
-            encodeURIComponent(
-                id
-            );
-    }
-
-
-    /* =====================================================
-       INPUT
-    ====================================================== */
-
-    searchInput.addEventListener(
-        "input",
-        () => {
-
-            render();
-
-        }
-    );
-
-
-    clearButton.addEventListener(
-        "click",
-        () => {
-
-            searchInput.value =
-                "";
-
-            searchInput.focus();
-
-            render();
-
-        }
-    );
-
-
-    /* =====================================================
-       CATEGORY BUTTONS
-    ====================================================== */
-
-    document
+    searchList
         .querySelectorAll(
-            ".filter-btn"
+            "[data-id]"
         )
         .forEach(
-            button => {
+            card => {
 
-                button.addEventListener(
+                card.addEventListener(
                     "click",
                     () => {
 
-                        document
-                            .querySelectorAll(
-                                ".filter-btn"
-                            )
-                            .forEach(
+                        const id =
+                            card.dataset.id;
+
+
+                        const stream =
+                            allStreams.find(
                                 item =>
-                                    item.classList.remove(
-                                        "active"
+                                    String(
+                                        getId(
+                                            item
+                                        )
+                                    )
+                                    ===
+                                    String(
+                                        id
                                     )
                             );
 
 
-                        button.classList.add(
-                            "active"
+                        if (
+                            !stream
+                        ) {
+
+                            return;
+                        }
+
+
+                        sessionStorage.setItem(
+                            VIEW_STREAM_KEY,
+                            JSON.stringify(
+                                stream
+                            )
                         );
 
 
-                        activeFilter =
-                            button.dataset.filter
-                            ||
-                            "all";
+                        const owner =
+                            getUsername(
+                                stream
+                            );
 
 
-                        render();
+                        if (
+                            String(owner)
+                            ===
+                            String(
+                                currentUsername
+                            )
+                        ) {
+
+                            sessionStorage.setItem(
+                                CURRENT_STREAM_KEY,
+                                JSON.stringify(
+                                    stream
+                                )
+                            );
+
+                            window.location.href =
+                                "/live.html";
+
+                            return;
+                        }
+
+
+                        window.location.href =
+                            "/viewer.html?id=" +
+                            encodeURIComponent(
+                                id
+                            );
                     }
                 );
             }
         );
+}
 
 
-    /* =====================================================
-       REFRESH
-    ====================================================== */
+/* =========================
+   LOAD STREAMS
+   ========================= */
 
-    refreshButton.addEventListener(
-        "click",
-        async () => {
+async function loadStreams(
+    force = false
+) {
 
-            refreshButton.animate(
-                [
-                    {
-                        transform:
-                            "rotate(0deg)"
-                    },
-                    {
-                        transform:
-                            "rotate(360deg)"
-                    }
-                ],
-                {
-                    duration: 450
-                }
+    if (
+        loading
+    ) {
+        return;
+    }
+
+
+    loading =
+        true;
+
+
+    try {
+
+        const streams =
+            await LainoLiveStreams.fetch({
+                force:
+                    force,
+
+                ttl:
+                    1000
+            });
+
+
+        allStreams =
+            Array.isArray(
+                streams
+            )
+                ? streams
+                : [];
+
+
+        renderSearchResults();
+
+    } catch (error) {
+
+        console.error(
+            "search stream error:",
+            error
+        );
+
+
+        if (
+            !allStreams.length
+        ) {
+
+            searchList.innerHTML =
+                `
+                    <div class="empty">
+                        دریافت لایوها انجام نشد.
+                        <br>
+                        اتصال سرور را بررسی کنید.
+                    </div>
+                `;
+        }
+
+
+    } finally {
+
+        loading =
+            false;
+    }
+}
+
+
+/* =========================
+   SEARCH INPUT
+   ========================= */
+
+searchInput.addEventListener(
+    "input",
+    () => {
+
+        renderSearchResults();
+    }
+);
+
+
+searchInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            const url =
+                new URL(
+                    window.location.href
+                );
+
+
+            url.searchParams.set(
+                "q",
+                searchInput.value
             );
 
 
-            await loadStreams();
+            window.history.replaceState(
+                {},
+                "",
+                url
+            );
+        }
+    }
+);
+
+
+/* =========================
+   CATEGORY FILTER
+   ========================= */
+
+filters
+    .querySelectorAll(
+        "[data-category]"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    filters
+                        .querySelectorAll(
+                            ".filter-btn"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
+                        );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    selectedCategory =
+                        button.dataset.category
+                        ||
+                        "";
+
+
+                    renderSearchResults();
+                }
+            );
         }
     );
 
 
-    /* =====================================================
-       NAVIGATION
-    ====================================================== */
+/* =========================
+   NAV
+   ========================= */
 
-    document
-        .getElementById(
-            "backButton"
-        )
-        .addEventListener(
-            "click",
-            () => {
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
 
-                window.location.href =
-                    "/index.html";
-            }
-        );
-
-
-    document
-        .getElementById(
-            "homeButton"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                window.location.href =
-                    "/index.html";
-            }
-        );
-
-
-    document
-        .getElementById(
-            "popularButton"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                window.location.href =
-                    "/popular.html";
-            }
-        );
-
-
-    document
-        .getElementById(
-            "profileButton"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                window.location.href =
-                    "/profile.html";
-            }
-        );
-
-
-    /* =====================================================
-       KEYBOARD
-    ====================================================== */
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "/"
-                &&
-                document.activeElement !==
-                    searchInput
-            ) {
-
-                event.preventDefault();
-
-                searchInput.focus();
-            }
+            window.location.href =
+                "/index.html";
         }
     );
 
 
-    /* =====================================================
-       START
-    ====================================================== */
+document
+    .getElementById(
+        "homeButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
 
-    loadStreams();
-
-
-    setInterval(
-        loadStreams,
-        5000
+            window.location.href =
+                "/index.html";
+        }
     );
+
+
+document
+    .getElementById(
+        "popularButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "/popular.html";
+        }
+    );
+
+
+document
+    .getElementById(
+        "profileButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "/profile.html";
+        }
+    );
+
+
+/* =========================
+   START
+   ========================= */
+
+loadInitialQuery();
+
+loadStreams();
+
+
+setInterval(
+    () => {
+
+        loadStreams(
+            false
+        );
+
+    },
+    2000
+);
+
 </script>
 
 </body>
