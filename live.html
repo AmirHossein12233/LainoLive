@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -434,10 +433,6 @@
 <body>
 
 <script>
-    /* =====================================================
-       LOGIN
-    ===================================================== */
-
     const loggedIn =
         localStorage.getItem(
             "lainolive_logged_in"
@@ -800,49 +795,17 @@
         );
 
 
-    /* =====================================================
-       NORMALIZE STREAM
-    ===================================================== */
-
-    currentStream = {
-        ...currentStream,
-
-        id:
-            currentStream.id,
-
-        title:
-            currentStream.title ||
-            "پخش زنده",
-
-        username:
-            currentStream.username ||
-            currentUsername,
-
-        category:
-            currentStream.category ||
-            "عمومی"
-    };
-
-
-    /*
-     * نسخه به‌روز لایو را دوباره ذخیره می‌کنیم.
-     */
-
-    sessionStorage.setItem(
-        "lainolive_current_stream",
-        JSON.stringify(
-            currentStream
-        )
-    );
-
-
     liveTitle.textContent =
-        currentStream.title;
+        currentStream?.title ||
+        "پخش زنده";
 
 
     liveUser.textContent =
         "صاحب لایو: " +
-        currentStream.username;
+        (
+            currentStream?.username ||
+            currentUsername
+        );
 
 
     /* =====================================================
@@ -902,9 +865,7 @@
        HELPERS
     ===================================================== */
 
-    function showToast(
-        text
-    ) {
+    function showToast(text) {
 
         if (!toast) {
             return;
@@ -912,9 +873,7 @@
 
 
         toast.textContent =
-            String(
-                text || ""
-            );
+            String(text || "");
 
 
         toast.classList.add(
@@ -935,9 +894,7 @@
     }
 
 
-    function escapeHtml(
-        text
-    ) {
+    function escapeHtml(text) {
 
         return String(
             text ?? ""
@@ -970,20 +927,29 @@
         online
     ) {
 
-        statusText.textContent =
-            text;
+        if (statusText) {
+
+            statusText.textContent =
+                text;
+        }
 
 
-        statusDot.style.background =
-            online
-                ? "#22c55e"
-                : "#ef4444";
+        if (statusDot) {
+
+            statusDot.style.background =
+                online
+                    ? "#22c55e"
+                    : "#ef4444";
+        }
 
 
-        status.style.background =
-            online
-                ? "#132b1d"
-                : "#3f0a0a";
+        if (status) {
+
+            status.style.background =
+                online
+                    ? "#132b1d"
+                    : "#3f0a0a";
+        }
     }
 
 
@@ -994,7 +960,7 @@
         if (
             !websocket ||
             websocket.readyState !==
-                WebSocket.OPEN
+            WebSocket.OPEN
         ) {
 
             return false;
@@ -1056,9 +1022,7 @@
             );
 
 
-        if (
-            localStream
-        ) {
+        if (localStream) {
 
             localStream
                 .getTracks()
@@ -1104,6 +1068,7 @@
 
                     candidate:
                         event.candidate
+
                 });
             };
 
@@ -1115,9 +1080,14 @@
                     pc.connectionState;
 
 
-                connectionInfo.textContent =
-                    "WebRTC: " +
-                    state;
+                if (
+                    connectionInfo
+                ) {
+
+                    connectionInfo.textContent =
+                        "WebRTC: " +
+                        state;
+                }
 
 
                 if (
@@ -1145,9 +1115,14 @@
         pc.oniceconnectionstatechange =
             () => {
 
-                connectionInfo.textContent =
-                    "ICE: " +
-                    pc.iceConnectionState;
+                if (
+                    connectionInfo
+                ) {
+
+                    connectionInfo.textContent =
+                        "ICE: " +
+                        pc.iceConnectionState;
+                }
             };
 
 
@@ -1374,9 +1349,7 @@
 
     async function addTrackToExistingPeers() {
 
-        if (
-            !localStream
-        ) {
+        if (!localStream) {
             return;
         }
 
@@ -1479,12 +1452,22 @@
                 true;
 
 
-            chatState.textContent =
-                "سیگنالینگ متصل";
+            if (
+                chatState
+            ) {
+
+                chatState.textContent =
+                    "سیگنالینگ متصل";
+            }
 
 
-            connectionInfo.textContent =
-                "WebSocket: متصل";
+            if (
+                connectionInfo
+            ) {
+
+                connectionInfo.textContent =
+                    "WebSocket: متصل";
+            }
 
 
             setStatus(
@@ -1730,8 +1713,13 @@
         }
 
 
-        connectionInfo.textContent =
-            SIGNALING_URL;
+        if (
+            connectionInfo
+        ) {
+
+            connectionInfo.textContent =
+                SIGNALING_URL;
+        }
 
 
         try {
@@ -1869,8 +1857,13 @@
                 );
 
 
-                chatState.textContent =
-                    "قطع";
+                if (
+                    chatState
+                ) {
+
+                    chatState.textContent =
+                        "قطع";
+                }
             };
     }
 
@@ -1881,8 +1874,13 @@
 
     function hideCameraError() {
 
-        cameraError.style.display =
-            "none";
+        if (
+            cameraError
+        ) {
+
+            cameraError.style.display =
+                "none";
+        }
     }
 
 
@@ -1890,12 +1888,22 @@
         message
     ) {
 
-        cameraErrorText.textContent =
-            message;
+        if (
+            cameraErrorText
+        ) {
+
+            cameraErrorText.textContent =
+                message;
+        }
 
 
-        cameraError.style.display =
-            "flex";
+        if (
+            cameraError
+        ) {
+
+            cameraError.style.display =
+                "flex";
+        }
 
 
         setStatus(
@@ -2059,7 +2067,7 @@
                 ) {
 
                     message =
-                        "اجازه دوربین و میکروفون داده نشده است.";
+                        "اجازه دوربین و میکروفون داده نشده است. از تنظیمات مرورگر اجازه دسترسی را فعال کن.";
 
                 } else if (
                     secondError &&
@@ -2068,7 +2076,7 @@
                 ) {
 
                     message =
-                        "دوربین یا میکروفون پیدا نشد.";
+                        "دوربین یا میکروفون روی این دستگاه پیدا نشد.";
 
                 } else if (
                     secondError &&
@@ -2077,7 +2085,7 @@
                 ) {
 
                     message =
-                        "دوربین توسط برنامه دیگری استفاده می‌شود.";
+                        "دوربین توسط برنامه دیگری در حال استفاده است.";
 
                 } else if (
                     secondError &&
@@ -2086,7 +2094,7 @@
                 ) {
 
                     message =
-                        "دسترسی دوربین توسط مرورگر مسدود شده است.";
+                        "دسترسی دوربین به دلیل تنظیمات امنیتی مرورگر مسدود شده است.";
                 }
 
 
@@ -2138,12 +2146,22 @@
         );
 
 
-        chatState.textContent =
-            "آنلاین";
+        if (
+            chatState
+        ) {
+
+            chatState.textContent =
+                "آنلاین";
+        }
 
 
-        connectionInfo.textContent =
-            "دوربین: آماده";
+        if (
+            connectionInfo
+        ) {
+
+            connectionInfo.textContent =
+                "دوربین: آماده";
+        }
 
 
         cameraStarting =
@@ -2151,7 +2169,6 @@
 
 
         await addTrackToExistingPeers();
-
 
         await processWaitingViewers();
     }
@@ -2415,6 +2432,13 @@
 
                 chatSend.disabled =
                     false;
+
+                try {
+
+                    chatInput.focus();
+
+                } catch (error) {
+                }
             }
         }
     );
@@ -2509,7 +2533,7 @@
 
 
     /* =====================================================
-       STOP LIVE
+       STOP
     ===================================================== */
 
     async function stopLive() {
@@ -2676,124 +2700,50 @@
        BACK
     ===================================================== */
 
-    /*
-     * برگشت از صفحه، لایو را متوقف نمی‌کند.
-     * کاربر می‌تواند بعداً از پروفایل «ادامه لایو» را بزند.
-     */
-
     backButton.addEventListener(
         "click",
         () => {
 
-            if (
-                chatTimer
-            ) {
-
-                clearInterval(
-                    chatTimer
-                );
-
-                chatTimer =
-                    null;
-            }
-
-
-            if (
-                viewerTimer
-            ) {
-
-                clearInterval(
-                    viewerTimer
-                );
-
-                viewerTimer =
-                    null;
-            }
-
-
-            /*
-             * اطلاعات لایو را نگه می‌داریم.
-             */
-
-            sessionStorage.setItem(
-                "lainolive_current_stream",
-                JSON.stringify(
-                    currentStream
-                )
+            showToast(
+                "برای خروج ابتدا لایو را پایان بده."
             );
-
-
-            /*
-             * دوربین و اتصال این صفحه را می‌بندیم،
-             * اما لایو سمت API پایان داده نمی‌شود.
-             */
-
-            if (
-                localStream
-            ) {
-
-                localStream
-                    .getTracks()
-                    .forEach(
-                        track => {
-
-                            try {
-                                track.stop();
-                            } catch (error) {
-                            }
-                        }
-                    );
-
-
-                localStream =
-                    null;
-            }
-
-
-            peers.forEach(
-                pc => {
-
-                    try {
-                        pc.close();
-                    } catch (error) {
-                    }
-                }
-            );
-
-
-            peers.clear();
-
-
-            pendingCandidates.clear();
-
-
-            waitingViewers.clear();
-
-
-            if (
-                websocket
-            ) {
-
-                try {
-                    websocket.close();
-                } catch (error) {
-                }
-
-
-                websocket =
-                    null;
-            }
-
-
-            window.location.href =
-                "/index.html";
         }
     );
 
 
-    /* =====================================================
-       CAMERA RETRY
-    ===================================================== */
+    stopButton.addEventListener(
+        "click",
+        async () => {
+
+            let accepted =
+                false;
+
+
+            try {
+
+                accepted =
+                    window.confirm(
+                        "آیا مطمئنی می‌خواهی لایو را پایان بدهی؟"
+                    );
+
+            } catch (error) {
+
+                accepted =
+                    true;
+            }
+
+
+            if (
+                !accepted
+            ) {
+                return;
+            }
+
+
+            await stopLive();
+        }
+    );
+
 
     cameraRetryButton.addEventListener(
         "click",
@@ -2808,25 +2758,13 @@
        CLEANUP
     ===================================================== */
 
-    /*
-     * مهم:
-     * اینجا دیگر /api/streams/stop صدا زده نمی‌شود.
-     *
-     * بنابراین:
-     *
-     * بستن صفحه
-     * رفتن به پروفایل
-     * برگشت به خانه
-     * رفرش صفحه
-     *
-     * باعث پایان لایو نمی‌شود.
-     *
-     * فقط stopLive() لایو را پایان می‌دهد.
-     */
-
     window.addEventListener(
         "beforeunload",
         () => {
+
+            stopped =
+                true;
+
 
             if (
                 chatTimer
@@ -2848,49 +2786,53 @@
             }
 
 
-            /*
-             * آخرین اطلاعات لایو را نگه می‌داریم.
-             */
-
             if (
-                currentStream &&
-                !stopped
+                !localStream ||
+                !currentStream
             ) {
 
-                try {
-
-                    sessionStorage.setItem(
-                        "lainolive_current_stream",
-                        JSON.stringify(
-                            currentStream
-                        )
-                    );
-
-                } catch (error) {
-                }
+                return;
             }
 
 
-            /*
-             * فقط اتصال محلی این صفحه بسته می‌شود.
-             */
+            try {
 
-            if (
-                localStream
-            ) {
+                navigator.sendBeacon(
+                    "/api/streams/stop",
+                    new Blob(
+                        [
+                            JSON.stringify({
 
-                localStream
-                    .getTracks()
-                    .forEach(
-                        track => {
+                                stream_id:
+                                    currentStream.id,
 
-                            try {
-                                track.stop();
-                            } catch (error) {
-                            }
+                                username:
+                                    currentUsername
+
+                            })
+                        ],
+                        {
+                            type:
+                                "application/json"
                         }
-                    );
+                    )
+                );
+
+            } catch (error) {
             }
+
+
+            localStream
+                .getTracks()
+                .forEach(
+                    track => {
+
+                        try {
+                            track.stop();
+                        } catch (error) {
+                        }
+                    }
+                );
 
 
             peers.forEach(
@@ -2930,14 +2872,10 @@
         }
 
 
-        setStatus(
-            "در حال آماده‌سازی",
-            true
-        );
-
-
         /*
-         * سیگنالینگ و دوربین همزمان شروع می‌شوند.
+         * Signaling و دوربین را همزمان آغاز می‌کنیم.
+         * اگر بیننده زودتر برسد، در waitingViewers
+         * نگه داشته می‌شود.
          */
 
         connectSignaling();
@@ -2974,4 +2912,3 @@
 </body>
 
 </html>
-```
