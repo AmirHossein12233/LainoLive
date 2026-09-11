@@ -1,67 +1,26 @@
 {
-    "name": "LainoLive",
-    "short_name": "LainoLive",
+  "name": "LainoLive",
+  "short_name": "LainoLive",
+  "description": "پخش زنده آنلاین و چت LainoLive",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#050508",
+  "theme_color": "#ff2757",
+  "orientation": "portrait",
 
-    "description": "پخش زنده و تماشای لایو",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
 
-    "lang": "fa",
-
-    "dir": "rtl",
-
-
-    "start_url": "/",
-
-
-    "scope": "/",
-
-
-    "display": "standalone",
-
-
-    "orientation": "portrait",
-
-
-    "background_color": "#050508",
-
-
-    "theme_color": "#ff2757",
-
-
-
-    "icons": [
-
-        {
-            "src": "/icons/icon-72.png",
-            "sizes": "72x72",
-            "type": "image/png"
-        },
-
-        {
-            "src": "/icons/icon-96.png",
-            "sizes": "96x96",
-            "type": "image/png"
-        },
-
-        {
-            "src": "/icons/icon-128.png",
-            "sizes": "128x128",
-            "type": "image/png"
-        },
-
-        {
-            "src": "/icons/icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
-        },
-
-        {
-            "src": "/icons/icon-512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-        }
-
-    ]
-
+  "lang": "fa",
+  "dir": "rtl"
 }

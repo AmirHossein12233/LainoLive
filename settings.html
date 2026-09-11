@@ -8,9 +8,6 @@
 <meta name="viewport"
 content="width=device-width,initial-scale=1.0">
 
-<meta name="theme-color"
-content="#ff2757">
-
 <title>
 تنظیمات - LainoLive
 </title>
@@ -18,102 +15,71 @@ content="#ff2757">
 
 <style>
 
-*{
-box-sizing:border-box;
-}
-
-
 body{
 
 margin:0;
 
-min-height:100vh;
-
-font-family:
-Tahoma,Arial;
-
-background:
-radial-gradient(
-circle at top,
-#24163a,
-#050508
-);
+background:#050508;
 
 color:white;
+
+font-family:tahoma;
 
 padding:20px;
 
 }
 
 
+.box{
 
-.card{
-
-max-width:450px;
+max-width:500px;
 
 margin:auto;
 
-background:
-rgba(255,255,255,.07);
+background:#15151f;
 
-border:
-1px solid
-rgba(255,255,255,.1);
+padding:20px;
 
-border-radius:25px;
-
-padding:25px;
+border-radius:20px;
 
 }
 
 
 
-h1{
+h2{
+
+color:#ff2757;
 
 text-align:center;
 
-font-size:24px;
-
 }
 
 
 
-.group{
+label{
+
+display:block;
 
 margin-top:20px;
 
-}
-
-
-
-.title{
-
-font-size:13px;
-
 color:#aaa;
 
-margin-bottom:10px;
-
 }
 
 
 
-select{
+select,
+button{
 
 width:100%;
 
-height:50px;
+height:48px;
 
-border:none;
+margin-top:10px;
 
-outline:none;
+border:0;
 
 border-radius:14px;
-
-background:
-rgba(255,255,255,.1);
-
-color:white;
 
 padding:0 15px;
 
@@ -121,38 +87,11 @@ padding:0 15px;
 
 
 
-option{
+select{
 
-background:#15151f;
+background:#222;
 
-}
-
-
-
-.row{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-background:
-rgba(255,255,255,.06);
-
-padding:15px;
-
-border-radius:15px;
-
-}
-
-
-
-.switch{
-
-width:50px;
-
-height:28px;
+color:white;
 
 }
 
@@ -160,32 +99,11 @@ height:28px;
 
 button{
 
-width:100%;
-
-height:50px;
-
-border:none;
-
-border-radius:15px;
-
-margin-top:15px;
-
-font-weight:900;
-
-}
-
-
-
-.save{
-
-background:
-linear-gradient(
-135deg,
-#ff2757,
-#8b35ff
-);
+background:#ff2757;
 
 color:white;
+
+font-weight:bold;
 
 }
 
@@ -193,33 +111,17 @@ color:white;
 
 .logout{
 
-background:
-rgba(255,50,80,.15);
-
-color:#ff9aaa;
+background:#333;
 
 }
 
 
 
-.back{
-
-background:
-rgba(255,255,255,.08);
-
-color:white;
-
-}
-
-
-
-.message{
+#status{
 
 text-align:center;
 
 margin-top:15px;
-
-font-size:12px;
 
 color:#aaa;
 
@@ -235,173 +137,112 @@ color:#aaa;
 <body>
 
 
-<div class="card">
+<div class="box">
 
 
-<h1>
+<h2>
 ⚙️ تنظیمات LainoLive
-</h1>
+</h2>
 
 
 
+<p>
 
+کاربر:
 
-<div class="group">
+<span id="username">
 
+-
 
-<div class="title">
-کیفیت پخش ویدیو
-</div>
-
-
-<select id="videoQuality">
-
-
-<option value="360p">
-360p - اینترنت ضعیف
-</option>
-
-
-<option value="480p">
-480p
-</option>
-
-
-<option value="720p">
-720p HD
-</option>
-
-
-<option value="1080p">
-1080p Full HD
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="group">
-
-
-<div class="title">
-کیفیت صدا
-</div>
-
-
-<select id="audioQuality">
-
-
-<option value="64kbps">
-64kbps
-</option>
-
-
-<option value="128kbps">
-128kbps
-</option>
-
-
-<option value="192kbps">
-192kbps
-</option>
-
-
-<option value="320kbps">
-320kbps
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="group">
-
-
-<div class="title">
-حالت برنامه
-</div>
-
-
-<select id="appMode">
-
-
-<option value="normal">
-عادی
-</option>
-
-
-<option value="dataSaver">
-صرفه‌جویی اینترنت
-</option>
-
-
-<option value="quality">
-کیفیت بالا
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="group">
-
-
-<div class="row">
-
-
-<span>
-پخش خودکار ویدیو
 </span>
 
-
-<input
-type="checkbox"
-id="autoplay"
-class="switch"
->
-
-
-</div>
-
-
-</div>
+</p>
 
 
 
 
 
+<label>
+
+کیفیت پخش
+
+</label>
 
 
-<button
-class="save"
-id="saveBtn"
->
+<select id="quality">
 
-💾 ذخیره تنظیمات
+
+<option value="360">
+
+360p
+
+</option>
+
+
+<option value="480">
+
+480p
+
+</option>
+
+
+<option value="720">
+
+720p HD
+
+</option>
+
+
+<option value="1080">
+
+1080p
+
+</option>
+
+
+</select>
+
+
+
+
+
+
+
+<label>
+
+حالت برنامه
+
+</label>
+
+
+<select id="mode">
+
+
+<option value="dark">
+
+تاریک
+
+</option>
+
+
+<option value="simple">
+
+ساده
+
+</option>
+
+
+</select>
+
+
+
+
+
+
+
+<button onclick="saveSettings()">
+
+ذخیره تنظیمات
 
 </button>
 
@@ -409,23 +250,8 @@ id="saveBtn"
 
 
 
-<button
-class="back"
-id="backBtn"
->
-
-بازگشت
-
-</button>
-
-
-
-
-
-<button
-class="logout"
-id="logoutBtn"
->
+<button class="logout"
+onclick="logout()">
 
 خروج از حساب
 
@@ -435,16 +261,16 @@ id="logoutBtn"
 
 
 
-<div
-class="message"
-id="message"
->
+<div id="status">
 
 </div>
 
 
 
 </div>
+
+
+
 
 
 
@@ -453,34 +279,32 @@ id="message"
 <script>
 
 
-const video =
-document.getElementById(
-"videoQuality"
-);
+const username =
+
+localStorage.getItem(
+
+"lainolive_username"
+
+)
+
+||
+
+"مهمان";
 
 
-const audio =
-document.getElementById(
-"audioQuality"
-);
+
+document
+
+.getElementById(
+"username"
+)
+
+.textContent =
+
+username;
 
 
-const mode =
-document.getElementById(
-"appMode"
-);
 
-
-const autoplay =
-document.getElementById(
-"autoplay"
-);
-
-
-const message =
-document.getElementById(
-"message"
-);
 
 
 
@@ -488,46 +312,62 @@ document.getElementById(
 function loadSettings(){
 
 
-const data =
+
+const settings =
 
 JSON.parse(
 
 localStorage.getItem(
+
 "lainolive_settings"
+
 )
 
 ||
+
 "{}"
 
 );
 
 
 
-video.value =
-data.videoQuality
-||
-"720p";
+
+
+if(settings.quality){
+
+
+document
+
+.getElementById(
+"quality"
+)
+
+.value =
+
+settings.quality;
+
+
+}
 
 
 
-audio.value =
-data.audioQuality
-||
-"128kbps";
 
 
-
-mode.value =
-data.appMode
-||
-"normal";
+if(settings.mode){
 
 
+document
 
-autoplay.checked =
-data.autoplay
-??
-true;
+.getElementById(
+"mode"
+)
+
+.value =
+
+settings.mode;
+
+
+}
 
 
 
@@ -539,33 +379,42 @@ true;
 
 
 
-document
-.getElementById(
-"saveBtn"
-)
-.onclick = ()=>{
+
+function saveSettings(){
+
 
 
 const settings = {
 
 
-videoQuality:
-video.value,
+quality:
+
+document
+
+.getElementById(
+"quality"
+)
+
+.value,
 
 
-audioQuality:
-audio.value,
 
+mode:
 
-appMode:
-mode.value,
+document
 
+.getElementById(
+"mode"
+)
 
-autoplay:
-autoplay.checked
+.value
+
 
 
 };
+
+
+
 
 
 
@@ -575,18 +424,28 @@ localStorage.setItem(
 
 JSON.stringify(
 settings
+
 )
 
 );
 
 
 
-message.textContent =
+
+
+document
+
+.getElementById(
+"status"
+)
+
+.textContent =
+
 "تنظیمات ذخیره شد ✅";
 
 
 
-};
+}
 
 
 
@@ -595,43 +454,24 @@ message.textContent =
 
 
 
-
-document
-.getElementById(
-"logoutBtn"
-)
-.onclick = ()=>{
+function logout(){
 
 
-localStorage.clear();
+
+localStorage.removeItem(
+
+"lainolive_username"
+
+);
+
 
 
 location.href =
-"/login.html";
+
+"login.html";
 
 
-};
-
-
-
-
-
-
-
-
-
-document
-.getElementById(
-"backBtn"
-)
-.onclick = ()=>{
-
-
-location.href =
-"/";
-
-
-};
+}
 
 
 

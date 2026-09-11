@@ -1,73 +1,168 @@
 "use strict";
 
 
-const LainoLiveStreams = (() => {
+const StreamsCache = {
 
 
-    const CACHE_KEY =
-        "lainolive_streams_cache";
+    key:
+    "lainolive_streams",
 
 
-    const CACHE_TIME_KEY =
-        "lainolive_streams_cache_time";
-
-
-
-    let memoryCache = [];
-
-    let lastFetch = 0;
-
-    let loading = false;
-
-
-
-    /*
-        دریافت لیست لایوها
-    */
-
-    async function fetchStreams(options = {}) {
-
-
-        const force =
-            options.force === true;
-
-
-        const ttl =
-            options.ttl || 3000;
+    time:
+    5000,
 
 
 
 
-        const now =
-            Date.now();
+
+
+
+    save(streams){
+
+
+        localStorage.setItem(
+
+            this.key,
+
+            JSON.stringify({
+
+                created:
+                Date.now(),
+
+
+                data:
+                streams
+
+
+            })
+
+        );
+
+
+    },
 
 
 
 
-        if(
-            !force &&
-            memoryCache.length > 0 &&
-            (now - lastFetch) < ttl
-        ){
 
-            return memoryCache;
+
+
+
+    get(){
+
+
+        const item =
+
+        localStorage.getItem(
+            this.key
+        );
+
+
+
+        if(!item)
+
+            return null;
+
+
+
+
+
+        try{
+
+
+            const cache =
+
+            JSON.parse(
+                item
+            );
+
+
+
+            if(
+
+                Date.now()
+                -
+                cache.created
+
+                >
+
+                this.time
+
+            ){
+
+
+                return null;
+
+
+            }
+
+
+
+            return cache.data;
+
+
+
+        }
+
+        catch(e){
+
+
+            return null;
+
 
         }
 
 
 
+    },
 
-        if(loading){
 
 
-            return memoryCache;
+
+
+
+
+
+    clear(){
+
+
+        localStorage.removeItem(
+
+            this.key
+
+        );
+
+
+    },
+
+
+
+
+
+
+
+
+    async load(){
+
+
+
+        const cached =
+
+        this.get();
+
+
+
+
+
+        if(cached){
+
+
+            return cached;
 
 
         }
 
 
-
-        loading = true;
 
 
 
@@ -77,45 +172,11 @@ const LainoLiveStreams = (() => {
 
             const response =
 
-                await fetch(
+            await fetch(
 
-                    "/api/streams",
+                "http://127.0.0.1:8000/api/streams"
 
-                    {
-
-                        method:
-                            "GET",
-
-
-                        headers:
-                        {
-
-                            "Accept":
-                            "application/json"
-
-                        },
-
-
-                        cache:
-                            "no-store"
-
-                    }
-
-                );
-
-
-
-
-
-            if(!response.ok){
-
-
-                throw new Error(
-                    "Streams API error"
-                );
-
-
-            }
+            );
 
 
 
@@ -123,162 +184,24 @@ const LainoLiveStreams = (() => {
 
             const data =
 
-                await response.json();
+            await response.json();
 
 
 
 
 
-            let streams = [];
+            if(data.success){
 
 
+                this.save(
 
-
-            if(
-                Array.isArray(data)
-            ){
-
-                streams =
-                    data;
-
-
-            }
-
-            else if(
-                Array.isArray(
                     data.streams
-                )
-            ){
 
-                streams =
-                    data.streams;
-
-
-            }
-
-
-
-
-
-
-            memoryCache =
-                streams;
-
-
-
-            lastFetch =
-                Date.now();
-
-
-
-
-
-            localStorage.setItem(
-
-                CACHE_KEY,
-
-                JSON.stringify(
-                    streams
-                )
-
-            );
-
-
-
-
-
-            localStorage.setItem(
-
-                CACHE_TIME_KEY,
-
-                String(
-                    lastFetch
-                )
-
-            );
-
-
-
-
-
-
-            return streams;
-
-
-
-        }
-
-        catch(error){
-
-
-
-            console.log(
-                "streams cache:",
-                error
-            );
-
-
-
-
-            return loadLocalCache();
-
-
-
-        }
-
-        finally{
-
-
-            loading =
-                false;
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-
-    /*
-        دریافت کش ذخیره شده
-    */
-
-    function loadLocalCache(){
-
-
-
-        try{
-
-
-            const saved =
-
-                localStorage.getItem(
-                    CACHE_KEY
                 );
 
 
 
-
-            if(saved){
-
-
-
-                memoryCache =
-
-                    JSON.parse(
-                        saved
-                    );
-
-
-
-                return memoryCache;
+                return data.streams;
 
 
             }
@@ -290,7 +213,13 @@ const LainoLiveStreams = (() => {
         catch(error){
 
 
-            console.log(error);
+            console.log(
+
+                "Streams cache error",
+
+                error
+
+            );
 
 
         }
@@ -309,324 +238,4 @@ const LainoLiveStreams = (() => {
 
 
 
-
-
-
-    /*
-        گرفتن یک لایو با ID
-    */
-
-    function getStream(id){
-
-
-
-        return memoryCache.find(
-
-            stream =>
-
-
-                String(
-
-                    stream.id ||
-
-                    stream.stream_id
-
-                )
-
-                ===
-
-                String(id)
-
-
-        )
-
-        ||
-
-        null;
-
-
-    }
-
-
-
-
-
-
-
-
-    /*
-        ذخیره یا بروزرسانی لایو
-    */
-
-    function save(stream){
-
-
-
-        if(!stream){
-
-            return;
-
-        }
-
-
-
-
-        const id =
-
-            stream.id ||
-
-            stream.stream_id;
-
-
-
-
-
-        memoryCache =
-
-            memoryCache.filter(
-
-                item =>
-
-
-                    String(
-
-                        item.id ||
-
-                        item.stream_id
-
-                    )
-
-                    !==
-
-                    String(id)
-
-
-            );
-
-
-
-
-
-
-        memoryCache.unshift(
-            stream
-        );
-
-
-
-
-
-        saveLocal();
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-    /*
-        حذف لایو
-    */
-
-    function remove(id){
-
-
-
-        memoryCache =
-
-            memoryCache.filter(
-
-                item =>
-
-
-                    String(
-
-                        item.id ||
-
-                        item.stream_id
-
-                    )
-
-                    !==
-
-                    String(id)
-
-
-            );
-
-
-
-
-
-        saveLocal();
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-    /*
-        ذخیره دستی کش
-    */
-
-    function saveLocal(){
-
-
-
-        localStorage.setItem(
-
-            CACHE_KEY,
-
-            JSON.stringify(
-                memoryCache
-            )
-
-        );
-
-
-
-        localStorage.setItem(
-
-            CACHE_TIME_KEY,
-
-            String(
-                Date.now()
-            )
-
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-    /*
-        پاک کردن کامل کش
-    */
-
-    function clear(){
-
-
-
-        memoryCache = [];
-
-
-        lastFetch = 0;
-
-
-
-        localStorage.removeItem(
-            CACHE_KEY
-        );
-
-
-        localStorage.removeItem(
-            CACHE_TIME_KEY
-        );
-
-
-    }
-
-
-
-
-
-
-
-
-
-    /*
-        تعداد لایوها
-    */
-
-    function count(){
-
-
-        return memoryCache.length;
-
-
-    }
-
-
-
-
-
-
-
-
-
-    /*
-        آخرین زمان بروزرسانی
-    */
-
-    function updatedAt(){
-
-
-        return lastFetch;
-
-
-    }
-
-
-
-
-
-
-
-
-    return {
-
-
-        fetch:
-            fetchStreams,
-
-
-        get:
-            getStream,
-
-
-        save:
-            save,
-
-
-        remove:
-            remove,
-
-
-        clear:
-            clear,
-
-
-        count:
-            count,
-
-
-        updatedAt:
-            updatedAt
-
-
-    };
-
-
-
-})();
+};

@@ -6,27 +6,7 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-
-<meta name="theme-color"
-content="#ff2757">
-
-
-<meta name="mobile-web-app-capable"
-content="yes">
-
-
-<meta name="apple-mobile-web-app-capable"
-content="yes">
-
-
-<link rel="manifest"
-href="/manifest.json">
-
-
-<link rel="apple-touch-icon"
-href="/icons/icon-192.png">
+content="width=device-width,initial-scale=1.0">
 
 
 <title>
@@ -34,52 +14,54 @@ LainoLive
 </title>
 
 
+<link rel="manifest" href="/manifest.json">
+
+
+<meta name="theme-color" content="#ff2757">
+
+
+<meta name="mobile-web-app-capable" content="yes">
+
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+
 
 <style>
 
-
 *{
 box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
 }
+
 
 
 body{
 
 margin:0;
 
-min-height:100vh;
-
-font-family:
-Tahoma,
-Arial,
-sans-serif;
-
-background:
-radial-gradient(
-circle at top,
-#19192b,
-#050508
-);
+background:#050508;
 
 color:white;
 
-}
+font-family:tahoma,Arial;
 
-
-
-button,
-input{
-
-font-family:inherit;
+padding:15px;
 
 }
 
 
 
-.page{
+.container{
 
-padding-bottom:90px;
+max-width:800px;
+
+margin:auto;
 
 }
 
@@ -87,31 +69,13 @@ padding-bottom:90px;
 
 .header{
 
-position:sticky;
+background:#15151f;
 
-top:0;
+padding:25px;
 
-z-index:10;
+border-radius:25px;
 
-padding:16px;
-
-background:
-rgba(5,5,10,.9);
-
-backdrop-filter:
-blur(15px);
-
-}
-
-
-
-.header-row{
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
+text-align:center;
 
 }
 
@@ -119,9 +83,11 @@ justify-content:space-between;
 
 .logo{
 
-font-size:23px;
+font-size:38px;
 
-font-weight:900;
+font-weight:bold;
+
+color:#ff2757;
 
 }
 
@@ -131,237 +97,87 @@ font-weight:900;
 
 color:#aaa;
 
-font-size:11px;
-
-margin-top:5px;
-
 }
 
 
 
-.actions{
-
-display:flex;
-
-gap:8px;
-
-}
-
-
-
-.icon{
-
-width:42px;
-
-height:42px;
-
-border:none;
-
-border-radius:14px;
-
-background:
-rgba(255,255,255,.08);
-
-color:white;
-
-font-size:18px;
-
-}
-
-
-
-.search{
-
-margin-top:15px;
-
-display:flex;
-
-gap:8px;
-
-align-items:center;
-
-background:
-rgba(255,255,255,.07);
-
-border-radius:15px;
-
-padding:12px;
-
-}
-
-
-
-.search input{
+button{
 
 width:100%;
 
-background:none;
+height:50px;
 
-border:none;
+margin-top:12px;
 
-outline:none;
+border:0;
 
-color:white;
+border-radius:15px;
 
-}
-
-
-
-.hero{
-
-margin:16px;
-
-padding:22px;
-
-border-radius:22px;
-
-background:
-linear-gradient(
-135deg,
-rgba(255,39,87,.25),
-rgba(139,53,255,.25)
-);
-
-}
-
-
-
-.hero h2{
-
-margin:0;
-
-font-size:20px;
-
-}
-
-
-
-.hero p{
-
-color:#ccc;
-
-font-size:12px;
-
-line-height:2;
-
-}
-
-
-
-.start{
-
-border:none;
-
-padding:13px 20px;
-
-border-radius:14px;
-
-background:
-linear-gradient(
-135deg,
-#ff2757,
-#8b35ff
-);
+background:#ff2757;
 
 color:white;
 
-font-weight:900;
+font-weight:bold;
+
+font-size:15px;
 
 }
 
 
 
-.section{
+.gray{
 
-padding:0 16px;
-
-}
-
-
-
-.section-title{
-
-font-size:17px;
-
-font-weight:900;
-
-margin-bottom:12px;
+background:#333;
 
 }
 
-
-
-#streamsList{
-
-display:grid;
-
-grid-template-columns:
-repeat(2,1fr);
-
-gap:12px;
-
-}
 
 
 .card{
 
-overflow:hidden;
+margin-top:20px;
 
-border-radius:18px;
+background:#15151f;
 
-background:
-rgba(255,255,255,.06);
+border-radius:20px;
 
-}
-
-
-
-.cover{
-
-height:120px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:40px;
-
-background:
-linear-gradient(
-135deg,
-#222,
-#39205c
-);
+padding:18px;
 
 }
 
 
 
-.body{
+.stream{
 
-padding:12px;
+background:#222;
 
-}
+border-radius:15px;
 
+padding:15px;
 
-
-.title{
-
-font-weight:900;
+margin-top:12px;
 
 }
 
 
 
-.user{
+.stream-title{
 
-margin-top:6px;
+font-size:18px;
 
-font-size:11px;
+font-weight:bold;
+
+}
+
+
+
+.info{
 
 color:#aaa;
+
+font-size:13px;
+
+margin-top:8px;
 
 }
 
@@ -369,15 +185,18 @@ color:#aaa;
 
 .empty{
 
-padding:40px;
-
 text-align:center;
 
 color:#aaa;
 
+padding:20px;
+
 }
 
+
+
 </style>
+
 
 </head>
 
@@ -385,238 +204,50 @@ color:#aaa;
 <body>
 
 
-<div class="page">
+
+<div class="container">
 
 
-<header class="header">
 
+<div class="header">
 
-<div class="header-row">
-
-
-<div>
 
 <div class="logo">
-🎥 LainoLive
-</div>
 
-
-<div class="subtitle">
-پخش زنده و تماشای لایو
-</div>
-
+🔴 LainoLive
 
 </div>
 
 
 
-<div class="actions">
+<p class="subtitle">
 
-
-<button
-class="icon"
-id="refreshButton"
->
-🔄
-</button>
-
-
-<button
-class="icon"
-id="profileButton"
->
-👤
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-<div class="search">
-
-<span>
-🔎
-</span>
-
-
-<input
-id="searchInput"
-placeholder="جستجوی لایو..."
->
-
-
-</div>
-
-
-
-</header>
-
-
-
-
-
-<section class="hero">
-
-
-<h2>
-🔴 همین حالا لایو شو
-</h2>
-
-
-
-<p>
-
-لایو خودت را شروع کن و تصویر و صدایت را برای بیننده‌ها پخش کن.
+پخش زنده آنلاین با چت
 
 </p>
 
 
 
-<button
-class="start"
-id="startLiveButton"
->
+
+<button onclick="startLive()">
 
 شروع لایو
 
 </button>
 
 
-</section>
 
 
+<button class="gray"
+onclick="openLogin()">
 
-
-
-
-<section class="section">
-
-
-<div class="section-title">
-
-🔴 لایوهای در حال پخش
-
-</div>
-
-
-
-<div
-id="statusText"
-style="
-color:#999;
-font-size:12px;
-margin-bottom:12px;
-"
->
-
-در حال دریافت لایوها...
-
-</div>
-
-
-
-<div
-id="streamsList"
->
-
-
-<div class="empty">
-
-در حال دریافت لایوها...
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-</div>
-
-
-
-
-
-
-
-
-<nav
-style="
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-height:75px;
-background:rgba(5,5,10,.95);
-display:grid;
-grid-template-columns:repeat(3,1fr);
-padding:10px;
-border-top:1px solid rgba(255,255,255,.08);
-"
->
-
-
-<button
-style="
-background:none;
-border:none;
-color:white;
-font-size:12px;
-"
->
-
-🏠
-<br>
-خانه
+ورود / ساخت حساب
 
 </button>
 
 
 
-<button
-id="popularButton"
-style="
-background:none;
-border:none;
-color:#aaa;
-font-size:12px;
-"
->
-
-🔥
-<br>
-محبوب
-
-</button>
-
-
-
-
-<button
-id="profileButton2"
-style="
-background:none;
-border:none;
-color:#aaa;
-font-size:12px;
-"
->
-
-👤
-<br>
-پروفایل
-
-</button>
-
-
-
-</nav>
+</div>
 
 
 
@@ -625,22 +256,52 @@ font-size:12px;
 
 
 
+<div class="card">
 
-<script src="/streams-cache.js"></script>
 
-<script src="/app.js"></script>
+<h2>
+
+📺 لایوهای فعال
+
+</h2>
+
+
+<div id="streamList">
+
+در حال دریافت...
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
 
 
 <script>
 
 
-if(
-"serviceWorker" in navigator
-){
+const API =
 
-navigator.serviceWorker.register(
-"/service-worker.js"
-);
+"http://127.0.0.1:8000";
+
+
+
+
+
+function startLive(){
+
+
+location.href =
+
+"live.html";
 
 
 }
@@ -648,18 +309,19 @@ navigator.serviceWorker.register(
 
 
 
-
-const list =
-document.getElementById(
-"streamsList"
-);
+function openLogin(){
 
 
+location.href =
 
-const status =
-document.getElementById(
-"statusText"
-);
+"login.html";
+
+
+}
+
+
+
+
 
 
 
@@ -667,113 +329,180 @@ document.getElementById(
 async function loadStreams(){
 
 
-const streams =
 
-await LainoLiveStreams.fetch({
-force:false,
-ttl:3000
-});
+const box =
+
+document.getElementById(
+"streamList"
+);
+
+
+
+try{
+
+
+const res =
+
+await fetch(
+
+API+
+"/api/streams"
+
+);
+
+
+
+const data =
+
+await res.json();
+
+
+
+
+
+box.innerHTML = "";
+
+
 
 
 
 if(
-!streams.length
+!data.streams ||
+data.streams.length===0
 ){
 
-list.innerHTML =
-`
-<div class="empty">
-فعلاً هیچ لایوی فعال نیست 🎥
-</div>
-`;
 
-status.textContent =
-"بدون لایو";
+box.innerHTML =
+
+`
+
+<div class="empty">
+
+فعلاً لایوی وجود ندارد
+
+</div>
+
+`;
 
 return;
 
+
 }
 
 
 
 
-status.textContent =
-
-streams.length +
-" لایو فعال";
 
 
+data.streams.forEach(
+
+stream=>{
 
 
+const item =
 
-list.innerHTML =
-
-streams.map(
-
-stream => `
-
-<div
-class="card"
-onclick="
-openStream('${stream.id || stream.stream_id}')
-"
->
-
-
-<div class="cover">
-
-📺
-
-</div>
-
-
-<div class="body">
-
-
-<div class="title">
-
-${stream.title || "لایو بدون عنوان"}
-
-</div>
+document.createElement(
+"div"
+);
 
 
 
-<div class="user">
-
-👤
-${stream.username || "کاربر"}
-
-</div>
+item.className =
+"stream";
 
 
-</div>
 
-
-</div>
+item.innerHTML =
 
 `
 
-).join("");
+<div class="stream-title">
+
+🔴 ${stream.title}
+
+</div>
+
+
+<div class="info">
+
+👤 ${stream.username}
+
+<br>
+
+👁 ${stream.viewers} بیننده
+
+</div>
+
+
+<button>
+
+مشاهده لایو
+
+</button>
+
+`;
 
 
 
-}
 
 
-
-
-
-
-
-
-function openStream(id){
+item
+.querySelector("button")
+.onclick = ()=>{
 
 
 location.href =
 
-"/viewer.html?id="
+"viewer.html?id="
+
 +
-encodeURIComponent(id);
+stream.id;
+
+
+
+};
+
+
+
+
+
+box.appendChild(
+item
+);
+
+
+
+}
+
+);
+
+
+
+
+}
+
+catch(error){
+
+
+
+box.innerHTML =
+
+`
+
+<div class="empty">
+
+اتصال به سرور ناموفق بود
+
+</div>
+
+`;
+
+
+
+console.log(error);
+
+
+}
 
 
 
@@ -786,70 +515,34 @@ encodeURIComponent(id);
 
 
 
-document
-.getElementById(
-"refreshButton"
+// PWA Service Worker
+
+if(
+"serviceWorker" in navigator
+){
+
+
+navigator.serviceWorker.register(
+
+"/service-worker.js"
+
 )
-.onclick = loadStreams;
+
+.then(()=>{
+
+
+console.log(
+"LainoLive PWA Ready"
+);
+
+
+});
+
+
+}
 
 
 
-
-document
-.getElementById(
-"profileButton"
-)
-.onclick = () => {
-
-location.href =
-"/profile.html";
-
-};
-
-
-
-
-
-document
-.getElementById(
-"profileButton2"
-)
-.onclick = () => {
-
-location.href =
-"/profile.html";
-
-};
-
-
-
-
-
-document
-.getElementById(
-"popularButton"
-)
-.onclick = () => {
-
-location.href =
-"/popular.html";
-
-};
-
-
-
-
-
-document
-.getElementById(
-"startLiveButton"
-)
-.onclick = () => {
-
-location.href =
-"/live.html";
-
-};
 
 
 
@@ -858,14 +551,19 @@ location.href =
 loadStreams();
 
 
+
 setInterval(
+
 loadStreams,
+
 5000
+
 );
 
 
 
 </script>
+
 
 
 </body>

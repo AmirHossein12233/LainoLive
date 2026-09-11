@@ -8,130 +8,67 @@
 <meta name="viewport"
 content="width=device-width,initial-scale=1.0">
 
-
-<meta name="theme-color"
-content="#ff2757">
-
-
 <title>
-شروع لایو - LainoLive
+LainoLive - Start Live
 </title>
 
 
-
 <style>
-
-*{
-box-sizing:border-box;
-}
-
 
 body{
 
 margin:0;
 
-min-height:100vh;
-
-font-family:
-Tahoma,Arial;
-
-background:
-radial-gradient(
-circle at top,
-#24163a,
-#050508
-);
+background:#050508;
 
 color:white;
 
+font-family:tahoma;
+
 padding:20px;
 
 }
 
 
+.box{
 
-.card{
-
-max-width:500px;
+max-width:600px;
 
 margin:auto;
 
-background:
-rgba(255,255,255,.07);
-
-border-radius:25px;
+background:#15151f;
 
 padding:20px;
 
-}
-
-
-
-h1{
-
-text-align:center;
-
-font-size:24px;
+border-radius:20px;
 
 }
-
 
 
 video{
 
 width:100%;
 
-height:260px;
+height:330px;
 
-background:#000;
+background:black;
 
 border-radius:20px;
 
-object-fit:cover;
-
 }
 
 
-
-.group{
-
-margin-top:15px;
-
-}
-
-
-
-label{
-
-display:block;
-
-font-size:12px;
-
-color:#aaa;
-
-margin-bottom:8px;
-
-}
-
-
-
-input,
-select{
+input,select,button{
 
 width:100%;
 
-height:48px;
+height:50px;
 
-border:none;
+margin-top:12px;
 
-outline:none;
+border:0;
 
 border-radius:14px;
-
-background:
-rgba(255,255,255,.1);
-
-color:white;
 
 padding:0 15px;
 
@@ -139,21 +76,11 @@ padding:0 15px;
 
 
 
-option{
+input,select{
 
-background:#111;
+background:#222;
 
-}
-
-
-
-.buttons{
-
-display:flex;
-
-gap:10px;
-
-margin-top:20px;
+color:white;
 
 }
 
@@ -161,15 +88,7 @@ margin-top:20px;
 
 button{
 
-flex:1;
-
-height:50px;
-
-border:none;
-
-border-radius:15px;
-
-font-weight:900;
+font-weight:bold;
 
 }
 
@@ -177,12 +96,7 @@ font-weight:900;
 
 .start{
 
-background:
-linear-gradient(
-135deg,
-#ff2757,
-#8b35ff
-);
+background:#ff2757;
 
 color:white;
 
@@ -192,23 +106,7 @@ color:white;
 
 .stop{
 
-background:
-rgba(255,50,80,.2);
-
-color:#ff9aaa;
-
-}
-
-
-
-.back{
-
-width:100%;
-
-margin-top:12px;
-
-background:
-rgba(255,255,255,.08);
+background:#333;
 
 color:white;
 
@@ -216,18 +114,15 @@ color:white;
 
 
 
-.status{
-
-text-align:center;
+#status{
 
 margin-top:15px;
 
-font-size:12px;
+text-align:center;
 
 color:#aaa;
 
 }
-
 
 
 </style>
@@ -235,180 +130,137 @@ color:#aaa;
 </head>
 
 
+
 <body>
 
 
-<div class="card">
+
+<div class="box">
 
 
-<h1>
-🔴 شروع لایو
-</h1>
+<h2>
+🔴 LainoLive
+</h2>
 
 
 <video
+
 id="preview"
+
 autoplay
+
 muted
-playsinline
-></video>
 
+playsinline>
 
+</video>
 
-
-
-<div class="group">
-
-<label>
-عنوان لایو
-</label>
 
 
 <input
+
 id="title"
-placeholder="عنوان لایو را وارد کنید"
->
 
-
-</div>
+placeholder="عنوان لایو">
 
 
 
-
-
-<div class="group">
-
-<label>
-کیفیت تصویر
-</label>
-
-
-<select id="videoQuality">
-
+<select id="quality">
 
 <option value="360">
 360p
 </option>
 
-
 <option value="480">
 480p
 </option>
 
+<option value="720"
+selected>
 
-<option value="720">
 720p HD
-</option>
 
+</option>
 
 <option value="1080">
-1080p Full HD
+
+1080p
+
 </option>
 
 
 </select>
 
 
-</div>
-
-
-
-
-
-<div class="group">
-
-<label>
-کیفیت صدا
-</label>
-
-
-<select id="audioQuality">
-
-
-<option value="64000">
-64kbps
-</option>
-
-
-<option value="128000">
-128kbps
-</option>
-
-
-<option value="192000">
-192kbps
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-<div class="buttons">
 
 
 <button
-class="start"
-id="startBtn"
->
 
-شروع پخش
+class="start"
+
+id="startBtn">
+
+شروع لایو
 
 </button>
 
 
 
 <button
+
 class="stop"
-id="stopBtn"
->
+
+id="stopBtn">
 
 توقف
 
 </button>
 
 
+
+<div id="status">
+
+آماده
+
+</div>
+
+
 </div>
 
 
-<button
-class="back"
-id="backBtn"
->
-
-بازگشت
-
-</button>
 
 
-<div
-class="status"
-id="status"
->
 
-آماده شروع لایو
+<script src="/live-webrtc.js"></script>
 
-</div>
 
 <script>
 
 
-let stream = null;
+const API =
+
+"http://127.0.0.1:8000";
 
 
 
-const video =
+let mediaStream = null;
+
+let streamId = null;
+
+
+
+
+
+const preview =
+
 document.getElementById(
 "preview"
 );
 
 
+
 const status =
+
 document.getElementById(
 "status"
 );
@@ -417,64 +269,69 @@ document.getElementById(
 
 
 
-async function startCamera(){
+
+async function camera(){
 
 
 try{
 
 
-stream =
+mediaStream =
 
 await navigator.mediaDevices.getUserMedia(
 
 {
 
-
 video:
+
 {
 
 width:
+
 {
+
 ideal:
+
 Number(
+
 document.getElementById(
-"videoQuality"
-).value
+"quality"
 )
-*
-16
-/
-9
+.value
+
+)
+
 },
+
 
 height:
+
 {
+
 ideal:
+
 Number(
+
 document.getElementById(
-"videoQuality"
-).value
+"quality"
 )
+.value
+
+)
+
 }
 
-
 },
+
 
 
 audio:
+
 {
 
-echoCancellation:
-true,
+echoCancellation:true,
 
-
-noiseSuppression:
-true,
-
-
-sampleRate:
-48000
-
+noiseSuppression:true
 
 }
 
@@ -485,15 +342,15 @@ sampleRate:
 
 
 
+preview.srcObject =
 
-
-video.srcObject =
-stream;
+mediaStream;
 
 
 
 status.textContent =
-"دوربین و میکروفن فعال شد ✅";
+
+"دوربین فعال شد ✅";
 
 
 
@@ -502,62 +359,15 @@ status.textContent =
 catch(error){
 
 
-
-status.textContent =
-"دسترسی دوربین یا میکروفن داده نشد ❌";
-
-
 console.log(error);
 
 
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-
-function stopCamera(){
-
-
-
-if(stream){
-
-
-stream
-.getTracks()
-.forEach(
-
-track =>
-
-track.stop()
-
-);
-
-
-
-stream = null;
-
-
-
-video.srcObject =
-null;
-
-
-
-}
-
-
-
 status.textContent =
-"لایو متوقف شد";
+
+"خطا در دسترسی دوربین ❌";
+
+
+}
 
 
 
@@ -575,35 +385,54 @@ async function startLive(){
 
 
 
-if(!stream){
+if(!mediaStream){
 
-
-await startCamera();
-
+await camera();
 
 }
 
 
 
-const title =
+
+try{
+
+
+const response =
+
+await fetch(
+
+API+
+"/api/streams/start",
+
+{
+
+
+method:"POST",
+
+
+headers:
+
+{
+
+"Content-Type":
+
+"application/json"
+
+},
+
+
+body:
+
+JSON.stringify({
+
+title:
 
 document.getElementById(
 "title"
-)
-.value
-.trim()
+).value
 ||
-"LainoLive";
+"LainoLive",
 
-
-
-
-
-const data = {
-
-
-title:
-title,
 
 
 username:
@@ -619,82 +448,38 @@ localStorage.getItem(
 videoQuality:
 
 document.getElementById(
-"videoQuality"
-)
-.value,
-
+"quality"
+).value,
 
 
 audioQuality:
 
-document.getElementById(
-"audioQuality"
-)
-.value
+"128000"
 
 
-
-};
-
-
-
-
-
-
-
-try{
-
-
-const response =
-
-fetch("https://mygapino.shop/api/streams/start",
-
-{
-
-
-method:
-"POST",
-
-
-headers:
-{
-
-"Content-Type":
-"application/json"
-
-},
-
-
-body:
-
-JSON.stringify(
-data
-)
+})
 
 
 }
 
-
 );
 
 
 
+const data =
 
-
-const result =
-
-await response.json()
-.catch(
-()=>({})
-);
+await response.json();
 
 
 
 
 
+if(data.success){
 
 
-if(result.stream_id || result.id){
+streamId =
+
+data.stream_id;
 
 
 
@@ -703,15 +488,30 @@ localStorage.setItem(
 "lainolive_current_stream",
 
 JSON.stringify(
-result
+
+data.stream
+
 )
 
 );
 
 
 
+
+
+LainoWebRTC.start(
+
+streamId,
+
+mediaStream
+
+);
+
+
+
 status.textContent =
-"لایو شروع شد 🔴";
+
+"🔴 لایو فعال شد";
 
 
 
@@ -721,7 +521,8 @@ else{
 
 
 status.textContent =
-"اتصال به سرور ناموفق بود";
+
+"شروع لایو ناموفق بود";
 
 
 }
@@ -729,53 +530,19 @@ status.textContent =
 
 
 }
-
-
 
 catch(error){
 
 
-
-// حالت تستی بدون سرور
-
-
-const fake = {
-
-
-id:
-Date.now(),
-
-
-title:
-title,
-
-
-username:
-data.username,
-
-
-local:
-true
-
-
-};
-
-
-
-localStorage.setItem(
-
-"lainolive_current_stream",
-
-JSON.stringify(
-fake
-)
-
-);
-
+console.log(error);
 
 
 status.textContent =
-"لایو آزمایشی شروع شد 🔴";
+
+"اتصال به سرور ناموفق بود ❌";
+
+
+}
 
 
 
@@ -783,49 +550,36 @@ status.textContent =
 
 
 
-}
 
 
 
 
 
 
+async function stopLive(){
 
 
 
-document
-.getElementById(
-"startBtn"
-)
-.onclick =
-startLive;
+if(streamId){
 
 
+await fetch(
 
-
-
-document
-.getElementById(
-"stopBtn"
-)
-.onclick =
-()=>{
-
-
-stopCamera();
-
-
-fetch(
+API+
 "/api/streams/stop",
+
 {
 
-method:
-"POST",
+
+method:"POST",
+
 
 headers:
+
 {
 
 "Content-Type":
+
 "application/json"
 
 },
@@ -837,36 +591,59 @@ JSON.stringify({
 
 stream_id:
 
-JSON.parse(
-
-localStorage.getItem(
-"lainolive_current_stream"
-)
-
-||
-"{}"
-
-).id
+streamId
 
 })
 
 
 }
 
-)
-.catch(()=>{});
+).catch(()=>{});
 
 
 
-localStorage.removeItem(
+}
 
-"lainolive_current_stream"
+
+
+if(mediaStream){
+
+
+mediaStream
+
+.getTracks()
+
+.forEach(
+
+track=>
+
+track.stop()
 
 );
 
 
+}
 
-};
+
+
+if(
+LainoWebRTC.peer
+){
+
+LainoWebRTC.peer.close();
+
+}
+
+
+
+status.textContent =
+
+"لایو متوقف شد";
+
+
+
+}
+
 
 
 
@@ -875,24 +652,37 @@ localStorage.removeItem(
 
 
 document
+
 .getElementById(
-"backBtn"
+"startBtn"
 )
+
 .onclick =
-()=>{
+
+startLive;
 
 
-location.href =
-"/";
 
 
-};
+
+document
+
+.getElementById(
+"stopBtn"
+)
+
+.onclick =
+
+stopLive;
 
 
+
+camera();
 
 
 
 </script>
+
 
 
 </body>

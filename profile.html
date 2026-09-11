@@ -8,7 +8,6 @@
 <meta name="viewport"
 content="width=device-width,initial-scale=1.0">
 
-
 <title>
 پروفایل - LainoLive
 </title>
@@ -16,28 +15,15 @@ content="width=device-width,initial-scale=1.0">
 
 <style>
 
-*{
-box-sizing:border-box;
-}
-
-
 body{
 
 margin:0;
 
-min-height:100vh;
-
-font-family:
-Tahoma,Arial;
-
-background:
-radial-gradient(
-circle at top,
-#24163a,
-#050508
-);
+background:#050508;
 
 color:white;
+
+font-family:tahoma;
 
 padding:20px;
 
@@ -45,34 +31,17 @@ padding:20px;
 
 
 
-.card{
+.box{
 
-max-width:450px;
+max-width:500px;
 
 margin:auto;
 
-background:
-rgba(255,255,255,.07);
-
-border:
-1px solid
-rgba(255,255,255,.1);
-
-border-radius:25px;
+background:#15151f;
 
 padding:25px;
 
-}
-
-
-
-.logo{
-
-text-align:center;
-
-font-size:25px;
-
-font-weight:900;
+border-radius:25px;
 
 }
 
@@ -80,20 +49,13 @@ font-weight:900;
 
 .avatar{
 
-width:100px;
+width:90px;
 
-height:100px;
-
-margin:25px auto;
+height:90px;
 
 border-radius:50%;
 
-background:
-linear-gradient(
-135deg,
-#ff2757,
-#8b35ff
-);
+background:#ff2757;
 
 display:flex;
 
@@ -101,115 +63,17 @@ align-items:center;
 
 justify-content:center;
 
-font-size:45px;
+font-size:40px;
 
-overflow:hidden;
-
-}
-
-
-
-.avatar img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
+margin:auto;
 
 }
 
 
 
-label{
+h2{
 
-display:block;
-
-font-size:12px;
-
-color:#aaa;
-
-margin-bottom:7px;
-
-}
-
-
-
-input{
-
-width:100%;
-
-height:48px;
-
-border:none;
-
-outline:none;
-
-border-radius:14px;
-
-background:
-rgba(255,255,255,.1);
-
-color:white;
-
-padding:0 15px;
-
-margin-bottom:15px;
-
-}
-
-
-
-button{
-
-width:100%;
-
-height:48px;
-
-border:none;
-
-border-radius:14px;
-
-font-weight:900;
-
-margin-top:10px;
-
-}
-
-
-
-.save{
-
-background:
-linear-gradient(
-135deg,
-#ff2757,
-#8b35ff
-);
-
-color:white;
-
-}
-
-
-
-.logout{
-
-background:
-rgba(255,50,80,.15);
-
-color:#ff9aaa;
-
-}
-
-
-
-.back{
-
-background:
-rgba(255,255,255,.08);
-
-color:white;
+text-align:center;
 
 }
 
@@ -217,41 +81,83 @@ color:white;
 
 .info{
 
-text-align:center;
+background:#222;
 
-color:#aaa;
+padding:15px;
 
-font-size:12px;
+border-radius:15px;
 
 margin-top:15px;
+
+line-height:2;
 
 }
 
 
+
+input,
+button{
+
+width:100%;
+
+height:48px;
+
+margin-top:12px;
+
+border:0;
+
+border-radius:14px;
+
+padding:0 15px;
+
+}
+
+
+
+input{
+
+background:#222;
+
+color:white;
+
+}
+
+
+
+button{
+
+background:#ff2757;
+
+color:white;
+
+font-weight:bold;
+
+}
+
+
+
+.logout{
+
+background:#333;
+
+}
+
+
+
 </style>
 
-
 </head>
-
 
 
 <body>
 
 
-<div class="card">
+
+<div class="box">
 
 
-<div class="logo">
 
-👤 پروفایل LainoLive
-
-</div>
-
-
-<div
-id="avatar"
-class="avatar"
->
+<div class="avatar">
 
 👤
 
@@ -259,42 +165,60 @@ class="avatar"
 
 
 
+<h2>
+
+<span id="username">
+
+-
+
+</span>
+
+</h2>
+
+
+
+
+<div class="info">
+
+
+نام کاربری:
+
+<span id="name">
+
+-
+
+</span>
+
+
+<br>
+
+
+تعداد لایو:
+
+<span id="liveCount">
+
+0
+
+</span>
+
+
+
+</div>
+
+
+
+
 <input
-id="avatarInput"
-type="file"
-accept="image/*"
->
+
+id="newName"
+
+placeholder="نام جدید">
 
 
 
-<label>
-نام نمایشی
-</label>
 
 
-<input
-id="displayName"
-placeholder="نام شما"
->
-
-
-
-<label>
-نام کاربری
-</label>
-
-
-<input
-id="username"
-readonly
->
-
-
-
-<button
-class="save"
-id="saveBtn"
->
+<button onclick="changeName()">
 
 ذخیره تغییرات
 
@@ -302,21 +226,9 @@ id="saveBtn"
 
 
 
-<button
-class="back"
-id="backBtn"
->
 
-بازگشت
-
-</button>
-
-
-
-<button
-class="logout"
-id="logoutBtn"
->
+<button class="logout"
+onclick="logout()">
 
 خروج از حساب
 
@@ -324,263 +236,130 @@ id="logoutBtn"
 
 
 
-<div
-class="info"
-id="message"
->
-
 </div>
 
 
 
-</div>
+
+
+
+
 <script>
 
 
-const usernameInput =
+let username =
+
+localStorage.getItem(
+
+"lainolive_username"
+
+)
+
+||
+
+"مهمان";
+
+
+
+
+
 document.getElementById(
 "username"
-);
+)
+.textContent =
+
+username;
 
 
-const nameInput =
+
 document.getElementById(
-"displayName"
-);
-
-
-const avatar =
-document.getElementById(
-"avatar"
-);
-
-
-const message =
-document.getElementById(
-"message"
-);
-
-
-
-function getUser(){
-
-
-return {
-
-username:
-localStorage.getItem(
-"lainolive_username"
+"name"
 )
-||"",
+.textContent =
 
-name:
-localStorage.getItem(
-"lainolive_name"
-)
-||"",
-
-avatar:
-localStorage.getItem(
-"lainolive_avatar"
-)
-||""
-
-};
-
-
-}
+username;
 
 
 
 
 
-function loadProfile(){
-
-
-const user =
-getUser();
-
-
-
-usernameInput.value =
-user.username;
-
-
-
-nameInput.value =
-user.name ||
-user.username;
-
-
-
-if(user.avatar){
-
-
-avatar.innerHTML =
-`
-<img src="${user.avatar}">
-`;
-
-
-
-}
-
-
-
-}
 
 
 
 
-
-document
-.getElementById(
-"saveBtn"
-)
-.onclick = ()=>{
+function changeName(){
 
 
 const name =
-nameInput.value.trim();
 
-
-
-localStorage.setItem(
-"lainolive_name",
-name
-);
-
-
-
-message.textContent =
-"ذخیره شد ✅";
-
-
-
-};
-
-
-
-
-
-
-
-
-
-document
-.getElementById(
-"avatarInput"
+document.getElementById(
+"newName"
 )
-.onchange = e =>{
-
-
-const file =
-e.target.files[0];
+.value.trim();
 
 
 
-if(!file)
+if(!name)
 return;
 
 
 
-const reader =
-new FileReader();
-
-
-
-reader.onload = ()=>{
-
 
 localStorage.setItem(
-"lainolive_avatar",
-reader.result
+
+"lainolive_username",
+
+name
+
 );
 
 
 
-avatar.innerHTML =
-`
-<img src="${reader.result}">
-`;
 
 
-
-};
-
-
-
-reader.readAsDataURL(
-file
-);
-
-
-
-};
-
-
-
-
-
-
-
-
-
-document
-.getElementById(
-"logoutBtn"
+document.getElementById(
+"username"
 )
-.onclick = ()=>{
+.textContent =
+
+name;
+
+
+
+document.getElementById(
+"name"
+)
+.textContent =
+
+name;
+
+
+}
+
+
+
+
+
+
+
+
+function logout(){
 
 
 localStorage.removeItem(
-"lainolive_logged_in"
-);
 
-
-
-localStorage.removeItem(
 "lainolive_username"
+
 );
 
 
 
 location.href =
-"/login.html";
+
+"login.html";
 
 
-
-};
-
-
-
-
-
-
-
-
-
-document
-.getElementById(
-"backBtn"
-)
-.onclick = ()=>{
-
-
-location.href =
-"/";
-
-
-
-};
-
-
-
-
-
-
-
-loadProfile();
+}
 
 
 

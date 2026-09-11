@@ -8,11 +8,6 @@
 <meta name="viewport"
 content="width=device-width,initial-scale=1.0">
 
-
-<meta name="theme-color"
-content="#ff2757">
-
-
 <title>
 ورود - LainoLive
 </title>
@@ -20,97 +15,60 @@ content="#ff2757">
 
 <style>
 
-*{
-box-sizing:border-box;
-}
-
-
 body{
 
 margin:0;
 
-min-height:100vh;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-family:
-Tahoma,Arial;
-
-background:
-radial-gradient(
-circle at top,
-#24163a,
-#050508
-);
+background:#050508;
 
 color:white;
 
-}
+font-family:tahoma;
 
+padding:20px;
+
+}
 
 
 .box{
 
-width:
-calc(100% - 32px);
+max-width:400px;
 
-max-width:420px;
+margin:50px auto;
 
-background:
-rgba(255,255,255,.07);
-
-border:
-1px solid
-rgba(255,255,255,.1);
-
-border-radius:25px;
+background:#15151f;
 
 padding:25px;
 
+border-radius:20px;
+
 }
 
 
 
-.logo{
+h2{
 
 text-align:center;
 
-font-size:28px;
-
-font-weight:900;
-
-margin-bottom:8px;
-
-}
-
-
-.sub{
-
-text-align:center;
-
-color:#aaa;
-
-font-size:12px;
-
-margin-bottom:25px;
+color:#ff2757;
 
 }
 
 
 
-label{
+input,button{
 
-display:block;
+width:100%;
 
-font-size:12px;
+height:50px;
 
-color:#bbb;
+margin-top:15px;
 
-margin-bottom:7px;
+border:0;
+
+border-radius:14px;
+
+padding:0 15px;
 
 }
 
@@ -118,24 +76,9 @@ margin-bottom:7px;
 
 input{
 
-width:100%;
-
-height:48px;
-
-border:none;
-
-outline:none;
-
-border-radius:14px;
-
-background:
-rgba(255,255,255,.1);
+background:#222;
 
 color:white;
-
-padding:0 15px;
-
-margin-bottom:15px;
 
 }
 
@@ -143,34 +86,11 @@ margin-bottom:15px;
 
 button{
 
-width:100%;
-
-height:50px;
-
-border:none;
-
-border-radius:15px;
-
-font-weight:900;
-
-font-size:14px;
-
-cursor:pointer;
-
-}
-
-
-
-.primary{
-
-background:
-linear-gradient(
-135deg,
-#ff2757,
-#8b35ff
-);
+background:#ff2757;
 
 color:white;
+
+font-weight:bold;
 
 }
 
@@ -178,29 +98,21 @@ color:white;
 
 .secondary{
 
-margin-top:10px;
-
-background:
-rgba(255,255,255,.08);
-
-color:white;
+background:#333;
 
 }
 
 
 
-.message{
+#status{
 
 text-align:center;
 
 margin-top:15px;
 
-font-size:12px;
-
-color:#ffb7c5;
+color:#aaa;
 
 }
-
 
 
 </style>
@@ -211,53 +123,37 @@ color:#ffb7c5;
 <body>
 
 
+
 <div class="box">
 
 
-<div class="logo">
-🎥 LainoLive
-</div>
+<h2>
+🔴 LainoLive
+</h2>
 
-
-<div class="sub">
-پخش زنده و تماشای لایو
-</div>
-
-
-
-<label>
-نام کاربری
-</label>
 
 
 <input
+
 id="username"
-placeholder="نام کاربری"
-maxlength="30"
->
 
+placeholder="نام کاربری">
 
-
-
-<label>
-رمز عبور
-</label>
 
 
 <input
+
 id="password"
+
 type="password"
-placeholder="رمز عبور"
-maxlength="50"
->
+
+placeholder="رمز عبور">
 
 
 
 
-<button
-class="primary"
-id="loginBtn"
->
+
+<button onclick="login()">
 
 ورود
 
@@ -265,24 +161,19 @@ id="loginBtn"
 
 
 
-<button
-class="secondary"
-id="registerBtn"
->
 
-ساخت حساب جدید
+<button class="secondary"
+onclick="register()">
+
+ساخت حساب
 
 </button>
 
 
 
-<div
-class="message"
-id="message"
->
+<div id="status">
 
 </div>
-
 
 
 </div>
@@ -293,91 +184,85 @@ id="message"
 
 <script>
 
+
+const statusBox =
+
+document.getElementById(
+"status"
+);
+
+
+
+
+
+
+
+function login(){
+
+
+
 const username =
+
 document.getElementById(
 "username"
-);
+).value.trim();
+
 
 
 const password =
+
 document.getElementById(
 "password"
-);
-
-
-const message =
-document.getElementById(
-"message"
-);
-
-
-
-function show(text){
-
-message.textContent =
-text;
-
-}
-
-
-
-
-function saveUser(name){
-
-
-localStorage.setItem(
-"lainolive_logged_in",
-"true"
-);
-
-
-localStorage.setItem(
-"lainolive_username",
-name
-);
-
-
-}
+).value.trim();
 
 
 
 
 
-async function login(){
+if(!username || !password){
 
 
-const name =
-username.value.trim();
+statusBox.textContent =
 
+"اطلاعات را کامل کنید";
 
-
-if(!name){
-
-show(
-"نام کاربری را وارد کنید"
-);
 
 return;
 
+
 }
 
 
 
-saveUser(name);
 
 
 
-show(
-"ورود موفق بود..."
+localStorage.setItem(
+
+"lainolive_username",
+
+username
+
 );
+
+
+
+statusBox.textContent =
+
+"ورود موفق ✅";
+
+
 
 
 
 setTimeout(()=>{
 
-location.href="/";
 
-},800);
+location.href =
+"index.html";
+
+
+},1000);
 
 
 
@@ -385,162 +270,70 @@ location.href="/";
 
 
 
-document
-.getElementById(
-"loginBtn"
-)
-.onclick =
-login;
 
 
-document
-.getElementById(
-"registerBtn"
-)
-.onclick = async () => {
 
 
-    const name =
-        username.value.trim();
 
 
-    const pass =
-        password.value.trim();
+function register(){
 
 
 
-    if(!name || !pass){
+const username =
 
-        show(
-            "نام کاربری و رمز را وارد کنید"
-        );
+document.getElementById(
+"username"
+).value.trim();
 
-        return;
 
-    }
 
+if(!username){
 
 
-    try{
+statusBox.textContent =
 
+"نام کاربری وارد کنید";
 
-        const response =
-            await fetch(
-                "/api/register",
-                {
 
-                    method:
-                        "POST",
+return;
 
 
-                    headers:
-                    {
+}
 
-                        "Content-Type":
-                        "application/json"
 
-                    },
 
 
-                    body:
-                    JSON.stringify({
+localStorage.setItem(
 
-                        username:
-                            name,
+"lainolive_username",
 
-                        password:
-                            pass
+username
 
-                    })
+);
 
-                }
-            );
 
 
 
 
-        if(response.ok){
+statusBox.textContent =
 
+"حساب ساخته شد ✅";
 
-            saveUser(
-                name
-            );
 
 
-            show(
-                "حساب ساخته شد ✅"
-            );
 
 
-            setTimeout(()=>{
+setTimeout(()=>{
 
-                location.href="/";
 
-            },800);
+location.href =
+"index.html";
 
 
+},1000);
 
-        }
 
-        else{
-
-
-            show(
-                "ساخت حساب انجام نشد"
-            );
-
-
-        }
-
-
-
-    }
-
-    catch(error){
-
-
-        // حالت آفلاین یا تستی
-
-        saveUser(
-            name
-        );
-
-
-        show(
-            "حساب ساخته شد ✅"
-        );
-
-
-
-        setTimeout(()=>{
-
-            location.href="/";
-
-        },800);
-
-
-
-    }
-
-
-
-};
-
-
-
-
-
-// اگر قبلاً وارد شده باشد
-
-if(
-    localStorage.getItem(
-        "lainolive_logged_in"
-    )
-    ===
-    "true"
-){
-
-    location.href="/";
 
 }
 

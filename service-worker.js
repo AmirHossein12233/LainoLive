@@ -2,37 +2,42 @@
 
 
 const CACHE_NAME =
-    "lainolive-cache-v1";
+
+"LainoLive-cache-v1";
 
 
 
 const APP_FILES = [
 
-    "/",
 
-    "/index.html",
+"/",
 
-    "/login.html",
+"/index.html",
 
-    "/live.html",
+"/login.html",
 
-    "/viewer.html",
+"/profile.html",
 
-    "/profile.html",
+"/settings.html",
 
-    "/settings.html",
+"/live.html",
 
-    "/manifest.json",
+"/viewer.html",
 
-    "/streams-cache.js",
 
-    "/app.js",
+"/app.js",
 
-    "/chat.js",
+"/chat.js",
 
-    "/icons/icon-192.png",
+"/streams-cache.js",
 
-    "/icons/icon-512.png"
+"/live-webrtc.js",
+
+"/viewer-webrtc.js",
+
+
+"/manifest.json"
+
 
 ];
 
@@ -41,41 +46,43 @@ const APP_FILES = [
 
 
 
-/*
-    INSTALL
-*/
-
 
 self.addEventListener(
-    "install",
-    event => {
+
+"install",
+
+event => {
 
 
-        event.waitUntil(
-
-            caches.open(
-                CACHE_NAME
-            )
-
-            .then(
-                cache => {
-
-                    return cache.addAll(
-                        APP_FILES
-                    );
-
-                }
-
-            )
-
-        );
+event.waitUntil(
 
 
+caches.open(
 
-        self.skipWaiting();
+CACHE_NAME
+
+)
+
+.then(
+
+cache => {
 
 
-    }
+return cache.addAll(
+
+APP_FILES
+
+);
+
+
+}
+
+)
+
+);
+
+
+}
 
 );
 
@@ -86,64 +93,62 @@ self.addEventListener(
 
 
 
-/*
-    ACTIVATE
-*/
-
-
 self.addEventListener(
-    "activate",
-    event => {
+
+"activate",
+
+event => {
 
 
-        event.waitUntil(
+event.waitUntil(
 
 
-            caches.keys()
+caches.keys()
 
-            .then(
-                keys => {
+.then(
 
-
-                    return Promise.all(
-
-                        keys.map(
-
-                            key => {
+keys => {
 
 
-                                if(
-                                    key !== CACHE_NAME
-                                ){
+return Promise.all(
 
-                                    return caches.delete(
-                                        key
-                                    );
+keys.map(
 
-                                }
+key => {
 
 
-                            }
+if(
 
-                        )
+key !== CACHE_NAME
 
-                    );
-
-
-                }
-
-            )
+){
 
 
-        );
+return caches.delete(
+
+key
+
+);
 
 
-
-        self.clients.claim();
-
+}
 
 
-    }
+}
+
+)
+
+);
+
+
+}
+
+)
+
+);
+
+
+}
 
 );
 
@@ -154,103 +159,85 @@ self.addEventListener(
 
 
 
-/*
-    FETCH
-*/
-
 
 self.addEventListener(
-    "fetch",
-    event => {
+
+"fetch",
+
+event => {
 
 
 
-        const request =
-            event.request;
+event.respondWith(
+
+
+caches.match(
+
+event.request
+
+)
+
+.then(
+
+cached => {
+
+
+if(cached){
+
+
+return cached;
+
+
+}
 
 
 
 
-        if(
-            request.method !== "GET"
-        ){
+return fetch(
 
-            return;
+event.request
 
-        }
+)
 
+.then(
 
-
-
-
-
-        event.respondWith(
-
-
-            fetch(
-                request
-            )
-
-            .then(
-                response => {
-
-
-                    const copy =
-                        response.clone();
+response => {
 
 
 
-                    caches.open(
-                        CACHE_NAME
-                    )
-
-                    .then(
-                        cache => {
+return response;
 
 
-                            cache.put(
+}
 
-                                request,
+)
 
-                                copy
+.catch(
 
-                            );
-
-
-                        }
-
-                    );
+()=>{
 
 
+return caches.match(
 
-                    return response;
+"/index.html"
 
-
-                }
-
-            )
-
-            .catch(
+);
 
 
-                () => {
+}
 
-
-                    return caches.match(
-                        request
-                    );
-
-
-                }
-
-
-            )
-
-
-        );
+);
 
 
 
-    }
+}
+
+)
+
+);
+
+
+
+}
 
 );
