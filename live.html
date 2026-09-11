@@ -1116,132 +1116,110 @@ const localVideo =
         "localVideo"
     );
 
-
 const statusElement =
     document.getElementById(
         "status"
     );
-
 
 const viewerCount =
     document.getElementById(
         "viewerCount"
     );
 
-
 const notice =
     document.getElementById(
         "notice"
     );
-
 
 const diagnostic =
     document.getElementById(
         "diagnostic"
     );
 
-
 const streamTitle =
     document.getElementById(
         "streamTitle"
     );
-
 
 const streamCategory =
     document.getElementById(
         "streamCategory"
     );
 
-
 const streamIdElement =
     document.getElementById(
         "streamId"
     );
-
 
 const cameraBtn =
     document.getElementById(
         "cameraBtn"
     );
 
-
 const screenBtn =
     document.getElementById(
         "screenBtn"
     );
-
 
 const tabBtn =
     document.getElementById(
         "tabBtn"
     );
 
-
 const micBtn =
     document.getElementById(
         "micBtn"
     );
-
 
 const systemAudioBtn =
     document.getElementById(
         "systemAudioBtn"
     );
 
-
 const stopBtn =
     document.getElementById(
         "stopBtn"
     );
-
 
 const endBtn =
     document.getElementById(
         "endBtn"
     );
 
-
 const systemVolume =
     document.getElementById(
         "systemVolume"
     );
-
 
 const micVolume =
     document.getElementById(
         "micVolume"
     );
 
-
 const systemValue =
     document.getElementById(
         "systemValue"
     );
-
 
 const micValue =
     document.getElementById(
         "micValue"
     );
 
-
 const messages =
     document.getElementById(
         "messages"
     );
-
 
 const emptyChat =
     document.getElementById(
         "emptyChat"
     );
 
-
 const chatForm =
     document.getElementById(
         "chatForm"
     );
-
 
 const chatInput =
     document.getElementById(
@@ -1253,18 +1231,14 @@ const chatInput =
    UI
 ===================================================== */
 
-function setStatus(
-    text
-) {
+function setStatus(text) {
 
     statusElement.textContent =
         text;
 }
 
 
-function showNotice(
-    text
-) {
+function showNotice(text) {
 
     notice.textContent =
         text;
@@ -1306,16 +1280,45 @@ function setDiagnostic(
 
 
 /* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+/* =====================================================
    STORAGE
 ===================================================== */
 
-function readStorage(
-    keys
-) {
+function readStorage(keys) {
 
     for (
-        const key
-        of keys
+        const key of keys
     ) {
 
         try {
@@ -1326,6 +1329,7 @@ function readStorage(
                 );
 
             if (sessionValue) {
+
                 return sessionValue;
             }
 
@@ -1340,6 +1344,7 @@ function readStorage(
                 );
 
             if (localValue) {
+
                 return localValue;
             }
 
@@ -1360,6 +1365,7 @@ function readStreamData() {
 
 
     if (!raw) {
+
         return {};
     }
 
@@ -1394,9 +1400,7 @@ function getQueryId() {
 }
 
 
-function getStreamId(
-    data
-) {
+function getStreamId(data) {
 
     return String(
         data.stream_id ??
@@ -1409,9 +1413,7 @@ function getStreamId(
 }
 
 
-function getUsername(
-    data
-) {
+function getUsername(data) {
 
     return String(
         data.username ??
@@ -1428,11 +1430,10 @@ function getUsername(
    MEDIA
 ===================================================== */
 
-function stopTrack(
-    track
-) {
+function stopTrack(track) {
 
     if (!track) {
+
         return;
     }
 
@@ -1577,7 +1578,7 @@ function updateAudioDiagnostic() {
         setDiagnostic(
             "⚠️ <strong>صدای منبع:</strong> دریافت نشد<br>" +
             "✅ <strong>میکروفن:</strong> فعال<br>" +
-            "در حال حاضر Capture مرورگر هیچ Audio Track برای منبع برنگردانده است.",
+            "Capture مرورگر برای منبع انتخاب‌شده هیچ Audio Track برنگردانده است.",
             "warning"
         );
 
@@ -1623,6 +1624,7 @@ async function renegotiateAllViewers() {
     ) {
 
         if (!viewerId) {
+
             continue;
         }
 
@@ -1716,21 +1718,17 @@ async function startCamera() {
             "active"
         );
 
-
         screenBtn.classList.remove(
             "active"
         );
-
 
         tabBtn.classList.remove(
             "active"
         );
 
-
         micBtn.classList.add(
             "active"
         );
-
 
         systemAudioBtn.classList.remove(
             "active"
@@ -1757,9 +1755,7 @@ async function startCamera() {
 
         await renegotiateAllViewers();
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
             "camera error:",
@@ -1803,7 +1799,8 @@ async function startScreen() {
             await navigator.mediaDevices.getDisplayMedia(
                 {
                     video: {
-                        displaySurface: "monitor"
+                        displaySurface:
+                            "monitor"
                     },
 
                     audio: {
@@ -1862,13 +1859,13 @@ async function startScreen() {
 
 
         screenTrack =
-            videoTracks[0]
-            || null;
+            videoTracks[0] ||
+            null;
 
 
         systemAudioTrack =
-            audioTracks[0]
-            || null;
+            audioTracks[0] ||
+            null;
 
 
         const microphoneStream =
@@ -1957,11 +1954,9 @@ async function startScreen() {
             "active"
         );
 
-
         screenBtn.classList.add(
             "active"
         );
-
 
         tabBtn.classList.remove(
             "active"
@@ -2052,9 +2047,7 @@ async function startScreen() {
 
         await renegotiateAllViewers();
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
             "screen capture error:",
@@ -2273,11 +2266,9 @@ async function startTabShare() {
             "active"
         );
 
-
         screenBtn.classList.remove(
             "active"
         );
-
 
         tabBtn.classList.add(
             "active"
@@ -2336,6 +2327,25 @@ async function startTabShare() {
                 "ok"
             );
 
+        } else if (
+            systemAudioTrack
+        ) {
+
+            setStatus(
+                "تب + صدای تب فعال"
+            );
+
+
+            setDiagnostic(
+                "✅ <strong>صدای تب:</strong> دریافت شد<br>" +
+                "⚠️ <strong>میکروفن:</strong> دریافت نشد<br>" +
+                "🌐 <strong>نوع منبع:</strong> " +
+                escapeHtml(
+                    selectedSurface
+                ),
+                "warning"
+            );
+
         } else {
 
             setStatus(
@@ -2350,7 +2360,7 @@ async function startTabShare() {
 
             setDiagnostic(
                 "⚠️ <strong>صدای تب:</strong> دریافت نشد<br>" +
-                "✅ <strong>میکروفن:</strong> " +
+                "🎤 <strong>میکروفن:</strong> " +
                 (
                     microphoneTrack
                         ? "فعال"
@@ -2374,9 +2384,7 @@ async function startTabShare() {
 
         await renegotiateAllViewers();
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
             "tab share error:",
@@ -2492,9 +2500,7 @@ function toggleSystemAudio() {
    PEERS
 ===================================================== */
 
-function closePeer(
-    viewerId
-) {
+function closePeer(viewerId) {
 
     const peer =
         peers.get(
@@ -2503,6 +2509,7 @@ function closePeer(
 
 
     if (!peer) {
+
         return;
     }
 
@@ -2544,9 +2551,7 @@ function closeAllPeers() {
 }
 
 
-function createPeer(
-    viewerId
-) {
+function createPeer(viewerId) {
 
     closePeer(
         viewerId
@@ -2621,6 +2626,7 @@ function createPeer(
         event => {
 
             if (!event.candidate) {
+
                 return;
             }
 
@@ -2662,14 +2668,13 @@ function createPeer(
 }
 
 
-async function createOffer(
-    viewerId
-) {
+async function createOffer(viewerId) {
 
     if (
         !viewerId ||
         ending
     ) {
+
         return;
     }
 
@@ -2704,9 +2709,7 @@ async function createOffer(
             }
         );
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
             "offer error:",
@@ -2725,15 +2728,14 @@ async function createOffer(
    SIGNALING
 ===================================================== */
 
-function sendSignal(
-    message
-) {
+function sendSignal(message) {
 
     if (
         !socket ||
         socket.readyState !==
             WebSocket.OPEN
     ) {
+
         return false;
     }
 
@@ -2748,9 +2750,7 @@ function sendSignal(
 
         return true;
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
             "signal error:",
@@ -2792,9 +2792,7 @@ function connectSignaling() {
                 SIGNALING_URL
             );
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
             error
@@ -2893,11 +2891,10 @@ function connectSignaling() {
    SIGNAL HANDLER
 ===================================================== */
 
-async function handleSignal(
-    message
-) {
+async function handleSignal(message) {
 
     if (!message) {
+
         return;
     }
 
@@ -2990,6 +2987,7 @@ async function handleSignal(
                 !peer ||
                 !message.answer
             ) {
+
                 break;
             }
 
@@ -3002,9 +3000,7 @@ async function handleSignal(
                     )
                 );
 
-            } catch (
-                error
-            ) {
+            } catch (error) {
 
                 console.error(
                     "answer error:",
@@ -3036,6 +3032,7 @@ async function handleSignal(
                 !peer ||
                 !message.candidate
             ) {
+
                 break;
             }
 
@@ -3048,9 +3045,7 @@ async function handleSignal(
                     )
                 );
 
-            } catch (
-                error
-            ) {
+            } catch (error) {
 
                 console.warn(
                     "ICE error:",
@@ -3190,11 +3185,10 @@ function addChatMessage(
 }
 
 
-async function sendChat(
-    text
-) {
+async function sendChat(text) {
 
     if (!text) {
+
         return;
     }
 
@@ -3256,9 +3250,7 @@ async function sendChat(
             );
         }
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
             error
@@ -3286,9 +3278,7 @@ systemVolume.addEventListener(
             );
 
 
-        if (
-            systemAudioTrack
-        ) {
+        if (systemAudioTrack) {
 
             systemAudioTrack.enabled =
                 value > 0;
@@ -3300,8 +3290,7 @@ systemVolume.addEventListener(
 
 
         systemValue.textContent =
-            value +
-            "%";
+            value + "%";
     }
 );
 
@@ -3316,9 +3305,7 @@ micVolume.addEventListener(
             );
 
 
-        if (
-            microphoneTrack
-        ) {
+        if (microphoneTrack) {
 
             microphoneTrack.enabled =
                 value > 0;
@@ -3330,8 +3317,7 @@ micVolume.addEventListener(
 
 
         micValue.textContent =
-            value +
-            "%";
+            value + "%";
     }
 );
 
@@ -3387,21 +3373,17 @@ stopBtn.addEventListener(
             "active"
         );
 
-
         screenBtn.classList.remove(
             "active"
         );
-
 
         tabBtn.classList.remove(
             "active"
         );
 
-
         micBtn.classList.remove(
             "active"
         );
-
 
         systemAudioBtn.classList.remove(
             "active"
@@ -3461,6 +3443,7 @@ chatForm.addEventListener(
 
 
         if (!text) {
+
             return;
         }
 
@@ -3483,6 +3466,7 @@ chatForm.addEventListener(
 async function stopServerStream() {
 
     if (!streamId) {
+
         return;
     }
 
@@ -3513,9 +3497,7 @@ async function stopServerStream() {
             }
         );
 
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.warn(
             "stop stream:",
@@ -3528,6 +3510,7 @@ async function stopServerStream() {
 async function endLive() {
 
     if (ending) {
+
         return;
     }
 
@@ -3539,6 +3522,7 @@ async function endLive() {
 
 
     if (!confirmEnd) {
+
         return;
     }
 
@@ -3591,7 +3575,6 @@ async function endLive() {
             "lainolive_current_stream"
         );
 
-
         sessionStorage.removeItem(
             "LainoLive_current_stream"
         );
@@ -3604,7 +3587,6 @@ async function endLive() {
         localStorage.removeItem(
             "lainolive_current_stream"
         );
-
 
         localStorage.removeItem(
             "LainoLive_current_stream"
@@ -3658,9 +3640,7 @@ async function initialize() {
         );
 
 
-    if (
-        !window.isSecureContext
-    ) {
+    if (!window.isSecureContext) {
 
         showNotice(
             "اشتراک صفحه باید از طریق HTTPS اجرا شود."
