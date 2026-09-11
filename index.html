@@ -90,6 +90,16 @@
             gap: 8px;
         }
 
+        .popular-nav-item {
+            color: #fbbf24;
+        }
+
+        .popular-nav-item .nav-icon {
+            filter: drop-shadow(
+                0 0 6px rgba(251, 191, 36, 0.25)
+            );
+        }
+
         @media (max-width: 600px) {
             .logout-button {
                 padding: 8px 10px;
@@ -249,6 +259,21 @@
 
         <span>
             خانه
+        </span>
+    </button>
+
+
+    <button
+        id="popularButton"
+        class="nav-item popular-nav-item"
+        type="button"
+    >
+        <span class="nav-icon">
+            🔥
+        </span>
+
+        <span>
+            محبوب
         </span>
     </button>
 
@@ -794,8 +819,10 @@
 
         if (
             !stream ||
-            stream.id === undefined ||
-            stream.id === null
+            stream.id ===
+            undefined ||
+            stream.id ===
+            null
         ) {
             return;
         }
@@ -855,7 +882,9 @@
 
         setTimeout(
             () => {
+
                 liveTitle.focus();
+
             },
             50
         );
@@ -973,6 +1002,7 @@
 
                                     category:
                                         category
+
                                 })
                         }
                     );
@@ -998,6 +1028,14 @@
 
                 sessionStorage.setItem(
                     "lainolive_current_stream",
+                    JSON.stringify(
+                        data.stream
+                    )
+                );
+
+
+                sessionStorage.setItem(
+                    "lainolive_view_stream",
                     JSON.stringify(
                         data.stream
                     )
@@ -1033,6 +1071,23 @@
 
 
     /* =====================================================
+       POPULAR
+    ===================================================== */
+
+    document.getElementById(
+        "popularButton"
+    ).addEventListener(
+        "click",
+        function() {
+
+            window.location.href =
+                "/popular.html";
+
+        }
+    );
+
+
+    /* =====================================================
        LOGOUT
     ===================================================== */
 
@@ -1053,11 +1108,6 @@
             }
 
 
-            /*
-             * فقط اطلاعات ورود پاک می‌شود.
-             * تنظیمات و داده‌های دیگر سایت دست‌نخورده می‌مانند.
-             */
-
             localStorage.removeItem(
                 "lainolive_logged_in"
             );
@@ -1067,12 +1117,6 @@
                 "lainolive_username"
             );
 
-
-            /*
-             * اطلاعات موقت لایو پاک می‌شود
-             * تا بعد از ورود دوباره، لایو قبلی
-             * اشتباهاً باز نشود.
-             */
 
             sessionStorage.removeItem(
                 "lainolive_current_stream"
