@@ -10,11 +10,6 @@ import websockets
 HOST = "0.0.0.0"
 PORT = int(os.environ.get("PORT", "10000"))
 
-
-# =========================================================
-# ROOMS
-# =========================================================
-
 rooms = defaultdict(
     lambda: {
         "host": None,
@@ -22,19 +17,8 @@ rooms = defaultdict(
     }
 )
 
-
-# websocket_info[websocket] = {
-#     "room_id": "...",
-#     "role": "host" or "viewer",
-#     "viewer_id": "..."
-# }
-
 websocket_info = {}
 
-
-# =========================================================
-# SEND JSON
-# =========================================================
 
 async def send_json(websocket, payload):
     if websocket is None:
@@ -50,13 +34,38 @@ async def send_json(websocket, payload):
         return True
 
     except Exception as error:
-        print("[SEND ERROR]", error)
+        print("[SEND ERROR]", repr(error))
         return False
 
 
-# =========================================================
-# REMOVE CONNECTION
-# =========================================================
+async def broadcast_room_info(room_id):
+    room = rooms.get(room_id)
+
+    if room is None:
+        return
+
+    host = room.get("host")
+    viewers = room.get("viewers", {})
+
+    payload = {
+        "type": "room-info",
+        "room_id": str(room_id),
+        "host_present": host is not None,
+        "viewer_count": len(viewers)
+    }
+
+    if host is not None:
+        await send_json(
+            host,
+            payload
+        )
+
+    for viewer in list(viewers.values()):
+        await send_json(
+            viewer,
+            payload
+        )
+
 
 def remove_connection(websocket):
     info = websocket_info.pop(
@@ -71,17 +80,10 @@ def remove_connection(websocket):
         info.get("room_id", "")
     )
 
-    role = info.get(
-        "role"
-    )
+    role = info.get("role")
+    viewer_id = info.get("viewer_id")
 
-    viewer_id = info.get(
-        "viewer_id"
-    )
-
-    room = rooms.get(
-        room_id
-    )
+    room = rooms.get(room_id)
 
     if room is None:
         return info
@@ -99,7 +101,6 @@ def remove_connection(websocket):
         )
 
         if viewer_id in viewers:
-
             if viewers[viewer_id] is websocket:
                 del viewers[viewer_id]
 
@@ -114,10 +115,6 @@ def remove_connection(websocket):
 
     return info
 
-
-# =========================================================
-# JOIN
-# =========================================================
 
 async def handle_join(
     websocket,
@@ -149,10 +146,7 @@ async def handle_join(
 
         return
 
-    if role not in (
-        "host",
-        "viewer"
-    ):
+    if role not in ("host", "viewer"):
 
         await send_json(
             websocket,
@@ -164,34 +158,27 @@ async def handle_join(
 
         return
 
-    room = rooms[
-        room_id
-    ]
-
-    # =====================================================
-    # HOST
-    # =====================================================
+    room = rooms[room_id]
 
     if role == "host":
 
-        old_host = room.get(
-            "host"
-        )
+        old_host = room.get("host")
 
         if (
             old_host is not None
             and old_host is not websocket
         ):
 
-            await send_json(
-                old_host,
-                {
-                    "type": "host-replaced"
-                }
-            )
-
             try:
+                await send_json(
+                    old_host,
+                    {
+                        "type": "host-replaced"
+                    }
+                )
+
                 await old_host.close()
+
             except Exception:
                 pass
 
@@ -202,9 +189,7 @@ async def handle_join(
 
         room["host"] = websocket
 
-        websocket_info[
-            websocket
-        ] = {
+        websocket_info[websocket] = {
             "room_id": room_id,
             "role": "host",
             "viewer_id": None
@@ -219,7 +204,6 @@ async def handle_join(
             }
         )
 
-        # Inform existing viewers
         for viewer_id, viewer in list(
             room["viewers"].items()
         ):
@@ -232,33 +216,27 @@ async def handle_join(
                 }
             )
 
+        await broadcast_room_info(
+            room_id
+        )
+
         print(
             f"[HOST JOIN] room={room_id}"
         )
 
         return
 
-    # =====================================================
-    # VIEWER
-    # =====================================================
-
     viewer_id = uuid.uuid4().hex[:12]
 
-    room["viewers"][
-        viewer_id
-    ] = websocket
+    room["viewers"][viewer_id] = websocket
 
-    websocket_info[
-        websocket
-    ] = {
+    websocket_info[websocket] = {
         "room_id": room_id,
         "role": "viewer",
         "viewer_id": viewer_id
     }
 
-    host = room.get(
-        "host"
-    )
+    host = room.get("host")
 
     await send_json(
         websocket,
@@ -299,14 +277,14 @@ async def handle_join(
             }
         )
 
+    await broadcast_room_info(
+        room_id
+    )
+
     print(
         f"[VIEWER JOIN] room={room_id} viewer={viewer_id}"
     )
 
-
-# =========================================================
-# WEBRTC ROUTING
-# =========================================================
 
 async def route_webrtc_message(
     websocket,
@@ -326,28 +304,13 @@ async def route_webrtc_message(
         )
     )
 
-    role = info.get(
-        "role"
-    )
+    role = info.get("role")
+    sender_viewer_id = info.get("viewer_id")
 
-    sender_viewer_id = info.get(
-        "viewer_id"
-    )
-
-    room = rooms.get(
-        room_id
-    )
+    room = rooms.get(room_id)
 
     if room is None:
         return
-
-    message_type = message.get(
-        "type"
-    )
-
-    # =====================================================
-    # HOST -> SPECIFIC VIEWER
-    # =====================================================
 
     if role == "host":
 
@@ -359,26 +322,19 @@ async def route_webrtc_message(
         ).strip()
 
         if not viewer_id:
-
-            print(
-                f"[WEBRTC] host {message_type} "
-                f"without viewer_id"
-            )
-
             return
 
-        viewer = room[
-            "viewers"
-        ].get(
+        viewer = room.get(
+            "viewers",
+            {}
+        ).get(
             viewer_id
         )
 
         if viewer is None:
             return
 
-        payload = dict(
-            message
-        )
+        payload = dict(message)
 
         payload["from_role"] = "host"
         payload["viewer_id"] = viewer_id
@@ -390,22 +346,14 @@ async def route_webrtc_message(
 
         return
 
-    # =====================================================
-    # VIEWER -> HOST
-    # =====================================================
-
     if role == "viewer":
 
-        host = room.get(
-            "host"
-        )
+        host = room.get("host")
 
         if host is None:
             return
 
-        payload = dict(
-            message
-        )
+        payload = dict(message)
 
         payload["from_role"] = "viewer"
         payload["viewer_id"] = sender_viewer_id
@@ -415,80 +363,6 @@ async def route_webrtc_message(
             payload
         )
 
-
-# =========================================================
-# ROOM INFO
-# =========================================================
-
-async def handle_room_info(
-    websocket
-):
-    info = websocket_info.get(
-        websocket
-    )
-
-    if not info:
-        return
-
-    room_id = str(
-        info.get(
-            "room_id",
-            ""
-        )
-    )
-
-    room = rooms.get(
-        room_id
-    )
-
-    if room is None:
-
-        await send_json(
-            websocket,
-            {
-                "type": "room-info",
-                "host_present": False,
-                "viewer_count": 0
-            }
-        )
-
-        return
-
-    await send_json(
-        websocket,
-        {
-            "type": "room-info",
-            "host_present":
-                room.get("host") is not None,
-            "viewer_count":
-                len(
-                    room.get(
-                        "viewers",
-                        {}
-                    )
-                )
-        }
-    )
-
-
-# =========================================================
-# PING
-# =========================================================
-
-async def handle_ping(
-    websocket
-):
-    await send_json(
-        websocket,
-        {
-            "type": "pong"
-        }
-    )
-
-
-# =========================================================
-# LEAVE
-# =========================================================
 
 async def handle_leave(
     websocket
@@ -507,30 +381,20 @@ async def handle_leave(
         )
     )
 
-    role = info.get(
-        "role"
-    )
+    role = info.get("role")
+    viewer_id = info.get("viewer_id")
 
-    viewer_id = info.get(
-        "viewer_id"
-    )
-
-    room = rooms.get(
-        room_id
-    )
+    room = rooms.get(room_id)
 
     if room is None:
         return
 
-    # Viewer leaving
     if (
         role == "viewer"
         and viewer_id
     ):
 
-        host = room.get(
-            "host"
-        )
+        host = room.get("host")
 
         if host is not None:
 
@@ -542,7 +406,6 @@ async def handle_leave(
                 }
             )
 
-    # Host leaving
     elif role == "host":
 
         for current_viewer_id, viewer in list(
@@ -561,13 +424,8 @@ async def handle_leave(
             )
 
 
-# =========================================================
-# CLIENT HANDLER
-# =========================================================
+async def client_handler(websocket):
 
-async def client_handler(
-    websocket
-):
     print("[CONNECT]")
 
     try:
@@ -575,7 +433,6 @@ async def client_handler(
         async for raw_message in websocket:
 
             try:
-
                 message = json.loads(
                     raw_message
                 )
@@ -596,10 +453,6 @@ async def client_handler(
                 "type"
             )
 
-            # -------------------------------------------------
-            # JOIN
-            # -------------------------------------------------
-
             if message_type == "join":
 
                 await handle_join(
@@ -608,10 +461,6 @@ async def client_handler(
                 )
 
                 continue
-
-            # -------------------------------------------------
-            # WEBRTC
-            # -------------------------------------------------
 
             if message_type in (
                 "offer",
@@ -628,35 +477,47 @@ async def client_handler(
 
                 continue
 
-            # -------------------------------------------------
-            # ROOM INFO
-            # -------------------------------------------------
-
             if message_type == "room-info":
 
-                await handle_room_info(
+                info = websocket_info.get(
                     websocket
                 )
 
-                continue
+                if info:
 
-            # -------------------------------------------------
-            # PING
-            # -------------------------------------------------
+                    await broadcast_room_info(
+                        str(
+                            info.get(
+                                "room_id",
+                                ""
+                            )
+                        )
+                    )
+
+                continue
 
             if message_type == "ping":
 
-                await handle_ping(
-                    websocket
+                await send_json(
+                    websocket,
+                    {
+                        "type": "pong"
+                    }
                 )
 
                 continue
 
-            # -------------------------------------------------
-            # LEAVE
-            # -------------------------------------------------
-
             if message_type == "leave":
+
+                room_id = str(
+                    websocket_info.get(
+                        websocket,
+                        {}
+                    ).get(
+                        "room_id",
+                        ""
+                    )
+                )
 
                 await handle_leave(
                     websocket
@@ -666,11 +527,12 @@ async def client_handler(
                     websocket
                 )
 
-                continue
+                if room_id:
+                    await broadcast_room_info(
+                        room_id
+                    )
 
-            # -------------------------------------------------
-            # NEGOTIATION NEEDED
-            # -------------------------------------------------
+                continue
 
             if message_type == "negotiationneeded":
 
@@ -680,10 +542,6 @@ async def client_handler(
                 )
 
                 continue
-
-            # -------------------------------------------------
-            # UNKNOWN
-            # -------------------------------------------------
 
             await send_json(
                 websocket,
@@ -710,6 +568,8 @@ async def client_handler(
             websocket
         )
 
+        room_id = ""
+
         if info:
 
             room_id = str(
@@ -719,21 +579,13 @@ async def client_handler(
                 )
             )
 
-            role = info.get(
-                "role"
-            )
+            role = info.get("role")
+            viewer_id = info.get("viewer_id")
 
-            viewer_id = info.get(
-                "viewer_id"
-            )
-
-            room = rooms.get(
-                room_id
-            )
+            room = rooms.get(room_id)
 
             if room is not None:
 
-                # Viewer disconnected
                 if (
                     role == "viewer"
                     and viewer_id
@@ -755,7 +607,6 @@ async def client_handler(
                             }
                         )
 
-                # Host disconnected
                 elif role == "host":
 
                     for current_viewer_id, viewer in list(
@@ -779,12 +630,13 @@ async def client_handler(
             websocket
         )
 
+        if room_id:
+            await broadcast_room_info(
+                room_id
+            )
+
         print("[DISCONNECT]")
 
-
-# =========================================================
-# MAIN
-# =========================================================
 
 async def main():
 
@@ -810,7 +662,6 @@ async def main():
 if __name__ == "__main__":
 
     try:
-
         asyncio.run(
             main()
         )

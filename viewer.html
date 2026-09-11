@@ -92,9 +92,7 @@
         .header-left {
             display: flex;
             align-items: center;
-
             gap: 10px;
-
             min-width: 0;
         }
 
@@ -129,9 +127,7 @@
 
         .header-user {
             margin-top: 3px;
-
             color: #9999a7;
-
             font-size: 10px;
         }
 
@@ -160,7 +156,6 @@
 
         .video-placeholder {
             position: absolute;
-
             inset: 0;
 
             display: flex;
@@ -179,7 +174,6 @@
                 );
 
             text-align: center;
-
             padding: 25px;
         }
 
@@ -223,14 +217,12 @@
         }
 
         .info {
-            padding:
-                15px 16px 8px;
+            padding: 15px 16px 8px;
         }
 
         .title {
             font-size: 19px;
             font-weight: 900;
-
             line-height: 1.6;
         }
 
@@ -252,9 +244,7 @@
         }
 
         .pill {
-            padding:
-                6px
-                10px;
+            padding: 6px 10px;
 
             border-radius: 999px;
 
@@ -274,11 +264,8 @@
         }
 
         .chat-section {
-            margin:
-                10px 16px;
-
-            padding:
-                15px;
+            margin: 10px 16px;
+            padding: 15px;
 
             border-radius: 20px;
 
@@ -308,8 +295,7 @@
         .message {
             margin-bottom: 8px;
 
-            padding:
-                9px 10px;
+            padding: 9px 10px;
 
             border-radius: 13px;
 
@@ -353,9 +339,7 @@
 
             border-radius: 13px;
 
-            padding:
-                12px
-                13px;
+            padding: 12px 13px;
 
             outline: none;
 
@@ -372,9 +356,7 @@
 
             border-radius: 13px;
 
-            padding:
-                0
-                15px;
+            padding: 0 15px;
 
             background:
                 linear-gradient(
@@ -423,16 +405,11 @@
         }
 
         .leave-button {
-            width:
-                min(
-                    650px,
-                    100%
-                );
+            width: min(650px, 100%);
 
             min-height: 50px;
 
             border: none;
-
             border-radius: 15px;
 
             background:
@@ -446,7 +423,6 @@
 
         .share-modal {
             position: fixed;
-
             inset: 0;
 
             z-index: 500;
@@ -454,7 +430,6 @@
             display: none;
 
             align-items: flex-end;
-
             justify-content: center;
 
             background:
@@ -483,8 +458,7 @@
                 0
                 0;
 
-            background:
-                #111119;
+            background: #111119;
 
             border-top:
                 1px solid
@@ -498,7 +472,6 @@
 
         .share-link {
             margin-top: 12px;
-
             width: 100%;
 
             border: none;
@@ -534,7 +507,6 @@
             min-height: 45px;
 
             border: none;
-
             border-radius: 13px;
 
             color: white;
@@ -553,7 +525,6 @@
             min-height: 43px;
 
             border: none;
-
             border-radius: 13px;
 
             background:
@@ -666,7 +637,6 @@
                 class="video-status"
             >
                 <span
-                    id="statusDot"
                     class="status-dot"
                 ></span>
                 در حال اتصال...
@@ -840,12 +810,9 @@ const VIEW_STREAM_KEY =
 
 
 if (
-    localStorage.getItem(
-        LOGIN_KEY
-    ) !== "true"
+    localStorage.getItem(LOGIN_KEY) !== "true"
 ) {
-    window.location.href =
-        "/login.html";
+    window.location.href = "/login.html";
 }
 
 
@@ -916,13 +883,9 @@ const chatSend =
 
 
 let stream = null;
-
 let streamId = null;
-
 let currentUsername =
-    localStorage.getItem(
-        USERNAME_KEY
-    ) || "";
+    localStorage.getItem(USERNAME_KEY) || "";
 
 let viewerId = null;
 
@@ -930,8 +893,7 @@ let socket = null;
 
 let peerConnection = null;
 
-let remoteDescriptionReady =
-    false;
+let remoteDescriptionReady = false;
 
 let pendingIceCandidates = [];
 
@@ -942,81 +904,43 @@ let reconnectTimer = null;
 
 function escapeHtml(value) {
 
-    return String(
-        value ?? ""
-    )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 
 function getId(item) {
-
-    return (
-        item?.id
-        ??
-        item?.stream_id
-    );
+    return item?.id ?? item?.stream_id;
 }
 
 
 function getTitle(item) {
-
-    return (
-        item?.title
-        ||
-        "لایو بدون عنوان"
-    );
+    return item?.title || "لایو بدون عنوان";
 }
 
 
 function getUsername(item) {
-
     return (
-        item?.username
-        ||
-        item?.user
-        ||
+        item?.username ||
+        item?.user ||
         "کاربر"
     );
 }
 
 
 function getCategory(item) {
-
-    return (
-        item?.category
-        ||
-        "عمومی"
-    );
+    return item?.category || "عمومی";
 }
 
 
 function getViewers(item) {
-
     return Number(
-        item?.viewer_count
-        ??
-        item?.viewers
-        ??
+        item?.viewer_count ??
+        item?.viewers ??
         0
     );
 }
@@ -1039,6 +963,7 @@ function setStatus(
                             : ""
                 }"
             ></span>
+
             ${escapeHtml(title)}
         `;
 
@@ -1049,6 +974,23 @@ function setStatus(
         type === "online"
             ? "none"
             : "flex";
+}
+
+
+function updateRealtimeViewerCount(
+    count
+) {
+
+    const value =
+        Math.max(
+            0,
+            Number(count || 0)
+        );
+
+    viewerPill.textContent =
+        "👁 " +
+        value +
+        " بیننده";
 }
 
 
@@ -1097,23 +1039,25 @@ async function loadStream() {
                             : [];
 
 
-                const found =
+                stream =
                     streams.find(
                         item =>
                             String(
                                 getId(item)
                             ) ===
-                            String(urlId)
-                    );
-
-
-                if (found) {
-                    stream =
-                        found;
-                }
+                            String(
+                                urlId
+                            )
+                    ) || null;
             }
 
-        } catch {}
+        } catch (error) {
+
+            console.warn(
+                "stream fetch error",
+                error
+            );
+        }
     }
 
 
@@ -1130,14 +1074,11 @@ async function loadStream() {
             if (saved) {
 
                 const parsed =
-                    JSON.parse(
-                        saved
-                    );
+                    JSON.parse(saved);
 
 
                 if (
-                    !urlId
-                    ||
+                    !urlId ||
                     String(
                         getId(parsed)
                     ) ===
@@ -1157,20 +1098,18 @@ async function loadStream() {
 
 
     if (
-        !streamId
-        &&
+        !streamId &&
         stream
     ) {
+
         streamId =
             getId(stream);
     }
 
 
     if (
-        !stream
-        ||
-        streamId === null
-        ||
+        !stream ||
+        streamId === null ||
         typeof streamId === "undefined"
     ) {
 
@@ -1211,24 +1150,20 @@ function renderStream() {
         title;
 
     headerUser.textContent =
-        "👤 " +
-        username;
+        "👤 " + username;
 
     streamTitle.textContent =
         title;
 
     streamUsername.textContent =
-        "👤 " +
-        username;
-
-    viewerPill.textContent =
-        "👁 " +
-        getViewers(stream) +
-        " بیننده";
+        "👤 " + username;
 
     categoryPill.textContent =
-        "🎮 " +
-        category;
+        "🎮 " + category;
+
+    updateRealtimeViewerCount(
+        getViewers(stream)
+    );
 }
 
 
@@ -1250,6 +1185,7 @@ function createPeerConnection() {
 
     peerConnection =
         new RTCPeerConnection({
+
             bundlePolicy:
                 "max-bundle",
 
@@ -1257,10 +1193,12 @@ function createPeerConnection() {
                 "require",
 
             iceServers: [
+
                 {
                     urls:
                         "stun:stun.l.google.com:19302"
                 },
+
                 {
                     urls:
                         "stun:stun1.l.google.com:19302"
@@ -1272,21 +1210,17 @@ function createPeerConnection() {
     peerConnection.onicecandidate =
         event => {
 
-            if (
-                !event.candidate
-            ) {
+            if (!event.candidate) {
                 return;
             }
 
-
             sendSignal({
+
                 type:
                     "ice-candidate",
 
                 room_id:
-                    String(
-                        streamId
-                    ),
+                    String(streamId),
 
                 viewer_id:
                     viewerId,
@@ -1301,8 +1235,7 @@ function createPeerConnection() {
         event => {
 
             if (
-                event.streams
-                &&
+                event.streams &&
                 event.streams[0]
             ) {
 
@@ -1341,11 +1274,13 @@ function createPeerConnection() {
         };
 
 
-    peerConnection.onconnectionstatechange =
+    peerConnection
+        .onconnectionstatechange =
         () => {
 
             const state =
-                peerConnection.connectionState;
+                peerConnection
+                    .connectionState;
 
 
             console.log(
@@ -1402,7 +1337,8 @@ function createPeerConnection() {
         };
 
 
-    peerConnection.oniceconnectionstatechange =
+    peerConnection
+        .oniceconnectionstatechange =
         () => {
 
             console.log(
@@ -1419,10 +1355,8 @@ function sendSignal(
 ) {
 
     if (
-        !socket
-        ||
-        socket.readyState !==
-        WebSocket.OPEN
+        !socket ||
+        socket.readyState !== WebSocket.OPEN
     ) {
 
         return false;
@@ -1432,9 +1366,7 @@ function sendSignal(
     try {
 
         socket.send(
-            JSON.stringify(
-                payload
-            )
+            JSON.stringify(payload)
         );
 
         return true;
@@ -1456,10 +1388,10 @@ async function handleIceCandidate(
 ) {
 
     if (
-        !candidate
-        ||
+        !candidate ||
         !peerConnection
     ) {
+
         return;
     }
 
@@ -1497,9 +1429,7 @@ async function handleIceCandidate(
 
 async function flushIce() {
 
-    if (
-        !peerConnection
-    ) {
+    if (!peerConnection) {
         return;
     }
 
@@ -1566,8 +1496,7 @@ async function handleSignal(
 
 
     if (
-        type ===
-        "host-present"
+        type === "host-present"
     ) {
 
         setStatus(
@@ -1580,8 +1509,7 @@ async function handleSignal(
 
 
     if (
-        type ===
-        "host-not-present"
+        type === "host-not-present"
     ) {
 
         setStatus(
@@ -1595,8 +1523,19 @@ async function handleSignal(
 
 
     if (
-        type ===
-        "offer"
+        type === "room-info"
+    ) {
+
+        updateRealtimeViewerCount(
+            message.viewer_count
+        );
+
+        return;
+    }
+
+
+    if (
+        type === "offer"
     ) {
 
         const messageViewerId =
@@ -1658,13 +1597,12 @@ async function handleSignal(
 
 
             sendSignal({
+
                 type:
                     "answer",
 
                 room_id:
-                    String(
-                        streamId
-                    ),
+                    String(streamId),
 
                 viewer_id:
                     viewerId,
@@ -1701,10 +1639,8 @@ async function handleSignal(
 
 
     if (
-        type === "ice-candidate"
-        ||
-        type === "candidate"
-        ||
+        type === "ice-candidate" ||
+        type === "candidate" ||
         type === "ice"
     ) {
 
@@ -1718,8 +1654,7 @@ async function handleSignal(
 
 
     if (
-        type ===
-        "host-left"
+        type === "host-left"
     ) {
 
         setStatus(
@@ -1741,16 +1676,15 @@ function connectSignaling() {
 
 
     if (
-        socket
-        &&
+        socket &&
         (
             socket.readyState ===
-            WebSocket.OPEN
-            ||
+                WebSocket.OPEN ||
             socket.readyState ===
-            WebSocket.CONNECTING
+                WebSocket.CONNECTING
         )
     ) {
+
         return;
     }
 
@@ -1785,13 +1719,12 @@ function connectSignaling() {
         () => {
 
             sendSignal({
+
                 type:
                     "join",
 
                 room_id:
-                    String(
-                        streamId
-                    ),
+                    String(streamId),
 
                 role:
                     "viewer"
@@ -1846,13 +1779,11 @@ function connectSignaling() {
                 return;
             }
 
-
             setStatus(
                 "اتصال سرور قطع شد",
                 "در حال تلاش مجدد...",
                 "error"
             );
-
 
             scheduleReconnect();
         };
@@ -1862,8 +1793,7 @@ function connectSignaling() {
 function scheduleReconnect() {
 
     if (
-        stopped
-        ||
+        stopped ||
         reconnectTimer
     ) {
         return;
@@ -1893,8 +1823,7 @@ async function joinViewer() {
             await fetch(
                 "/api/streams/viewer",
                 {
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
                         "Content-Type":
@@ -1922,18 +1851,14 @@ async function joinViewer() {
 
 
             if (
-                data
-                &&
+                data &&
                 typeof data.viewer_count !==
                     "undefined"
             ) {
 
-                viewerPill.textContent =
-                    "👁 " +
-                    Number(
-                        data.viewer_count
-                    ) +
-                    " بیننده";
+                updateRealtimeViewerCount(
+                    data.viewer_count
+                );
             }
         }
 
@@ -1953,8 +1878,7 @@ async function leaveViewer() {
         await fetch(
             "/api/streams/viewer",
             {
-                method:
-                    "POST",
+                method: "POST",
 
                 headers: {
                     "Content-Type":
@@ -1964,16 +1888,13 @@ async function leaveViewer() {
                 body:
                     JSON.stringify({
                         stream_id:
-                            String(
-                                streamId
-                            ),
+                            String(streamId),
 
                         action:
                             "leave"
                     }),
 
-                keepalive:
-                    true
+                keepalive: true
             }
         );
 
@@ -1993,12 +1914,9 @@ async function loadMessages() {
         const response =
             await fetch(
                 "/api/chat/messages?stream_id=" +
-                encodeURIComponent(
-                    streamId
-                ),
+                encodeURIComponent(streamId),
                 {
-                    cache:
-                        "no-store"
+                    cache: "no-store"
                 }
             );
 
@@ -2028,17 +1946,13 @@ async function loadMessages() {
                     item => {
 
                         const user =
-                            item.username
-                            ||
-                            item.user
-                            ||
+                            item.username ||
+                            item.user ||
                             "کاربر";
 
                         const text =
-                            item.message
-                            ??
-                            item.text
-                            ??
+                            item.message ??
+                            item.text ??
                             "";
 
 
@@ -2074,10 +1988,10 @@ async function sendChat() {
 
 
     if (
-        !text
-        ||
+        !text ||
         !streamId
     ) {
+
         return;
     }
 
@@ -2092,8 +2006,7 @@ async function sendChat() {
             await fetch(
                 "/api/chat/send",
                 {
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
                         "Content-Type":
@@ -2140,9 +2053,7 @@ function getShareUrl() {
     return (
         window.location.origin +
         "/viewer.html?id=" +
-        encodeURIComponent(
-            streamId
-        )
+        encodeURIComponent(streamId)
     );
 }
 
@@ -2175,9 +2086,7 @@ async function copyShareLink() {
     try {
 
         await navigator.clipboard
-            .writeText(
-                url
-            );
+            .writeText(url);
 
         alert(
             "لینک لایو کپی شد."
@@ -2204,17 +2113,13 @@ async function nativeShare() {
         getShareUrl();
 
 
-    if (
-        navigator.share
-    ) {
+    if (navigator.share) {
 
         try {
 
             await navigator.share({
                 title:
-                    getTitle(
-                        stream
-                    ),
+                    getTitle(stream),
 
                 text:
                     "تماشای لایو در LainoLive",
@@ -2232,144 +2137,104 @@ async function nativeShare() {
 }
 
 
+async function leaveAndExit() {
+
+    if (stopped) {
+        return;
+    }
+
+
+    stopped =
+        true;
+
+
+    if (reconnectTimer) {
+
+        clearTimeout(
+            reconnectTimer
+        );
+
+        reconnectTimer =
+            null;
+    }
+
+
+    await leaveViewer();
+
+
+    if (
+        socket &&
+        socket.readyState === WebSocket.OPEN
+    ) {
+
+        try {
+
+            socket.send(
+                JSON.stringify({
+
+                    type:
+                        "leave",
+
+                    room_id:
+                        String(streamId),
+
+                    role:
+                        "viewer",
+
+                    viewer_id:
+                        viewerId
+                })
+            );
+
+        } catch {}
+    }
+
+
+    if (peerConnection) {
+
+        try {
+            peerConnection.close();
+        } catch {}
+
+        peerConnection = null;
+    }
+
+
+    if (socket) {
+
+        try {
+            socket.close();
+        } catch {}
+    }
+
+
+    remoteVideo.srcObject =
+        null;
+
+
+    window.location.href =
+        "/index.html";
+}
+
+
 document
-    .getElementById(
-        "backButton"
-    )
+    .getElementById("backButton")
     .addEventListener(
         "click",
-        async () => {
-
-            stopped =
-                true;
-
-            await leaveViewer();
-
-
-            if (
-                socket
-                &&
-                socket.readyState ===
-                WebSocket.OPEN
-            ) {
-
-                try {
-
-                    socket.send(
-                        JSON.stringify({
-                            type:
-                                "leave",
-
-                            room_id:
-                                String(
-                                    streamId
-                                ),
-
-                            role:
-                                "viewer",
-
-                            viewer_id:
-                                viewerId
-                        })
-                    );
-
-                } catch {}
-            }
-
-
-            if (peerConnection) {
-
-                try {
-                    peerConnection.close();
-                } catch {}
-            }
-
-
-            if (socket) {
-
-                try {
-                    socket.close();
-                } catch {}
-            }
-
-
-            window.location.href =
-                "/index.html";
-        }
+        leaveAndExit
     );
 
 
 document
-    .getElementById(
-        "leaveButton"
-    )
+    .getElementById("leaveButton")
     .addEventListener(
         "click",
-        async () => {
-
-            stopped =
-                true;
-
-            await leaveViewer();
-
-
-            if (
-                socket
-                &&
-                socket.readyState ===
-                WebSocket.OPEN
-            ) {
-
-                try {
-
-                    socket.send(
-                        JSON.stringify({
-                            type:
-                                "leave",
-
-                            room_id:
-                                String(
-                                    streamId
-                                ),
-
-                            role:
-                                "viewer",
-
-                            viewer_id:
-                                viewerId
-                        })
-                    );
-
-                } catch {}
-            }
-
-
-            if (peerConnection) {
-
-                try {
-                    peerConnection.close();
-                } catch {}
-            }
-
-
-            if (socket) {
-
-                try {
-                    socket.close();
-                } catch {}
-            }
-
-
-            window.location.href =
-                "/index.html";
-        }
+        leaveAndExit
     );
 
 
 document
-    .getElementById(
-        "shareButton"
-    )
+    .getElementById("shareButton")
     .addEventListener(
         "click",
         openShare
@@ -2377,9 +2242,7 @@ document
 
 
 document
-    .getElementById(
-        "closeShareButton"
-    )
+    .getElementById("closeShareButton")
     .addEventListener(
         "click",
         closeShare
@@ -2387,9 +2250,7 @@ document
 
 
 document
-    .getElementById(
-        "copyShareButton"
-    )
+    .getElementById("copyShareButton")
     .addEventListener(
         "click",
         copyShareLink
@@ -2397,9 +2258,7 @@ document
 
 
 document
-    .getElementById(
-        "nativeShareButton"
-    )
+    .getElementById("nativeShareButton")
     .addEventListener(
         "click",
         nativeShare
@@ -2458,8 +2317,7 @@ window.addEventListener(
             fetch(
                 "/api/streams/viewer",
                 {
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
                         "Content-Type":
@@ -2469,16 +2327,13 @@ window.addEventListener(
                     body:
                         JSON.stringify({
                             stream_id:
-                                String(
-                                    streamId
-                                ),
+                                String(streamId),
 
                             action:
                                 "leave"
                         }),
 
-                    keepalive:
-                        true
+                    keepalive: true
                 }
             );
 
@@ -2486,23 +2341,20 @@ window.addEventListener(
 
 
         if (
-            socket
-            &&
-            socket.readyState ===
-            WebSocket.OPEN
+            socket &&
+            socket.readyState === WebSocket.OPEN
         ) {
 
             try {
 
                 socket.send(
                     JSON.stringify({
+
                         type:
                             "leave",
 
                         room_id:
-                            String(
-                                streamId
-                            ),
+                            String(streamId),
 
                         role:
                             "viewer",
@@ -2516,6 +2368,66 @@ window.addEventListener(
         }
     }
 );
+
+
+async function refreshStreamData() {
+
+    if (!streamId) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/streams",
+                {
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const streams =
+            Array.isArray(
+                data.streams
+            )
+                ? data.streams
+                : Array.isArray(data)
+                    ? data
+                    : [];
+
+
+        const current =
+            streams.find(
+                item =>
+                    String(
+                        getId(item)
+                    ) ===
+                    String(streamId)
+            );
+
+
+        if (current) {
+
+            stream =
+                current;
+
+            renderStream();
+        }
+
+    } catch {}
+}
 
 
 async function start() {
@@ -2545,62 +2457,8 @@ async function start() {
 
 
         setInterval(
-            async () => {
-
-                try {
-
-                    const response =
-                        await fetch(
-                            "/api/streams",
-                            {
-                                cache:
-                                    "no-store"
-                            }
-                        );
-
-
-                    if (!response.ok) {
-                        return;
-                    }
-
-
-                    const data =
-                        await response.json();
-
-
-                    const streams =
-                        Array.isArray(
-                            data.streams
-                        )
-                            ? data.streams
-                            : Array.isArray(data)
-                                ? data
-                                : [];
-
-
-                    const current =
-                        streams.find(
-                            item =>
-                                String(
-                                    getId(item)
-                                ) ===
-                                String(
-                                    streamId
-                                )
-                        );
-
-
-                    if (current) {
-
-                        stream =
-                            current;
-
-                        renderStream();
-                    }
-
-                } catch {}
-            },
-            5000
+            refreshStreamData,
+            3000
         );
 
     } catch (error) {
