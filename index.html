@@ -13,7 +13,7 @@
 
 <meta
     name="theme-color"
-    content="#ff2757"
+    content="#0b0d12"
 >
 
 <title>LainoLive</title>
@@ -23,98 +23,140 @@
         box-sizing: border-box;
     }
 
-    html,
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         margin: 0;
-        padding: 0;
-        min-height: 100%;
-    }
+        min-height: 100vh;
+        color: #ffffff;
+        font-family: Tahoma, Arial, sans-serif;
 
-    body {
         background:
             radial-gradient(
-                circle at top,
-                #202530 0%,
-                #0b0d12 45%,
-                #08090c 100%
-            );
-
-        color: #fff;
-        font-family:
-            Tahoma,
-            Arial,
-            sans-serif;
+                circle at 15% 0%,
+                rgba(255, 39, 87, 0.20),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 90% 10%,
+                rgba(116, 74, 255, 0.15),
+                transparent 28%
+            ),
+            #080a0f;
     }
 
-    .container {
-        width: min(1150px, 94%);
-        margin: 0 auto;
-        padding: 25px 0 50px;
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    button,
+    input {
+        font-family: inherit;
     }
 
     /* =====================================================
        HEADER
     ====================================================== */
 
-    header {
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+
+        border-bottom: 1px solid rgba(255,255,255,.07);
+
+        background:
+            rgba(8,10,15,.85);
+
+        backdrop-filter:
+            blur(20px);
+    }
+
+    .header-inner {
+        width: min(1200px, 94%);
+        margin: auto;
+
+        min-height: 72px;
+
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 15px;
-        margin-bottom: 28px;
+        justify-content: space-between;
+
+        gap: 20px;
     }
 
     .logo {
         display: flex;
         align-items: center;
         gap: 10px;
-        font-size: 27px;
+
+        font-size: 24px;
         font-weight: 900;
     }
 
-    .logo-dot {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background: #ff2757;
+    .logo-icon {
+        width: 38px;
+        height: 38px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ff2757,
+                #ff4f78
+            );
+
         box-shadow:
-            0 0 12px rgba(255, 39, 87, .9),
-            0 0 30px rgba(255, 39, 87, .45);
+            0 0 30px rgba(255,39,87,.30);
     }
 
     .logo-live {
-        color: #ff2757;
+        color: #ff3864;
     }
 
-    .header-actions {
+    .nav {
         display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
     }
 
-    button,
-    .button-link {
+    .nav button {
         border: 0;
-        border-radius: 13px;
-        padding: 12px 17px;
-        color: #fff;
-        background: #ff2757;
-        font-size: 14px;
-        font-weight: bold;
-        text-decoration: none;
+        border-radius: 12px;
+
+        padding: 10px 14px;
+
+        color: #c8cdd6;
+        background: transparent;
+
         cursor: pointer;
-        transition:
-            transform .15s ease,
-            opacity .15s ease;
     }
 
-    button:hover,
-    .button-link:hover {
-        transform: translateY(-1px);
+    .nav button:hover {
+        color: white;
+        background: #171b23;
     }
 
-    .secondary {
-        background: #292e38;
+    .nav .start {
+        color: white;
+        background: #ff2757;
+    }
+
+    /* =====================================================
+       MAIN
+    ====================================================== */
+
+    .container {
+        width: min(1200px, 94%);
+        margin: auto;
     }
 
     /* =====================================================
@@ -124,43 +166,102 @@
     .hero {
         position: relative;
         overflow: hidden;
-        border: 1px solid #292e38;
-        border-radius: 24px;
-        padding: 35px 30px;
+
+        margin-top: 30px;
+
+        min-height: 420px;
+
+        border-radius: 30px;
+
+        border:
+            1px solid rgba(255,255,255,.08);
+
         background:
             linear-gradient(
                 135deg,
-                rgba(255, 39, 87, .15),
-                rgba(255, 39, 87, .02)
+                rgba(255,39,87,.18),
+                rgba(113,76,255,.10)
             ),
-            #14171e;
+            #11151d;
 
-        box-shadow:
-            0 25px 70px rgba(0, 0, 0, .28);
+        display: flex;
+        align-items: center;
+
+        padding: 45px;
     }
 
-    .hero::after {
+    .hero::before {
         content: "";
+
         position: absolute;
-        width: 280px;
-        height: 280px;
+
+        width: 400px;
+        height: 400px;
+
         border-radius: 50%;
-        background: rgba(255, 39, 87, .10);
-        filter: blur(70px);
-        left: -80px;
-        bottom: -120px;
+
+        left: -150px;
+        bottom: -180px;
+
+        background: #ff2757;
+
+        filter: blur(120px);
+
+        opacity: .13;
     }
 
     .hero-content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
+
         max-width: 700px;
     }
 
+    .live-pill {
+        display: inline-flex;
+
+        align-items: center;
+        gap: 8px;
+
+        padding: 8px 12px;
+
+        border-radius: 999px;
+
+        color: #ff9caf;
+
+        background:
+            rgba(255,39,87,.10);
+
+        border:
+            1px solid rgba(255,39,87,.20);
+
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .live-dot {
+        width: 8px;
+        height: 8px;
+
+        border-radius: 50%;
+
+        background: #ff2757;
+
+        box-shadow:
+            0 0 12px #ff2757;
+    }
+
     .hero h1 {
-        margin: 0 0 15px;
-        font-size: clamp(30px, 6vw, 55px);
-        line-height: 1.2;
+        margin: 20px 0 14px;
+
+        font-size:
+            clamp(
+                38px,
+                7vw,
+                70px
+            );
+
+        line-height: 1.08;
     }
 
     .hero h1 span {
@@ -168,221 +269,407 @@
     }
 
     .hero p {
-        color: #b9c0cb;
+        margin: 0;
+
+        color: #aeb5c0;
+
         line-height: 2;
-        margin: 0 0 22px;
+
         font-size: 16px;
     }
 
-    .hero-buttons {
+    .hero-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-    }
+        gap: 12px;
 
-    /* =====================================================
-       SECTION
-    ====================================================== */
-
-    .section {
         margin-top: 28px;
     }
 
-    .section-header {
+    .primary-button,
+    .secondary-button {
+        border: 0;
+        border-radius: 14px;
+
+        padding: 14px 20px;
+
+        cursor: pointer;
+
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .primary-button {
+        color: white;
+        background: #ff2757;
+
+        box-shadow:
+            0 12px 30px
+            rgba(255,39,87,.22);
+    }
+
+    .secondary-button {
+        color: white;
+        background: #262b35;
+
+        border:
+            1px solid rgba(255,255,255,.07);
+    }
+
+    /* =====================================================
+       STATS
+    ====================================================== */
+
+    .stats {
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+
+        gap: 14px;
+
+        margin-top: 18px;
+    }
+
+    .stat {
+        padding: 18px;
+
+        border-radius: 18px;
+
+        background:
+            rgba(19,22,30,.86);
+
+        border:
+            1px solid rgba(255,255,255,.06);
+    }
+
+    .stat-label {
+        color: #818996;
+
+        font-size: 12px;
+    }
+
+    .stat-value {
+        display: block;
+
+        margin-top: 6px;
+
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    /* =====================================================
+       LIVE SECTION
+    ====================================================== */
+
+    .section {
+        margin-top: 45px;
+    }
+
+    .section-top {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 14px;
+
+        gap: 15px;
+
+        margin-bottom: 18px;
     }
 
     .section-title {
         margin: 0;
-        font-size: 22px;
+
+        font-size: 25px;
     }
 
-    .stream-count {
-        color: #9ca3af;
-        font-size: 13px;
+    .search {
+        width: min(330px, 100%);
+
+        padding: 12px 15px;
+
+        border-radius: 13px;
+
+        color: white;
+        background: #11151c;
+
+        border:
+            1px solid rgba(255,255,255,.08);
+
+        outline: none;
+    }
+
+    .search:focus {
+        border-color: #ff2757;
     }
 
     /* =====================================================
        STREAM GRID
     ====================================================== */
 
-    .streams {
+    .stream-grid {
         display: grid;
+
         grid-template-columns:
             repeat(
-                auto-fit,
-                minmax(260px, 1fr)
+                auto-fill,
+                minmax(270px, 1fr)
             );
 
-        gap: 15px;
+        gap: 16px;
     }
 
     .stream-card {
         overflow: hidden;
-        border: 1px solid #292e38;
-        border-radius: 18px;
-        background: #151820;
+
+        border-radius: 20px;
+
+        background: #12161e;
+
+        border:
+            1px solid rgba(255,255,255,.07);
+
         transition:
-            transform .18s ease,
-            border-color .18s ease;
+            transform .2s ease,
+            border-color .2s ease;
     }
 
     .stream-card:hover {
-        transform: translateY(-3px);
-        border-color: #ff2757;
+        transform: translateY(-4px);
+
+        border-color:
+            rgba(255,39,87,.45);
     }
 
-    .preview {
+    .stream-preview {
         position: relative;
-        aspect-ratio: 16 / 9;
+
+        aspect-ratio: 16/9;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         background:
-            linear-gradient(
-                135deg,
-                #20242d,
+            radial-gradient(
+                circle,
+                #292f3b,
                 #0c0f14
             );
+    }
+
+    .preview-play {
+        width: 70px;
+        height: 70px;
 
         display: flex;
-        justify-content: center;
         align-items: center;
-    }
+        justify-content: center;
 
-    .live-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 6px 9px;
-        border-radius: 8px;
-        background: #ff2757;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
-    .play {
-        width: 64px;
-        height: 64px;
         border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 39, 87, .17);
-        border: 1px solid rgba(255, 39, 87, .35);
+
+        background:
+            rgba(255,39,87,.16);
+
+        border:
+            1px solid rgba(255,39,87,.35);
+
         font-size: 27px;
     }
 
-    .stream-info {
+    .live-tag {
+        position: absolute;
+
+        top: 11px;
+        right: 11px;
+
+        padding: 6px 9px;
+
+        border-radius: 8px;
+
+        background: #ff2757;
+
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .viewer-tag {
+        position: absolute;
+
+        left: 11px;
+        bottom: 11px;
+
+        padding: 6px 9px;
+
+        border-radius: 8px;
+
+        background:
+            rgba(0,0,0,.65);
+
+        color: #dfe3ea;
+
+        font-size: 11px;
+    }
+
+    .stream-body {
         padding: 15px;
     }
 
     .stream-title {
         margin: 0 0 8px;
-        font-size: 17px;
-        font-weight: bold;
+
+        font-size: 16px;
     }
 
-    .stream-meta {
-        color: #8f97a5;
-        font-size: 13px;
-        margin-bottom: 13px;
+    .stream-user {
+        color: #858d9b;
+
+        font-size: 12px;
+
+        margin-bottom: 14px;
     }
 
     .watch-button {
         width: 100%;
+
+        border: 0;
+
+        border-radius: 12px;
+
+        padding: 11px;
+
+        color: white;
+
+        background: #252a34;
+
+        cursor: pointer;
+
+        font-weight: bold;
     }
 
-    /* =====================================================
-       EMPTY
-    ====================================================== */
+    .watch-button:hover {
+        background: #ff2757;
+    }
 
     .empty {
-        display: none;
-        padding: 35px 15px;
+        padding: 45px 20px;
+
+        border-radius: 20px;
+
         text-align: center;
-        border: 1px dashed #343a46;
-        border-radius: 18px;
-        color: #8f97a5;
-        background: #11141a;
+
+        color: #777f8c;
+
+        background: #11151c;
+
+        border:
+            1px dashed #303641;
     }
 
     /* =====================================================
        MODAL
     ====================================================== */
 
-    .modal {
+    .overlay {
         position: fixed;
+
         inset: 0;
+
         z-index: 100;
+
         display: none;
+
         align-items: center;
         justify-content: center;
-        padding: 15px;
+
+        padding: 16px;
 
         background:
-            rgba(0, 0, 0, .72);
+            rgba(0,0,0,.72);
 
         backdrop-filter:
-            blur(5px);
+            blur(10px);
     }
 
-    .modal.show {
+    .overlay.show {
         display: flex;
     }
 
-    .modal-card {
-        width: min(500px, 100%);
-        border: 1px solid #343a46;
-        border-radius: 20px;
-        background: #151820;
-        padding: 20px;
+    .modal {
+        width: min(470px,100%);
+
+        border-radius: 22px;
+
+        background: #151a22;
+
+        border:
+            1px solid rgba(255,255,255,.08);
+
+        padding: 22px;
+
         box-shadow:
-            0 25px 80px rgba(0, 0, 0, .50);
+            0 30px 100px
+            rgba(0,0,0,.55);
     }
 
-    .modal-header {
+    .modal-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 18px;
+
+        margin-bottom: 20px;
     }
 
-    .modal-header h2 {
+    .modal-head h2 {
         margin: 0;
     }
 
     .close {
-        width: 40px;
-        height: 40px;
-        padding: 0;
-        border-radius: 11px;
+        border: 0;
+
+        width: 38px;
+        height: 38px;
+
+        border-radius: 10px;
+
+        color: white;
         background: #292e38;
+
+        cursor: pointer;
+
         font-size: 20px;
     }
 
     .field {
-        margin-bottom: 13px;
+        margin-bottom: 15px;
     }
 
     .field label {
         display: block;
-        color: #b9c0cb;
-        font-size: 13px;
+
         margin-bottom: 7px;
+
+        color: #aeb5c0;
+
+        font-size: 13px;
     }
 
     .field input {
         width: 100%;
-        padding: 13px;
+
+        padding: 13px 14px;
+
         border-radius: 12px;
-        border: 1px solid #343a46;
+
+        color: white;
+        background: #0d1117;
+
+        border:
+            1px solid #333947;
+
         outline: none;
-        background: #0e1116;
-        color: #fff;
-        font-size: 14px;
     }
 
     .field input:focus {
@@ -390,19 +677,22 @@
     }
 
     .error {
-        min-height: 24px;
-        color: #ff738e;
+        min-height: 22px;
+
+        color: #ff7993;
+
         font-size: 13px;
-        margin-bottom: 8px;
     }
 
     .modal-actions {
-        display: flex;
-        gap: 10px;
-    }
+        display: grid;
 
-    .modal-actions button {
-        flex: 1;
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 10px;
+
+        margin-top: 8px;
     }
 
     /* =====================================================
@@ -410,48 +700,56 @@
     ====================================================== */
 
     footer {
+        padding: 45px 0 30px;
+
         text-align: center;
-        color: #68717f;
+
+        color: #555e6c;
+
         font-size: 12px;
-        margin-top: 30px;
     }
 
     /* =====================================================
        MOBILE
     ====================================================== */
 
-    @media (max-width: 700px) {
+    @media (max-width: 760px) {
 
-        header {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .header-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .header-actions > * {
-            text-align: center;
+        .nav {
+            display: none;
         }
 
         .hero {
-            padding: 25px 20px;
+            min-height: auto;
+            padding: 28px 22px;
         }
 
-        .hero-buttons {
+        .hero-actions {
             display: grid;
             grid-template-columns: 1fr;
         }
 
-        .hero-buttons > * {
+        .hero-actions button {
             width: 100%;
-            text-align: center;
+        }
+
+        .stats {
+            grid-template-columns:
+                1fr;
+        }
+
+        .section-top {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .search {
+            width: 100%;
         }
 
         .modal-actions {
-            flex-direction: column;
+            grid-template-columns:
+                1fr;
         }
     }
 </style>
@@ -461,73 +759,96 @@
 
 <body>
 
-<div class="container">
+<header class="header">
 
 ```
-<!-- =====================================================
-     HEADER
-====================================================== -->
-
-<header>
+<div class="header-inner">
 
     <div class="logo">
-        <span class="logo-dot"></span>
-        <span>
+
+        <div class="logo-icon">
+            ▶
+        </div>
+
+        <div>
             Laino<span class="logo-live">Live</span>
-        </span>
+        </div>
+
     </div>
 
-    <div class="header-actions">
+    <nav class="nav">
 
         <button
-            id="headerStartBtn"
+            type="button"
+            onclick="scrollToLives()"
+        >
+            📺 لایوها
+        </button>
+
+        <button
+            type="button"
+            onclick="openStartModal()"
         >
             🔴 شروع لایو
         </button>
 
         <button
-            class="secondary"
-            id="refreshBtn"
+            type="button"
+            class="start"
+            onclick="openStartModal()"
         >
-            🔄 بروزرسانی
+            پخش زنده
         </button>
 
-    </div>
+    </nav>
+
+</div>
+```
 
 </header>
 
-<!-- =====================================================
-     HERO
-====================================================== -->
+<main class="container">
+
+```
+<!-- HERO -->
 
 <section class="hero">
 
     <div class="hero-content">
 
+        <div class="live-pill">
+
+            <span class="live-dot"></span>
+
+            پلتفرم پخش زنده LainoLive
+
+        </div>
+
         <h1>
-            همین حالا
+            اینجا
             <span>زنده شو.</span>
         </h1>
 
         <p>
-            با LainoLive مستقیماً از داخل سایت
-            پخش زنده خودت را شروع کن و بیننده‌ها
-            را به لایوت دعوت کن.
+            پخش زنده‌ات را مستقیم از مرورگر شروع کن،
+            مخاطب‌هایت را دعوت کن و لایوهای فعال را
+            در یک صفحه ببین.
         </p>
 
-        <div class="hero-buttons">
+        <div class="hero-actions">
 
             <button
-                id="heroStartBtn"
+                class="primary-button"
+                onclick="openStartModal()"
             >
-                🔴 ایجاد لایو جدید
+                🔴 شروع پخش زنده
             </button>
 
             <button
-                class="secondary"
-                id="heroRefreshBtn"
+                class="secondary-button"
+                onclick="scrollToLives()"
             >
-                📺 مشاهده لایوها
+                📺 دیدن لایوهای فعال
             </button>
 
         </div>
@@ -536,64 +857,117 @@
 
 </section>
 
-<!-- =====================================================
-     STREAMS
-====================================================== -->
+
+<!-- STATS -->
+
+<section class="stats">
+
+    <div class="stat">
+
+        <span class="stat-label">
+            لایوهای فعال
+        </span>
+
+        <span
+            class="stat-value"
+            id="activeStreams"
+        >
+            0
+        </span>
+
+    </div>
+
+    <div class="stat">
+
+        <span class="stat-label">
+            بینندگان آنلاین
+        </span>
+
+        <span
+            class="stat-value"
+            id="activeViewers"
+        >
+            0
+        </span>
+
+    </div>
+
+    <div class="stat">
+
+        <span class="stat-label">
+            وضعیت سرور
+        </span>
+
+        <span
+            class="stat-value"
+            id="serverStatus"
+        >
+            آنلاین
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- LIVES -->
 
 <section
     class="section"
-    id="streamsSection"
+    id="liveSection"
 >
 
-    <div class="section-header">
+    <div class="section-top">
 
         <h2 class="section-title">
             🔴 لایوهای در حال پخش
         </h2>
 
-        <span
-            class="stream-count"
-            id="streamCount"
+        <input
+            class="search"
+            id="searchInput"
+            type="text"
+            placeholder="جستجوی لایو..."
+            autocomplete="off"
         >
-            0 لایو
-        </span>
 
     </div>
 
     <div
-        class="streams"
-        id="streams"
+        class="stream-grid"
+        id="streamGrid"
     ></div>
 
     <div
         class="empty"
-        id="empty"
+        id="emptyBox"
+        style="display:none;"
     >
-        📭 در حال حاضر لایوی در حال پخش نیست.
+        📭 فعلاً هیچ لایوی در حال پخش نیست.
+        <br>
+        اولین نفری باش که لایو را شروع می‌کند.
     </div>
 
 </section>
+```
+
+</main>
 
 <footer>
     LainoLive © 2026
 </footer>
-```
 
-</div>
-
-<!-- =========================================================
-     START LIVE MODAL
-========================================================== -->
+<!-- START MODAL -->
 
 <div
-    class="modal"
-    id="startModal"
+    class="overlay"
+    id="startOverlay"
 >
 
 ```
-<div class="modal-card">
+<div class="modal">
 
-    <div class="modal-header">
+    <div class="modal-head">
 
         <h2>
             🔴 شروع لایو
@@ -601,7 +975,8 @@
 
         <button
             class="close"
-            id="closeModalBtn"
+            type="button"
+            onclick="closeStartModal()"
         >
             ×
         </button>
@@ -610,12 +985,12 @@
 
     <div class="field">
 
-        <label for="username">
+        <label>
             نام کاربری
         </label>
 
         <input
-            id="username"
+            id="usernameInput"
             type="text"
             placeholder="مثلاً testuser"
             autocomplete="off"
@@ -625,14 +1000,14 @@
 
     <div class="field">
 
-        <label for="title">
+        <label>
             عنوان لایو
         </label>
 
         <input
-            id="title"
+            id="titleInput"
             type="text"
-            placeholder="مثلاً پخش زنده امروز"
+            placeholder="مثلاً پخش زنده امشب"
             autocomplete="off"
         >
 
@@ -640,20 +1015,24 @@
 
     <div
         class="error"
-        id="error"
+        id="modalError"
     ></div>
 
     <div class="modal-actions">
 
         <button
-            id="createLiveBtn"
+            class="primary-button"
+            id="createButton"
+            type="button"
+            onclick="createLive()"
         >
             🔴 ساخت لایو
         </button>
 
         <button
-            class="secondary"
-            id="cancelBtn"
+            class="secondary-button"
+            type="button"
+            onclick="closeStartModal()"
         >
             انصراف
         </button>
@@ -668,146 +1047,117 @@
 <script>
 "use strict";
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
 
-const startModal =
-    document.getElementById(
-        "startModal"
-    );
+let allStreams = [];
 
-const headerStartBtn =
-    document.getElementById(
-        "headerStartBtn"
-    );
-
-const heroStartBtn =
-    document.getElementById(
-        "heroStartBtn"
-    );
-
-const heroRefreshBtn =
-    document.getElementById(
-        "heroRefreshBtn"
-    );
-
-const refreshBtn =
-    document.getElementById(
-        "refreshBtn"
-    );
-
-const closeModalBtn =
-    document.getElementById(
-        "closeModalBtn"
-    );
-
-const cancelBtn =
-    document.getElementById(
-        "cancelBtn"
-    );
-
-const createLiveBtn =
-    document.getElementById(
-        "createLiveBtn"
-    );
-
-const usernameInput =
-    document.getElementById(
-        "username"
-    );
-
-const titleInput =
-    document.getElementById(
-        "title"
-    );
-
-const errorEl =
-    document.getElementById(
-        "error"
-    );
-
-const streamsEl =
-    document.getElementById(
-        "streams"
-    );
-
-const emptyEl =
-    document.getElementById(
-        "empty"
-    );
-
-const streamCountEl =
-    document.getElementById(
-        "streamCount"
-    );
-
-/* =========================================================
-   MODAL
-========================================================= */
 
 function openStartModal() {
 
-    errorEl.textContent =
-        "";
+    document
+        .getElementById(
+            "modalError"
+        )
+        .textContent = "";
 
-    startModal.classList.add(
-        "show"
-    );
+    document
+        .getElementById(
+            "startOverlay"
+        )
+        .classList.add("show");
 
-    setTimeout(
-        () => usernameInput.focus(),
-        50
-    );
+    setTimeout(() => {
+
+        document
+            .getElementById(
+                "usernameInput"
+            )
+            .focus();
+
+    }, 100);
 }
+
 
 function closeStartModal() {
 
-    startModal.classList.remove(
-        "show"
-    );
+    document
+        .getElementById(
+            "startOverlay"
+        )
+        .classList.remove(
+            "show"
+        );
 }
 
-/* =========================================================
-   START STREAM
-========================================================= */
 
-async function createStream() {
+function scrollToLives() {
+
+    document
+        .getElementById(
+            "liveSection"
+        )
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+
+async function createLive() {
 
     const username =
-        usernameInput.value.trim();
+        document
+            .getElementById(
+                "usernameInput"
+            )
+            .value
+            .trim();
 
     const title =
-        titleInput.value.trim();
+        document
+            .getElementById(
+                "titleInput"
+            )
+            .value
+            .trim();
 
-    errorEl.textContent =
-        "";
+    const error =
+        document
+            .getElementById(
+                "modalError"
+            );
+
+    const button =
+        document
+            .getElementById(
+                "createButton"
+            );
+
+
+    error.textContent = "";
+
 
     if (!username) {
 
-        errorEl.textContent =
+        error.textContent =
             "نام کاربری را وارد کنید.";
-
-        usernameInput.focus();
 
         return;
     }
+
 
     if (!title) {
 
-        errorEl.textContent =
+        error.textContent =
             "عنوان لایو را وارد کنید.";
-
-        titleInput.focus();
 
         return;
     }
 
-    createLiveBtn.disabled =
-        true;
 
-    createLiveBtn.textContent =
+    button.disabled = true;
+
+    button.textContent =
         "در حال ساخت...";
+
 
     try {
 
@@ -823,22 +1173,16 @@ async function createStream() {
                     },
 
                     body: JSON.stringify({
-                        username:
-                            username,
-
-                        title:
-                            title
+                        username: username,
+                        title: title
                     })
                 }
             );
 
-        let data = {};
 
-        try {
-            data =
-                await response.json();
-        }
-        catch (_) {}
+        const data =
+            await response.json();
+
 
         if (
             !response.ok ||
@@ -847,32 +1191,17 @@ async function createStream() {
 
             throw new Error(
                 data.message ||
-                "ساخت لایو ناموفق بود."
+                "ساخت لایو انجام نشد."
             );
         }
 
-        const streamId =
-            data.stream_id;
-
-        if (!streamId) {
-
-            throw new Error(
-                "سرور stream_id برنگرداند."
-            );
-        }
-
-        /*
-         * مستقیم وارد صفحه پخش می‌شویم.
-         * stream_id و username را به URL
-         * می‌فرستیم.
-         */
 
         const params =
             new URLSearchParams();
 
         params.set(
             "stream_id",
-            streamId
+            data.stream_id
         );
 
         params.set(
@@ -885,41 +1214,31 @@ async function createStream() {
             title
         );
 
+
         window.location.href =
-            "live.html?" +
+            "/live.html?" +
             params.toString();
 
     }
-    catch (error) {
+    catch (errorObject) {
 
         console.error(
-            "CREATE LIVE ERROR:",
-            error
+            errorObject
         );
 
-        errorEl.textContent =
-            error.message ||
-            "ساخت لایو ناموفق بود.";
+        error.textContent =
+            errorObject.message ||
+            "خطا در ساخت لایو.";
 
-        createLiveBtn.disabled =
-            false;
+        button.disabled = false;
 
-        createLiveBtn.textContent =
+        button.textContent =
             "🔴 ساخت لایو";
     }
 }
 
-/* =========================================================
-   LOAD STREAMS
-========================================================= */
 
 async function loadStreams() {
-
-    streamsEl.innerHTML =
-        "";
-
-    emptyEl.style.display =
-        "none";
 
     try {
 
@@ -932,13 +1251,10 @@ async function loadStreams() {
                 }
             );
 
-        let data = {};
 
-        try {
-            data =
-                await response.json();
-        }
-        catch (_) {}
+        const data =
+            await response.json();
+
 
         if (
             !response.ok ||
@@ -946,310 +1262,425 @@ async function loadStreams() {
         ) {
 
             throw new Error(
-                data.message ||
-                "دریافت لایوها ناموفق بود."
+                "پاسخ سرور نامعتبر است."
             );
         }
 
-        const streams =
+
+        allStreams =
             Array.isArray(
                 data.streams
             )
                 ? data.streams
                 : [];
 
-        streamCountEl.textContent =
-            streams.length +
-            " لایو";
 
-        if (
-            streams.length === 0
-        ) {
+        updateStats();
 
-            emptyEl.style.display =
-                "block";
-
-            return;
-        }
-
-        for (
-            const stream
-            of streams
-        ) {
-
-            streamsEl.appendChild(
-                createStreamCard(
-                    stream
-                )
-            );
-        }
+        renderStreams(
+            allStreams
+        );
 
     }
-    catch (error) {
+    catch (errorObject) {
 
         console.error(
-            "LOAD STREAMS ERROR:",
-            error
+            errorObject
         );
 
-        emptyEl.style.display =
-            "block";
+        allStreams = [];
 
-        emptyEl.textContent =
-            "❌ دریافت لایوها انجام نشد.";
+        updateStats();
+
+        renderStreams([]);
     }
 }
 
-/* =========================================================
-   STREAM CARD
-========================================================= */
 
-function createStreamCard(
-    stream
-) {
+function updateStats() {
 
-    const card =
-        document.createElement(
-            "article"
-        );
+    const active =
+        allStreams.length;
 
-    card.className =
-        "stream-card";
-
-    const preview =
-        document.createElement(
-            "div"
-        );
-
-    preview.className =
-        "preview";
-
-    const badge =
-        document.createElement(
-            "span"
-        );
-
-    badge.className =
-        "live-badge";
-
-    badge.textContent =
-        "LIVE";
-
-    const play =
-        document.createElement(
-            "div"
-        );
-
-    play.className =
-        "play";
-
-    play.textContent =
-        "▶";
-
-    preview.appendChild(
-        badge
-    );
-
-    preview.appendChild(
-        play
-    );
-
-    const info =
-        document.createElement(
-            "div"
-        );
-
-    info.className =
-        "stream-info";
-
-    const title =
-        document.createElement(
-            "h3"
-        );
-
-    title.className =
-        "stream-title";
-
-    title.textContent =
-        stream.title ||
-        "لایو بدون عنوان";
-
-    const meta =
-        document.createElement(
-            "div"
-        );
-
-    meta.className =
-        "stream-meta";
-
-    const username =
-        stream.username ||
-        "کاربر";
 
     const viewers =
-        Number(
-            stream.viewers || 0
+        allStreams.reduce(
+            (
+                total,
+                stream
+            ) => {
+
+                return total +
+                    Number(
+                        stream.viewers ||
+                        0
+                    );
+
+            },
+            0
         );
 
-    meta.textContent =
-        "👤 " +
-        username +
-        "   •   👁 " +
-        viewers +
-        " بیننده";
 
-    const watch =
-        document.createElement(
-            "button"
-        );
+    document
+        .getElementById(
+            "activeStreams"
+        )
+        .textContent =
+        active;
 
-    watch.className =
-        "watch-button";
 
-    watch.textContent =
-        "📺 تماشای لایو";
+    document
+        .getElementById(
+            "activeViewers"
+        )
+        .textContent =
+        viewers;
 
-    watch.addEventListener(
-        "click",
-        () => {
 
-            const params =
-                new URLSearchParams();
-
-            params.set(
-                "stream_id",
-                stream.stream_id
-            );
-
-            window.location.href =
-                "viewer.html?" +
-                params.toString();
-        }
-    );
-
-    info.appendChild(
-        title
-    );
-
-    info.appendChild(
-        meta
-    );
-
-    info.appendChild(
-        watch
-    );
-
-    card.appendChild(
-        preview
-    );
-
-    card.appendChild(
-        info
-    );
-
-    return card;
+    document
+        .getElementById(
+            "serverStatus"
+        )
+        .textContent =
+        "آنلاین";
 }
 
-/* =========================================================
-   BUTTONS
-========================================================= */
 
-headerStartBtn.addEventListener(
-    "click",
-    openStartModal
-);
+function renderStreams(
+    streams
+) {
 
-heroStartBtn.addEventListener(
-    "click",
-    openStartModal
-);
+    const grid =
+        document.getElementById(
+            "streamGrid"
+        );
 
-heroRefreshBtn.addEventListener(
-    "click",
-    loadStreams
-);
+    const empty =
+        document.getElementById(
+            "emptyBox"
+        );
 
-refreshBtn.addEventListener(
-    "click",
-    loadStreams
-);
 
-closeModalBtn.addEventListener(
-    "click",
-    closeStartModal
-);
+    grid.innerHTML = "";
 
-cancelBtn.addEventListener(
-    "click",
-    closeStartModal
-);
 
-createLiveBtn.addEventListener(
-    "click",
-    createStream
-);
+    if (!streams.length) {
 
-/* =========================================================
-   ENTER KEY
-========================================================= */
+        empty.style.display =
+            "block";
 
-usernameInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            titleInput.focus();
-        }
+        return;
     }
-);
 
-titleInput.addEventListener(
-    "keydown",
-    event => {
 
-        if (
-            event.key === "Enter"
-        ) {
+    empty.style.display =
+        "none";
 
-            createStream();
-        }
+
+    for (
+        const stream
+        of streams
+    ) {
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+        card.className =
+            "stream-card";
+
+
+        const preview =
+            document.createElement(
+                "div"
+            );
+
+        preview.className =
+            "stream-preview";
+
+
+        const liveTag =
+            document.createElement(
+                "div"
+            );
+
+        liveTag.className =
+            "live-tag";
+
+        liveTag.textContent =
+            "LIVE";
+
+
+        const viewerTag =
+            document.createElement(
+                "div"
+            );
+
+        viewerTag.className =
+            "viewer-tag";
+
+        viewerTag.textContent =
+            "👁 " +
+            Number(
+                stream.viewers || 0
+            );
+
+
+        const play =
+            document.createElement(
+                "div"
+            );
+
+        play.className =
+            "preview-play";
+
+        play.textContent =
+            "▶";
+
+
+        preview.appendChild(
+            liveTag
+        );
+
+        preview.appendChild(
+            play
+        );
+
+        preview.appendChild(
+            viewerTag
+        );
+
+
+        const body =
+            document.createElement(
+                "div"
+            );
+
+        body.className =
+            "stream-body";
+
+
+        const title =
+            document.createElement(
+                "h3"
+            );
+
+        title.className =
+            "stream-title";
+
+        title.textContent =
+            stream.title ||
+            "لایو بدون عنوان";
+
+
+        const user =
+            document.createElement(
+                "div"
+            );
+
+        user.className =
+            "stream-user";
+
+        user.textContent =
+            "👤 " +
+            (
+                stream.username ||
+                "کاربر"
+            );
+
+
+        const watch =
+            document.createElement(
+                "button"
+            );
+
+        watch.className =
+            "watch-button";
+
+        watch.textContent =
+            "📺 تماشای لایو";
+
+
+        watch.addEventListener(
+            "click",
+            () => {
+
+                const params =
+                    new URLSearchParams();
+
+                params.set(
+                    "stream_id",
+                    stream.stream_id
+                );
+
+
+                window.location.href =
+                    "/viewer.html?" +
+                    params.toString();
+            }
+        );
+
+
+        body.appendChild(
+            title
+        );
+
+        body.appendChild(
+            user
+        );
+
+        body.appendChild(
+            watch
+        );
+
+
+        card.appendChild(
+            preview
+        );
+
+        card.appendChild(
+            body
+        );
+
+
+        grid.appendChild(
+            card
+        );
     }
-);
+}
 
-/* =========================================================
-   CLICK OUTSIDE MODAL
-========================================================= */
 
-startModal.addEventListener(
-    "click",
-    event => {
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        function () {
 
-        if (
-            event.target ===
-            startModal
-        ) {
+            const value =
+                this.value
+                    .trim()
+                    .toLowerCase();
 
-            closeStartModal();
+
+            if (!value) {
+
+                renderStreams(
+                    allStreams
+                );
+
+                return;
+            }
+
+
+            const filtered =
+                allStreams.filter(
+                    stream => {
+
+                        const title =
+                            String(
+                                stream.title ||
+                                ""
+                            )
+                            .toLowerCase();
+
+
+                        const username =
+                            String(
+                                stream.username ||
+                                ""
+                            )
+                            .toLowerCase();
+
+
+                        return (
+                            title.includes(
+                                value
+                            ) ||
+                            username.includes(
+                                value
+                            )
+                        );
+                    }
+                );
+
+
+            renderStreams(
+                filtered
+            );
         }
-    }
-);
+    );
 
-/* =========================================================
-   INIT
-========================================================= */
+
+document
+    .getElementById(
+        "startOverlay"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "startOverlay"
+            ) {
+
+                closeStartModal();
+            }
+        }
+    );
+
+
+document
+    .getElementById(
+        "titleInput"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                createLive();
+            }
+        }
+    );
+
+
+document
+    .getElementById(
+        "usernameInput"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                document
+                    .getElementById(
+                        "titleInput"
+                    )
+                    .focus();
+            }
+        }
+    );
+
 
 loadStreams();
 
-/*
- * هر ۱۰ ثانیه لیست لایوها بروزرسانی می‌شود.
- */
 
 setInterval(
     loadStreams,
-    10000
+    5000
 );
 </script>
 

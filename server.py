@@ -1,12 +1,23 @@
 import os
 import uuid
+from pathlib import Path
 from typing import Dict, Optional
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
+
+BASE_DIR = Path(__file__).resolve().parent
+
+INDEX_FILE = BASE_DIR / "index.html"
+LIVE_FILE = BASE_DIR / "live.html"
+VIEWER_FILE = BASE_DIR / "viewer.html"
+
+
 app = FastAPI(title="LainoLive Server")
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,6 +33,17 @@ class StreamInfo(BaseModel):
     username: str
     title: str = ""
     is_live: bool = True
+
+
+class StreamStartRequest(BaseModel):
+    stream_id: Optional[str] = None
+    username: str
+    title: str = ""
+
+
+class StreamStopRequest(BaseModel):
+    stream_id: str
+    username: str
 
 
 class RTCClient:
@@ -59,27 +81,22 @@ def remove_client(stream_id: str, client_id: str) -> None:
 
 
 def viewer_count(stream_id: str) -> int:
-    room = rtc_rooms.get(stream_id, {})
     return sum(
         1
-        for client in room.values()
+        for client in rtc_rooms.get(stream_id, {}).values()
         if client.role == "viewer"
     )
 
 
 def broadcaster_count(stream_id: str) -> int:
-    room = rtc_rooms.get(stream_id, {})
     return sum(
         1
-        for client in room.values()
+        for client in rtc_rooms.get(stream_id, {}).values()
         if client.role == "broadcaster"
     )
 
 
-async def send_json_safe(
-    websocket: WebSocket,
-    data: dict,
-) -> bool:
+async def send_json_safe(websocket: WebSocket, data: dict) -> bool:
     try:
         await websocket.send_json(data)
         return True
@@ -93,10 +110,12 @@ async def send_to_role(
     data: dict,
     exclude_client_id: Optional[str] = None,
 ) -> None:
+
     room = rtc_rooms.get(stream_id, {})
     dead = []
 
     for client_id, client in list(room.items()):
+
         if client.role != role:
             continue
 
@@ -106,19 +125,14 @@ async def send_to_role(
         ):
             continue
 
-        ok = await send_json_safe(
+        if not await send_json_safe(
             client.websocket,
             data,
-        )
-
-        if not ok:
+        ):
             dead.append(client_id)
 
     for client_id in dead:
-        remove_client(
-            stream_id,
-            client_id,
-        )
+        remove_client(stream_id, client_id)
 
 
 async def broadcast_room(
@@ -126,6 +140,7 @@ async def broadcast_room(
     data: dict,
     exclude_client_id: Optional[str] = None,
 ) -> None:
+
     room = rtc_rooms.get(stream_id, {})
     dead = []
 
@@ -137,24 +152,20 @@ async def broadcast_room(
         ):
             continue
 
-        ok = await send_json_safe(
+        if not await send_json_safe(
             client.websocket,
             data,
-        )
-
-        if not ok:
+        ):
             dead.append(client_id)
 
     for client_id in dead:
-        remove_client(
-            stream_id,
-            client_id,
-        )
+        remove_client(stream_id, client_id)
 
 
 async def notify_viewer_count(
     stream_id: str,
 ) -> None:
+
     await broadcast_room(
         stream_id,
         {
@@ -167,6 +178,69 @@ async def notify_viewer_count(
 
 @app.get("/")
 async def root():
+
+    if INDEX_FILE.is_file():
+        return FileResponse(
+            INDEX_FILE,
+            media_type="text/html",
+        )
+
+    return {
+        "success": False,
+        "service": "LainoLive",
+        "status": "online",
+        "message": "index.html پیدا نشد.",
+    }
+
+
+@app.get("/index.html")
+async def index_page():
+
+    if INDEX_FILE.is_file():
+        return FileResponse(
+            INDEX_FILE,
+            media_type="text/html",
+        )
+
+    return {
+        "success": False,
+        "message": "index.html پیدا نشد.",
+    }
+
+
+@app.get("/live.html")
+async def live_page():
+
+    if LIVE_FILE.is_file():
+        return FileResponse(
+            LIVE_FILE,
+            media_type="text/html",
+        )
+
+    return {
+        "success": False,
+        "message": "live.html پیدا نشد.",
+    }
+
+
+@app.get("/viewer.html")
+async def viewer_page():
+
+    if VIEWER_FILE.is_file():
+        return FileResponse(
+            VIEWER_FILE,
+            media_type="text/html",
+        )
+
+    return {
+        "success": False,
+        "message": "viewer.html پیدا نشد.",
+    }
+
+
+@app.get("/api")
+async def api_root():
+
     return {
         "success": True,
         "service": "LainoLive",
@@ -176,6 +250,7 @@ async def root():
 
 @app.get("/health")
 async def health():
+
     return {
         "success": True,
         "status": "ok",
@@ -192,16 +267,11 @@ async def health():
     }
 
 
-class StreamStartRequest(BaseModel):
-    stream_id: Optional[str] = None
-    username: str
-    title: str = ""
-
-
 @app.post("/api/streams/start")
 async def start_stream(
     data: StreamStartRequest,
 ):
+
     stream_id = (
         data.stream_id
         or str(uuid.uuid4())
@@ -227,6 +297,7 @@ async def start_stream(
 
 @app.get("/api/streams")
 async def get_streams():
+
     result = []
 
     for stream in streams.values():
@@ -256,6 +327,7 @@ async def get_streams():
 async def get_stream(
     stream_id: str,
 ):
+
     stream = streams.get(stream_id)
 
     if not stream:
@@ -280,18 +352,12 @@ async def get_stream(
     }
 
 
-class StreamStopRequest(BaseModel):
-    stream_id: str
-    username: str
-
-
 @app.post("/api/streams/stop")
 async def stop_stream(
     data: StreamStopRequest,
 ):
-    stream = streams.get(
-        data.stream_id
-    )
+
+    stream = streams.get(data.stream_id)
 
     if not stream:
         return {
@@ -302,8 +368,7 @@ async def stop_stream(
     if stream.username != data.username:
         return {
             "success": False,
-            "message":
-                "کاربر مجاز به پایان این لایو نیست.",
+            "message": "کاربر مجاز به پایان این لایو نیست.",
         }
 
     stream.is_live = False
@@ -327,25 +392,22 @@ async def stop_stream(
     }
 
 
-@app.websocket(
-    "/ws/viewer/{stream_id}"
-)
+@app.websocket("/ws/viewer/{stream_id}")
 async def viewer_signaling(
     websocket: WebSocket,
     stream_id: str,
 ):
+
     await websocket.accept()
 
-    client_id = str(
-        uuid.uuid4()
-    )
+    client_id = str(uuid.uuid4())
 
     ensure_room(stream_id)
 
     rtc_rooms[stream_id][client_id] = RTCClient(
-        websocket=websocket,
-        client_id=client_id,
-        role="viewer",
+        websocket,
+        client_id,
+        "viewer",
     )
 
     await send_json_safe(
@@ -355,8 +417,7 @@ async def viewer_signaling(
             "client_id": client_id,
             "stream_id": stream_id,
             "role": "viewer",
-            "viewer_count":
-                viewer_count(stream_id),
+            "viewer_count": viewer_count(stream_id),
         },
     )
 
@@ -370,19 +431,14 @@ async def viewer_signaling(
         },
     )
 
-    await notify_viewer_count(
-        stream_id
-    )
+    await notify_viewer_count(stream_id)
 
     try:
 
         while True:
 
             message = await websocket.receive_json()
-
-            message_type = message.get(
-                "type"
-            )
+            message_type = message.get("type")
 
             if message_type == "viewer-ready":
 
@@ -390,16 +446,33 @@ async def viewer_signaling(
                     stream_id,
                     "broadcaster",
                     {
-                        "type":
-                            "viewer-ready",
-
-                        "stream_id":
-                            stream_id,
-
-                        "viewer_id":
-                            client_id,
+                        "type": "viewer-ready",
+                        "stream_id": stream_id,
+                        "viewer_id": client_id,
                     },
                 )
+
+                continue
+
+            payload = dict(message)
+            payload["sender"] = client_id
+
+            target_id = message.get("target")
+
+            if target_id:
+
+                target = (
+                    rtc_rooms
+                    .get(stream_id, {})
+                    .get(str(target_id))
+                )
+
+                if target:
+
+                    await send_json_safe(
+                        target.websocket,
+                        payload,
+                    )
 
             elif message_type in {
                 "offer",
@@ -408,92 +481,30 @@ async def viewer_signaling(
                 "candidate",
             }:
 
-                target_id = message.get(
-                    "target"
+                await send_to_role(
+                    stream_id,
+                    "broadcaster",
+                    payload,
+                    exclude_client_id=client_id,
                 )
-
-                payload = dict(message)
-
-                payload["sender"] = (
-                    client_id
-                )
-
-                if target_id:
-
-                    target = (
-                        rtc_rooms
-                        .get(
-                            stream_id,
-                            {},
-                        )
-                        .get(
-                            target_id
-                        )
-                    )
-
-                    if target:
-
-                        await send_json_safe(
-                            target.websocket,
-                            payload,
-                        )
-
-                else:
-
-                    await send_to_role(
-                        stream_id,
-                        "broadcaster",
-                        payload,
-                        exclude_client_id=
-                            client_id,
-                    )
 
             else:
 
-                target_id = message.get(
-                    "target"
+                await broadcast_room(
+                    stream_id,
+                    payload,
+                    exclude_client_id=client_id,
                 )
-
-                payload = dict(message)
-
-                payload["sender"] = (
-                    client_id
-                )
-
-                if target_id:
-
-                    target = (
-                        rtc_rooms
-                        .get(
-                            stream_id,
-                            {},
-                        )
-                        .get(
-                            target_id
-                        )
-                    )
-
-                    if target:
-
-                        await send_json_safe(
-                            target.websocket,
-                            payload,
-                        )
-
-                else:
-
-                    await broadcast_room(
-                        stream_id,
-                        payload,
-                        exclude_client_id=
-                            client_id,
-                    )
 
     except WebSocketDisconnect:
         pass
 
-    except Exception:
-        pass
+    except Exception as error:
+
+        print(
+            "Viewer WebSocket error:",
+            repr(error),
+        )
 
     finally:
 
@@ -506,14 +517,9 @@ async def viewer_signaling(
             stream_id,
             "broadcaster",
             {
-                "type":
-                    "viewer-left",
-
-                "stream_id":
-                    stream_id,
-
-                "viewer_id":
-                    client_id,
+                "type": "viewer-left",
+                "stream_id": stream_id,
+                "viewer_id": client_id,
             },
         )
 
@@ -522,18 +528,15 @@ async def viewer_signaling(
         )
 
 
-@app.websocket(
-    "/ws/broadcaster/{stream_id}"
-)
+@app.websocket("/ws/broadcaster/{stream_id}")
 async def broadcaster_signaling(
     websocket: WebSocket,
     stream_id: str,
 ):
+
     await websocket.accept()
 
-    client_id = str(
-        uuid.uuid4()
-    )
+    client_id = str(uuid.uuid4())
 
     ensure_room(stream_id)
 
@@ -548,17 +551,15 @@ async def broadcaster_signaling(
             except Exception:
                 pass
 
-            rtc_rooms[
-                stream_id
-            ].pop(
+            rtc_rooms[stream_id].pop(
                 old_id,
                 None,
             )
 
     rtc_rooms[stream_id][client_id] = RTCClient(
-        websocket=websocket,
-        client_id=client_id,
-        role="broadcaster",
+        websocket,
+        client_id,
+        "broadcaster",
     )
 
     await send_json_safe(
@@ -568,8 +569,7 @@ async def broadcaster_signaling(
             "client_id": client_id,
             "stream_id": stream_id,
             "role": "broadcaster",
-            "viewer_count":
-                viewer_count(stream_id),
+            "viewer_count": viewer_count(stream_id),
         },
     )
 
@@ -577,21 +577,13 @@ async def broadcaster_signaling(
         stream_id,
         "viewer",
         {
-            "type":
-                "broadcaster-ready",
-
-            "stream_id":
-                stream_id,
+            "type": "broadcaster-ready",
+            "stream_id": stream_id,
         },
     )
 
     for viewer_id, viewer in list(
-        rtc_rooms
-        .get(
-            stream_id,
-            {},
-        )
-        .items()
+        rtc_rooms.get(stream_id, {}).items()
     ):
 
         if viewer.role != "viewer":
@@ -600,14 +592,9 @@ async def broadcaster_signaling(
         await send_json_safe(
             websocket,
             {
-                "type":
-                    "viewer-ready",
-
-                "stream_id":
-                    stream_id,
-
-                "viewer_id":
-                    viewer_id,
+                "type": "viewer-ready",
+                "stream_id": stream_id,
+                "viewer_id": viewer_id,
             },
         )
 
@@ -616,73 +603,52 @@ async def broadcaster_signaling(
         while True:
 
             message = await websocket.receive_json()
+            message_type = message.get("type")
 
-            message_type = message.get(
-                "type"
-            )
+            payload = dict(message)
+            payload["sender"] = client_id
 
-            if message_type in {
+            target_id = message.get("target")
+
+            if target_id:
+
+                target = (
+                    rtc_rooms
+                    .get(stream_id, {})
+                    .get(str(target_id))
+                )
+
+                if target:
+
+                    await send_json_safe(
+                        target.websocket,
+                        payload,
+                    )
+
+            elif message_type in {
                 "offer",
                 "answer",
                 "ice-candidate",
                 "candidate",
             }:
 
-                target_id = message.get(
-                    "target"
+                await send_to_role(
+                    stream_id,
+                    "viewer",
+                    payload,
+                    exclude_client_id=client_id,
                 )
-
-                payload = dict(message)
-
-                payload["sender"] = (
-                    client_id
-                )
-
-                if target_id:
-
-                    target = (
-                        rtc_rooms
-                        .get(
-                            stream_id,
-                            {},
-                        )
-                        .get(
-                            target_id
-                        )
-                    )
-
-                    if target:
-
-                        await send_json_safe(
-                            target.websocket,
-                            payload,
-                        )
-
-                else:
-
-                    await send_to_role(
-                        stream_id,
-                        "viewer",
-                        payload,
-                        exclude_client_id=
-                            client_id,
-                    )
 
             elif message_type == "viewer-ready":
 
-                viewer_id = message.get(
-                    "viewer_id"
+                viewer_id = str(
+                    message.get("viewer_id", "")
                 )
 
                 viewer = (
                     rtc_rooms
-                    .get(
-                        stream_id,
-                        {},
-                    )
-                    .get(
-                        viewer_id
-                    )
+                    .get(stream_id, {})
+                    .get(viewer_id)
                 )
 
                 if viewer:
@@ -690,61 +656,29 @@ async def broadcaster_signaling(
                     await send_json_safe(
                         viewer.websocket,
                         {
-                            "type":
-                                "broadcaster-ready",
-
-                            "stream_id":
-                                stream_id,
+                            "type": "broadcaster-ready",
+                            "stream_id": stream_id,
                         },
                     )
 
             else:
 
-                target_id = message.get(
-                    "target"
+                await send_to_role(
+                    stream_id,
+                    "viewer",
+                    payload,
+                    exclude_client_id=client_id,
                 )
-
-                payload = dict(message)
-
-                payload["sender"] = (
-                    client_id
-                )
-
-                if target_id:
-
-                    target = (
-                        rtc_rooms
-                        .get(
-                            stream_id,
-                            {},
-                        )
-                        .get(
-                            target_id
-                        )
-                    )
-
-                    if target:
-
-                        await send_json_safe(
-                            target.websocket,
-                            payload,
-                        )
-
-                else:
-
-                    await send_to_role(
-                        stream_id,
-                        "viewer",
-                        payload,
-                        exclude_client_id=
-                            client_id,
-                    )
 
     except WebSocketDisconnect:
         pass
 
-    except Exception:
-        pass
+    except Exception as error:
+
+        print(
+            "Broadcaster WebSocket error:",
+            repr(error),
+        )
 
     finally:
 
@@ -757,101 +691,13 @@ async def broadcaster_signaling(
             stream_id,
             "viewer",
             {
-                "type":
-                    "broadcaster-left",
-
-                "stream_id":
-                    stream_id,
+                "type": "broadcaster-left",
+                "stream_id": stream_id,
             },
         )
 
-
-@app.websocket(
-    "/ws/stream/{stream_id}"
-)
-async def generic_stream_signaling(
-    websocket: WebSocket,
-    stream_id: str,
-):
-    await websocket.accept()
-
-    client_id = str(
-        uuid.uuid4()
-    )
-
-    ensure_room(stream_id)
-
-    rtc_rooms[stream_id][client_id] = RTCClient(
-        websocket=websocket,
-        client_id=client_id,
-        role="unknown",
-    )
-
-    await send_json_safe(
-        websocket,
-        {
-            "type": "connected",
-            "client_id": client_id,
-            "stream_id": stream_id,
-        },
-    )
-
-    try:
-
-        while True:
-
-            message = await websocket.receive_json()
-
-            target_id = message.get(
-                "target"
-            )
-
-            payload = dict(message)
-
-            payload["sender"] = (
-                client_id
-            )
-
-            if target_id:
-
-                target = (
-                    rtc_rooms
-                    .get(
-                        stream_id,
-                        {},
-                    )
-                    .get(
-                        target_id
-                    )
-                )
-
-                if target:
-
-                    await send_json_safe(
-                        target.websocket,
-                        payload,
-                    )
-
-            else:
-
-                await broadcast_room(
-                    stream_id,
-                    payload,
-                    exclude_client_id=
-                        client_id,
-                )
-
-    except WebSocketDisconnect:
-        pass
-
-    except Exception:
-        pass
-
-    finally:
-
-        remove_client(
-            stream_id,
-            client_id,
+        await notify_viewer_count(
+            stream_id
         )
 
 
@@ -867,7 +713,7 @@ if __name__ == "__main__":
     )
 
     uvicorn.run(
-        "server:app",
+        app,
         host="0.0.0.0",
         port=port,
         reload=False,
