@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -13,9 +15,12 @@
         content="#090b12"
     >
 
-    <title>LainoLive - پخش زنده</title>
+    <title>
+        LainoLive - پخش زنده
+    </title>
 
     <style>
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -86,7 +91,12 @@
                 12px;
 
             background:
-                rgba(9, 11, 18, 0.96);
+                rgba(
+                    9,
+                    11,
+                    18,
+                    0.96
+                );
 
             border-bottom:
                 1px solid
@@ -135,7 +145,12 @@
             border-radius: 999px;
 
             background:
-                rgba(255, 45, 85, 0.14);
+                rgba(
+                    255,
+                    45,
+                    85,
+                    0.14
+                );
 
             color: #ff5578;
 
@@ -153,7 +168,12 @@
 
             box-shadow:
                 0 0 12px
-                rgba(255, 54, 95, 0.8);
+                rgba(
+                    255,
+                    54,
+                    95,
+                    0.8
+                );
         }
 
         /* =========================
@@ -161,8 +181,15 @@
         ========================= */
 
         .main {
-            width: min(1250px, 100%);
-            margin: 0 auto;
+            width: min(
+                1250px,
+                100%
+            );
+
+            margin:
+                0
+                auto;
+
             padding: 16px;
         }
 
@@ -170,12 +197,16 @@
             display: grid;
 
             grid-template-columns:
-                minmax(0, 1fr)
+                minmax(
+                    0,
+                    1fr
+                )
                 360px;
 
             gap: 16px;
 
-            align-items: start;
+            align-items:
+                start;
         }
 
         /* =========================
@@ -185,13 +216,16 @@
         .video-card,
         .panel,
         .info-card {
-            background: #10131c;
+
+            background:
+                #10131c;
 
             border:
                 1px solid
                 #23283a;
 
-            border-radius: 18px;
+            border-radius:
+                18px;
         }
 
         .video-card {
@@ -207,33 +241,42 @@
 
             width: 100%;
 
-            aspect-ratio: 16 / 9;
+            aspect-ratio:
+                16 / 9;
 
-            background: #000000;
+            background:
+                #000000;
 
             overflow: hidden;
         }
 
         #localVideo {
+
             display: block;
 
             width: 100%;
             height: 100%;
 
-            object-fit: contain;
+            object-fit:
+                contain;
 
-            background: #000000;
+            background:
+                #000000;
         }
 
         .overlay {
+
             position: absolute;
+
             inset: 0;
 
-            pointer-events: none;
+            pointer-events:
+                none;
         }
 
         .status-pill,
         .viewer-pill {
+
             position: absolute;
 
             top: 12px;
@@ -242,16 +285,28 @@
                 8px
                 11px;
 
-            border-radius: 10px;
+            border-radius:
+                10px;
 
             background:
-                rgba(0, 0, 0, 0.64);
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.64
+                );
 
             border:
                 1px solid
-                rgba(255, 255, 255, 0.1);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.1
+                );
 
-            font-size: 11px;
+            font-size:
+                11px;
         }
 
         .status-pill {
@@ -267,44 +322,65 @@
         ========================= */
 
         .controls {
-            display: flex;
 
-            flex-wrap: wrap;
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
 
             gap: 9px;
 
             padding: 12px;
 
-            background: #0e1119;
+            background:
+                #0e1119;
         }
 
         .control-btn {
+
             min-height: 44px;
 
             padding:
-                0 13px;
+                0
+                13px;
 
             border: none;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            background: #191e2d;
-            color: #ffffff;
+            background:
+                #191e2d;
 
-            font-size: 12px;
-            font-weight: 800;
+            color:
+                #ffffff;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
         }
 
         .control-btn.active {
-            background: #5c43dd;
+
+            background:
+                #5c43dd;
         }
 
         .control-btn.red {
-            background: #d72f50;
+
+            background:
+                #d72f50;
         }
 
         .control-btn:hover {
-            filter: brightness(1.08);
+
+            filter:
+                brightness(
+                    1.08
+                );
         }
 
         /* =========================
@@ -312,41 +388,58 @@
         ========================= */
 
         .info-card {
-            margin-top: 14px;
 
-            padding: 16px;
+            margin-top:
+                14px;
+
+            padding:
+                16px;
         }
 
         .stream-title {
-            margin: 0;
 
-            font-size: 20px;
+            margin:
+                0;
 
-            line-height: 1.6;
+            font-size:
+                20px;
+
+            line-height:
+                1.6;
         }
 
         .meta-row {
-            display: flex;
 
-            flex-wrap: wrap;
+            display:
+                flex;
 
-            gap: 8px;
+            flex-wrap:
+                wrap;
 
-            margin-top: 11px;
+            gap:
+                8px;
+
+            margin-top:
+                11px;
         }
 
         .meta {
+
             padding:
                 7px
                 10px;
 
-            border-radius: 10px;
+            border-radius:
+                10px;
 
-            background: #181c29;
+            background:
+                #181c29;
 
-            color: #bbc1d2;
+            color:
+                #bbc1d2;
 
-            font-size: 11px;
+            font-size:
+                11px;
         }
 
         /* =========================
@@ -354,19 +447,27 @@
         ========================= */
 
         .panel {
-            overflow: hidden;
+
+            overflow:
+                hidden;
         }
 
         .panel + .panel {
-            margin-top: 14px;
+
+            margin-top:
+                14px;
         }
 
         .panel-header {
-            display: flex;
 
-            align-items: center;
+            display:
+                flex;
 
-            justify-content: space-between;
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
 
             padding:
                 13px
@@ -378,48 +479,75 @@
         }
 
         .panel-title {
-            font-size: 14px;
-            font-weight: 900;
+
+            font-size:
+                14px;
+
+            font-weight:
+                900;
         }
 
         .panel-sub {
-            color: #8f97aa;
-            font-size: 11px;
+
+            color:
+                #8f97aa;
+
+            font-size:
+                11px;
         }
 
         .audio-box {
-            padding: 14px;
+
+            padding:
+                14px;
         }
 
         .audio-row {
-            margin-bottom: 17px;
+
+            margin-bottom:
+                17px;
         }
 
         .audio-row:last-child {
-            margin-bottom: 0;
+
+            margin-bottom:
+                0;
         }
 
         .audio-head {
-            display: flex;
 
-            align-items: center;
+            display:
+                flex;
 
-            justify-content: space-between;
+            align-items:
+                center;
 
-            margin-bottom: 8px;
+            justify-content:
+                space-between;
 
-            color: #d2d5df;
+            margin-bottom:
+                8px;
 
-            font-size: 12px;
+            color:
+                #d2d5df;
+
+            font-size:
+                12px;
         }
 
         .audio-state {
-            color: #8d95a8;
+
+            color:
+                #8d95a8;
         }
 
         input[type="range"] {
-            width: 100%;
-            accent-color: #6a4cff;
+
+            width:
+                100%;
+
+            accent-color:
+                #6a4cff;
         }
 
         /* =========================
@@ -427,13 +555,16 @@
         ========================= */
 
         .diagnostic {
-            margin-top: 14px;
+
+            margin-top:
+                14px;
 
             padding:
                 12px
                 14px;
 
-            border-radius: 14px;
+            border-radius:
+                14px;
 
             background:
                 rgba(
@@ -452,20 +583,27 @@
                     0.18
                 );
 
-            color: #c9c2ff;
+            color:
+                #c9c2ff;
 
-            font-size: 11px;
+            font-size:
+                11px;
 
-            line-height: 1.9;
+            line-height:
+                1.9;
 
-            word-break: break-word;
+            word-break:
+                break-word;
         }
 
         .diagnostic strong {
-            color: #ffffff;
+
+            color:
+                #ffffff;
         }
 
         .diagnostic.ok {
+
             background:
                 rgba(
                     46,
@@ -482,10 +620,12 @@
                     0.2
                 );
 
-            color: #a9efc8;
+            color:
+                #a9efc8;
         }
 
         .diagnostic.warning {
+
             background:
                 rgba(
                     255,
@@ -502,7 +642,8 @@
                     0.2
                 );
 
-            color: #ffd49b;
+            color:
+                #ffd49b;
         }
 
         /* =========================
@@ -510,15 +651,19 @@
         ========================= */
 
         .notice {
-            display: none;
 
-            margin-top: 14px;
+            display:
+                none;
+
+            margin-top:
+                14px;
 
             padding:
                 12px
                 14px;
 
-            border-radius: 13px;
+            border-radius:
+                13px;
 
             background:
                 rgba(
@@ -537,15 +682,20 @@
                     0.2
                 );
 
-            color: #ff9eb0;
+            color:
+                #ff9eb0;
 
-            font-size: 12px;
+            font-size:
+                12px;
 
-            line-height: 1.8;
+            line-height:
+                1.8;
         }
 
         .notice.show {
-            display: block;
+
+            display:
+                block;
         }
 
         /* =========================
@@ -553,75 +703,109 @@
         ========================= */
 
         .chat-panel {
-            display: flex;
 
-            flex-direction: column;
+            display:
+                flex;
 
-            height: 470px;
+            flex-direction:
+                column;
+
+            height:
+                470px;
         }
 
         #messages {
-            flex: 1;
 
-            overflow-y: auto;
+            flex:
+                1;
 
-            padding: 12px;
+            overflow-y:
+                auto;
+
+            padding:
+                12px;
         }
 
         .empty-chat {
-            height: 100%;
 
-            display: flex;
+            height:
+                100%;
 
-            align-items: center;
+            display:
+                flex;
 
-            justify-content: center;
+            align-items:
+                center;
 
-            color: #70798d;
+            justify-content:
+                center;
 
-            font-size: 12px;
+            color:
+                #70798d;
 
-            text-align: center;
+            font-size:
+                12px;
+
+            text-align:
+                center;
         }
 
         .message {
-            margin-bottom: 9px;
+
+            margin-bottom:
+                9px;
 
             padding:
                 9px
                 11px;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            background: #171b28;
+            background:
+                #171b28;
         }
 
         .message-user {
-            margin-bottom: 4px;
 
-            color: #967fff;
+            margin-bottom:
+                4px;
 
-            font-size: 11px;
+            color:
+                #967fff;
 
-            font-weight: 900;
+            font-size:
+                11px;
+
+            font-weight:
+                900;
         }
 
         .message-text {
-            color: #e6e8ef;
 
-            font-size: 12px;
+            color:
+                #e6e8ef;
 
-            line-height: 1.8;
+            font-size:
+                12px;
 
-            word-break: break-word;
+            line-height:
+                1.8;
+
+            word-break:
+                break-word;
         }
 
         .chat-form {
-            display: flex;
 
-            gap: 8px;
+            display:
+                flex;
 
-            padding: 10px;
+            gap:
+                8px;
+
+            padding:
+                10px;
 
             border-top:
                 1px solid
@@ -629,11 +813,15 @@
         }
 
         .chat-input {
-            flex: 1;
 
-            min-width: 0;
+            flex:
+                1;
 
-            height: 44px;
+            min-width:
+                0;
+
+            height:
+                44px;
 
             padding:
                 0
@@ -643,57 +831,85 @@
                 1px solid
                 #2a3043;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            outline: none;
+            outline:
+                none;
 
-            background: #0d1018;
+            background:
+                #0d1018;
 
-            color: #ffffff;
+            color:
+                #ffffff;
         }
 
         .send-btn {
-            width: 48px;
-            height: 44px;
 
-            border: none;
+            width:
+                48px;
 
-            border-radius: 12px;
+            height:
+                44px;
 
-            background: #6a4cff;
+            border:
+                none;
 
-            color: #ffffff;
+            border-radius:
+                12px;
 
-            font-size: 18px;
+            background:
+                #6a4cff;
+
+            color:
+                #ffffff;
+
+            font-size:
+                18px;
         }
 
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
         @media (max-width: 980px) {
+
             .layout {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
             }
         }
 
         @media (max-width: 600px) {
 
             .main {
-                padding: 8px;
+
+                padding:
+                    8px;
             }
 
             .topbar {
+
                 padding:
                     calc(
                         9px +
-                        env(safe-area-inset-top)
+                        env(
+                            safe-area-inset-top
+                        )
                     )
                     10px
                     9px;
             }
 
             .top-title {
-                font-size: 14px;
+
+                font-size:
+                    14px;
             }
 
             .live-badge {
+
                 padding:
                     7px
                     9px;
@@ -702,16 +918,24 @@
             .video-card,
             .panel,
             .info-card {
-                border-radius: 15px;
+
+                border-radius:
+                    15px;
             }
 
             .control-btn {
+
                 flex:
                     1 1
-                    calc(50% - 9px);
+                    calc(
+                        50% -
+                        9px
+                    );
             }
         }
+
     </style>
+
 </head>
 
 <body>
@@ -735,6 +959,7 @@
             </div>
 
         </div>
+
 
         <div class="live-badge">
 
@@ -764,6 +989,7 @@
                             muted
                         ></video>
 
+
                         <div class="overlay">
 
                             <div
@@ -772,6 +998,7 @@
                             >
                                 آماده‌سازی...
                             </div>
+
 
                             <div class="viewer-pill">
 
@@ -798,6 +1025,7 @@
                             📷 دوربین
                         </button>
 
+
                         <button
                             id="screenBtn"
                             class="control-btn"
@@ -805,6 +1033,7 @@
                         >
                             🖥️ صفحه + صدا
                         </button>
+
 
                         <button
                             id="tabBtn"
@@ -814,6 +1043,7 @@
                             🌐 تب + صدای تب
                         </button>
 
+
                         <button
                             id="micBtn"
                             class="control-btn active"
@@ -821,6 +1051,7 @@
                         >
                             🎤 میکروفن
                         </button>
+
 
                         <button
                             id="systemAudioBtn"
@@ -830,6 +1061,7 @@
                             🔊 صدای منبع
                         </button>
 
+
                         <button
                             id="stopBtn"
                             class="control-btn"
@@ -837,6 +1069,7 @@
                         >
                             ⏹ توقف منبع
                         </button>
+
 
                         <button
                             id="endBtn"
@@ -874,6 +1107,7 @@
                         پخش زنده LainoLive
                     </h1>
 
+
                     <div class="meta-row">
 
                         <div
@@ -882,6 +1116,7 @@
                         >
                             عمومی
                         </div>
+
 
                         <div
                             id="streamId"
@@ -924,6 +1159,7 @@
                                     🔊 صدای سیستم / تب
                                 </span>
 
+
                                 <span
                                     id="systemValue"
                                     class="audio-state"
@@ -932,6 +1168,7 @@
                                 </span>
 
                             </div>
+
 
                             <input
                                 id="systemVolume"
@@ -952,6 +1189,7 @@
                                     🎤 میکروفن / صحبت
                                 </span>
 
+
                                 <span
                                     id="micValue"
                                     class="audio-state"
@@ -960,6 +1198,7 @@
                                 </span>
 
                             </div>
+
 
                             <input
                                 id="micVolume"
@@ -976,7 +1215,9 @@
                 </section>
 
 
-                <section class="panel chat-panel">
+                <section
+                    class="panel chat-panel"
+                >
 
                     <div class="panel-header">
 
@@ -1017,6 +1258,7 @@
                             placeholder="پیام بنویسید..."
                         >
 
+
                         <button
                             class="send-btn"
                             type="submit"
@@ -1038,6 +1280,7 @@
 
 
 <script>
+
 "use strict";
 
 
@@ -1050,27 +1293,41 @@ const SIGNALING_URL =
 
 
 const RTC_CONFIG = {
+
     iceServers: [
+
         {
             urls: [
+
                 "stun:stun.l.google.com:19302",
+
                 "stun:stun1.l.google.com:19302"
+
             ]
         }
+
     ]
+
 };
 
 
 const STREAM_KEYS = [
+
     "lainolive_current_stream",
+
     "LainoLive_current_stream",
+
     "current_stream"
+
 ];
 
 
 const USERNAME_KEYS = [
+
     "lainolive_username",
+
     "username"
+
 ];
 
 
@@ -1106,6 +1363,10 @@ let viewerIds = new Set();
 
 let ending = false;
 
+let extensionAudioContext = null;
+
+let extensionAudioSource = null;
+
 
 /* =====================================================
    ELEMENTS
@@ -1116,110 +1377,132 @@ const localVideo =
         "localVideo"
     );
 
+
 const statusElement =
     document.getElementById(
         "status"
     );
+
 
 const viewerCount =
     document.getElementById(
         "viewerCount"
     );
 
+
 const notice =
     document.getElementById(
         "notice"
     );
+
 
 const diagnostic =
     document.getElementById(
         "diagnostic"
     );
 
+
 const streamTitle =
     document.getElementById(
         "streamTitle"
     );
+
 
 const streamCategory =
     document.getElementById(
         "streamCategory"
     );
 
+
 const streamIdElement =
     document.getElementById(
         "streamId"
     );
+
 
 const cameraBtn =
     document.getElementById(
         "cameraBtn"
     );
 
+
 const screenBtn =
     document.getElementById(
         "screenBtn"
     );
+
 
 const tabBtn =
     document.getElementById(
         "tabBtn"
     );
 
+
 const micBtn =
     document.getElementById(
         "micBtn"
     );
+
 
 const systemAudioBtn =
     document.getElementById(
         "systemAudioBtn"
     );
 
+
 const stopBtn =
     document.getElementById(
         "stopBtn"
     );
+
 
 const endBtn =
     document.getElementById(
         "endBtn"
     );
 
+
 const systemVolume =
     document.getElementById(
         "systemVolume"
     );
+
 
 const micVolume =
     document.getElementById(
         "micVolume"
     );
 
+
 const systemValue =
     document.getElementById(
         "systemValue"
     );
+
 
 const micValue =
     document.getElementById(
         "micValue"
     );
 
+
 const messages =
     document.getElementById(
         "messages"
     );
+
 
 const emptyChat =
     document.getElementById(
         "emptyChat"
     );
 
+
 const chatForm =
     document.getElementById(
         "chatForm"
     );
+
 
 const chatInput =
     document.getElementById(
@@ -1231,14 +1514,19 @@ const chatInput =
    UI
 ===================================================== */
 
-function setStatus(text) {
+function setStatus(
+    text
+) {
 
     statusElement.textContent =
         text;
+
 }
 
 
-function showNotice(text) {
+function showNotice(
+    text
+) {
 
     notice.textContent =
         text;
@@ -1246,6 +1534,7 @@ function showNotice(text) {
     notice.classList.add(
         "show"
     );
+
 }
 
 
@@ -1254,6 +1543,7 @@ function hideNotice() {
     notice.classList.remove(
         "show"
     );
+
 }
 
 
@@ -1271,11 +1561,13 @@ function setDiagnostic(
         diagnostic.classList.add(
             type
         );
+
     }
 
 
     diagnostic.innerHTML =
         text;
+
 }
 
 
@@ -1283,7 +1575,9 @@ function setDiagnostic(
    HTML ESCAPE
 ===================================================== */
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     return String(
         value ?? ""
@@ -1308,6 +1602,7 @@ function escapeHtml(value) {
             "'",
             "&#039;"
         );
+
 }
 
 
@@ -1315,10 +1610,13 @@ function escapeHtml(value) {
    STORAGE
 ===================================================== */
 
-function readStorage(keys) {
+function readStorage(
+    keys
+) {
 
     for (
-        const key of keys
+        const key
+        of keys
     ) {
 
         try {
@@ -1328,9 +1626,13 @@ function readStorage(keys) {
                     key
                 );
 
-            if (sessionValue) {
+
+            if (
+                sessionValue
+            ) {
 
                 return sessionValue;
+
             }
 
         } catch {}
@@ -1343,16 +1645,22 @@ function readStorage(keys) {
                     key
                 );
 
-            if (localValue) {
+
+            if (
+                localValue
+            ) {
 
                 return localValue;
+
             }
 
         } catch {}
+
     }
 
 
     return null;
+
 }
 
 
@@ -1367,6 +1675,7 @@ function readStreamData() {
     if (!raw) {
 
         return {};
+
     }
 
 
@@ -1379,7 +1688,9 @@ function readStreamData() {
     } catch {
 
         return {};
+
     }
+
 }
 
 
@@ -1392,37 +1703,65 @@ function getQueryId() {
 
 
     return (
+
         params.get("id") ||
-        params.get("stream_id") ||
-        params.get("room_id") ||
+
+        params.get(
+            "stream_id"
+        ) ||
+
+        params.get(
+            "room_id"
+        ) ||
+
         ""
+
     );
+
 }
 
 
-function getStreamId(data) {
+function getStreamId(
+    data
+) {
 
     return String(
+
         data.stream_id ??
+
         data.streamId ??
+
         data.id ??
+
         data.room_id ??
+
         getQueryId() ??
+
         ""
+
     );
+
 }
 
 
-function getUsername(data) {
+function getUsername(
+    data
+) {
 
     return String(
+
         data.username ??
+
         data.owner ??
+
         readStorage(
             USERNAME_KEYS
         ) ??
+
         ""
+
     );
+
 }
 
 
@@ -1430,11 +1769,14 @@ function getUsername(data) {
    MEDIA
 ===================================================== */
 
-function stopTrack(track) {
+function stopTrack(
+    track
+) {
 
     if (!track) {
 
         return;
+
     }
 
 
@@ -1443,22 +1785,52 @@ function stopTrack(track) {
         track.stop();
 
     } catch {}
+
+}
+
+
+function stopExtensionAudio() {
+
+    try {
+
+        extensionAudioSource?.disconnect();
+
+    } catch {}
+
+
+    try {
+
+        extensionAudioContext?.close();
+
+    } catch {}
+
+
+    extensionAudioSource = null;
+
+    extensionAudioContext = null;
+
 }
 
 
 function stopAllMedia() {
 
+    stopExtensionAudio();
+
+
     stopTrack(
         cameraTrack
     );
+
 
     stopTrack(
         screenTrack
     );
 
+
     stopTrack(
         systemAudioTrack
     );
+
 
     stopTrack(
         microphoneTrack
@@ -1476,6 +1848,7 @@ function stopAllMedia() {
 
     localVideo.srcObject =
         null;
+
 }
 
 
@@ -1495,6 +1868,7 @@ function updatePreview() {
         preview.addTrack(
             videoTrack
         );
+
     }
 
 
@@ -1503,6 +1877,7 @@ function updatePreview() {
         preview.addTrack(
             systemAudioTrack
         );
+
     }
 
 
@@ -1511,6 +1886,7 @@ function updatePreview() {
         preview.addTrack(
             microphoneTrack
         );
+
     }
 
 
@@ -1526,11 +1902,12 @@ function updatePreview() {
         .catch(
             () => {}
         );
+
 }
 
 
 /* =====================================================
-   DIAGNOSTIC
+   AUDIO DIAGNOSTIC
 ===================================================== */
 
 function updateAudioDiagnostic() {
@@ -1554,14 +1931,20 @@ function updateAudioDiagnostic() {
 
 
         setDiagnostic(
+
             "✅ <strong>صدای منبع:</strong> دریافت شد<br>" +
+
             "✅ <strong>میکروفن:</strong> فعال<br>" +
+
             "🎵 صدای منبع و 🎤 میکروفن به‌صورت جداگانه آماده ارسال هستند.",
+
             "ok"
+
         );
 
 
         return;
+
     }
 
 
@@ -1576,14 +1959,20 @@ function updateAudioDiagnostic() {
 
 
         setDiagnostic(
+
             "⚠️ <strong>صدای منبع:</strong> دریافت نشد<br>" +
+
             "✅ <strong>میکروفن:</strong> فعال<br>" +
+
             "Capture مرورگر برای منبع انتخاب‌شده هیچ Audio Track برنگردانده است.",
+
             "warning"
+
         );
 
 
         return;
+
     }
 
 
@@ -1593,46 +1982,203 @@ function updateAudioDiagnostic() {
     ) {
 
         setDiagnostic(
+
             "✅ <strong>صدای منبع:</strong> دریافت شد<br>" +
+
             "⚠️ <strong>میکروفن:</strong> دریافت نشد.",
+
             "warning"
+
         );
 
 
         return;
+
     }
 
 
     setDiagnostic(
+
         "⚠️ منبع صوتی کامل نیست.",
+
         "warning"
+
     );
+
 }
 
 
 /* =====================================================
-   REOFFER
+   EXTENSION TAB CAPTURE
 ===================================================== */
 
-async function renegotiateAllViewers() {
+function requestExtensionTabCapture() {
 
-    for (
-        const viewerId
-        of Array.from(
-            viewerIds
-        )
-    ) {
+    return new Promise(
+        (
+            resolve
+        ) => {
 
-        if (!viewerId) {
+            const requestId =
 
-            continue;
+                "lainolive_" +
+
+                Date.now() +
+
+                "_" +
+
+                Math.random()
+                    .toString(
+                        36
+                    )
+                    .slice(
+                        2
+                    );
+
+
+            let finished = false;
+
+
+            const timeout =
+
+                setTimeout(
+                    () => {
+
+                        if (
+                            finished
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        finished =
+                            true;
+
+
+                        window.removeEventListener(
+                            "message",
+                            handler
+                        );
+
+
+                        resolve(
+                            {
+                                ok: false,
+
+                                error:
+                                    "افزونه LainoLive پاسخ نداد."
+                            }
+                        );
+
+                    },
+                    10000
+                );
+
+
+            function handler(
+                event
+            ) {
+
+                if (
+                    event.source !==
+                    window
+                ) {
+
+                    return;
+
+                }
+
+
+                const data =
+                    event.data;
+
+
+                if (
+                    !data ||
+                    data.type !==
+                        "LAINOLIVE_TAB_CAPTURE_RESULT"
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    data.requestId !==
+                    requestId
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    finished
+                ) {
+
+                    return;
+
+                }
+
+
+                finished =
+                    true;
+
+
+                clearTimeout(
+                    timeout
+                );
+
+
+                window.removeEventListener(
+                    "message",
+                    handler
+                );
+
+
+                resolve(
+
+                    data.response ||
+
+                    {
+                        ok: false,
+
+                        error:
+                            "پاسخ نامعتبر از افزونه."
+                    }
+
+                );
+
+            }
+
+
+            window.addEventListener(
+                "message",
+                handler
+            );
+
+
+            window.postMessage(
+
+                {
+                    type:
+                        "LAINOLIVE_REQUEST_TAB_CAPTURE",
+
+                    requestId:
+                        requestId
+                },
+
+                window.location.origin
+
+            );
+
         }
+    );
 
-
-        await createOffer(
-            viewerId
-        );
-    }
 }
 
 
@@ -1644,6 +2190,7 @@ async function startCamera() {
 
     hideNotice();
 
+
     setStatus(
         "در حال فعال‌سازی دوربین..."
     );
@@ -1651,30 +2198,41 @@ async function startCamera() {
 
     closeAllPeers();
 
+
     stopAllMedia();
 
 
     try {
 
         const stream =
-            await navigator.mediaDevices.getUserMedia(
-                {
-                    video: {
-                        width: {
-                            ideal: 1280
+
+            await navigator
+                .mediaDevices
+                .getUserMedia(
+
+                    {
+
+                        video: {
+
+                            width: {
+                                ideal: 1280
+                            },
+
+                            height: {
+                                ideal: 720
+                            },
+
+                            facingMode:
+                                "user"
+
                         },
 
-                        height: {
-                            ideal: 720
-                        },
+                        audio:
+                            true
 
-                        facingMode:
-                            "user"
-                    },
+                    }
 
-                    audio: true
-                }
-            );
+                );
 
 
         currentMode =
@@ -1682,12 +2240,14 @@ async function startCamera() {
 
 
         cameraTrack =
-            stream.getVideoTracks()[0]
+            stream
+                .getVideoTracks()[0]
             || null;
 
 
         microphoneTrack =
-            stream.getAudioTracks()[0]
+            stream
+                .getAudioTracks()[0]
             || null;
 
 
@@ -1707,10 +2267,13 @@ async function startCamera() {
             false;
 
 
-        if (microphoneTrack) {
+        if (
+            microphoneTrack
+        ) {
 
             microphoneTrack.enabled =
                 true;
+
         }
 
 
@@ -1718,17 +2281,21 @@ async function startCamera() {
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
 
         tabBtn.classList.remove(
             "active"
         );
 
+
         micBtn.classList.add(
             "active"
         );
+
 
         systemAudioBtn.classList.remove(
             "active"
@@ -1755,7 +2322,10 @@ async function startCamera() {
 
         await renegotiateAllViewers();
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             "camera error:",
@@ -1771,7 +2341,9 @@ async function startCamera() {
         setStatus(
             "خطا در دوربین"
         );
+
     }
+
 }
 
 
@@ -1783,6 +2355,7 @@ async function startScreen() {
 
     hideNotice();
 
+
     setStatus(
         "در حال باز کردن انتخاب صفحه..."
     );
@@ -1790,48 +2363,64 @@ async function startScreen() {
 
     closeAllPeers();
 
+
     stopAllMedia();
 
 
     try {
 
         const displayStream =
-            await navigator.mediaDevices.getDisplayMedia(
-                {
-                    video: {
-                        displaySurface:
-                            "monitor"
-                    },
 
-                    audio: {
-                        suppressLocalAudioPlayback:
-                            false
-                    },
+            await navigator
+                .mediaDevices
+                .getDisplayMedia(
 
-                    systemAudio:
-                        "include",
+                    {
 
-                    windowAudio:
-                        "system",
+                        video: {
 
-                    surfaceSwitching:
-                        "include",
+                            displaySurface:
+                                "monitor"
 
-                    selfBrowserSurface:
-                        "exclude",
+                        },
 
-                    monitorTypeSurfaces:
-                        "include"
-                }
-            );
+                        audio: {
+
+                            suppressLocalAudioPlayback:
+                                false
+
+                        },
+
+                        systemAudio:
+                            "include",
+
+                        windowAudio:
+                            "system",
+
+                        surfaceSwitching:
+                            "include",
+
+                        selfBrowserSurface:
+                            "exclude",
+
+                        monitorTypeSurfaces:
+                            "include"
+
+                    }
+
+                );
 
 
         const videoTracks =
-            displayStream.getVideoTracks();
+
+            displayStream
+                .getVideoTracks();
 
 
         const audioTracks =
-            displayStream.getAudioTracks();
+
+            displayStream
+                .getAudioTracks();
 
 
         console.log(
@@ -1848,13 +2437,15 @@ async function startScreen() {
 
         console.log(
             "SCREEN VIDEO TRACK:",
-            videoTracks[0] || null
+            videoTracks[0] ||
+                null
         );
 
 
         console.log(
             "SCREEN AUDIO TRACK:",
-            audioTracks[0] || null
+            audioTracks[0] ||
+                null
         );
 
 
@@ -1869,15 +2460,21 @@ async function startScreen() {
 
 
         const microphoneStream =
-            await navigator.mediaDevices.getUserMedia(
-                {
-                    audio: true
-                }
-            );
+
+            await navigator
+                .mediaDevices
+                .getUserMedia(
+                    {
+                        audio:
+                            true
+                    }
+                );
 
 
         microphoneTrack =
-            microphoneStream.getAudioTracks()[0]
+
+            microphoneStream
+                .getAudioTracks()[0]
             || null;
 
 
@@ -1897,43 +2494,58 @@ async function startScreen() {
             !!microphoneTrack;
 
 
-        if (screenTrack) {
+        if (
+            screenTrack
+        ) {
 
             screenTrack.addEventListener(
+
                 "ended",
+
                 () => {
 
                     if (!ending) {
 
                         startCamera();
+
                     }
 
                 }
+
             );
+
         }
 
 
-        if (systemAudioTrack) {
+        if (
+            systemAudioTrack
+        ) {
 
             systemAudioTrack.enabled =
                 true;
+
         }
 
 
-        if (microphoneTrack) {
+        if (
+            microphoneTrack
+        ) {
 
             microphoneTrack.enabled =
                 true;
+
         }
 
 
         const settings =
+
             screenTrack
                 ? screenTrack.getSettings()
                 : {};
 
 
         const selectedSurface =
+
             settings.displaySurface ||
             "unknown";
 
@@ -1954,9 +2566,11 @@ async function startScreen() {
             "active"
         );
 
+
         screenBtn.classList.add(
             "active"
         );
+
 
         tabBtn.classList.remove(
             "active"
@@ -1976,12 +2590,14 @@ async function startScreen() {
 
 
         systemValue.textContent =
+
             systemAudioTrack
                 ? "روشن"
                 : "دریافت نشد";
 
 
         micValue.textContent =
+
             microphoneTrack
                 ? "روشن"
                 : "دریافت نشد";
@@ -2003,19 +2619,29 @@ async function startScreen() {
 
 
             setDiagnostic(
+
                 "✅ <strong>صدای منبع:</strong> دریافت شد<br>" +
+
                 "✅ <strong>میکروفن:</strong> فعال<br>" +
+
                 "🖥️ <strong>نوع منبع:</strong> " +
+
                 escapeHtml(
                     selectedSurface
                 ) +
+
                 "<br>" +
+
                 "🎵 <strong>Audio Track:</strong> " +
+
                 audioTracks.length,
+
                 "ok"
+
             );
 
-        } else {
+        }
+        else {
 
             setStatus(
                 "صفحه + میکروفن فعال"
@@ -2028,26 +2654,42 @@ async function startScreen() {
 
 
             setDiagnostic(
+
                 "⚠️ <strong>صدای منبع:</strong> دریافت نشد<br>" +
+
                 "✅ <strong>میکروفن:</strong> فعال<br>" +
+
                 "🖥️ <strong>نوع منبع:</strong> " +
+
                 escapeHtml(
                     selectedSurface
                 ) +
+
                 "<br>" +
-                "🎵 <strong>تعداد ترک صوتی Capture:</strong> " +
+
+                "🎵 <strong>تعداد Audio Track:</strong> " +
+
                 audioTracks.length +
+
                 "<br>" +
-                "🎬 <strong>تعداد ترک تصویری:</strong> " +
+
+                "🎬 <strong>تعداد Video Track:</strong> " +
+
                 videoTracks.length,
+
                 "warning"
+
             );
+
         }
 
 
         await renegotiateAllViewers();
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             "screen capture error:",
@@ -2067,15 +2709,20 @@ async function startScreen() {
                 "اشتراک‌گذاری صفحه لغو شد."
             );
 
-        } else {
+        }
+        else {
 
             showNotice(
+
                 "گرفتن صفحه انجام نشد: " +
+
                 (
                     error?.message ||
                     "خطای نامشخص"
                 )
+
             );
+
         }
 
 
@@ -2085,12 +2732,14 @@ async function startScreen() {
 
 
         updateAudioDiagnostic();
+
     }
+
 }
 
 
 /* =====================================================
-   TAB SHARE
+   TAB SHARE WITH EXTENSION
 ===================================================== */
 
 async function startTabShare() {
@@ -2099,97 +2748,171 @@ async function startTabShare() {
 
 
     setStatus(
-        "تب دارای صدا را انتخاب کنید..."
+        "در حال فعال‌سازی صدای تب..."
     );
 
 
     closeAllPeers();
+
 
     stopAllMedia();
 
 
     try {
 
-        const tabStream =
-            await navigator.mediaDevices.getDisplayMedia(
-                {
-                    video: {
-                        displaySurface:
-                            "browser"
-                    },
+        const extensionResult =
 
-                    audio: {
-                        suppressLocalAudioPlayback:
-                            false
-                    },
-
-                    preferCurrentTab:
-                        false,
-
-                    selfBrowserSurface:
-                        "exclude",
-
-                    surfaceSwitching:
-                        "include",
-
-                    systemAudio:
-                        "exclude"
-                }
-            );
-
-
-        const videoTracks =
-            tabStream.getVideoTracks();
-
-
-        const audioTracks =
-            tabStream.getAudioTracks();
+            await requestExtensionTabCapture();
 
 
         console.log(
-            "TAB VIDEO TRACKS:",
+            "EXTENSION RESULT:",
+            extensionResult
+        );
+
+
+        if (
+            !extensionResult ||
+            !extensionResult.ok ||
+            !extensionResult.streamId
+        ) {
+
+            throw new Error(
+
+                extensionResult?.error ||
+
+                "افزونه LainoLive نتوانست تب را Capture کند."
+
+            );
+
+        }
+
+
+        const captureStreamId =
+
+            extensionResult.streamId;
+
+
+        console.log(
+            "EXTENSION STREAM ID:",
+            captureStreamId
+        );
+
+
+        /*
+         * گرفتن Video + Audio
+         * از تب با Stream ID افزونه.
+         */
+
+        const tabStream =
+
+            await navigator
+                .mediaDevices
+                .getUserMedia(
+
+                    {
+
+                        audio: {
+
+                            mandatory: {
+
+                                chromeMediaSource:
+                                    "tab",
+
+                                chromeMediaSourceId:
+                                    captureStreamId
+
+                            }
+
+                        },
+
+                        video: {
+
+                            mandatory: {
+
+                                chromeMediaSource:
+                                    "tab",
+
+                                chromeMediaSourceId:
+                                    captureStreamId
+
+                            }
+
+                        }
+
+                    }
+
+                );
+
+
+        const videoTracks =
+
+            tabStream
+                .getVideoTracks();
+
+
+        const audioTracks =
+
+            tabStream
+                .getAudioTracks();
+
+
+        console.log(
+            "EXT TAB VIDEO TRACKS:",
             videoTracks.length
         );
 
 
         console.log(
-            "TAB AUDIO TRACKS:",
+            "EXT TAB AUDIO TRACKS:",
             audioTracks.length
         );
 
 
         console.log(
-            "TAB VIDEO TRACK:",
-            videoTracks[0] || null
+            "EXT TAB VIDEO TRACK:",
+            videoTracks[0] ||
+                null
         );
 
 
         console.log(
-            "TAB AUDIO TRACK:",
-            audioTracks[0] || null
+            "EXT TAB AUDIO TRACK:",
+            audioTracks[0] ||
+                null
         );
 
 
         screenTrack =
-            videoTracks[0]
-            || null;
+            videoTracks[0] ||
+            null;
 
 
         systemAudioTrack =
-            audioTracks[0]
-            || null;
+            audioTracks[0] ||
+            null;
 
+
+        /*
+         * میکروفن جداگانه
+         */
 
         const microphoneStream =
-            await navigator.mediaDevices.getUserMedia(
-                {
-                    audio: true
-                }
-            );
+
+            await navigator
+                .mediaDevices
+                .getUserMedia({
+
+                    audio:
+                        true
+
+                });
 
 
         microphoneTrack =
-            microphoneStream.getAudioTracks()[0]
+
+            microphoneStream
+                .getAudioTracks()[0]
             || null;
 
 
@@ -2209,66 +2932,126 @@ async function startTabShare() {
             !!microphoneTrack;
 
 
-        if (systemAudioTrack) {
+        /*
+         * فعال کردن ترک‌ها
+         */
+
+        if (
+            systemAudioTrack
+        ) {
 
             systemAudioTrack.enabled =
                 true;
+
         }
 
 
-        if (microphoneTrack) {
+        if (
+            microphoneTrack
+        ) {
 
             microphoneTrack.enabled =
                 true;
+
         }
 
 
-        if (screenTrack) {
+        /*
+         * اگر Capture متوقف شد
+         */
+
+        if (
+            screenTrack
+        ) {
 
             screenTrack.addEventListener(
+
                 "ended",
+
                 () => {
 
-                    if (!ending) {
+                    if (
+                        !ending
+                    ) {
 
                         startCamera();
+
                     }
 
                 }
+
             );
+
         }
 
 
-        const settings =
-            screenTrack
-                ? screenTrack.getSettings()
-                : {};
+        /*
+         * برگرداندن صدای تب
+         * روی خروجی محلی.
+         */
+
+        if (
+            systemAudioTrack
+        ) {
+
+            try {
+
+                extensionAudioContext =
+                    new AudioContext();
 
 
-        const selectedSurface =
-            settings.displaySurface ||
-            "unknown";
+                await
+                    extensionAudioContext.resume();
 
 
-        console.log(
-            "SELECTED TAB SURFACE:",
-            selectedSurface
-        );
+                const localAudioStream =
+                    new MediaStream(
+                        [
+                            systemAudioTrack
+                        ]
+                    );
 
 
-        console.log(
-            "SELECTED TAB SETTINGS:",
-            settings
-        );
+                extensionAudioSource =
+                    extensionAudioContext
+                        .createMediaStreamSource(
+                            localAudioStream
+                        );
 
+
+                extensionAudioSource.connect(
+                    extensionAudioContext.destination
+                );
+
+
+            }
+            catch (
+                audioError
+            ) {
+
+                console.warn(
+                    "Local tab audio restore failed:",
+                    audioError
+                );
+
+            }
+
+        }
+
+
+        /*
+         * UI
+         */
 
         cameraBtn.classList.remove(
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
 
         tabBtn.classList.add(
             "active"
@@ -2288,14 +3071,20 @@ async function startTabShare() {
 
 
         systemValue.textContent =
+
             systemAudioTrack
+
                 ? "صدای تب فعال"
+
                 : "صدای تب دریافت نشد";
 
 
         micValue.textContent =
+
             microphoneTrack
+
                 ? "روشن"
+
                 : "دریافت نشد";
 
 
@@ -2315,19 +3104,29 @@ async function startTabShare() {
 
 
             setDiagnostic(
+
                 "✅ <strong>صدای تب:</strong> دریافت شد<br>" +
+
                 "✅ <strong>میکروفن:</strong> فعال<br>" +
-                "🌐 <strong>نوع منبع:</strong> " +
-                escapeHtml(
-                    selectedSurface
-                ) +
-                "<br>" +
+
+                "🧩 <strong>Capture:</strong> افزونه Chrome<br>" +
+
                 "🎵 <strong>Audio Track:</strong> " +
-                audioTracks.length,
+
+                audioTracks.length +
+
+                "<br>" +
+
+                "🎬 <strong>Video Track:</strong> " +
+
+                videoTracks.length,
+
                 "ok"
+
             );
 
-        } else if (
+        }
+        else if (
             systemAudioTrack
         ) {
 
@@ -2337,57 +3136,76 @@ async function startTabShare() {
 
 
             setDiagnostic(
+
                 "✅ <strong>صدای تب:</strong> دریافت شد<br>" +
+
                 "⚠️ <strong>میکروفن:</strong> دریافت نشد<br>" +
-                "🌐 <strong>نوع منبع:</strong> " +
-                escapeHtml(
-                    selectedSurface
-                ),
+
+                "🧩 <strong>Capture:</strong> افزونه Chrome<br>" +
+
+                "🎵 <strong>Audio Track:</strong> " +
+
+                audioTracks.length,
+
                 "warning"
+
             );
 
-        } else {
+        }
+        else {
 
             setStatus(
-                "تب فعال؛ صدای تب دریافت نشد"
+                "تب فعال؛ صدا دریافت نشد"
             );
 
 
             showNotice(
-                "تب گرفته شد، ولی Chrome هیچ Audio Track از تب برنگرداند."
+                "افزونه تب را گرفت، اما Audio Track دریافت نشد."
             );
 
 
             setDiagnostic(
+
                 "⚠️ <strong>صدای تب:</strong> دریافت نشد<br>" +
+
                 "🎤 <strong>میکروفن:</strong> " +
+
                 (
                     microphoneTrack
                         ? "فعال"
                         : "دریافت نشد"
                 ) +
+
                 "<br>" +
-                "🌐 <strong>نوع منبع:</strong> " +
-                escapeHtml(
-                    selectedSurface
-                ) +
-                "<br>" +
-                "🎵 <strong>تعداد Audio Track:</strong> " +
+
+                "🧩 <strong>Capture:</strong> افزونه Chrome<br>" +
+
+                "🎵 <strong>Audio Track:</strong> " +
+
                 audioTracks.length +
+
                 "<br>" +
-                "🎬 <strong>تعداد Video Track:</strong> " +
+
+                "🎬 <strong>Video Track:</strong> " +
+
                 videoTracks.length,
+
                 "warning"
+
             );
+
         }
 
 
         await renegotiateAllViewers();
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
-            "tab share error:",
+            "extension tab capture error:",
             error
         );
 
@@ -2395,25 +3213,16 @@ async function startTabShare() {
         stopAllMedia();
 
 
-        if (
-            error?.name ===
-            "NotAllowedError"
-        ) {
+        showNotice(
 
-            showNotice(
-                "اشتراک‌گذاری تب لغو شد."
-            );
+            "گرفتن صدای تب انجام نشد: " +
 
-        } else {
+            (
+                error?.message ||
+                "خطای نامشخص"
+            )
 
-            showNotice(
-                "اشتراک تب انجام نشد: " +
-                (
-                    error?.message ||
-                    "خطای نامشخص"
-                )
-            );
-        }
+        );
 
 
         setStatus(
@@ -2421,8 +3230,23 @@ async function startTabShare() {
         );
 
 
-        updateAudioDiagnostic();
+        setDiagnostic(
+
+            "❌ <strong>خطا:</strong> " +
+
+            escapeHtml(
+
+                error?.message ||
+                "خطای نامشخص"
+
+            ),
+
+            "warning"
+
+        );
+
     }
+
 }
 
 
@@ -2432,7 +3256,9 @@ async function startTabShare() {
 
 function toggleMicrophone() {
 
-    if (!microphoneTrack) {
+    if (
+        !microphoneTrack
+    ) {
 
         showNotice(
             "میکروفن فعال نیست."
@@ -2457,15 +3283,21 @@ function toggleMicrophone() {
 
 
     micValue.textContent =
+
         microphoneEnabled
+
             ? "روشن"
+
             : "خاموش";
+
 }
 
 
 function toggleSystemAudio() {
 
-    if (!systemAudioTrack) {
+    if (
+        !systemAudioTrack
+    ) {
 
         showNotice(
             "صدای منبع دریافت نشده است."
@@ -2490,9 +3322,13 @@ function toggleSystemAudio() {
 
 
     systemValue.textContent =
+
         systemAudioEnabled
+
             ? "روشن"
+
             : "خاموش";
+
 }
 
 
@@ -2500,7 +3336,9 @@ function toggleSystemAudio() {
    PEERS
 ===================================================== */
 
-function closePeer(viewerId) {
+function closePeer(
+    viewerId
+) {
 
     const peer =
         peers.get(
@@ -2524,6 +3362,7 @@ function closePeer(viewerId) {
     peers.delete(
         viewerId
     );
+
 }
 
 
@@ -2547,11 +3386,15 @@ function closeAllPeers() {
         peers.delete(
             viewerId
         );
+
     }
+
 }
 
 
-function createPeer(viewerId) {
+function createPeer(
+    viewerId
+) {
 
     closePeer(
         viewerId
@@ -2571,67 +3414,89 @@ function createPeer(viewerId) {
 
 
     /*
-       VIDEO:
-       camera OR screen/tab
-
-       AUDIO 1:
-       system/tab audio
-
-       AUDIO 2:
-       microphone
-    */
+     * VIDEO
+     */
 
     const videoTrack =
         cameraTrack ||
         screenTrack;
 
 
-    if (videoTrack) {
+    if (
+        videoTrack
+    ) {
 
         peer.addTrack(
+
             videoTrack,
 
             new MediaStream([
                 videoTrack
             ])
+
         );
+
     }
 
 
-    if (systemAudioTrack) {
+    /*
+     * AUDIO 1:
+     * system/tab
+     */
+
+    if (
+        systemAudioTrack
+    ) {
 
         peer.addTrack(
+
             systemAudioTrack,
 
             new MediaStream([
                 systemAudioTrack
             ])
+
         );
+
     }
 
 
-    if (microphoneTrack) {
+    /*
+     * AUDIO 2:
+     * microphone
+     */
+
+    if (
+        microphoneTrack
+    ) {
 
         peer.addTrack(
+
             microphoneTrack,
 
             new MediaStream([
                 microphoneTrack
             ])
+
         );
+
     }
 
 
     peer.onicecandidate =
         event => {
 
-            if (!event.candidate) {
+            if (
+                !event.candidate
+            ) {
 
                 return;
+
             }
 
 
             sendSignal(
+
                 {
                     type:
                         "ice-candidate",
@@ -2642,7 +3507,9 @@ function createPeer(viewerId) {
                     candidate:
                         event.candidate
                 }
+
             );
+
         };
 
 
@@ -2650,25 +3517,34 @@ function createPeer(viewerId) {
         () => {
 
             if (
+
                 peer.connectionState ===
                     "failed"
+
                 ||
+
                 peer.connectionState ===
                     "closed"
+
             ) {
 
                 closePeer(
                     viewerId
                 );
+
             }
+
         };
 
 
     return peer;
+
 }
 
 
-async function createOffer(viewerId) {
+async function createOffer(
+    viewerId
+) {
 
     if (
         !viewerId ||
@@ -2676,6 +3552,7 @@ async function createOffer(viewerId) {
     ) {
 
         return;
+
     }
 
 
@@ -2697,7 +3574,9 @@ async function createOffer(viewerId) {
 
 
         sendSignal(
+
             {
+
                 type:
                     "offer",
 
@@ -2706,10 +3585,15 @@ async function createOffer(viewerId) {
 
                 offer:
                     peer.localDescription
+
             }
+
         );
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             "offer error:",
@@ -2720,7 +3604,40 @@ async function createOffer(viewerId) {
         closePeer(
             viewerId
         );
+
     }
+
+}
+
+
+/* =====================================================
+   RENEGOTIATION
+===================================================== */
+
+async function renegotiateAllViewers() {
+
+    for (
+        const viewerId
+        of Array.from(
+            viewerIds
+        )
+    ) {
+
+        if (
+            !viewerId
+        ) {
+
+            continue;
+
+        }
+
+
+        await createOffer(
+            viewerId
+        );
+
+    }
+
 }
 
 
@@ -2728,15 +3645,21 @@ async function createOffer(viewerId) {
    SIGNALING
 ===================================================== */
 
-function sendSignal(message) {
+function sendSignal(
+    message
+) {
 
     if (
+
         !socket ||
+
         socket.readyState !==
             WebSocket.OPEN
+
     ) {
 
         return false;
+
     }
 
 
@@ -2748,23 +3671,32 @@ function sendSignal(message) {
             )
         );
 
+
         return true;
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             "signal error:",
             error
         );
 
+
         return false;
+
     }
+
 }
 
 
 function connectSignaling() {
 
-    if (!streamId) {
+    if (
+        !streamId
+    ) {
 
         setStatus(
             "شناسه لایو پیدا نشد"
@@ -2777,6 +3709,7 @@ function connectSignaling() {
 
 
         return;
+
     }
 
 
@@ -2792,7 +3725,10 @@ function connectSignaling() {
                 SIGNALING_URL
             );
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             error
@@ -2805,6 +3741,7 @@ function connectSignaling() {
 
 
         return;
+
     }
 
 
@@ -2817,7 +3754,9 @@ function connectSignaling() {
 
 
             sendSignal(
+
                 {
+
                     type:
                         "join",
 
@@ -2829,8 +3768,11 @@ function connectSignaling() {
 
                     username:
                         username
+
                 }
+
             );
+
         };
 
 
@@ -2847,15 +3789,18 @@ function connectSignaling() {
                         event.data
                     );
 
-            } catch {
+            }
+            catch {
 
                 return;
+
             }
 
 
             await handleSignal(
                 message
             );
+
         };
 
 
@@ -2871,19 +3816,25 @@ function connectSignaling() {
             setStatus(
                 "خطا در اتصال"
             );
+
         };
 
 
     socket.onclose =
         () => {
 
-            if (!ending) {
+            if (
+                !ending
+            ) {
 
                 setStatus(
                     "ارتباط با سرور قطع شد"
                 );
+
             }
+
         };
+
 }
 
 
@@ -2891,11 +3842,16 @@ function connectSignaling() {
    SIGNAL HANDLER
 ===================================================== */
 
-async function handleSignal(message) {
+async function handleSignal(
+    message
+) {
 
-    if (!message) {
+    if (
+        !message
+    ) {
 
         return;
+
     }
 
 
@@ -2906,14 +3862,16 @@ async function handleSignal(message) {
         case "joined":
 
             if (
-                typeof message.viewer_count ===
-                "number"
+                typeof
+                    message.viewer_count ===
+                        "number"
             ) {
 
                 viewerCount.textContent =
                     String(
                         message.viewer_count
                     );
+
             }
 
 
@@ -2928,14 +3886,16 @@ async function handleSignal(message) {
         case "room-info":
 
             if (
-                typeof message.viewer_count ===
-                "number"
+                typeof
+                    message.viewer_count ===
+                        "number"
             ) {
 
                 viewerCount.textContent =
                     String(
                         message.viewer_count
                     );
+
             }
 
 
@@ -2951,7 +3911,9 @@ async function handleSignal(message) {
                 );
 
 
-            if (viewerId) {
+            if (
+                viewerId
+            ) {
 
                 viewerIds.add(
                     viewerId
@@ -2961,10 +3923,12 @@ async function handleSignal(message) {
                 await createOffer(
                     viewerId
                 );
+
             }
 
 
             break;
+
         }
 
 
@@ -2989,27 +3953,35 @@ async function handleSignal(message) {
             ) {
 
                 break;
+
             }
 
 
             try {
 
                 await peer.setRemoteDescription(
+
                     new RTCSessionDescription(
                         message.answer
                     )
+
                 );
 
-            } catch (error) {
+            }
+            catch (
+                error
+            ) {
 
                 console.error(
                     "answer error:",
                     error
                 );
+
             }
 
 
             break;
+
         }
 
 
@@ -3034,27 +4006,35 @@ async function handleSignal(message) {
             ) {
 
                 break;
+
             }
 
 
             try {
 
                 await peer.addIceCandidate(
+
                     new RTCIceCandidate(
                         message.candidate
                     )
+
                 );
 
-            } catch (error) {
+            }
+            catch (
+                error
+            ) {
 
                 console.warn(
                     "ICE error:",
                     error
                 );
+
             }
 
 
             break;
+
         }
 
 
@@ -3078,18 +4058,21 @@ async function handleSignal(message) {
 
 
             break;
+
         }
 
 
         case "chat-message":
 
             addChatMessage(
+
                 message.username ||
                     message.user ||
                     "کاربر",
 
                 message.message ||
                     ""
+
             );
 
 
@@ -3099,13 +4082,17 @@ async function handleSignal(message) {
         case "error":
 
             showNotice(
+
                 message.message ||
-                    "خطای سرور"
+                "خطای سرور"
+
             );
 
 
             break;
+
     }
+
 }
 
 
@@ -3118,10 +4105,13 @@ function addChatMessage(
     text
 ) {
 
-    if (emptyChat) {
+    if (
+        emptyChat
+    ) {
 
         emptyChat.style.display =
             "none";
+
     }
 
 
@@ -3182,20 +4172,29 @@ function addChatMessage(
 
     messages.scrollTop =
         messages.scrollHeight;
+
 }
 
 
-async function sendChat(text) {
+async function sendChat(
+    text
+) {
 
-    if (!text) {
+    if (
+        !text
+    ) {
 
         return;
+
     }
 
 
     if (
+
         sendSignal(
+
             {
+
                 type:
                     "chat-message",
 
@@ -3204,11 +4203,15 @@ async function sendChat(text) {
 
                 message:
                     text
+
             }
+
         )
+
     ) {
 
         return;
+
     }
 
 
@@ -3216,19 +4219,26 @@ async function sendChat(text) {
 
         const response =
             await fetch(
+
                 "/api/chat/send",
+
                 {
+
                     method:
                         "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
                         JSON.stringify(
+
                             {
+
                                 stream_id:
                                     streamId,
 
@@ -3237,20 +4247,30 @@ async function sendChat(text) {
 
                                 message:
                                     text
+
                             }
+
                         )
+
                 }
+
             );
 
 
-        if (!response.ok) {
+        if (
+            !response.ok
+        ) {
 
             throw new Error(
                 "chat failed"
             );
+
         }
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             error
@@ -3260,7 +4280,9 @@ async function sendChat(text) {
         showNotice(
             "ارسال پیام انجام نشد."
         );
+
     }
+
 }
 
 
@@ -3278,7 +4300,9 @@ systemVolume.addEventListener(
             );
 
 
-        if (systemAudioTrack) {
+        if (
+            systemAudioTrack
+        ) {
 
             systemAudioTrack.enabled =
                 value > 0;
@@ -3286,11 +4310,14 @@ systemVolume.addEventListener(
 
             systemAudioEnabled =
                 value > 0;
+
         }
 
 
         systemValue.textContent =
-            value + "%";
+            value +
+            "%";
+
     }
 );
 
@@ -3305,7 +4332,9 @@ micVolume.addEventListener(
             );
 
 
-        if (microphoneTrack) {
+        if (
+            microphoneTrack
+        ) {
 
             microphoneTrack.enabled =
                 value > 0;
@@ -3313,11 +4342,14 @@ micVolume.addEventListener(
 
             microphoneEnabled =
                 value > 0;
+
         }
 
 
         micValue.textContent =
-            value + "%";
+            value +
+            "%";
+
     }
 );
 
@@ -3362,6 +4394,7 @@ stopBtn.addEventListener(
 
         closeAllPeers();
 
+
         stopAllMedia();
 
 
@@ -3373,17 +4406,21 @@ stopBtn.addEventListener(
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
 
         tabBtn.classList.remove(
             "active"
         );
 
+
         micBtn.classList.remove(
             "active"
         );
+
 
         systemAudioBtn.classList.remove(
             "active"
@@ -3407,6 +4444,7 @@ stopBtn.addEventListener(
             "⏹ منابع متوقف شدند.",
             ""
         );
+
     }
 );
 
@@ -3421,6 +4459,7 @@ document
 
             window.location.href =
                 "/index.html";
+
         }
     );
 
@@ -3442,9 +4481,12 @@ chatForm.addEventListener(
             chatInput.value.trim();
 
 
-        if (!text) {
+        if (
+            !text
+        ) {
 
             return;
+
         }
 
 
@@ -3455,6 +4497,7 @@ chatForm.addEventListener(
         await sendChat(
             text
         );
+
     }
 );
 
@@ -3465,65 +4508,88 @@ chatForm.addEventListener(
 
 async function stopServerStream() {
 
-    if (!streamId) {
+    if (
+        !streamId
+    ) {
 
         return;
+
     }
 
 
     try {
 
         await fetch(
+
             "/api/streams/stop",
+
             {
+
                 method:
                     "POST",
 
                 headers: {
+
                     "Content-Type":
                         "application/json"
+
                 },
 
                 body:
-                    JSON.stringify(
-                        {
-                            stream_id:
-                                streamId,
+                    JSON.stringify({
 
-                            username:
-                                username
-                        }
-                    )
+                        stream_id:
+                            streamId,
+
+                        username:
+                            username
+
+                    })
+
             }
+
         );
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.warn(
             "stop stream:",
             error
         );
+
     }
+
 }
 
 
 async function endLive() {
 
-    if (ending) {
+    if (
+        ending
+    ) {
 
         return;
+
     }
 
 
     const confirmEnd =
         window.confirm(
+
             "آیا می‌خواهید لایو را پایان دهید؟"
+
         );
 
 
-    if (!confirmEnd) {
+    if (
+        !confirmEnd
+    ) {
 
         return;
+
     }
 
 
@@ -3538,13 +4604,16 @@ async function endLive() {
 
     closeAllPeers();
 
+
     stopAllMedia();
 
 
     viewerIds.clear();
 
 
-    if (socket) {
+    if (
+        socket
+    ) {
 
         try {
 
@@ -3563,6 +4632,7 @@ async function endLive() {
             socket.close();
 
         } catch {}
+
     }
 
 
@@ -3575,6 +4645,7 @@ async function endLive() {
             "lainolive_current_stream"
         );
 
+
         sessionStorage.removeItem(
             "LainoLive_current_stream"
         );
@@ -3588,6 +4659,7 @@ async function endLive() {
             "lainolive_current_stream"
         );
 
+
         localStorage.removeItem(
             "LainoLive_current_stream"
         );
@@ -3597,6 +4669,7 @@ async function endLive() {
 
     window.location.href =
         "/index.html";
+
 }
 
 
@@ -3623,35 +4696,48 @@ async function initialize() {
 
 
     streamTitle.textContent =
+
         streamData.title ||
+
         "پخش زنده LainoLive";
 
 
     streamCategory.textContent =
+
         streamData.category ||
+
         "عمومی";
 
 
     streamIdElement.textContent =
+
         "Stream: " +
+
         (
             streamId ||
             "-"
         );
 
 
-    if (!window.isSecureContext) {
+    if (
+        !window.isSecureContext
+    ) {
 
         showNotice(
             "اشتراک صفحه باید از طریق HTTPS اجرا شود."
         );
+
     }
 
 
     if (
+
         !navigator.mediaDevices ||
+
         !navigator.mediaDevices.getUserMedia ||
+
         !navigator.mediaDevices.getDisplayMedia
+
     ) {
 
         setStatus(
@@ -3665,10 +4751,13 @@ async function initialize() {
 
 
         return;
+
     }
 
 
-    if (!streamId) {
+    if (
+        !streamId
+    ) {
 
         setStatus(
             "شناسه لایو پیدا نشد"
@@ -3681,6 +4770,7 @@ async function initialize() {
 
 
         return;
+
     }
 
 
@@ -3688,6 +4778,7 @@ async function initialize() {
 
 
     await startCamera();
+
 }
 
 
@@ -3717,6 +4808,7 @@ window.addEventListener(
             socket?.close();
 
         } catch {}
+
     }
 );
 
@@ -3730,4 +4822,5 @@ initialize();
 </script>
 
 </body>
+
 </html>

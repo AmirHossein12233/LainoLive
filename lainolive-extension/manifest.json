@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "LainoLive Tab Audio",
+  "version": "1.0.0",
+  "description": "گرفتن صدای تب برای LainoLive",
+  "permissions": [
+    "tabCapture",
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://mygapino.shop/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "LainoLive Tab Audio"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mygapino.shop/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
