@@ -55,9 +55,13 @@
             font-family: inherit;
         }
 
+        button {
+            cursor: pointer;
+        }
+
         .page {
             min-height: 100vh;
-            padding-bottom: 25px;
+            padding-bottom: 30px;
         }
 
         .header {
@@ -72,7 +76,7 @@
             padding: 14px 16px;
 
             background:
-                rgba(7, 7, 12, .90);
+                rgba(7, 7, 12, .92);
 
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -109,7 +113,7 @@
 
         .content {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
 
             margin: 0 auto;
             padding: 16px;
@@ -142,7 +146,7 @@
             width: 100%;
             height: 100%;
 
-            object-fit: cover;
+            object-fit: contain;
 
             background: #000;
         }
@@ -165,13 +169,34 @@
             z-index: 5;
         }
 
+        .source-badge {
+            position: absolute;
+
+            right: 12px;
+            bottom: 12px;
+
+            padding:
+                7px 11px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(0,0,0,.75);
+
+            font-size: 10px;
+            font-weight: 800;
+
+            z-index: 5;
+        }
+
         .viewer-badge {
             position: absolute;
 
             left: 12px;
             top: 12px;
 
-            padding: 7px 10px;
+            padding:
+                7px 10px;
 
             border-radius: 999px;
 
@@ -206,12 +231,15 @@
         .meta {
             display: flex;
             flex-wrap: wrap;
+
             gap: 8px;
+
             margin-top: 10px;
         }
 
         .tag {
-            padding: 6px 10px;
+            padding:
+                6px 10px;
 
             border-radius: 999px;
 
@@ -223,6 +251,45 @@
             font-size: 10px;
         }
 
+        .source-buttons {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-top: 14px;
+        }
+
+        .source-button {
+            min-height: 54px;
+
+            border: none;
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,.06);
+
+            color: white;
+
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .source-button.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,23,77,.28),
+                    rgba(139,53,255,.28)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+        }
+
         .controls {
             display: grid;
 
@@ -231,7 +298,7 @@
 
             gap: 10px;
 
-            margin-top: 14px;
+            margin-top: 10px;
         }
 
         .control-btn {
@@ -251,7 +318,7 @@
 
         .control-btn.active {
             background:
-                rgba(255,255,255,.10);
+                rgba(255,255,255,.11);
         }
 
         .stop-btn {
@@ -313,6 +380,7 @@
 
         .message {
             margin-bottom: 9px;
+
             padding: 8px 10px;
 
             border-radius: 12px;
@@ -323,6 +391,7 @@
 
         .message-user {
             color: #ffb0c1;
+
             font-size: 10px;
             font-weight: 900;
         }
@@ -332,6 +401,8 @@
 
             font-size: 12px;
             line-height: 1.7;
+
+            word-break: break-word;
         }
 
         .chat-form {
@@ -386,15 +457,20 @@
             line-height: 1.7;
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 650px) {
 
-            .stream-title {
-                font-size: 17px;
+            .source-buttons {
+                grid-template-columns:
+                    1fr;
             }
 
             .controls {
                 grid-template-columns:
-                    repeat(3, 1fr);
+                    repeat(2, 1fr);
+            }
+
+            .stream-title {
+                font-size: 17px;
             }
         }
 
@@ -455,6 +531,13 @@
                 👁 0 بیننده
             </div>
 
+            <div
+                id="sourceBadge"
+                class="source-badge"
+            >
+                🎥 دوربین
+            </div>
+
         </section>
 
 
@@ -466,6 +549,7 @@
             >
                 لایو
             </div>
+
 
             <div class="meta">
 
@@ -484,6 +568,32 @@
                 </div>
 
             </div>
+
+
+            <!-- SOURCE -->
+
+            <div class="source-buttons">
+
+                <button
+                    id="cameraSourceButton"
+                    class="source-button active"
+                    type="button"
+                >
+                    🎥 پخش دوربین
+                </button>
+
+                <button
+                    id="screenSourceButton"
+                    class="source-button"
+                    type="button"
+                >
+                    🖥️ پخش صفحه سیستم
+                </button>
+
+            </div>
+
+
+            <!-- CONTROLS -->
 
             <div class="controls">
 
@@ -513,6 +623,7 @@
 
             </div>
 
+
             <button
                 id="stopButton"
                 class="stop-btn"
@@ -524,13 +635,17 @@
         </section>
 
 
+        <!-- CHAT -->
+
         <section class="chat-card">
 
             <div class="chat-title">
                 💬 چت لایو
             </div>
 
+
             <div id="chatMessages"></div>
+
 
             <form
                 id="chatForm"
@@ -545,6 +660,7 @@
                     placeholder="پیام خود را بنویسید..."
                 >
 
+
                 <button
                     id="chatSend"
                     type="submit"
@@ -553,6 +669,7 @@
                 </button>
 
             </form>
+
 
             <div
                 id="log"
@@ -571,6 +688,10 @@
 "use strict";
 
 
+/* ============================================================
+   STORAGE
+   ============================================================ */
+
 const LOGIN_KEY =
     "lainolive_logged_in";
 
@@ -582,59 +703,117 @@ const CURRENT_STREAM_KEY =
 
 
 if (
-    localStorage.getItem(LOGIN_KEY) !== "true"
+    localStorage.getItem(
+        LOGIN_KEY
+    ) !== "true"
 ) {
-    window.location.href = "/login.html";
+
+    window.location.href =
+        "/login.html";
 }
 
 
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+
 const localVideo =
-    document.getElementById("localVideo");
+    document.getElementById(
+        "localVideo"
+    );
 
 const statusEl =
-    document.getElementById("status");
+    document.getElementById(
+        "status"
+    );
 
 const viewerBadge =
-    document.getElementById("viewerBadge");
+    document.getElementById(
+        "viewerBadge"
+    );
+
+const sourceBadge =
+    document.getElementById(
+        "sourceBadge"
+    );
 
 const streamTitle =
-    document.getElementById("streamTitle");
+    document.getElementById(
+        "streamTitle"
+    );
 
 const usernameTag =
-    document.getElementById("usernameTag");
+    document.getElementById(
+        "usernameTag"
+    );
 
 const categoryTag =
-    document.getElementById("categoryTag");
+    document.getElementById(
+        "categoryTag"
+    );
+
+const cameraSourceButton =
+    document.getElementById(
+        "cameraSourceButton"
+    );
+
+const screenSourceButton =
+    document.getElementById(
+        "screenSourceButton"
+    );
 
 const cameraButton =
-    document.getElementById("cameraButton");
+    document.getElementById(
+        "cameraButton"
+    );
 
 const micButton =
-    document.getElementById("micButton");
+    document.getElementById(
+        "micButton"
+    );
 
 const shareButton =
-    document.getElementById("shareButton");
+    document.getElementById(
+        "shareButton"
+    );
 
 const stopButton =
-    document.getElementById("stopButton");
+    document.getElementById(
+        "stopButton"
+    );
 
 const closeButton =
-    document.getElementById("closeButton");
+    document.getElementById(
+        "closeButton"
+    );
 
 const chatMessages =
-    document.getElementById("chatMessages");
+    document.getElementById(
+        "chatMessages"
+    );
 
 const chatForm =
-    document.getElementById("chatForm");
+    document.getElementById(
+        "chatForm"
+    );
 
 const chatInput =
-    document.getElementById("chatInput");
+    document.getElementById(
+        "chatInput"
+    );
 
 const logEl =
-    document.getElementById("log");
+    document.getElementById(
+        "log"
+    );
 
 
-let stream = null;
+/* ============================================================
+   STREAM
+   ============================================================ */
+
+let stream =
+    null;
 
 try {
 
@@ -647,7 +826,8 @@ try {
 
 } catch {
 
-    stream = null;
+    stream =
+        null;
 }
 
 
@@ -690,10 +870,15 @@ categoryTag.textContent =
     "📂 " + category;
 
 
+/* ============================================================
+   WEBRTC
+   ============================================================ */
+
 /*
  * بدون TURN
  * فقط STUN
  */
+
 const rtcConfig = {
 
     iceServers: [
@@ -720,6 +905,9 @@ let socket =
 let localStream =
     null;
 
+let currentSource =
+    "camera";
+
 let reconnectTimer =
     null;
 
@@ -730,25 +918,44 @@ let stopped =
     false;
 
 
+/*
+ * یک PeerConnection
+ * برای هر بیننده
+ */
+
 const peerConnections =
     new Map();
 
 
-function setStatus(text) {
+/* ============================================================
+   STATUS
+   ============================================================ */
+
+function setStatus(
+    text
+) {
 
     statusEl.textContent =
         text;
 }
 
 
-function log(text) {
+function log(
+    text
+) {
 
     logEl.textContent =
         text;
 }
 
 
-function updateViewerCount(count) {
+/* ============================================================
+   VIEWER COUNT
+   ============================================================ */
+
+function updateViewerCount(
+    count
+) {
 
     const value =
         Math.max(
@@ -756,25 +963,61 @@ function updateViewerCount(count) {
             Number(count) || 0
         );
 
+
     viewerBadge.textContent =
-        "👁 " + value + " بیننده";
+        "👁 " +
+        value +
+        " بیننده";
 }
 
 
-function send(data) {
+/* ============================================================
+   SOURCE LABEL
+   ============================================================ */
+
+function updateSourceLabel() {
+
+    if (
+        currentSource ===
+        "screen"
+    ) {
+
+        sourceBadge.textContent =
+            "🖥️ صفحه سیستم";
+
+        return;
+    }
+
+
+    sourceBadge.textContent =
+        "🎥 دوربین";
+}
+
+
+/* ============================================================
+   SEND
+   ============================================================ */
+
+function send(
+    data
+) {
 
     if (
         !socket ||
-        socket.readyState !== WebSocket.OPEN
+        socket.readyState !==
+        WebSocket.OPEN
     ) {
 
         return false;
     }
 
+
     try {
 
         socket.send(
-            JSON.stringify(data)
+            JSON.stringify(
+                data
+            )
         );
 
         return true;
@@ -791,7 +1034,13 @@ function send(data) {
 }
 
 
-async function createPeerConnection(viewerId) {
+/* ============================================================
+   CREATE PEER CONNECTION
+   ============================================================ */
+
+async function createPeerConnection(
+    viewerId
+) {
 
     if (
         peerConnections.has(
@@ -836,9 +1085,13 @@ async function createPeerConnection(viewerId) {
     pc.onicecandidate =
         event => {
 
-            if (!event.candidate) {
+            if (
+                !event.candidate
+            ) {
+
                 return;
             }
+
 
             send(
                 {
@@ -863,13 +1116,16 @@ async function createPeerConnection(viewerId) {
 
 
             if (
-                state === "failed" ||
-                state === "closed"
+                state ===
+                "failed" ||
+                state ===
+                "closed"
             ) {
 
                 try {
                     pc.close();
                 } catch {}
+
 
                 peerConnections.delete(
                     viewerId
@@ -882,7 +1138,13 @@ async function createPeerConnection(viewerId) {
 }
 
 
-async function createOfferForViewer(viewerId) {
+/* ============================================================
+   CREATE OFFER
+   ============================================================ */
+
+async function createOfferForViewer(
+    viewerId
+) {
 
     try {
 
@@ -914,11 +1176,6 @@ async function createOfferForViewer(viewerId) {
             }
         );
 
-
-        log(
-            "اتصال بیننده برقرار شد."
-        );
-
     } catch (error) {
 
         console.error(
@@ -928,6 +1185,10 @@ async function createOfferForViewer(viewerId) {
     }
 }
 
+
+/* ============================================================
+   SOCKET CONNECT
+   ============================================================ */
 
 function connectSocket() {
 
@@ -1010,7 +1271,8 @@ function connectSocket() {
 
 
             if (
-                type === "joined"
+                type ===
+                "joined"
             ) {
 
                 setStatus(
@@ -1022,13 +1284,17 @@ function connectSocket() {
 
 
             if (
-                type === "viewer-joined"
+                type ===
+                "viewer-joined"
             ) {
 
                 const viewerId =
                     message?.viewer_id;
 
-                if (viewerId) {
+
+                if (
+                    viewerId
+                ) {
 
                     await createOfferForViewer(
                         viewerId
@@ -1040,11 +1306,13 @@ function connectSocket() {
 
 
             if (
-                type === "answer"
+                type ===
+                "answer"
             ) {
 
                 const viewerId =
                     message?.viewer_id;
+
 
                 const pc =
                     peerConnections.get(
@@ -1079,11 +1347,13 @@ function connectSocket() {
 
 
             if (
-                type === "ice-candidate"
+                type ===
+                "ice-candidate"
             ) {
 
                 const viewerId =
                     message?.viewer_id;
+
 
                 const pc =
                     peerConnections.get(
@@ -1118,11 +1388,13 @@ function connectSocket() {
 
 
             if (
-                type === "viewer-left"
+                type ===
+                "viewer-left"
             ) {
 
                 const viewerId =
                     message?.viewer_id;
+
 
                 const pc =
                     peerConnections.get(
@@ -1147,7 +1419,8 @@ function connectSocket() {
 
 
             if (
-                type === "room-info"
+                type ===
+                "room-info"
             ) {
 
                 updateViewerCount(
@@ -1159,7 +1432,8 @@ function connectSocket() {
 
 
             if (
-                type === "chat-message"
+                type ===
+                "chat-message"
             ) {
 
                 appendChatMessage(
@@ -1170,6 +1444,7 @@ function connectSocket() {
                         ""
                 );
             }
+
         };
 
 
@@ -1184,6 +1459,7 @@ function connectSocket() {
                 setStatus(
                     "ارتباط قطع شد؛ تلاش مجدد..."
                 );
+
 
                 scheduleReconnect();
             }
@@ -1200,6 +1476,10 @@ function connectSocket() {
         };
 }
 
+
+/* ============================================================
+   RECONNECT
+   ============================================================ */
 
 function scheduleReconnect() {
 
@@ -1227,6 +1507,10 @@ function scheduleReconnect() {
 }
 
 
+/* ============================================================
+   HEARTBEAT
+   ============================================================ */
+
 function startHeartbeat() {
 
     stopHeartbeat();
@@ -1251,7 +1535,9 @@ function startHeartbeat() {
 
 function stopHeartbeat() {
 
-    if (heartbeatTimer) {
+    if (
+        heartbeatTimer
+    ) {
 
         clearInterval(
             heartbeatTimer
@@ -1263,62 +1549,410 @@ function stopHeartbeat() {
 }
 
 
-async function startMedia() {
+/* ============================================================
+   CAMERA
+   ============================================================ */
+
+async function startCameraStream() {
 
     try {
 
-        localStream =
+        const cameraStream =
             await navigator.mediaDevices.getUserMedia(
                 {
                     video: {
                         width: {
-                            ideal: 1280
+                            ideal:
+                                1280
                         },
 
                         height: {
-                            ideal: 720
+                            ideal:
+                                720
                         },
 
                         frameRate: {
-                            ideal: 30,
-                            max: 30
+                            ideal:
+                                30,
+
+                            max:
+                                30
                         }
                     },
 
                     audio: {
-                        echoCancellation: true,
-                        noiseSuppression: true,
-                        autoGainControl: true
+                        echoCancellation:
+                            true,
+
+                        noiseSuppression:
+                            true,
+
+                        autoGainControl:
+                            true
                     }
                 }
             );
 
 
-        localVideo.srcObject =
-            localStream;
-
-
-        setStatus(
-            "دوربین و میکروفون فعال شدند"
+        await replaceLocalStream(
+            cameraStream,
+            "camera"
         );
+
+
+        cameraSourceButton.classList.add(
+            "active"
+        );
+
+        screenSourceButton.classList.remove(
+            "active"
+        );
+
+
+        return true;
 
     } catch (error) {
 
         console.error(
-            "media error:",
+            "camera error:",
             error
         );
 
+
         setStatus(
-            "دسترسی دوربین یا میکروفون داده نشد"
+            "دسترسی به دوربین ممکن نیست."
         );
 
+
         alert(
-            "دسترسی دوربین و میکروفون لازم است."
+            "دسترسی دوربین و میکروفون داده نشد."
         );
+
+
+        return false;
     }
 }
 
+
+/* ============================================================
+   SCREEN SHARE
+   ============================================================ */
+
+async function startScreenStream() {
+
+    if (
+        !navigator.mediaDevices ||
+        typeof navigator.mediaDevices.getDisplayMedia !==
+            "function"
+    ) {
+
+        alert(
+            "مرورگر شما از اشتراک صفحه پشتیبانی نمی‌کند."
+        );
+
+        return false;
+    }
+
+
+    try {
+
+        const screenStream =
+            await navigator.mediaDevices.getDisplayMedia(
+                {
+                    video: {
+                        cursor:
+                            "always",
+
+                        frameRate: {
+                            ideal:
+                                30,
+
+                            max:
+                                30
+                        }
+                    },
+
+                    audio:
+                        true
+                }
+            );
+
+
+        const videoTrack =
+            screenStream.getVideoTracks()[0];
+
+
+        if (videoTrack) {
+
+            videoTrack.addEventListener(
+                "ended",
+                () => {
+
+                    /*
+                     * کاربر اشتراک صفحه را
+                     * از خود مرورگر متوقف کرده.
+                     */
+
+                    startCameraStream();
+                }
+            );
+        }
+
+
+        /*
+         * اگر سیستم audio نداد،
+         * صدای میکروفون فعلی را حفظ می‌کنیم.
+         */
+
+        if (
+            screenStream.getAudioTracks().length ===
+            0
+        ) {
+
+            if (localStream) {
+
+                localStream
+                    .getAudioTracks()
+                    .forEach(
+                        track => {
+
+                            screenStream.addTrack(
+                                track
+                            );
+                        }
+                    );
+            }
+        }
+
+
+        await replaceLocalStream(
+            screenStream,
+            "screen"
+        );
+
+
+        cameraSourceButton.classList.remove(
+            "active"
+        );
+
+        screenSourceButton.classList.add(
+            "active"
+        );
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "screen share error:",
+            error
+        );
+
+
+        if (
+            error &&
+            error.name ===
+                "NotAllowedError"
+        ) {
+
+            setStatus(
+                "اشتراک صفحه لغو شد."
+            );
+
+        } else {
+
+            setStatus(
+                "اشتراک صفحه انجام نشد."
+            );
+        }
+
+
+        return false;
+    }
+}
+
+
+/* ============================================================
+   REPLACE STREAM
+   ============================================================ */
+
+async function replaceLocalStream(
+    newStream,
+    source
+) {
+
+    const oldStream =
+        localStream;
+
+
+    localStream =
+        newStream;
+
+    currentSource =
+        source;
+
+
+    localVideo.srcObject =
+        localStream;
+
+
+    /*
+     * برای همه بیننده‌های فعلی
+     * Track را عوض می‌کنیم.
+     */
+
+    const videoTrack =
+        localStream.getVideoTracks()[0] ||
+        null;
+
+    const audioTrack =
+        localStream.getAudioTracks()[0] ||
+        null;
+
+
+    peerConnections.forEach(
+        pc => {
+
+            const senders =
+                pc.getSenders();
+
+
+            senders.forEach(
+                sender => {
+
+                    if (
+                        sender.track?.kind ===
+                        "video"
+                    ) {
+
+                        sender.replaceTrack(
+                            videoTrack
+                        ).catch(
+                            error => {
+
+                                console.error(
+                                    "video replace error:",
+                                    error
+                                );
+                            }
+                        );
+                    }
+
+
+                    if (
+                        sender.track?.kind ===
+                        "audio"
+                    ) {
+
+                        sender.replaceTrack(
+                            audioTrack
+                        ).catch(
+                            error => {
+
+                                console.error(
+                                    "audio replace error:",
+                                    error
+                                );
+                            }
+                        );
+                    }
+                }
+            );
+        }
+    );
+
+
+    updateSourceLabel();
+
+
+    if (
+        source ===
+        "screen"
+    ) {
+
+        setStatus(
+            "در حال پخش صفحه سیستم"
+        );
+
+    } else {
+
+        setStatus(
+            "در حال پخش دوربین"
+        );
+    }
+
+
+    /*
+     * Stream قبلی را بعد از جایگزینی متوقف کن.
+     */
+
+    if (
+        oldStream &&
+        oldStream !== newStream
+    ) {
+
+        oldStream
+            .getTracks()
+            .forEach(
+                track => {
+
+                    try {
+                        track.stop();
+                    } catch {}
+                }
+            );
+    }
+}
+
+
+/* ============================================================
+   CAMERA BUTTON
+   ============================================================ */
+
+cameraSourceButton.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            currentSource ===
+            "camera"
+        ) {
+
+            return;
+        }
+
+
+        await startCameraStream();
+    }
+);
+
+
+/* ============================================================
+   SCREEN BUTTON
+   ============================================================ */
+
+screenSourceButton.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            currentSource ===
+            "screen"
+        ) {
+
+            return;
+        }
+
+
+        await startScreenStream();
+    }
+);
+
+
+/* ============================================================
+   CAMERA ON / OFF
+   ============================================================ */
 
 cameraButton.addEventListener(
     "click",
@@ -1344,6 +1978,7 @@ cameraButton.addEventListener(
 
         tracks.forEach(
             track => {
+
                 track.enabled =
                     enabled;
             }
@@ -1358,11 +1993,15 @@ cameraButton.addEventListener(
 
         cameraButton.textContent =
             enabled
-                ? "📷 دوربین"
-                : "🚫 دوربین خاموش";
+                ? "📷 تصویر روشن"
+                : "🚫 تصویر خاموش";
     }
 );
 
+
+/* ============================================================
+   MIC ON / OFF
+   ============================================================ */
 
 micButton.addEventListener(
     "click",
@@ -1388,6 +2027,7 @@ micButton.addEventListener(
 
         tracks.forEach(
             track => {
+
                 track.enabled =
                     enabled;
             }
@@ -1402,11 +2042,15 @@ micButton.addEventListener(
 
         micButton.textContent =
             enabled
-                ? "🎙 میکروفون"
+                ? "🎙 میکروفون روشن"
                 : "🔇 میکروفون خاموش";
     }
 );
 
+
+/* ============================================================
+   SHARE
+   ============================================================ */
 
 shareButton.addEventListener(
     "click",
@@ -1416,13 +2060,17 @@ shareButton.addEventListener(
             window.location.origin +
             "/viewer.html?id=" +
             encodeURIComponent(
-                String(streamId)
+                String(
+                    streamId
+                )
             );
 
 
         try {
 
-            if (navigator.share) {
+            if (
+                navigator.share
+            ) {
 
                 await navigator.share(
                     {
@@ -1461,6 +2109,10 @@ shareButton.addEventListener(
 );
 
 
+/* ============================================================
+   CHAT
+   ============================================================ */
+
 function appendChatMessage(
     chatUser,
     message
@@ -1489,7 +2141,8 @@ function appendChatMessage(
         "message-user";
 
     userEl.textContent =
-        "👤 " + chatUser;
+        "👤 " +
+        chatUser;
 
 
     const textEl =
@@ -1564,12 +2217,17 @@ chatForm.addEventListener(
                 message
             );
 
+
             chatInput.value =
                 "";
         }
     }
 );
 
+
+/* ============================================================
+   STOP LIVE
+   ============================================================ */
 
 async function stopLive() {
 
@@ -1578,7 +2236,8 @@ async function stopLive() {
     }
 
 
-    stopped = true;
+    stopped =
+        true;
 
 
     setStatus(
@@ -1712,6 +2371,10 @@ async function stopLive() {
 }
 
 
+/* ============================================================
+   STOP BUTTON
+   ============================================================ */
+
 stopButton.addEventListener(
     "click",
     async () => {
@@ -1732,6 +2395,10 @@ stopButton.addEventListener(
 );
 
 
+/* ============================================================
+   CLOSE BUTTON
+   ============================================================ */
+
 closeButton.addEventListener(
     "click",
     async () => {
@@ -1740,6 +2407,10 @@ closeButton.addEventListener(
     }
 );
 
+
+/* ============================================================
+   BEFORE UNLOAD
+   ============================================================ */
 
 window.addEventListener(
     "beforeunload",
@@ -1773,6 +2444,10 @@ window.addEventListener(
 );
 
 
+/* ============================================================
+   START
+   ============================================================ */
+
 (async function init() {
 
     if (!streamId) {
@@ -1785,7 +2460,22 @@ window.addEventListener(
     }
 
 
-    await startMedia();
+    /*
+     * ابتدا دوربین عادی را فعال می‌کنیم.
+     */
+
+    const started =
+        await startCameraStream();
+
+
+    if (!started) {
+        return;
+    }
+
+
+    /*
+     * بعد WebSocket را وصل می‌کنیم.
+     */
 
     connectSocket();
 
