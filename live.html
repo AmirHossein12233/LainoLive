@@ -2,7 +2,6 @@
 <html lang="fa" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -18,7 +17,6 @@
     <title>LainoLive - پخش زنده</title>
 
     <style>
-
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -78,8 +76,11 @@
             background:
                 rgba(7, 7, 12, .92);
 
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
 
             border-bottom:
                 1px solid
@@ -157,7 +158,8 @@
             top: 12px;
             right: 12px;
 
-            padding: 6px 10px;
+            padding:
+                6px 10px;
 
             border-radius: 999px;
 
@@ -418,7 +420,8 @@
 
             height: 46px;
 
-            padding: 0 13px;
+            padding:
+                0 13px;
 
             border:
                 1px solid
@@ -473,7 +476,6 @@
                 font-size: 17px;
             }
         }
-
     </style>
 </head>
 
@@ -535,7 +537,7 @@
                 id="sourceBadge"
                 class="source-badge"
             >
-                🎥 دوربین
+                🎥 دوربین + 🎙️ میکروفون
             </div>
 
         </section>
@@ -585,7 +587,7 @@
                     class="source-button"
                     type="button"
                 >
-                    🖥️ پخش صفحه + صدا
+                    🖥️ صفحه + صدای سیستم + میکروفون
                 </button>
 
             </div>
@@ -911,11 +913,9 @@ let audioDestination = null;
 
 let microphoneStream = null;
 
-let screenStream = null;
-
 
 /* ============================================================
-   PEER CONNECTIONS
+   PEERS
    ============================================================ */
 
 const peerConnections =
@@ -926,27 +926,21 @@ const peerConnections =
    HELPERS
    ============================================================ */
 
-function setStatus(
-    text
-) {
+function setStatus(text) {
 
     statusEl.textContent =
         text;
 }
 
 
-function log(
-    text
-) {
+function log(text) {
 
     logEl.textContent =
         text;
 }
 
 
-function updateViewerCount(
-    count
-) {
+function updateViewerCount(count) {
 
     const value =
         Math.max(
@@ -961,27 +955,7 @@ function updateViewerCount(
 }
 
 
-function updateSourceLabel() {
-
-    if (
-        currentSource ===
-        "screen"
-    ) {
-
-        sourceBadge.textContent =
-            "🖥️ صفحه + 🔊 صدا";
-
-    } else {
-
-        sourceBadge.textContent =
-            "🎥 دوربین";
-    }
-}
-
-
-function send(
-    data
-) {
+function send(data) {
 
     if (
         !socket ||
@@ -992,13 +966,10 @@ function send(
         return false;
     }
 
-
     try {
 
         socket.send(
-            JSON.stringify(
-                data
-            )
+            JSON.stringify(data)
         );
 
         return true;
@@ -1066,10 +1037,7 @@ async function createPeerConnection(
     pc.onicecandidate =
         event => {
 
-            if (
-                !event.candidate
-            ) {
-
+            if (!event.candidate) {
                 return;
             }
 
@@ -1174,7 +1142,7 @@ async function createOfferForViewer(
 
 
 /* ============================================================
-   SOCKET
+   WEBSOCKET
    ============================================================ */
 
 function connectSocket() {
@@ -1258,7 +1226,8 @@ function connectSocket() {
 
 
             if (
-                type === "joined"
+                type ===
+                "joined"
             ) {
 
                 setStatus(
@@ -1270,16 +1239,15 @@ function connectSocket() {
 
 
             if (
-                type === "viewer-joined"
+                type ===
+                "viewer-joined"
             ) {
 
                 const viewerId =
                     message?.viewer_id;
 
 
-                if (
-                    viewerId
-                ) {
+                if (viewerId) {
 
                     await createOfferForViewer(
                         viewerId
@@ -1291,7 +1259,8 @@ function connectSocket() {
 
 
             if (
-                type === "answer"
+                type ===
+                "answer"
             ) {
 
                 const viewerId =
@@ -1331,7 +1300,8 @@ function connectSocket() {
 
 
             if (
-                type === "ice-candidate"
+                type ===
+                "ice-candidate"
             ) {
 
                 const viewerId =
@@ -1371,7 +1341,8 @@ function connectSocket() {
 
 
             if (
-                type === "viewer-left"
+                type ===
+                "viewer-left"
             ) {
 
                 const viewerId =
@@ -1401,7 +1372,8 @@ function connectSocket() {
 
 
             if (
-                type === "room-info"
+                type ===
+                "room-info"
             ) {
 
                 updateViewerCount(
@@ -1413,7 +1385,8 @@ function connectSocket() {
 
 
             if (
-                type === "chat-message"
+                type ===
+                "chat-message"
             ) {
 
                 appendChatMessage(
@@ -1466,7 +1439,6 @@ function scheduleReconnect() {
         reconnectTimer ||
         stopped
     ) {
-
         return;
     }
 
@@ -1514,9 +1486,7 @@ function startHeartbeat() {
 
 function stopHeartbeat() {
 
-    if (
-        heartbeatTimer
-    ) {
+    if (heartbeatTimer) {
 
         clearInterval(
             heartbeatTimer
@@ -1529,93 +1499,7 @@ function stopHeartbeat() {
 
 
 /* ============================================================
-   AUDIO CONTEXT
-   ============================================================ */
-
-async function ensureAudioContext() {
-
-    if (
-        !audioContext ||
-        audioContext.state ===
-            "closed"
-    ) {
-
-        audioContext =
-            new AudioContext();
-    }
-
-
-    if (
-        audioContext.state ===
-            "suspended"
-    ) {
-
-        await audioContext.resume();
-    }
-}
-
-
-/* ============================================================
-   RELEASE AUDIO RESOURCES
-   ============================================================ */
-
-async function releaseMixedAudio() {
-
-    if (microphoneStream) {
-
-        microphoneStream
-            .getTracks()
-            .forEach(
-                track => {
-
-                    try {
-                        track.stop();
-                    } catch {}
-                }
-            );
-
-        microphoneStream =
-            null;
-    }
-
-
-    if (screenStream) {
-
-        screenStream
-            .getTracks()
-            .forEach(
-                track => {
-
-                    try {
-                        track.stop();
-                    } catch {}
-                }
-            );
-
-        screenStream =
-            null;
-    }
-
-
-    if (audioContext) {
-
-        try {
-
-            await audioContext.close();
-
-        } catch {}
-
-        audioContext =
-            null;
-
-        audioDestination =
-            null;
-    }
-}
-
-
-/* ============================================================
-   REPLACE TRACKS FOR ALL VIEWERS
+   REPLACE TRACKS
    ============================================================ */
 
 async function replaceTracksForAllPeers(
@@ -1675,14 +1559,67 @@ async function replaceTracksForAllPeers(
 
 
 /* ============================================================
-   CAMERA STREAM
+   RELEASE MICROPHONE
+   ============================================================ */
+
+function stopMicrophoneStream() {
+
+    if (!microphoneStream) {
+        return;
+    }
+
+
+    microphoneStream
+        .getTracks()
+        .forEach(
+            track => {
+
+                try {
+                    track.stop();
+                } catch {}
+            }
+        );
+
+
+    microphoneStream =
+        null;
+}
+
+
+/* ============================================================
+   RELEASE AUDIO MIX
+   ============================================================ */
+
+async function stopAudioMix() {
+
+    stopMicrophoneStream();
+
+
+    if (audioContext) {
+
+        try {
+            await audioContext.close();
+        } catch {}
+
+        audioContext =
+            null;
+    }
+
+
+    audioDestination =
+        null;
+}
+
+
+/* ============================================================
+   START CAMERA
    ============================================================ */
 
 async function startCameraStream() {
 
     try {
 
-        await releaseMixedAudio();
+        await stopAudioMix();
 
 
         const cameraStream =
@@ -1739,12 +1676,12 @@ async function startCameraStream() {
 
 
         await replaceTracksForAllPeers(
-            localStream.getVideoTracks()[0] || null,
-            localStream.getAudioTracks()[0] || null
+            cameraStream.getVideoTracks()[0] ||
+                null,
+
+            cameraStream.getAudioTracks()[0] ||
+                null
         );
-
-
-        updateSourceLabel();
 
 
         cameraSourceButton.classList.add(
@@ -1770,6 +1707,10 @@ async function startCameraStream() {
 
         micButton.textContent =
             "🎙️ میکروفون روشن";
+
+
+        sourceBadge.textContent =
+            "🎥 دوربین + 🎙️ میکروفون";
 
 
         setStatus(
@@ -1821,7 +1762,8 @@ async function startCameraStream() {
 
 
 /* ============================================================
-   SCREEN + SYSTEM AUDIO + MICROPHONE
+   START SCREEN
+   SYSTEM AUDIO + MICROPHONE SEPARATELY
    ============================================================ */
 
 async function startScreenStream() {
@@ -1840,12 +1782,17 @@ async function startScreenStream() {
     }
 
 
+    let displayStream =
+        null;
+
+
     try {
 
-        await releaseMixedAudio();
-
-
-        const displayStream =
+        /*
+         * مرحله اول:
+         * دریافت صفحه + صدای سیستم
+         */
+        displayStream =
             await navigator.mediaDevices.getDisplayMedia(
                 {
                     video: {
@@ -1861,67 +1808,69 @@ async function startScreenStream() {
                         }
                     },
 
-                    audio: true
+                    audio:
+                        true
                 }
             );
 
 
-        screenStream =
-            displayStream;
-
-
-        const screenVideoTrack =
+        const videoTrack =
             displayStream.getVideoTracks()[0] ||
             null;
 
 
-        if (!screenVideoTrack) {
+        const systemAudioTrack =
+            displayStream.getAudioTracks()[0] ||
+            null;
+
+
+        if (!videoTrack) {
 
             throw new Error(
-                "screen video track not found"
+                "Screen video track not found."
             );
         }
 
 
         /*
-         * میکروفون جداگانه
+         * مرحله دوم:
+         * دریافت میکروفون جداگانه
          */
-        try {
+        microphoneStream =
+            await navigator.mediaDevices.getUserMedia(
+                {
+                    video:
+                        false,
 
-            microphoneStream =
-                await navigator.mediaDevices.getUserMedia(
-                    {
-                        video: false,
+                    audio: {
+                        echoCancellation:
+                            true,
 
-                        audio: {
-                            echoCancellation:
-                                true,
+                        noiseSuppression:
+                            true,
 
-                            noiseSuppression:
-                                true,
-
-                            autoGainControl:
-                                true
-                        }
+                        autoGainControl:
+                            true
                     }
-                );
-
-        } catch (error) {
-
-            console.warn(
-                "microphone unavailable:",
-                error
+                }
             );
-
-            microphoneStream =
-                null;
-        }
 
 
         /*
-         * AudioContext
+         * مرحله سوم:
+         * ساخت AudioContext
          */
-        await ensureAudioContext();
+        audioContext =
+            new AudioContext();
+
+
+        if (
+            audioContext.state ===
+                "suspended"
+        ) {
+
+            await audioContext.resume();
+        }
 
 
         audioDestination =
@@ -1929,25 +1878,23 @@ async function startScreenStream() {
 
 
         /*
-         * صدای سیستم/تب
+         * صدای سیستم
          */
-        const systemAudioTracks =
-            displayStream.getAudioTracks();
-
-
         if (
-            systemAudioTracks.length > 0
+            systemAudioTrack
         ) {
 
-            const systemAudioStream =
+            const systemStream =
                 new MediaStream(
-                    systemAudioTracks
+                    [
+                        systemAudioTrack
+                    ]
                 );
 
 
             const systemSource =
                 audioContext.createMediaStreamSource(
-                    systemAudioStream
+                    systemStream
                 );
 
 
@@ -1958,84 +1905,71 @@ async function startScreenStream() {
 
 
         /*
-         * صدای میکروفون
+         * میکروفون
          */
-        if (
+        const microphoneTrack =
             microphoneStream
+                .getAudioTracks()[0] ||
+            null;
+
+
+        if (
+            microphoneTrack
         ) {
 
-            const micTracks =
-                microphoneStream.getAudioTracks();
-
-
-            if (
-                micTracks.length > 0
-            ) {
-
-                const micAudioStream =
-                    new MediaStream(
-                        micTracks
-                    );
-
-
-                const microphoneSource =
-                    audioContext.createMediaStreamSource(
-                        micAudioStream
-                    );
-
-
-                microphoneSource.connect(
-                    audioDestination
+            const microphoneOnlyStream =
+                new MediaStream(
+                    [
+                        microphoneTrack
+                    ]
                 );
-            }
+
+
+            const microphoneSource =
+                audioContext.createMediaStreamSource(
+                    microphoneOnlyStream
+                );
+
+
+            microphoneSource.connect(
+                audioDestination
+            );
         }
 
 
         /*
-         * ساخت Stream نهایی
+         * ترک صوتی نهایی:
+         *
+         * صدای سیستم
+         * +
+         * میکروفون
          */
-        const mixedStream =
-            new MediaStream();
-
-
-        mixedStream.addTrack(
-            screenVideoTrack
-        );
-
-
         const mixedAudioTrack =
             audioDestination
                 .stream
-                .getAudioTracks()[0];
+                .getAudioTracks()[0] ||
+            null;
+
+
+        /*
+         * Stream نهایی
+         */
+        const newStream =
+            new MediaStream();
+
+
+        newStream.addTrack(
+            videoTrack
+        );
 
 
         if (
             mixedAudioTrack
         ) {
 
-            mixedStream.addTrack(
+            newStream.addTrack(
                 mixedAudioTrack
             );
-
-        } else {
-
-            /*
-             * اگر مرورگر هیچ System Audio
-             * نداد، حداقل میکروفون را می‌فرستیم.
-             */
-            const micTrack =
-                microphoneStream
-                    ?.getAudioTracks()
-                    ?.[0] ||
-                null;
-
-
-            if (micTrack) {
-
-                mixedStream.addTrack(
-                    micTrack
-                );
-            }
         }
 
 
@@ -2044,7 +1978,7 @@ async function startScreenStream() {
 
 
         localStream =
-            mixedStream;
+            newStream;
 
 
         currentSource =
@@ -2055,9 +1989,13 @@ async function startScreenStream() {
             localStream;
 
 
+        /*
+         * ارسال ترک جدید برای همه بیننده‌ها
+         */
         await replaceTracksForAllPeers(
-            localStream.getVideoTracks()[0] || null,
-            localStream.getAudioTracks()[0] || null
+            videoTrack,
+
+            mixedAudioTrack
         );
 
 
@@ -2082,24 +2020,40 @@ async function startScreenStream() {
         cameraButton.textContent =
             "🖥️ تصویر صفحه روشن";
 
+
         micButton.textContent =
-            "🔊 صدای میکس روشن";
+            mixedAudioTrack
+                ? "🔊 سیستم + 🎙️ میکروفون"
+                : "🔇 صدا در دسترس نیست";
 
 
         sourceBadge.textContent =
-            "🖥️ صفحه + 🔊 صدا";
+            systemAudioTrack
+                ? "🖥️ صفحه + 🔊 سیستم + 🎙️ میکروفون"
+                : "🖥️ صفحه + 🎙️ میکروفون";
 
 
-        setStatus(
-            "در حال پخش صفحه + صدای سیستم + میکروفون"
-        );
+        if (
+            systemAudioTrack
+        ) {
+
+            setStatus(
+                "در حال پخش صفحه + صدای سیستم + میکروفون"
+            );
+
+        } else {
+
+            setStatus(
+                "صفحه + میکروفون در حال پخش است؛ صدای سیستم انتخاب نشده"
+            );
+        }
 
 
         /*
-         * کاربر از پنجره مرورگر
-         * اشتراک صفحه را متوقف کرده.
+         * اگر کاربر اشتراک صفحه را
+         * از خود مرورگر متوقف کند.
          */
-        screenVideoTrack.addEventListener(
+        videoTrack.addEventListener(
             "ended",
             async () => {
 
@@ -2108,16 +2062,17 @@ async function startScreenStream() {
                 }
 
 
-                await releaseMixedAudio();
-
                 await startCameraStream();
             }
         );
 
 
+        /*
+         * استریم قبلی را متوقف کن.
+         */
         if (
             oldStream &&
-            oldStream !== mixedStream
+            oldStream !== newStream
         ) {
 
             oldStream
@@ -2143,7 +2098,37 @@ async function startScreenStream() {
         );
 
 
-        await releaseMixedAudio();
+        if (displayStream) {
+
+            displayStream
+                .getTracks()
+                .forEach(
+                    track => {
+
+                        try {
+                            track.stop();
+                        } catch {}
+                    }
+                );
+        }
+
+
+        stopMicrophoneStream();
+
+
+        if (audioContext) {
+
+            try {
+                await audioContext.close();
+            } catch {}
+
+            audioContext =
+                null;
+        }
+
+
+        audioDestination =
+            null;
 
 
         if (
@@ -2152,7 +2137,7 @@ async function startScreenStream() {
         ) {
 
             setStatus(
-                "اشتراک صفحه لغو شد."
+                "اشتراک صفحه یا میکروفون لغو شد."
             );
 
         } else {
@@ -2252,15 +2237,23 @@ cameraButton.addEventListener(
         );
 
 
-        cameraButton.textContent =
-            enabled
-                ? (
-                    currentSource ===
-                    "screen"
-                        ? "🖥️ تصویر صفحه روشن"
-                        : "📷 تصویر روشن"
-                  )
-                : "🚫 تصویر خاموش";
+        if (
+            currentSource ===
+            "screen"
+        ) {
+
+            cameraButton.textContent =
+                enabled
+                    ? "🖥️ تصویر صفحه روشن"
+                    : "🚫 تصویر صفحه خاموش";
+
+        } else {
+
+            cameraButton.textContent =
+                enabled
+                    ? "📷 تصویر روشن"
+                    : "🚫 تصویر خاموش";
+        }
     }
 );
 
@@ -2309,15 +2302,23 @@ micButton.addEventListener(
         );
 
 
-        micButton.textContent =
-            enabled
-                ? (
-                    currentSource ===
-                    "screen"
-                        ? "🔊 صدای میکس روشن"
-                        : "🎙️ میکروفون روشن"
-                  )
-                : "🔇 صدا خاموش";
+        if (
+            currentSource ===
+            "screen"
+        ) {
+
+            micButton.textContent =
+                enabled
+                    ? "🔊 سیستم + 🎙️ میکروفون"
+                    : "🔇 صدای لایو خاموش";
+
+        } else {
+
+            micButton.textContent =
+                enabled
+                    ? "🎙️ میکروفون روشن"
+                    : "🔇 میکروفون خاموش";
+        }
     }
 );
 
@@ -2606,7 +2607,22 @@ async function stopLive() {
     }
 
 
-    await releaseMixedAudio();
+    stopMicrophoneStream();
+
+
+    if (audioContext) {
+
+        try {
+            await audioContext.close();
+        } catch {}
+
+        audioContext =
+            null;
+    }
+
+
+    audioDestination =
+        null;
 
 
     if (localStream) {
@@ -2653,7 +2669,7 @@ async function stopLive() {
 
 
 /* ============================================================
-   STOP BUTTON
+   BUTTONS
    ============================================================ */
 
 stopButton.addEventListener(
@@ -2675,10 +2691,6 @@ stopButton.addEventListener(
     }
 );
 
-
-/* ============================================================
-   CLOSE BUTTON
-   ============================================================ */
 
 closeButton.addEventListener(
     "click",
@@ -2726,7 +2738,7 @@ window.addEventListener(
 
 
 /* ============================================================
-   START
+   INITIALIZE
    ============================================================ */
 
 (async function init() {
