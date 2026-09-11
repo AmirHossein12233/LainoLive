@@ -67,6 +67,10 @@
             min-height: 100vh;
         }
 
+        /* =========================
+           TOPBAR
+        ========================= */
+
         .topbar {
             position: sticky;
             top: 0;
@@ -77,10 +81,7 @@
             justify-content: space-between;
 
             padding:
-                calc(
-                    12px +
-                    env(safe-area-inset-top)
-                )
+                calc(12px + env(safe-area-inset-top))
                 14px
                 12px;
 
@@ -134,12 +135,7 @@
             border-radius: 999px;
 
             background:
-                rgba(
-                    255,
-                    45,
-                    85,
-                    0.14
-                );
+                rgba(255, 45, 85, 0.14);
 
             color: #ff5578;
 
@@ -157,22 +153,16 @@
 
             box-shadow:
                 0 0 12px
-                rgba(
-                    255,
-                    54,
-                    95,
-                    0.8
-                );
+                rgba(255, 54, 95, 0.8);
         }
 
+        /* =========================
+           MAIN
+        ========================= */
+
         .main {
-            width: min(
-                1250px,
-                100%
-            );
-
+            width: min(1250px, 100%);
             margin: 0 auto;
-
             padding: 16px;
         }
 
@@ -187,6 +177,10 @@
 
             align-items: start;
         }
+
+        /* =========================
+           CARDS
+        ========================= */
 
         .video-card,
         .panel,
@@ -204,13 +198,16 @@
             overflow: hidden;
         }
 
+        /* =========================
+           VIDEO
+        ========================= */
+
         .video-wrap {
             position: relative;
 
             width: 100%;
 
-            aspect-ratio:
-                16 / 9;
+            aspect-ratio: 16 / 9;
 
             background: #000000;
 
@@ -248,21 +245,11 @@
             border-radius: 10px;
 
             background:
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.64
-                );
+                rgba(0, 0, 0, 0.64);
 
             border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.1
-                );
+                rgba(255, 255, 255, 0.1);
 
             font-size: 11px;
         }
@@ -275,8 +262,13 @@
             left: 12px;
         }
 
+        /* =========================
+           CONTROLS
+        ========================= */
+
         .controls {
             display: flex;
+
             flex-wrap: wrap;
 
             gap: 9px;
@@ -312,6 +304,14 @@
             background: #d72f50;
         }
 
+        .control-btn:hover {
+            filter: brightness(1.08);
+        }
+
+        /* =========================
+           INFO
+        ========================= */
+
         .info-card {
             margin-top: 14px;
 
@@ -328,6 +328,7 @@
 
         .meta-row {
             display: flex;
+
             flex-wrap: wrap;
 
             gap: 8px;
@@ -343,10 +344,15 @@
             border-radius: 10px;
 
             background: #181c29;
+
             color: #bbc1d2;
 
             font-size: 11px;
         }
+
+        /* =========================
+           AUDIO
+        ========================= */
 
         .panel {
             overflow: hidden;
@@ -358,7 +364,9 @@
 
         .panel-header {
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             padding:
@@ -394,7 +402,9 @@
 
         .audio-head {
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             margin-bottom: 8px;
@@ -412,6 +422,10 @@
             width: 100%;
             accent-color: #6a4cff;
         }
+
+        /* =========================
+           DIAGNOSTIC
+        ========================= */
 
         .diagnostic {
             margin-top: 14px;
@@ -492,6 +506,10 @@
             color: #ffd49b;
         }
 
+        /* =========================
+           NOTICE
+        ========================= */
+
         .notice {
             display: none;
 
@@ -531,8 +549,13 @@
             display: block;
         }
 
+        /* =========================
+           CHAT
+        ========================= */
+
         .chat-panel {
             display: flex;
+
             flex-direction: column;
 
             height: 470px;
@@ -550,7 +573,9 @@
             height: 100%;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             color: #70798d;
@@ -578,6 +603,7 @@
             color: #967fff;
 
             font-size: 11px;
+
             font-weight: 900;
         }
 
@@ -605,6 +631,7 @@
 
         .chat-input {
             flex: 1;
+
             min-width: 0;
 
             height: 44px;
@@ -622,6 +649,7 @@
             outline: none;
 
             background: #0d1018;
+
             color: #ffffff;
         }
 
@@ -776,7 +804,15 @@
                             class="control-btn"
                             type="button"
                         >
-                            🖥️ صفحه + صدای سیستم
+                            🖥️ صفحه + صدا
+                        </button>
+
+                        <button
+                            id="tabBtn"
+                            class="control-btn"
+                            type="button"
+                        >
+                            🌐 تب + صدای تب
                         </button>
 
                         <button
@@ -792,7 +828,7 @@
                             class="control-btn"
                             type="button"
                         >
-                            🔊 صدای سیستم
+                            🔊 صدای منبع
                         </button>
 
                         <button
@@ -886,7 +922,7 @@
                             <div class="audio-head">
 
                                 <span>
-                                    🔊 صدای سیستم / آهنگ
+                                    🔊 صدای سیستم / تب
                                 </span>
 
                                 <span
@@ -1005,12 +1041,14 @@
 <script>
 "use strict";
 
+
 /* =====================================================
    CONFIG
 ===================================================== */
 
 const SIGNALING_URL =
     "wss://lainolive-signaling.onrender.com";
+
 
 const RTC_CONFIG = {
     iceServers: [
@@ -1023,11 +1061,13 @@ const RTC_CONFIG = {
     ]
 };
 
+
 const STREAM_KEYS = [
     "lainolive_current_stream",
     "LainoLive_current_stream",
     "current_stream"
 ];
+
 
 const USERNAME_KEYS = [
     "lainolive_username",
@@ -1040,7 +1080,9 @@ const USERNAME_KEYS = [
 ===================================================== */
 
 let streamData = {};
+
 let streamId = "";
+
 let username = "";
 
 let socket = null;
@@ -1048,14 +1090,20 @@ let socket = null;
 let currentMode = "none";
 
 let cameraTrack = null;
+
 let screenTrack = null;
+
 let systemAudioTrack = null;
+
 let microphoneTrack = null;
 
-let microphoneEnabled = true;
 let systemAudioEnabled = false;
 
+let microphoneEnabled = true;
+
 let peers = new Map();
+
+let viewerIds = new Set();
 
 let ending = false;
 
@@ -1065,99 +1113,193 @@ let ending = false;
 ===================================================== */
 
 const localVideo =
-    document.getElementById("localVideo");
+    document.getElementById(
+        "localVideo"
+    );
+
 
 const statusElement =
-    document.getElementById("status");
+    document.getElementById(
+        "status"
+    );
+
 
 const viewerCount =
-    document.getElementById("viewerCount");
+    document.getElementById(
+        "viewerCount"
+    );
+
 
 const notice =
-    document.getElementById("notice");
+    document.getElementById(
+        "notice"
+    );
+
 
 const diagnostic =
-    document.getElementById("diagnostic");
+    document.getElementById(
+        "diagnostic"
+    );
+
 
 const streamTitle =
-    document.getElementById("streamTitle");
+    document.getElementById(
+        "streamTitle"
+    );
+
 
 const streamCategory =
-    document.getElementById("streamCategory");
+    document.getElementById(
+        "streamCategory"
+    );
+
 
 const streamIdElement =
-    document.getElementById("streamId");
+    document.getElementById(
+        "streamId"
+    );
+
 
 const cameraBtn =
-    document.getElementById("cameraBtn");
+    document.getElementById(
+        "cameraBtn"
+    );
+
 
 const screenBtn =
-    document.getElementById("screenBtn");
+    document.getElementById(
+        "screenBtn"
+    );
+
+
+const tabBtn =
+    document.getElementById(
+        "tabBtn"
+    );
+
 
 const micBtn =
-    document.getElementById("micBtn");
+    document.getElementById(
+        "micBtn"
+    );
+
 
 const systemAudioBtn =
-    document.getElementById("systemAudioBtn");
+    document.getElementById(
+        "systemAudioBtn"
+    );
+
 
 const stopBtn =
-    document.getElementById("stopBtn");
+    document.getElementById(
+        "stopBtn"
+    );
+
 
 const endBtn =
-    document.getElementById("endBtn");
+    document.getElementById(
+        "endBtn"
+    );
+
 
 const systemVolume =
-    document.getElementById("systemVolume");
+    document.getElementById(
+        "systemVolume"
+    );
+
 
 const micVolume =
-    document.getElementById("micVolume");
+    document.getElementById(
+        "micVolume"
+    );
+
 
 const systemValue =
-    document.getElementById("systemValue");
+    document.getElementById(
+        "systemValue"
+    );
+
 
 const micValue =
-    document.getElementById("micValue");
+    document.getElementById(
+        "micValue"
+    );
+
 
 const messages =
-    document.getElementById("messages");
+    document.getElementById(
+        "messages"
+    );
+
 
 const emptyChat =
-    document.getElementById("emptyChat");
+    document.getElementById(
+        "emptyChat"
+    );
+
 
 const chatForm =
-    document.getElementById("chatForm");
+    document.getElementById(
+        "chatForm"
+    );
+
 
 const chatInput =
-    document.getElementById("chatInput");
+    document.getElementById(
+        "chatInput"
+    );
 
 
 /* =====================================================
    UI
 ===================================================== */
 
-function setStatus(text) {
-    statusElement.textContent = text;
+function setStatus(
+    text
+) {
+
+    statusElement.textContent =
+        text;
 }
 
-function showNotice(text) {
-    notice.textContent = text;
-    notice.classList.add("show");
+
+function showNotice(
+    text
+) {
+
+    notice.textContent =
+        text;
+
+    notice.classList.add(
+        "show"
+    );
 }
+
 
 function hideNotice() {
-    notice.classList.remove("show");
+
+    notice.classList.remove(
+        "show"
+    );
 }
+
 
 function setDiagnostic(
     text,
     type = ""
 ) {
+
     diagnostic.className =
         "diagnostic";
 
+
     if (type) {
-        diagnostic.classList.add(type);
+
+        diagnostic.classList.add(
+            type
+        );
     }
+
 
     diagnostic.innerHTML =
         text;
@@ -1168,14 +1310,21 @@ function setDiagnostic(
    STORAGE
 ===================================================== */
 
-function readStorage(keys) {
+function readStorage(
+    keys
+) {
 
-    for (const key of keys) {
+    for (
+        const key
+        of keys
+    ) {
 
         try {
 
             const sessionValue =
-                sessionStorage.getItem(key);
+                sessionStorage.getItem(
+                    key
+                );
 
             if (sessionValue) {
                 return sessionValue;
@@ -1183,10 +1332,13 @@ function readStorage(keys) {
 
         } catch {}
 
+
         try {
 
             const localValue =
-                localStorage.getItem(key);
+                localStorage.getItem(
+                    key
+                );
 
             if (localValue) {
                 return localValue;
@@ -1195,6 +1347,7 @@ function readStorage(keys) {
         } catch {}
     }
 
+
     return null;
 }
 
@@ -1202,15 +1355,24 @@ function readStorage(keys) {
 function readStreamData() {
 
     const raw =
-        readStorage(STREAM_KEYS);
+        readStorage(
+            STREAM_KEYS
+        );
+
 
     if (!raw) {
         return {};
     }
 
+
     try {
-        return JSON.parse(raw);
+
+        return JSON.parse(
+            raw
+        );
+
     } catch {
+
         return {};
     }
 }
@@ -1223,6 +1385,7 @@ function getQueryId() {
             window.location.search
         );
 
+
     return (
         params.get("id") ||
         params.get("stream_id") ||
@@ -1232,7 +1395,9 @@ function getQueryId() {
 }
 
 
-function getStreamId(data) {
+function getStreamId(
+    data
+) {
 
     return String(
         data.stream_id ??
@@ -1245,46 +1410,72 @@ function getStreamId(data) {
 }
 
 
-function getUsername(data) {
+function getUsername(
+    data
+) {
 
     return String(
         data.username ??
         data.owner ??
-        readStorage(USERNAME_KEYS) ??
+        readStorage(
+            USERNAME_KEYS
+        ) ??
         ""
     );
 }
 
 
 /* =====================================================
-   MEDIA HELPERS
+   MEDIA
 ===================================================== */
 
-function stopTrack(track) {
+function stopTrack(
+    track
+) {
 
     if (!track) {
         return;
     }
 
+
     try {
+
         track.stop();
+
     } catch {}
 }
 
 
 function stopAllMedia() {
 
-    stopTrack(cameraTrack);
-    stopTrack(screenTrack);
-    stopTrack(systemAudioTrack);
-    stopTrack(microphoneTrack);
+    stopTrack(
+        cameraTrack
+    );
+
+    stopTrack(
+        screenTrack
+    );
+
+    stopTrack(
+        systemAudioTrack
+    );
+
+    stopTrack(
+        microphoneTrack
+    );
+
 
     cameraTrack = null;
+
     screenTrack = null;
+
     systemAudioTrack = null;
+
     microphoneTrack = null;
 
-    localVideo.srcObject = null;
+
+    localVideo.srcObject =
+        null;
 }
 
 
@@ -1293,41 +1484,53 @@ function updatePreview() {
     const preview =
         new MediaStream();
 
-    if (cameraTrack) {
-        preview.addTrack(cameraTrack);
+
+    const videoTrack =
+        cameraTrack ||
+        screenTrack;
+
+
+    if (videoTrack) {
+
+        preview.addTrack(
+            videoTrack
+        );
     }
 
-    if (screenTrack) {
-        preview.addTrack(screenTrack);
-    }
-
-    /*
-       صداهای زیر فقط برای تشخیص محلی
-       داخل preview هستند.
-    */
 
     if (systemAudioTrack) {
-        preview.addTrack(systemAudioTrack);
+
+        preview.addTrack(
+            systemAudioTrack
+        );
     }
 
+
     if (microphoneTrack) {
-        preview.addTrack(microphoneTrack);
+
+        preview.addTrack(
+            microphoneTrack
+        );
     }
+
 
     localVideo.srcObject =
         preview;
 
+
     localVideo.muted =
         true;
 
-    localVideo.play().catch(
-        () => {}
-    );
+
+    localVideo.play()
+        .catch(
+            () => {}
+        );
 }
 
 
 /* =====================================================
-   AUDIO DIAGNOSTIC
+   DIAGNOSTIC
 ===================================================== */
 
 function updateAudioDiagnostic() {
@@ -1335,65 +1538,84 @@ function updateAudioDiagnostic() {
     const hasSystem =
         !!systemAudioTrack;
 
-    const hasMicrophone =
+
+    const hasMic =
         !!microphoneTrack;
+
 
     if (
         hasSystem &&
-        hasMicrophone
+        hasMic
     ) {
 
         systemAudioBtn.classList.add(
             "active"
         );
 
+
         setDiagnostic(
-            "✅ <strong>صدای سیستم:</strong> دریافت شد<br>" +
+            "✅ <strong>صدای منبع:</strong> دریافت شد<br>" +
             "✅ <strong>میکروفن:</strong> فعال<br>" +
-            "🎵 صدای سیستم و 🎤 میکروفن آماده ارسال جداگانه هستند.",
+            "🎵 صدای منبع و 🎤 میکروفن به‌صورت جداگانه آماده ارسال هستند.",
             "ok"
         );
+
 
         return;
     }
 
+
     if (
         !hasSystem &&
-        hasMicrophone
+        hasMic
     ) {
 
         systemAudioBtn.classList.remove(
             "active"
         );
 
+
         setDiagnostic(
-            "⚠️ <strong>صدای سیستم:</strong> دریافت نشد<br>" +
+            "⚠️ <strong>صدای منبع:</strong> دریافت نشد<br>" +
             "✅ <strong>میکروفن:</strong> فعال<br>" +
-            "VIDEO TRACKS و SYSTEM AUDIO TRACKS در کنسول نیز ثبت می‌شوند.",
+            "در حالت «تب + صدای تب» باید صدای تب هنگام انتخاب تب در دسترس باشد.",
             "warning"
         );
+
 
         return;
     }
 
-    if (
-        hasSystem &&
-        !hasMicrophone
-    ) {
-
-        setDiagnostic(
-            "✅ <strong>صدای سیستم:</strong> دریافت شد<br>" +
-            "⚠️ <strong>میکروفن:</strong> فعال نیست.",
-            "warning"
-        );
-
-        return;
-    }
 
     setDiagnostic(
-        "⚠️ هنوز هیچ منبع صوتی دریافت نشده است.",
+        "⚠️ منبع صوتی کامل نیست.",
         "warning"
     );
+}
+
+
+/* =====================================================
+   REOFFER
+===================================================== */
+
+async function renegotiateAllViewers() {
+
+    for (
+        const viewerId
+        of Array.from(
+            viewerIds
+        )
+    ) {
+
+        if (!viewerId) {
+            continue;
+        }
+
+
+        await createOffer(
+            viewerId
+        );
+    }
 }
 
 
@@ -1409,8 +1631,11 @@ async function startCamera() {
         "در حال فعال‌سازی دوربین..."
     );
 
+
     closeAllPeers();
+
     stopAllMedia();
+
 
     try {
 
@@ -1421,83 +1646,116 @@ async function startCamera() {
                         width: {
                             ideal: 1280
                         },
+
                         height: {
                             ideal: 720
                         },
-                        facingMode: "user"
+
+                        facingMode:
+                            "user"
                     },
 
                     audio: true
                 }
             );
 
+
         currentMode =
             "camera";
 
+
         cameraTrack =
-            stream.getVideoTracks()[0] ||
-            null;
+            stream.getVideoTracks()[0]
+            || null;
+
 
         microphoneTrack =
-            stream.getAudioTracks()[0] ||
-            null;
+            stream.getAudioTracks()[0]
+            || null;
+
 
         screenTrack =
             null;
 
+
         systemAudioTrack =
             null;
+
 
         microphoneEnabled =
             true;
 
+
         systemAudioEnabled =
             false;
 
+
         if (microphoneTrack) {
+
             microphoneTrack.enabled =
                 true;
         }
+
 
         cameraBtn.classList.add(
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
+
+        tabBtn.classList.remove(
+            "active"
+        );
+
 
         micBtn.classList.add(
             "active"
         );
 
+
         systemAudioBtn.classList.remove(
             "active"
         );
 
+
         systemValue.textContent =
             "خاموش";
+
 
         micValue.textContent =
             "روشن";
 
+
         updatePreview();
+
         updateAudioDiagnostic();
+
 
         setStatus(
             "دوربین + میکروفن فعال"
         );
 
-    } catch (error) {
+
+        await renegotiateAllViewers();
+
+    } catch (
+        error
+    ) {
 
         console.error(
             "camera error:",
             error
         );
 
+
         showNotice(
             "دسترسی به دوربین یا میکروفن انجام نشد."
         );
+
 
         setStatus(
             "خطا در دوربین"
@@ -1507,7 +1765,7 @@ async function startCamera() {
 
 
 /* =====================================================
-   SCREEN + SYSTEM AUDIO + MICROPHONE
+   SCREEN SHARE
 ===================================================== */
 
 async function startScreen() {
@@ -1518,110 +1776,109 @@ async function startScreen() {
         "در حال باز کردن انتخاب صفحه..."
     );
 
+
     closeAllPeers();
+
     stopAllMedia();
+
+
+    const advancedOptions = {
+        video: true,
+
+        audio: {
+            suppressLocalAudioPlayback:
+                false
+        },
+
+        systemAudio:
+            "include",
+
+        windowAudio:
+            "system",
+
+        surfaceSwitching:
+            "include",
+
+        selfBrowserSurface:
+            "exclude",
+
+        monitorTypeSurfaces:
+            "include"
+    };
+
 
     try {
 
-        /*
-           طبق Screen Capture API:
-
-           video = true
-           audio = true
-
-           systemAudio:
-           درخواست قرار گرفتن صدای سیستم
-           در گزینه‌های اشتراک.
-
-           windowAudio:
-           درخواست صدای سیستم برای
-           اشتراک پنجره.
-
-           این گزینه‌ها فقط hint هستند؛
-           مرورگر می‌تواند آنها را نادیده بگیرد.
-        */
-
-        const displayMediaOptions = {
-            video: true,
-
-            audio: {
-                suppressLocalAudioPlayback: false
-            },
-
-            systemAudio:
-                "include",
-
-            windowAudio:
-                "system",
-
-            surfaceSwitching:
-                "include",
-
-            selfBrowserSurface:
-                "exclude",
-
-            monitorTypeSurfaces:
-                "include"
-        };
+        let displayStream;
 
 
-        console.log(
-            "DISPLAY MEDIA OPTIONS:",
-            displayMediaOptions
-        );
+        try {
 
+            displayStream =
+                await navigator.mediaDevices.getDisplayMedia(
+                    advancedOptions
+                );
 
-        const displayStream =
-            await navigator.mediaDevices.getDisplayMedia(
-                displayMediaOptions
+        } catch (
+            advancedError
+        ) {
+
+            console.warn(
+                "Advanced capture failed:",
+                advancedError
             );
 
 
-        /*
-           تشخیص دقیق
-        */
+            /*
+               fallback برای مرورگرهایی که
+               بعضی hintها را قبول نمی‌کنند.
+            */
+
+            displayStream =
+                await navigator.mediaDevices.getDisplayMedia(
+                    {
+                        video: true,
+                        audio: true
+                    }
+                );
+        }
+
 
         const videoTracks =
             displayStream.getVideoTracks();
+
 
         const audioTracks =
             displayStream.getAudioTracks();
 
 
         console.log(
-            "VIDEO TRACKS:",
+            "SCREEN VIDEO TRACKS:",
             videoTracks.length
         );
 
+
         console.log(
-            "SYSTEM AUDIO TRACKS:",
+            "SCREEN AUDIO TRACKS:",
             audioTracks.length
         );
 
-        console.log(
-            "VIDEO TRACK:",
-            videoTracks[0] || null
-        );
 
         console.log(
-            "AUDIO TRACK:",
+            "SCREEN AUDIO TRACK:",
             audioTracks[0] || null
         );
 
 
         screenTrack =
-            videoTracks[0] ||
-            null;
+            videoTracks[0]
+            || null;
 
 
         systemAudioTrack =
-            audioTracks[0] ||
-            null;
+            audioTracks[0]
+            || null;
 
-
-        /*
-           میکروفن کاملاً جدا
-        */
 
         const microphoneStream =
             await navigator.mediaDevices.getUserMedia(
@@ -1632,29 +1889,34 @@ async function startScreen() {
 
 
         microphoneTrack =
-            microphoneStream.getAudioTracks()[0] ||
-            null;
+            microphoneStream.getAudioTracks()[0]
+            || null;
 
 
         currentMode =
             "screen";
 
+
         cameraTrack =
             null;
 
-        microphoneEnabled =
-            true;
 
         systemAudioEnabled =
             !!systemAudioTrack;
 
 
+        microphoneEnabled =
+            !!microphoneTrack;
+
+
         if (screenTrack) {
+
             screenTrack.addEventListener(
                 "ended",
                 () => {
 
                     if (!ending) {
+
                         startCamera();
                     }
                 }
@@ -1667,13 +1929,6 @@ async function startScreen() {
             systemAudioTrack.enabled =
                 true;
 
-            systemAudioEnabled =
-                true;
-
-        } else {
-
-            systemAudioEnabled =
-                false;
         }
 
 
@@ -1681,14 +1936,6 @@ async function startScreen() {
 
             microphoneTrack.enabled =
                 true;
-
-            microphoneEnabled =
-                true;
-
-        } else {
-
-            microphoneEnabled =
-                false;
         }
 
 
@@ -1696,14 +1943,22 @@ async function startScreen() {
             "active"
         );
 
+
         screenBtn.classList.add(
             "active"
         );
+
+
+        tabBtn.classList.remove(
+            "active"
+        );
+
 
         micBtn.classList.toggle(
             "active",
             microphoneEnabled
         );
+
 
         systemAudioBtn.classList.toggle(
             "active",
@@ -1713,7 +1968,7 @@ async function startScreen() {
 
         systemValue.textContent =
             systemAudioTrack
-                ? "دریافت شد"
+                ? "روشن"
                 : "دریافت نشد";
 
 
@@ -1724,11 +1979,13 @@ async function startScreen() {
 
 
         updatePreview();
+
         updateAudioDiagnostic();
 
 
         if (
-            systemAudioTrack &&
+            systemAudioTrack
+            &&
             microphoneTrack
         ) {
 
@@ -1737,7 +1994,6 @@ async function startScreen() {
             );
 
         } else if (
-            !systemAudioTrack &&
             microphoneTrack
         ) {
 
@@ -1747,46 +2003,25 @@ async function startScreen() {
 
 
             showNotice(
-                "صفحه گرفته شد ولی صدای سیستم توسط مرورگر برنگردانده شد."
-            );
-
-        } else {
-
-            setStatus(
-                "منبع صوتی کامل نیست"
+                "صفحه گرفته شد، ولی ترک صدای سیستم توسط مرورگر برنگشت."
             );
         }
 
 
-        /*
-           مهم:
-           اگر صدای سیستم وجود ندارد،
-           دیگر WebRTC ترک جعلی نمی‌سازد.
-        */
+        await renegotiateAllViewers();
 
-        console.log(
-            "FINAL VIDEO TRACK:",
-            screenTrack
-        );
-
-        console.log(
-            "FINAL SYSTEM AUDIO TRACK:",
-            systemAudioTrack
-        );
-
-        console.log(
-            "FINAL MICROPHONE TRACK:",
-            microphoneTrack
-        );
-
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
             "screen capture error:",
             error
         );
 
+
         stopAllMedia();
+
 
         if (
             error?.name ===
@@ -1808,9 +2043,11 @@ async function startScreen() {
             );
         }
 
+
         setStatus(
             "اشتراک صفحه فعال نشد"
         );
+
 
         updateAudioDiagnostic();
     }
@@ -1818,7 +2055,306 @@ async function startScreen() {
 
 
 /* =====================================================
-   MICROPHONE
+   TAB SHARE
+===================================================== */
+
+async function startTabShare() {
+
+    hideNotice();
+
+
+    setStatus(
+        "در حال باز کردن انتخاب تب..."
+    );
+
+
+    closeAllPeers();
+
+    stopAllMedia();
+
+
+    try {
+
+        let tabStream;
+
+
+        const tabOptions = {
+            video: {
+                displaySurface:
+                    "browser"
+            },
+
+            audio: true,
+
+            preferCurrentTab:
+                true,
+
+            selfBrowserSurface:
+                "include",
+
+            surfaceSwitching:
+                "include",
+
+            systemAudio:
+                "exclude"
+        };
+
+
+        try {
+
+            tabStream =
+                await navigator.mediaDevices.getDisplayMedia(
+                    tabOptions
+                );
+
+        } catch (
+            advancedError
+        ) {
+
+            console.warn(
+                "Advanced tab capture failed:",
+                advancedError
+            );
+
+
+            /*
+               fallback
+            */
+
+            tabStream =
+                await navigator.mediaDevices.getDisplayMedia(
+                    {
+                        video: true,
+                        audio: true
+                    }
+                );
+        }
+
+
+        const videoTracks =
+            tabStream.getVideoTracks();
+
+
+        const audioTracks =
+            tabStream.getAudioTracks();
+
+
+        console.log(
+            "TAB VIDEO TRACKS:",
+            videoTracks.length
+        );
+
+
+        console.log(
+            "TAB AUDIO TRACKS:",
+            audioTracks.length
+        );
+
+
+        console.log(
+            "TAB AUDIO TRACK:",
+            audioTracks[0]
+                || null
+        );
+
+
+        screenTrack =
+            videoTracks[0]
+            || null;
+
+
+        /*
+           صدای تب به عنوان
+           systemAudioTrack نگه داشته می‌شود
+           تا viewer آن را جدا دریافت کند.
+        */
+
+        systemAudioTrack =
+            audioTracks[0]
+            || null;
+
+
+        const microphoneStream =
+            await navigator.mediaDevices.getUserMedia(
+                {
+                    audio: true
+                }
+            );
+
+
+        microphoneTrack =
+            microphoneStream.getAudioTracks()[0]
+            || null;
+
+
+        cameraTrack =
+            null;
+
+
+        currentMode =
+            "tab";
+
+
+        systemAudioEnabled =
+            !!systemAudioTrack;
+
+
+        microphoneEnabled =
+            !!microphoneTrack;
+
+
+        if (systemAudioTrack) {
+
+            systemAudioTrack.enabled =
+                true;
+        }
+
+
+        if (microphoneTrack) {
+
+            microphoneTrack.enabled =
+                true;
+        }
+
+
+        cameraBtn.classList.remove(
+            "active"
+        );
+
+
+        screenBtn.classList.remove(
+            "active"
+        );
+
+
+        tabBtn.classList.add(
+            "active"
+        );
+
+
+        micBtn.classList.toggle(
+            "active",
+            microphoneEnabled
+        );
+
+
+        systemAudioBtn.classList.toggle(
+            "active",
+            systemAudioEnabled
+        );
+
+
+        systemValue.textContent =
+            systemAudioTrack
+                ? "صدای تب فعال"
+                : "صدای تب دریافت نشد";
+
+
+        micValue.textContent =
+            microphoneTrack
+                ? "روشن"
+                : "دریافت نشد";
+
+
+        updatePreview();
+
+        updateAudioDiagnostic();
+
+
+        if (screenTrack) {
+
+            screenTrack.addEventListener(
+                "ended",
+                () => {
+
+                    if (!ending) {
+
+                        startCamera();
+                    }
+                }
+            );
+        }
+
+
+        if (
+            systemAudioTrack
+            &&
+            microphoneTrack
+        ) {
+
+            setStatus(
+                "تب + صدای تب + میکروفن فعال"
+            );
+
+        } else if (
+            systemAudioTrack
+        ) {
+
+            setStatus(
+                "تب + صدای تب فعال"
+            );
+
+        } else {
+
+            setStatus(
+                "تب فعال؛ صدای تب دریافت نشد"
+            );
+
+
+            showNotice(
+                "تب گرفته شد، اما مرورگر ترک صدای تب را برنگرداند."
+            );
+        }
+
+
+        await renegotiateAllViewers();
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+            "tab share error:",
+            error
+        );
+
+
+        stopAllMedia();
+
+
+        if (
+            error?.name ===
+            "NotAllowedError"
+        ) {
+
+            showNotice(
+                "اشتراک‌گذاری تب لغو شد."
+            );
+
+        } else {
+
+            showNotice(
+                "اشتراک تب انجام نشد: " +
+                (
+                    error?.message ||
+                    "خطای نامشخص"
+                )
+            );
+        }
+
+
+        setStatus(
+            "اشتراک تب فعال نشد"
+        );
+
+
+        updateAudioDiagnostic();
+    }
+}
+
+
+/* =====================================================
+   AUDIO TOGGLES
 ===================================================== */
 
 function toggleMicrophone() {
@@ -1854,16 +2390,12 @@ function toggleMicrophone() {
 }
 
 
-/* =====================================================
-   SYSTEM AUDIO
-===================================================== */
-
 function toggleSystemAudio() {
 
     if (!systemAudioTrack) {
 
         showNotice(
-            "ترک صدای سیستم از مرورگر دریافت نشده است."
+            "صدای منبع دریافت نشده است."
         );
 
         return;
@@ -1895,18 +2427,27 @@ function toggleSystemAudio() {
    PEERS
 ===================================================== */
 
-function closePeer(viewerId) {
+function closePeer(
+    viewerId
+) {
 
     const peer =
-        peers.get(viewerId);
+        peers.get(
+            viewerId
+        );
+
 
     if (!peer) {
         return;
     }
 
+
     try {
+
         peer.close();
+
     } catch {}
+
 
     peers.delete(
         viewerId
@@ -1925,8 +2466,11 @@ function closeAllPeers() {
     ) {
 
         try {
+
             peer.close();
+
         } catch {}
+
 
         peers.delete(
             viewerId
@@ -1957,11 +2501,14 @@ function createPeer(
 
 
     /*
-       ترک‌ها کاملاً جدا هستند:
+       VIDEO:
+       camera OR screen/tab
 
-       camera/screen video
-       system audio
-       microphone audio
+       AUDIO 1:
+       system/tab audio
+
+       AUDIO 2:
+       microphone
     */
 
     const videoTrack =
@@ -1973,6 +2520,7 @@ function createPeer(
 
         peer.addTrack(
             videoTrack,
+
             new MediaStream([
                 videoTrack
             ])
@@ -1984,6 +2532,7 @@ function createPeer(
 
         peer.addTrack(
             systemAudioTrack,
+
             new MediaStream([
                 systemAudioTrack
             ])
@@ -1995,6 +2544,7 @@ function createPeer(
 
         peer.addTrack(
             microphoneTrack,
+
             new MediaStream([
                 microphoneTrack
             ])
@@ -2030,7 +2580,10 @@ function createPeer(
 
             if (
                 peer.connectionState ===
-                "failed"
+                    "failed"
+                ||
+                peer.connectionState ===
+                    "closed"
             ) {
 
                 closePeer(
@@ -2086,12 +2639,15 @@ async function createOffer(
             }
         );
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
             "offer error:",
             error
         );
+
 
         closePeer(
             viewerId
@@ -2127,7 +2683,9 @@ function sendSignal(
 
         return true;
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
             "signal error:",
@@ -2147,9 +2705,11 @@ function connectSignaling() {
             "شناسه لایو پیدا نشد"
         );
 
+
         showNotice(
             "ابتدا یک لایو از صفحه اصلی بسازید."
         );
+
 
         return;
     }
@@ -2167,15 +2727,19 @@ function connectSignaling() {
                 SIGNALING_URL
             );
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
             error
         );
 
+
         showNotice(
             "اتصال به سرور لایو ایجاد نشد."
         );
+
 
         return;
     }
@@ -2226,162 +2790,9 @@ function connectSignaling() {
             }
 
 
-            switch (
-                message.type
-            ) {
-
-                case "joined":
-
-                    if (
-                        typeof message.viewer_count ===
-                        "number"
-                    ) {
-
-                        viewerCount.textContent =
-                            String(
-                                message.viewer_count
-                            );
-                    }
-
-
-                    setStatus(
-                        "لایو آماده است"
-                    );
-
-                    break;
-
-
-                case "room-info":
-
-                    if (
-                        typeof message.viewer_count ===
-                        "number"
-                    ) {
-
-                        viewerCount.textContent =
-                            String(
-                                message.viewer_count
-                            );
-                    }
-
-                    break;
-
-
-                case "viewer-joined":
-
-                    await createOffer(
-                        message.viewer_id
-                    );
-
-                    break;
-
-
-                case "answer": {
-
-                    const viewerId =
-                        message.viewer_id;
-
-                    const peer =
-                        peers.get(
-                            viewerId
-                        );
-
-                    if (
-                        !peer ||
-                        !message.answer
-                    ) {
-                        break;
-                    }
-
-                    try {
-
-                        await peer.setRemoteDescription(
-                            new RTCSessionDescription(
-                                message.answer
-                            )
-                        );
-
-                    } catch (error) {
-
-                        console.error(
-                            "answer error:",
-                            error
-                        );
-                    }
-
-                    break;
-                }
-
-
-                case "ice-candidate": {
-
-                    const viewerId =
-                        message.viewer_id;
-
-                    const peer =
-                        peers.get(
-                            viewerId
-                        );
-
-                    if (
-                        !peer ||
-                        !message.candidate
-                    ) {
-                        break;
-                    }
-
-                    try {
-
-                        await peer.addIceCandidate(
-                            new RTCIceCandidate(
-                                message.candidate
-                            )
-                        );
-
-                    } catch (error) {
-
-                        console.warn(
-                            "ICE error:",
-                            error
-                        );
-                    }
-
-                    break;
-                }
-
-
-                case "viewer-left":
-
-                    closePeer(
-                        message.viewer_id
-                    );
-
-                    break;
-
-
-                case "chat-message":
-
-                    addChatMessage(
-                        message.username ||
-                            message.user ||
-                            "کاربر",
-
-                        message.message ||
-                            ""
-                    );
-
-                    break;
-
-
-                case "error":
-
-                    showNotice(
-                        message.message ||
-                            "خطای سرور"
-                    );
-
-                    break;
-            }
+            await handleSignal(
+                message
+            );
         };
 
 
@@ -2392,6 +2803,7 @@ function connectSignaling() {
                 "WebSocket error:",
                 error
             );
+
 
             setStatus(
                 "خطا در اتصال"
@@ -2413,6 +2825,231 @@ function connectSignaling() {
 
 
 /* =====================================================
+   SIGNAL HANDLER
+===================================================== */
+
+async function handleSignal(
+    message
+) {
+
+    if (!message) {
+        return;
+    }
+
+
+    switch (
+        message.type
+    ) {
+
+        case "joined":
+
+            if (
+                typeof message.viewer_count ===
+                "number"
+            ) {
+
+                viewerCount.textContent =
+                    String(
+                        message.viewer_count
+                    );
+            }
+
+
+            setStatus(
+                "لایو آماده است"
+            );
+
+
+            break;
+
+
+        case "room-info":
+
+            if (
+                typeof message.viewer_count ===
+                "number"
+            ) {
+
+                viewerCount.textContent =
+                    String(
+                        message.viewer_count
+                    );
+            }
+
+
+            break;
+
+
+        case "viewer-joined": {
+
+            const viewerId =
+                String(
+                    message.viewer_id ||
+                    ""
+                );
+
+
+            if (viewerId) {
+
+                viewerIds.add(
+                    viewerId
+                );
+
+
+                await createOffer(
+                    viewerId
+                );
+            }
+
+
+            break;
+        }
+
+
+        case "answer": {
+
+            const viewerId =
+                String(
+                    message.viewer_id ||
+                    ""
+                );
+
+
+            const peer =
+                peers.get(
+                    viewerId
+                );
+
+
+            if (
+                !peer ||
+                !message.answer
+            ) {
+                break;
+            }
+
+
+            try {
+
+                await peer.setRemoteDescription(
+                    new RTCSessionDescription(
+                        message.answer
+                    )
+                );
+
+            } catch (
+                error
+            ) {
+
+                console.error(
+                    "answer error:",
+                    error
+                );
+            }
+
+
+            break;
+        }
+
+
+        case "ice-candidate": {
+
+            const viewerId =
+                String(
+                    message.viewer_id ||
+                    ""
+                );
+
+
+            const peer =
+                peers.get(
+                    viewerId
+                );
+
+
+            if (
+                !peer ||
+                !message.candidate
+            ) {
+                break;
+            }
+
+
+            try {
+
+                await peer.addIceCandidate(
+                    new RTCIceCandidate(
+                        message.candidate
+                    )
+                );
+
+            } catch (
+                error
+            ) {
+
+                console.warn(
+                    "ICE error:",
+                    error
+                );
+            }
+
+
+            break;
+        }
+
+
+        case "viewer-left": {
+
+            const viewerId =
+                String(
+                    message.viewer_id ||
+                    ""
+                );
+
+
+            viewerIds.delete(
+                viewerId
+            );
+
+
+            closePeer(
+                viewerId
+            );
+
+
+            break;
+        }
+
+
+        case "chat-message":
+
+            addChatMessage(
+                message.username ||
+                    message.user ||
+                    "کاربر",
+
+                message.message ||
+                    ""
+            );
+
+
+            break;
+
+
+        case "error":
+
+            showNotice(
+                message.message ||
+                    "خطای سرور"
+            );
+
+
+            break;
+    }
+}
+
+
+/* =====================================================
    CHAT
 ===================================================== */
 
@@ -2422,6 +3059,7 @@ function addChatMessage(
 ) {
 
     if (emptyChat) {
+
         emptyChat.style.display =
             "none";
     }
@@ -2432,6 +3070,7 @@ function addChatMessage(
             "div"
         );
 
+
     box.className =
         "message";
 
@@ -2441,8 +3080,10 @@ function addChatMessage(
             "div"
         );
 
+
     userElement.className =
         "message-user";
+
 
     userElement.textContent =
         user ||
@@ -2454,8 +3095,10 @@ function addChatMessage(
             "div"
         );
 
+
     textElement.className =
         "message-text";
+
 
     textElement.textContent =
         text ||
@@ -2465,6 +3108,7 @@ function addChatMessage(
     box.appendChild(
         userElement
     );
+
 
     box.appendChild(
         textElement
@@ -2504,6 +3148,7 @@ async function sendChat(
             }
         )
     ) {
+
         return;
     }
 
@@ -2546,11 +3191,14 @@ async function sendChat(
             );
         }
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
             error
         );
+
 
         showNotice(
             "ارسال پیام انجام نشد."
@@ -2573,6 +3221,12 @@ systemVolume.addEventListener(
             );
 
 
+        /*
+           این کنترل برای ترک منبع
+           است؛ صدای واقعی viewer نیز
+           جداگانه قابل کنترل است.
+        */
+
         if (
             systemAudioTrack
         ) {
@@ -2580,13 +3234,15 @@ systemVolume.addEventListener(
             systemAudioTrack.enabled =
                 value > 0;
 
+
             systemAudioEnabled =
                 value > 0;
         }
 
 
         systemValue.textContent =
-            value + "%";
+            value +
+            "%";
     }
 );
 
@@ -2608,13 +3264,15 @@ micVolume.addEventListener(
             microphoneTrack.enabled =
                 value > 0;
 
+
             microphoneEnabled =
                 value > 0;
         }
 
 
         micValue.textContent =
-            value + "%";
+            value +
+            "%";
     }
 );
 
@@ -2628,20 +3286,30 @@ cameraBtn.addEventListener(
     startCamera
 );
 
+
 screenBtn.addEventListener(
     "click",
     startScreen
 );
+
+
+tabBtn.addEventListener(
+    "click",
+    startTabShare
+);
+
 
 micBtn.addEventListener(
     "click",
     toggleMicrophone
 );
 
+
 systemAudioBtn.addEventListener(
     "click",
     toggleSystemAudio
 );
+
 
 stopBtn.addEventListener(
     "click",
@@ -2651,38 +3319,53 @@ stopBtn.addEventListener(
 
         stopAllMedia();
 
+
         currentMode =
             "none";
+
 
         cameraBtn.classList.remove(
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
+
+        tabBtn.classList.remove(
+            "active"
+        );
+
 
         micBtn.classList.remove(
             "active"
         );
 
+
         systemAudioBtn.classList.remove(
             "active"
         );
 
-        setDiagnostic(
-            "⏹ منابع متوقف شدند."
-        );
 
         setStatus(
             "منبع متوقف شد"
+        );
+
+
+        setDiagnostic(
+            "⏹ منابع متوقف شدند.",
+            ""
         );
     }
 );
 
 
 document
-    .getElementById("backBtn")
+    .getElementById(
+        "backBtn"
+    )
     .addEventListener(
         "click",
         () => {
@@ -2763,7 +3446,9 @@ async function stopServerStream() {
             }
         );
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.warn(
             "stop stream:",
@@ -2780,11 +3465,13 @@ async function endLive() {
     }
 
 
-    if (
-        !window.confirm(
+    const confirmEnd =
+        window.confirm(
             "آیا می‌خواهید لایو را پایان دهید؟"
-        )
-    ) {
+        );
+
+
+    if (!confirmEnd) {
         return;
     }
 
@@ -2803,6 +3490,9 @@ async function endLive() {
     stopAllMedia();
 
 
+    viewerIds.clear();
+
+
     if (socket) {
 
         try {
@@ -2818,7 +3508,9 @@ async function endLive() {
 
 
         try {
+
             socket.close();
+
         } catch {}
     }
 
@@ -2832,6 +3524,7 @@ async function endLive() {
             "lainolive_current_stream"
         );
 
+
         sessionStorage.removeItem(
             "LainoLive_current_stream"
         );
@@ -2844,6 +3537,7 @@ async function endLive() {
         localStorage.removeItem(
             "lainolive_current_stream"
         );
+
 
         localStorage.removeItem(
             "LainoLive_current_stream"
@@ -2902,7 +3596,7 @@ async function initialize() {
     ) {
 
         showNotice(
-            "این صفحه باید روی HTTPS اجرا شود تا اشتراک صفحه و رسانه‌ها کار کنند."
+            "اشتراک صفحه باید از طریق HTTPS اجرا شود."
         );
     }
 
@@ -2913,13 +3607,15 @@ async function initialize() {
         !navigator.mediaDevices.getDisplayMedia
     ) {
 
-        showNotice(
-            "مرورگر شما Screen Capture را پشتیبانی نمی‌کند."
-        );
-
         setStatus(
             "مرورگر پشتیبانی نمی‌شود"
         );
+
+
+        showNotice(
+            "مرورگر شما قابلیت لازم برای پخش زنده را ندارد."
+        );
+
 
         return;
     }
@@ -2931,9 +3627,11 @@ async function initialize() {
             "شناسه لایو پیدا نشد"
         );
 
+
         showNotice(
             "ابتدا یک لایو از صفحه اصلی ایجاد کنید."
         );
+
 
         return;
     }
@@ -2946,18 +3644,31 @@ async function initialize() {
 }
 
 
+/* =====================================================
+   CLEANUP
+===================================================== */
+
 window.addEventListener(
     "beforeunload",
     () => {
 
-        ending = true;
+        ending =
+            true;
+
 
         closeAllPeers();
 
+
         stopAllMedia();
 
+
+        viewerIds.clear();
+
+
         try {
+
             socket?.close();
+
         } catch {}
     }
 );
