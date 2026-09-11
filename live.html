@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#08080d">
 
-    <title>پخش لایو - LainoLive</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#08080f"
+    >
+
+    <title>LainoLive - پخش زنده</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -18,15 +29,21 @@
             margin: 0;
             padding: 0;
             min-height: 100%;
+
             background:
                 radial-gradient(
                     circle at top,
-                    #1a192b 0%,
-                    #08080d 52%,
-                    #030304 100%
+                    #1d1730 0%,
+                    #09090f 48%,
+                    #040406 100%
                 );
-            color: white;
-            font-family: Tahoma, Arial, sans-serif;
+
+            color: #fff;
+
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
         }
 
         body {
@@ -38,428 +55,361 @@
             font-family: inherit;
         }
 
-        button {
-            cursor: pointer;
-        }
-
         .page {
             min-height: 100vh;
-            padding-bottom:
-                calc(
-                    90px +
-                    env(safe-area-inset-bottom)
-                );
+            padding-bottom: 25px;
         }
 
         .header {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 50;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            padding:
-                calc(
-                    12px +
-                    env(safe-area-inset-top)
-                )
-                14px
-                12px;
+            padding: 14px 16px;
 
-            background: rgba(7,7,12,.94);
+            background:
+                rgba(7, 7, 12, .90);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
 
             border-bottom:
                 1px solid
                 rgba(255,255,255,.07);
-
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 0;
-        }
-
-        .back-btn,
-        .share-btn {
-            width: 42px;
-            height: 42px;
-            border: none;
-            border-radius: 13px;
-            background: rgba(255,255,255,.07);
-            color: white;
-            font-size: 18px;
-        }
-
-        .header-text {
-            min-width: 0;
         }
 
         .header-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 900;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        .header-user {
-            margin-top: 3px;
-            color: #9999a7;
+        .status {
+            margin-top: 4px;
+
+            color: #aaaab7;
             font-size: 10px;
         }
 
-        .video-section {
+        .close-btn {
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            color: white;
+
+            font-size: 18px;
+        }
+
+        .content {
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+
+            padding: 16px;
+        }
+
+        .video-box {
             position: relative;
-            background: black;
+
+            width: 100%;
             aspect-ratio: 16 / 9;
+
             overflow: hidden;
+
+            border-radius: 22px;
+
+            background:
+                #000;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            box-shadow:
+                0 18px 60px
+                rgba(0,0,0,.35);
         }
 
         #localVideo {
             display: block;
+
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            background: black;
+
+            object-fit: cover;
+
+            background: #000;
         }
 
-        .video-overlay {
+        .live-badge {
             position: absolute;
-            left: 12px;
+
+            top: 12px;
             right: 12px;
-            bottom: 12px;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
+            padding:
+                6px 10px;
 
-        .status {
-            padding: 7px 10px;
             border-radius: 999px;
-            background: rgba(0,0,0,.72);
+
+            background: #ff174d;
+
             font-size: 10px;
-            backdrop-filter: blur(10px);
+            font-weight: 900;
+
+            z-index: 5;
         }
 
-        .status-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            margin-left: 5px;
-            border-radius: 50%;
-            background: #f5a400;
-        }
+        .viewer-badge {
+            position: absolute;
 
-        .status-dot.live {
-            background: #25d366;
-        }
+            left: 12px;
+            top: 12px;
 
-        .status-dot.error {
-            background: #ff345b;
-        }
+            padding:
+                7px 10px;
 
-        .viewer-count {
-            padding: 7px 10px;
             border-radius: 999px;
-            background: rgba(0,0,0,.72);
-            font-size: 10px;
-            backdrop-filter: blur(10px);
+
+            background:
+                rgba(0,0,0,.72);
+
+            font-size: 11px;
+
+            z-index: 5;
         }
 
-        .info {
-            padding: 15px 16px 8px;
+        .info-card {
+            margin-top: 14px;
+
+            padding: 16px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
         }
 
-        .title {
+        .stream-title {
             font-size: 20px;
             font-weight: 900;
-            line-height: 1.6;
-        }
-
-        .username {
-            margin-top: 5px;
-            color: #a5a5b1;
-            font-size: 12px;
         }
 
         .meta {
             display: flex;
             flex-wrap: wrap;
+
             gap: 8px;
-            margin-top: 12px;
+
+            margin-top: 10px;
         }
 
-        .pill {
-            padding: 6px 10px;
+        .tag {
+            padding:
+                6px 10px;
+
             border-radius: 999px;
-            background: rgba(255,255,255,.06);
-            color: #ceced7;
+
+            background:
+                rgba(139,53,255,.12);
+
+            color: #d3bcff;
+
             font-size: 10px;
         }
 
-        .pill.live {
-            background: rgba(255,29,77,.14);
-            color: #ff809b;
-        }
-
-        .actions {
+        .controls {
             display: grid;
-            grid-template-columns: repeat(2,1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 10px;
-            padding: 10px 16px;
+
+            margin-top: 14px;
         }
 
-        .action-btn {
+        .control-btn {
             min-height: 48px;
+
             border: none;
-            border-radius: 14px;
-            background: rgba(255,255,255,.06);
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,.06);
+
             color: white;
+
             font-size: 12px;
-            font-weight: 900;
+            font-weight: 800;
         }
 
-        .action-btn.primary {
+        .control-btn.active {
+            background:
+                rgba(255,255,255,.10);
+        }
+
+        .stop-btn {
+            margin-top: 10px;
+
+            width: 100%;
+            min-height: 52px;
+
+            border: none;
+            border-radius: 16px;
+
             background:
                 linear-gradient(
                     135deg,
-                    #ff2757,
-                    #8b35ff
+                    #ff174d,
+                    #d50035
                 );
-        }
 
-        .chat-section {
-            margin: 12px 16px;
-            padding: 15px;
-            border-radius: 20px;
-            background: rgba(255,255,255,.035);
-            border: 1px solid rgba(255,255,255,.07);
-        }
+            color: white;
 
-        .chat-title {
             font-size: 14px;
             font-weight: 900;
         }
 
-        .messages {
-            height: 190px;
-            margin-top: 12px;
+        .chat-card {
+            margin-top: 14px;
+
+            padding: 14px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+        }
+
+        .chat-title {
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        #chatMessages {
+            height: 220px;
+
+            margin-top: 10px;
+
             overflow-y: auto;
+
+            padding: 8px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(0,0,0,.18);
         }
 
         .message {
-            margin-bottom: 8px;
-            padding: 9px 10px;
-            border-radius: 13px;
-            background: rgba(255,255,255,.045);
+            margin-bottom: 9px;
+
+            padding: 8px 10px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,.045);
         }
 
         .message-user {
-            color: #bd91ff;
+            color: #ffb0c1;
             font-size: 10px;
             font-weight: 900;
         }
 
         .message-text {
             margin-top: 4px;
-            color: #ececf2;
+
             font-size: 12px;
             line-height: 1.7;
-            overflow-wrap: anywhere;
         }
 
-        .chat-input-row {
+        .chat-form {
             display: flex;
             gap: 8px;
+
             margin-top: 10px;
         }
 
-        .chat-input {
+        #chatInput {
             flex: 1;
+
             min-width: 0;
-            border: none;
-            outline: none;
-            padding: 12px 13px;
-            border-radius: 13px;
-            background: rgba(255,255,255,.07);
-            color: white;
-            font-size: 12px;
-        }
 
-        .chat-send {
-            border: none;
-            padding: 0 15px;
-            border-radius: 13px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff2757,
-                    #8b35ff
-                );
-            color: white;
-            font-weight: 900;
-        }
-
-        .bottom-bar {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 300;
+            height: 46px;
 
             padding:
-                10px
-                10px
-                calc(
-                    10px +
-                    env(safe-area-inset-bottom)
-                );
+                0 13px;
 
-            background: rgba(7,7,12,.94);
-
-            border-top:
+            border:
                 1px solid
-                rgba(255,255,255,.07);
+                rgba(255,255,255,.08);
 
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
+            border-radius: 14px;
 
-        .stop-button {
-            width: 100%;
-            min-height: 50px;
-            border: none;
-            border-radius: 15px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff2757,
-                    #8b35ff
-                );
-            color: white;
-            font-size: 13px;
-            font-weight: 900;
-        }
-
-        .modal {
-            position: fixed;
-            inset: 0;
-            z-index: 500;
-
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-
-            background: rgba(0,0,0,.65);
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-card {
-            width: 100%;
-            max-width: 560px;
-
-            padding:
-                20px
-                18px
-                calc(
-                    20px +
-                    env(safe-area-inset-bottom)
-                );
-
-            border-radius:
-                24px
-                24px
-                0
-                0;
-
-            background: #111119;
-        }
-
-        .modal-title {
-            font-size: 17px;
-            font-weight: 900;
-        }
-
-        .share-link {
-            width: 100%;
-            margin-top: 12px;
-            padding: 12px;
-
-            border: none;
             outline: none;
-            border-radius: 13px;
 
-            background: rgba(255,255,255,.06);
-            color: #c3c3cd;
+            background:
+                rgba(0,0,0,.25);
 
-            direction: ltr;
-            font-size: 11px;
-        }
-
-        .modal-actions {
-            display: grid;
-            grid-template-columns: repeat(2,1fr);
-            gap: 9px;
-            margin-top: 12px;
-        }
-
-        .modal-btn {
-            min-height: 45px;
-            border: none;
-            border-radius: 13px;
-            background: rgba(255,255,255,.07);
             color: white;
+        }
+
+        #chatSend {
+            width: 78px;
+
+            border: none;
+            border-radius: 14px;
+
+            background:
+                #8b35ff;
+
+            color: white;
+
             font-weight: 900;
         }
 
-        .modal-close {
-            width: 100%;
-            margin-top: 9px;
-            min-height: 43px;
-            border: none;
-            border-radius: 13px;
-            background: rgba(255,255,255,.04);
-            color: #9999a5;
+        .log {
+            margin-top: 12px;
+
+            color: #8f8f9e;
+
+            font-size: 10px;
+            line-height: 1.7;
         }
 
-        @media (min-width:700px) {
+        @media (max-width: 560px) {
 
-            .page {
-                max-width: 900px;
-                margin: 0 auto;
+            .controls {
+                grid-template-columns:
+                    repeat(3, 1fr);
             }
 
-            .bottom-bar {
-                left: 50%;
-                right: auto;
-                width:
-                    min(
-                        700px,
-                        calc(100% - 30px)
-                    );
-
-                transform: translateX(-50%);
-                bottom: 14px;
-
-                border:
-                    1px solid
-                    rgba(255,255,255,.07);
-
-                border-radius: 20px;
-                padding: 8px;
+            .stream-title {
+                font-size: 17px;
             }
         }
+
     </style>
 </head>
 
@@ -469,236 +419,173 @@
 
     <header class="header">
 
-        <div class="header-left">
+        <div>
 
-            <button
-                id="backButton"
-                class="back-btn"
-                type="button"
+            <div class="header-title">
+                🔴 پخش زنده
+            </div>
+
+            <div
+                id="status"
+                class="status"
             >
-                ←
-            </button>
-
-            <div class="header-text">
-
-                <div
-                    id="headerTitle"
-                    class="header-title"
-                >
-                    در حال آماده‌سازی لایو...
-                </div>
-
-                <div
-                    id="headerUser"
-                    class="header-user"
-                >
-                    LainoLive
-                </div>
-
+                در حال آماده‌سازی...
             </div>
 
         </div>
 
         <button
-            id="shareButton"
-            class="share-btn"
+            id="closeButton"
+            class="close-btn"
             type="button"
         >
-            ↗
+            ✕
         </button>
 
     </header>
 
 
-    <section class="video-section">
+    <main class="content">
 
-        <video
-            id="localVideo"
-            autoplay
-            muted
-            playsinline
-        ></video>
+        <section class="video-box">
 
-        <div class="video-overlay">
+            <video
+                id="localVideo"
+                autoplay
+                muted
+                playsinline
+            ></video>
 
-            <div
-                id="statusBox"
-                class="status"
-            >
-                <span class="status-dot"></span>
-                در حال آماده‌سازی...
+            <div class="live-badge">
+                ● LIVE
             </div>
 
             <div
-                id="viewerCount"
-                class="viewer-count"
+                id="viewerBadge"
+                class="viewer-badge"
             >
                 👁 0 بیننده
             </div>
 
-        </div>
-
-    </section>
+        </section>
 
 
-    <section class="info">
-
-        <div
-            id="streamTitle"
-            class="title"
-        >
-            لایو
-        </div>
-
-        <div
-            id="streamUsername"
-            class="username"
-        >
-            👤 کاربر
-        </div>
-
-        <div class="meta">
-
-            <div class="pill live">
-                ● در حال پخش
-            </div>
+        <section class="info-card">
 
             <div
-                id="categoryPill"
-                class="pill"
+                id="streamTitle"
+                class="stream-title"
             >
-                🎮 عمومی
+                لایو
             </div>
 
-        </div>
+            <div class="meta">
 
-    </section>
+                <div
+                    id="usernameTag"
+                    class="tag"
+                >
+                    👤 کاربر
+                </div>
 
+                <div
+                    id="categoryTag"
+                    class="tag"
+                >
+                    📂 عمومی
+                </div>
 
-    <section class="actions">
+            </div>
 
-        <button
-            id="cameraButton"
-            class="action-btn"
-            type="button"
-        >
-            📷 تعویض دوربین
-        </button>
+            <div class="controls">
 
-        <button
-            id="shareAction"
-            class="action-btn primary"
-            type="button"
-        >
-            📤 اشتراک‌گذاری
-        </button>
+                <button
+                    id="cameraButton"
+                    class="control-btn active"
+                    type="button"
+                >
+                    📷 دوربین
+                </button>
 
-    </section>
+                <button
+                    id="micButton"
+                    class="control-btn active"
+                    type="button"
+                >
+                    🎙 میکروفون
+                </button>
 
+                <button
+                    id="shareButton"
+                    class="control-btn"
+                    type="button"
+                >
+                    🔗 اشتراک
+                </button>
 
-    <section class="chat-section">
-
-        <div class="chat-title">
-            💬 چت لایو
-        </div>
-
-        <div
-            id="messages"
-            class="messages"
-        ></div>
-
-        <div class="chat-input-row">
-
-            <input
-                id="chatInput"
-                class="chat-input"
-                type="text"
-                maxlength="250"
-                placeholder="پیام خود را بنویسید..."
-                autocomplete="off"
-            >
+            </div>
 
             <button
-                id="chatSend"
-                class="chat-send"
+                id="stopButton"
+                class="stop-btn"
                 type="button"
             >
-                ارسال
+                ⛔ پایان لایو
             </button>
 
-        </div>
-
-    </section>
-
-</div>
+        </section>
 
 
-<div class="bottom-bar">
+        <section class="chat-card">
 
-    <button
-        id="stopButton"
-        class="stop-button"
-        type="button"
-    >
-        ⏹ پایان لایو
-    </button>
+            <div class="chat-title">
+                💬 چت لایو
+            </div>
 
-</div>
+            <div id="chatMessages"></div>
 
-
-<div
-    id="shareModal"
-    class="modal"
->
-
-    <div class="modal-card">
-
-        <div class="modal-title">
-            اشتراک‌گذاری لایو
-        </div>
-
-        <input
-            id="shareLink"
-            class="share-link"
-            readonly
-        >
-
-        <div class="modal-actions">
-
-            <button
-                id="nativeShareButton"
-                class="modal-btn"
-                type="button"
+            <form
+                id="chatForm"
+                class="chat-form"
             >
-                📤 اشتراک‌گذاری
-            </button>
 
-            <button
-                id="copyShareButton"
-                class="modal-btn"
-                type="button"
-            >
-                📋 کپی لینک
-            </button>
+                <input
+                    id="chatInput"
+                    type="text"
+                    maxlength="500"
+                    autocomplete="off"
+                    placeholder="پیام خود را بنویسید..."
+                >
 
-        </div>
+                <button
+                    id="chatSend"
+                    type="submit"
+                >
+                    ارسال
+                </button>
 
-        <button
-            id="closeShareButton"
-            class="modal-close"
-            type="button"
-        >
-            بستن
-        </button>
+            </form>
 
-    </div>
+            <div
+                id="log"
+                class="log"
+            ></div>
+
+        </section>
+
+    </main>
 
 </div>
 
 
 <script>
-const SIGNALING_URL =
-    "wss://lainolive-signaling.onrender.com";
+
+"use strict";
+
+
+/* =========================
+   STORAGE
+   ========================= */
 
 const LOGIN_KEY =
     "lainolive_logged_in";
@@ -710,184 +597,287 @@ const CURRENT_STREAM_KEY =
     "lainolive_current_stream";
 
 
+if (
+    localStorage.getItem(
+        LOGIN_KEY
+    ) !== "true"
+) {
+
+    window.location.href =
+        "/login.html";
+}
+
+
+/* =========================
+   ELEMENTS
+   ========================= */
+
 const localVideo =
-    document.getElementById("localVideo");
+    document.getElementById(
+        "localVideo"
+    );
 
-const statusBox =
-    document.getElementById("statusBox");
+const statusEl =
+    document.getElementById(
+        "status"
+    );
 
-const viewerCountElement =
-    document.getElementById("viewerCount");
+const viewerBadge =
+    document.getElementById(
+        "viewerBadge"
+    );
 
-const headerTitle =
-    document.getElementById("headerTitle");
+const streamTitle =
+    document.getElementById(
+        "streamTitle"
+    );
 
-const headerUser =
-    document.getElementById("headerUser");
+const usernameTag =
+    document.getElementById(
+        "usernameTag"
+    );
 
-const streamTitleElement =
-    document.getElementById("streamTitle");
+const categoryTag =
+    document.getElementById(
+        "categoryTag"
+    );
 
-const streamUsernameElement =
-    document.getElementById("streamUsername");
+const cameraButton =
+    document.getElementById(
+        "cameraButton"
+    );
 
-const categoryPill =
-    document.getElementById("categoryPill");
+const micButton =
+    document.getElementById(
+        "micButton"
+    );
 
-const messages =
-    document.getElementById("messages");
+const shareButton =
+    document.getElementById(
+        "shareButton"
+    );
+
+const stopButton =
+    document.getElementById(
+        "stopButton"
+    );
+
+const closeButton =
+    document.getElementById(
+        "closeButton"
+    );
+
+const chatMessages =
+    document.getElementById(
+        "chatMessages"
+    );
+
+const chatForm =
+    document.getElementById(
+        "chatForm"
+    );
 
 const chatInput =
-    document.getElementById("chatInput");
-
-const chatSend =
-    document.getElementById("chatSend");
-
-const shareModal =
-    document.getElementById("shareModal");
-
-const shareLink =
-    document.getElementById("shareLink");
-
-
-if (
-    localStorage.getItem(LOGIN_KEY) !== "true"
-) {
-    window.location.href = "/login.html";
-}
-
-
-let currentUsername =
-    localStorage.getItem(USERNAME_KEY) || "";
-
-let stream = null;
-let streamId = null;
-let localStream = null;
-let socket = null;
-let stopped = false;
-let reconnectTimer = null;
-let qualityMonitorTimer = null;
-
-const peerConnections = new Map();
-
-let currentMaxBitrate = 700000;
-
-const BITRATE_LEVELS = [
-    250000,
-    450000,
-    700000
-];
-
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-function getId(item) {
-    return item?.id ?? item?.stream_id;
-}
-
-
-function getTitle(item) {
-    return item?.title || "لایو بدون عنوان";
-}
-
-
-function getUsername(item) {
-    return (
-        item?.username ||
-        item?.user ||
-        currentUsername ||
-        "کاربر"
+    document.getElementById(
+        "chatInput"
     );
-}
 
-
-function getCategory(item) {
-    return item?.category || "عمومی";
-}
-
-
-function getViewers(item) {
-    return Number(
-        item?.viewer_count ??
-        item?.viewers ??
-        0
+const logEl =
+    document.getElementById(
+        "log"
     );
+
+
+/* =========================
+   STREAM DATA
+   ========================= */
+
+let stream =
+    null;
+
+try {
+
+    stream =
+        JSON.parse(
+            sessionStorage.getItem(
+                CURRENT_STREAM_KEY
+            ) || "null"
+        );
+
+} catch {
+
+    stream = null;
 }
 
+
+if (!stream) {
+
+    statusEl.textContent =
+        "اطلاعات لایو پیدا نشد.";
+
+}
+
+
+/* =========================
+   VALUES
+   ========================= */
+
+const streamId =
+    stream?.id ??
+    stream?.stream_id ??
+    null;
+
+const title =
+    stream?.title ||
+    "لایو بدون عنوان";
+
+const username =
+    stream?.username ||
+    stream?.user ||
+    localStorage.getItem(
+        USERNAME_KEY
+    ) ||
+    "کاربر";
+
+const category =
+    stream?.category ||
+    "عمومی";
+
+
+streamTitle.textContent =
+    title;
+
+usernameTag.textContent =
+    "👤 " + username;
+
+categoryTag.textContent =
+    "📂 " + category;
+
+
+/* =========================
+   WEBRTC
+   ========================= */
+
+const SIGNALING_URL =
+    "wss://lainolive-signaling.onrender.com";
+
+let socket =
+    null;
+
+let localStream =
+    null;
+
+let reconnectTimer =
+    null;
+
+let stopped =
+    false;
+
+let heartbeatTimer =
+    null;
+
+
+/*
+ * یک PeerConnection
+ * برای هر بیننده
+ */
+const peerConnections =
+    new Map();
+
+
+/* =========================
+   ICE CONFIG
+   ========================= */
+
+const rtcConfig = {
+
+    iceServers: [
+
+        {
+            urls:
+                [
+                    "stun:stun.l.google.com:19302",
+                    "stun:stun1.l.google.com:19302"
+                ]
+        }
+
+    ]
+
+};
+
+
+/* =========================
+   LOG
+   ========================= */
 
 function setStatus(
-    text,
-    type = "loading"
+    text
 ) {
 
-    const dot =
-        type === "live"
-            ? "live"
-            : type === "error"
-                ? "error"
-                : "";
-
-    statusBox.innerHTML =
-        `
-            <span class="status-dot ${dot}"></span>
-            ${escapeHtml(text)}
-        `;
+    statusEl.textContent =
+        text;
 }
 
 
-function updateRealtimeViewerCount(count) {
+function log(
+    text
+) {
+
+    logEl.textContent =
+        text;
+}
+
+
+/* =========================
+   VIEWERS
+   ========================= */
+
+function updateViewerCount(
+    count
+) {
 
     const value =
         Math.max(
             0,
-            Number(count || 0)
+            Number(count) || 0
         );
 
-    viewerCountElement.textContent =
+    viewerBadge.textContent =
         "👁 " +
         value +
         " بیننده";
 }
 
 
-function loadStoredStream() {
+/* =========================
+   SOCKET SEND
+   ========================= */
+
+function send(
+    data
+) {
+
+    if (
+        !socket ||
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
+
+        return false;
+    }
 
     try {
 
-        const saved =
-            sessionStorage.getItem(
-                CURRENT_STREAM_KEY
-            );
+        socket.send(
+            JSON.stringify(data)
+        );
 
-        if (!saved) {
-            return false;
-        }
-
-        const parsed =
-            JSON.parse(saved);
-
-        if (!parsed) {
-            return false;
-        }
-
-        stream = parsed;
-        streamId = getId(parsed);
-
-        return Boolean(streamId);
+        return true;
 
     } catch (error) {
 
         console.error(
-            "load stream error",
+            "socket send error:",
             error
         );
 
@@ -896,180 +886,36 @@ function loadStoredStream() {
 }
 
 
-function renderStream() {
+/* =========================
+   CREATE PEER
+   ========================= */
 
-    if (!stream) {
-        return;
-    }
-
-    const title = getTitle(stream);
-    const username = getUsername(stream);
-    const category = getCategory(stream);
-
-    document.title =
-        title + " - LainoLive";
-
-    headerTitle.textContent = title;
-    headerUser.textContent = "👤 " + username;
-
-    streamTitleElement.textContent = title;
-    streamUsernameElement.textContent =
-        "👤 " + username;
-
-    categoryPill.textContent =
-        "🎮 " + category;
-
-    updateRealtimeViewerCount(
-        getViewers(stream)
-    );
-}
-
-
-async function startCamera() {
-
-    setStatus(
-        "در حال روشن کردن دوربین..."
-    );
+async function createPeerConnection(
+    viewerId
+) {
 
     if (
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia
+        peerConnections.has(
+            viewerId
+        )
     ) {
 
-        setStatus(
-            "دوربین پشتیبانی نمی‌شود",
-            "error"
-        );
-
-        throw new Error(
-            "getUserMedia unavailable"
-        );
-    }
-
-    try {
-
-        localStream =
-            await navigator.mediaDevices
-                .getUserMedia({
-
-                    video: {
-                        width: {
-                            ideal: 1280
-                        },
-
-                        height: {
-                            ideal: 720
-                        },
-
-                        frameRate: {
-                            ideal: 30,
-                            max: 30
-                        }
-                    },
-
-                    audio: {
-                        echoCancellation: true,
-                        noiseSuppression: true,
-                        autoGainControl: true
-                    }
-                });
-
-    } catch (error) {
-
-        console.warn(
-            "high quality camera failed",
-            error
-        );
-
-        localStream =
-            await navigator.mediaDevices
-                .getUserMedia({
-
-                    video: {
-                        width: {
-                            ideal: 640
-                        },
-
-                        height: {
-                            ideal: 480
-                        },
-
-                        frameRate: {
-                            ideal: 24,
-                            max: 24
-                        }
-                    },
-
-                    audio: true
-                });
-    }
-
-    localVideo.srcObject =
-        localStream;
-
-    try {
-        await localVideo.play();
-    } catch {}
-
-    setStatus(
-        "دوربین آماده است",
-        "live"
-    );
-}
-
-
-function closeViewerConnection(
-    viewerId
-) {
-
-    const state =
-        peerConnections.get(
+        return peerConnections.get(
             viewerId
         );
-
-    if (!state) {
-        return;
     }
 
-    try {
-        state.pc.close();
-    } catch {}
-
-    peerConnections.delete(
-        viewerId
-    );
-}
-
-
-function createPeerConnection(
-    viewerId
-) {
-
-    closeViewerConnection(
-        viewerId
-    );
 
     const pc =
-        new RTCPeerConnection({
+        new RTCPeerConnection(
+            rtcConfig
+        );
 
-            bundlePolicy:
-                "max-bundle",
 
-            rtcpMuxPolicy:
-                "require",
-
-            iceServers: [
-                {
-                    urls:
-                        "stun:stun.l.google.com:19302"
-                },
-
-                {
-                    urls:
-                        "stun:stun1.l.google.com:19302"
-                }
-            ]
-        });
+    peerConnections.set(
+        viewerId,
+        pc
+    );
 
 
     if (localStream) {
@@ -1088,506 +934,133 @@ function createPeerConnection(
     }
 
 
-    const state = {
-        pc,
-        remoteDescriptionReady: false,
-        pendingIceCandidates: []
-    };
-
-
-    peerConnections.set(
-        viewerId,
-        state
-    );
-
-
     pc.onicecandidate =
         event => {
 
-            if (!event.candidate) {
+            if (
+                !event.candidate
+            ) {
+
                 return;
             }
 
-            sendSignal({
 
-                type:
-                    "ice-candidate",
+            send(
+                {
+                    type:
+                        "ice-candidate",
 
-                room_id:
-                    String(streamId),
+                    viewer_id:
+                        viewerId,
 
-                viewer_id:
-                    viewerId,
-
-                candidate:
-                    event.candidate
-            });
+                    candidate:
+                        event.candidate
+                }
+            );
         };
 
 
     pc.onconnectionstatechange =
         () => {
 
-            const connectionState =
+            const state =
                 pc.connectionState;
 
-            console.log(
-                "Viewer:",
-                viewerId,
-                "connection:",
-                connectionState
-            );
 
             if (
-                connectionState === "connected"
+                state ===
+                "failed" ||
+                state ===
+                "closed"
             ) {
 
-                setStatus(
-                    peerConnections.size +
-                    " بیننده متصل",
-                    "live"
-                );
-            }
+                try {
+                    pc.close();
+                } catch {}
 
-            if (
-                connectionState === "failed"
-            ) {
 
-                console.warn(
-                    "viewer connection failed:",
+                peerConnections.delete(
                     viewerId
                 );
             }
         };
 
 
-    pc.oniceconnectionstatechange =
-        () => {
-
-            console.log(
-                "Viewer:",
-                viewerId,
-                "ICE:",
-                pc.iceConnectionState
-            );
-        };
-
-
-    return state;
+    return pc;
 }
 
 
-function sendSignal(
-    payload
-) {
-
-    if (
-        !socket ||
-        socket.readyState !== WebSocket.OPEN
-    ) {
-
-        return false;
-    }
-
-    try {
-
-        socket.send(
-            JSON.stringify(payload)
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "signal send error",
-            error
-        );
-
-        return false;
-    }
-}
-
+/* =========================
+   OFFER TO VIEWER
+   ========================= */
 
 async function createOfferForViewer(
     viewerId
 ) {
 
-    if (
-        stopped ||
-        !localStream ||
-        !viewerId
-    ) {
-        return;
-    }
-
-    const state =
-        createPeerConnection(
-            viewerId
-        );
-
     try {
 
-        const offer =
-            await state.pc.createOffer();
+        const pc =
+            await createPeerConnection(
+                viewerId
+            );
 
-        await state.pc.setLocalDescription(
+
+        const offer =
+            await pc.createOffer(
+                {
+                    offerToReceiveAudio:
+                        false,
+
+                    offerToReceiveVideo:
+                        false
+                }
+            );
+
+
+        await pc.setLocalDescription(
             offer
         );
 
-        sendSignal({
 
-            type:
-                "offer",
+        send(
+            {
+                type:
+                    "offer",
 
-            room_id:
-                String(streamId),
+                viewer_id:
+                    viewerId,
 
-            viewer_id:
-                viewerId,
-
-            offer:
-                state.pc.localDescription
-        });
-
-        await applyVideoQuality(
-            state.pc
+                sdp:
+                    pc.localDescription
+            }
         );
 
-        setStatus(
-            peerConnections.size +
-            " بیننده متصل",
-            "live"
+
+        log(
+            "اتصال بیننده برقرار شد."
         );
 
     } catch (error) {
 
         console.error(
-            "offer error",
-            viewerId,
-            error
-        );
-
-        closeViewerConnection(
-            viewerId
-        );
-    }
-}
-
-
-async function handleViewerAnswer(
-    message
-) {
-
-    const viewerId =
-        String(
-            message.viewer_id || ""
-        );
-
-    if (!viewerId) {
-        return;
-    }
-
-    const state =
-        peerConnections.get(
-            viewerId
-        );
-
-    if (!state) {
-        return;
-    }
-
-    const answer =
-        message.answer ||
-        message.description;
-
-    if (!answer) {
-        return;
-    }
-
-    try {
-
-        await state.pc.setRemoteDescription(
-            new RTCSessionDescription(
-                answer
-            )
-        );
-
-        state.remoteDescriptionReady =
-            true;
-
-        await flushViewerIce(
-            viewerId
-        );
-
-        await applyVideoQuality(
-            state.pc
-        );
-
-        setStatus(
-            peerConnections.size +
-            " بیننده متصل",
-            "live"
-        );
-
-    } catch (error) {
-
-        console.error(
-            "answer error",
-            viewerId,
+            "create offer error:",
             error
         );
     }
 }
 
 
-async function handleViewerIce(
-    message
-) {
+/* =========================
+   SOCKET CONNECT
+   ========================= */
 
-    const viewerId =
-        String(
-            message.viewer_id || ""
-        );
-
-    if (!viewerId) {
-        return;
-    }
-
-    const state =
-        peerConnections.get(
-            viewerId
-        );
-
-    if (!state) {
-        return;
-    }
-
-    const candidate =
-        message.candidate ||
-        message.ice;
-
-    if (!candidate) {
-        return;
-    }
-
-    if (
-        !state.remoteDescriptionReady
-    ) {
-
-        state.pendingIceCandidates.push(
-            candidate
-        );
-
-        return;
-    }
-
-    try {
-
-        await state.pc.addIceCandidate(
-            new RTCIceCandidate(
-                candidate
-            )
-        );
-
-    } catch (error) {
-
-        console.error(
-            "ICE error",
-            viewerId,
-            error
-        );
-    }
-}
-
-
-async function flushViewerIce(
-    viewerId
-) {
-
-    const state =
-        peerConnections.get(
-            viewerId
-        );
-
-    if (!state) {
-        return;
-    }
-
-    while (
-        state.pendingIceCandidates.length
-    ) {
-
-        const candidate =
-            state.pendingIceCandidates.shift();
-
-        try {
-
-            await state.pc.addIceCandidate(
-                new RTCIceCandidate(
-                    candidate
-                )
-            );
-
-        } catch (error) {
-
-            console.error(
-                "flush ICE error",
-                viewerId,
-                error
-            );
-        }
-    }
-}
-
-
-async function handleSignal(
-    message
-) {
-
-    const type =
-        message?.type;
-
-    console.log(
-        "HOST SIGNAL:",
-        message
-    );
-
-
-    if (
-        type === "viewer-joined"
-    ) {
-
-        const viewerId =
-            String(
-                message.viewer_id || ""
-            );
-
-        if (!viewerId) {
-            return;
-        }
-
-        setStatus(
-            "بیننده جدید وارد شد..."
-        );
-
-        await createOfferForViewer(
-            viewerId
-        );
-
-        return;
-    }
-
-
-    if (
-        type === "answer"
-    ) {
-
-        await handleViewerAnswer(
-            message
-        );
-
-        return;
-    }
-
-
-    if (
-        type === "ice-candidate" ||
-        type === "candidate" ||
-        type === "ice"
-    ) {
-
-        await handleViewerIce(
-            message
-        );
-
-        return;
-    }
-
-
-    if (
-        type === "viewer-left"
-    ) {
-
-        const viewerId =
-            String(
-                message.viewer_id || ""
-            );
-
-        if (viewerId) {
-
-            closeViewerConnection(
-                viewerId
-            );
-        }
-
-        setStatus(
-            "لایو در حال پخش است",
-            "live"
-        );
-
-        return;
-    }
-
-
-    if (
-        type === "room-info"
-    ) {
-
-        updateRealtimeViewerCount(
-            message.viewer_count
-        );
-
-        const count =
-            Number(
-                message.viewer_count || 0
-            );
-
-        setStatus(
-            count > 0
-                ? count +
-                    " بیننده در حال تماشا"
-                : "لایو در حال پخش است",
-            "live"
-        );
-
-        return;
-    }
-
-
-    if (
-        type === "host-replaced"
-    ) {
-
-        setStatus(
-            "این لایو از جای دیگری شروع شد",
-            "error"
-        );
-    }
-}
-
-
-function connectSignaling() {
+function connectSocket() {
 
     if (stopped) {
         return;
     }
 
-    if (
-        socket &&
-        (
-            socket.readyState ===
-                WebSocket.OPEN ||
-            socket.readyState ===
-                WebSocket.CONNECTING
-        )
-    ) {
-        return;
-    }
-
-    setStatus(
-        "در حال اتصال به سرور ارتباطی..."
-    );
 
     try {
 
@@ -1599,7 +1072,7 @@ function connectSignaling() {
     } catch (error) {
 
         console.error(
-            "WebSocket create error",
+            "websocket creation error:",
             error
         );
 
@@ -1612,49 +1085,244 @@ function connectSignaling() {
     socket.onopen =
         () => {
 
-            console.log(
-                "HOST SIGNALING CONNECTED"
-            );
-
-            sendSignal({
-
-                type:
-                    "join",
-
-                room_id:
-                    String(streamId),
-
-                role:
-                    "host"
-            });
-
             setStatus(
-                "لایو آماده است",
-                "live"
+                "متصل به سرور سیگنالینگ"
             );
+
+
+            send(
+                {
+                    type:
+                        "join",
+
+                    role:
+                        "host",
+
+                    room_id:
+                        String(
+                            streamId
+                        ),
+
+                    username:
+                        username
+                }
+            );
+
+
+            startHeartbeat();
         };
 
 
     socket.onmessage =
         async event => {
 
+            let message;
+
             try {
 
-                const message =
+                message =
                     JSON.parse(
                         event.data
                     );
 
-                await handleSignal(
-                    message
+            } catch {
+
+                return;
+            }
+
+
+            const type =
+                message?.type;
+
+
+            if (
+                type ===
+                "joined"
+            ) {
+
+                setStatus(
+                    "لایو فعال است"
                 );
 
-            } catch (error) {
+                return;
+            }
 
-                console.error(
-                    "signal message error",
-                    error
+
+            if (
+                type ===
+                "viewer-joined"
+            ) {
+
+                const viewerId =
+                    message?.viewer_id;
+
+                if (
+                    viewerId
+                ) {
+
+                    await createOfferForViewer(
+                        viewerId
+                    );
+                }
+
+                return;
+            }
+
+
+            if (
+                type ===
+                "answer"
+            ) {
+
+                const viewerId =
+                    message?.viewer_id;
+
+                const pc =
+                    peerConnections.get(
+                        viewerId
+                    );
+
+
+                if (
+                    pc &&
+                    message?.sdp
+                ) {
+
+                    try {
+
+                        await pc.setRemoteDescription(
+                            new RTCSessionDescription(
+                                message.sdp
+                            )
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            "set answer error:",
+                            error
+                        );
+                    }
+                }
+
+                return;
+            }
+
+
+            if (
+                type ===
+                "ice-candidate"
+            ) {
+
+                const viewerId =
+                    message?.viewer_id;
+
+                const pc =
+                    peerConnections.get(
+                        viewerId
+                    );
+
+
+                if (
+                    pc &&
+                    message?.candidate
+                ) {
+
+                    try {
+
+                        await pc.addIceCandidate(
+                            new RTCIceCandidate(
+                                message.candidate
+                            )
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            "add ice error:",
+                            error
+                        );
+                    }
+                }
+
+                return;
+            }
+
+
+            if (
+                type ===
+                "viewer-left"
+            ) {
+
+                const viewerId =
+                    message?.viewer_id;
+
+                const pc =
+                    peerConnections.get(
+                        viewerId
+                    );
+
+
+                if (pc) {
+
+                    try {
+                        pc.close();
+                    } catch {}
+                }
+
+
+                peerConnections.delete(
+                    viewerId
                 );
+
+                return;
+            }
+
+
+            if (
+                type ===
+                "room-info"
+            ) {
+
+                updateViewerCount(
+                    message?.viewer_count
+                );
+
+                return;
+            }
+
+
+            if (
+                type ===
+                "chat-message"
+            ) {
+
+                appendChatMessage(
+                    message?.username ||
+                        "کاربر",
+
+                    message?.message ||
+                        ""
+                );
+
+                return;
+            }
+        };
+
+
+    socket.onclose =
+        () => {
+
+            stopHeartbeat();
+
+
+            if (!stopped) {
+
+                setStatus(
+                    "ارتباط قطع شد؛ تلاش مجدد..."
+                );
+
+                scheduleReconnect();
             }
         };
 
@@ -1663,33 +1331,16 @@ function connectSignaling() {
         error => {
 
             console.error(
-                "SIGNALING ERROR",
+                "websocket error:",
                 error
             );
-
-            setStatus(
-                "خطای سرور ارتباطی",
-                "error"
-            );
-        };
-
-
-    socket.onclose =
-        () => {
-
-            if (stopped) {
-                return;
-            }
-
-            setStatus(
-                "اتصال سرور قطع شد",
-                "error"
-            );
-
-            scheduleReconnect();
         };
 }
 
+
+/* =========================
+   RECONNECT
+   ========================= */
 
 function scheduleReconnect() {
 
@@ -1697,8 +1348,10 @@ function scheduleReconnect() {
         reconnectTimer ||
         stopped
     ) {
+
         return;
     }
+
 
     reconnectTimer =
         setTimeout(
@@ -1707,879 +1360,676 @@ function scheduleReconnect() {
                 reconnectTimer =
                     null;
 
-                connectSignaling();
+                connectSocket();
 
             },
-            3000
+            2000
         );
 }
 
 
-async function applyVideoQuality(
-    pc
-) {
+/* =========================
+   HEARTBEAT
+   ========================= */
 
-    if (!pc) {
-        return;
-    }
+function startHeartbeat() {
 
-    const sender =
-        pc.getSenders()
-            .find(
-                item =>
-                    item.track &&
-                    item.track.kind === "video"
-            );
-
-    if (!sender) {
-        return;
-    }
-
-    try {
-
-        const parameters =
-            sender.getParameters();
-
-        if (
-            !parameters.encodings ||
-            parameters.encodings.length === 0
-        ) {
-
-            parameters.encodings = [{}];
-        }
-
-        const encoding =
-            parameters.encodings[0];
-
-        encoding.maxBitrate =
-            currentMaxBitrate;
-
-        encoding.maxFramerate =
-            currentMaxBitrate <= 250000
-                ? 20
-                : currentMaxBitrate <= 450000
-                    ? 24
-                    : 30;
-
-        encoding.scaleResolutionDownBy =
-            currentMaxBitrate <= 250000
-                ? 2
-                : currentMaxBitrate <= 450000
-                    ? 1.5
-                    : 1;
-
-        await sender.setParameters(
-            parameters
-        );
-
-    } catch (error) {
-
-        console.warn(
-            "quality error",
-            error
-        );
-    }
-}
+    stopHeartbeat();
 
 
-async function monitorConnectionQuality() {
+    heartbeatTimer =
+        setInterval(
+            () => {
 
-    if (
-        peerConnections.size === 0
-    ) {
-        return;
-    }
-
-    let worstLoss = 0;
-
-    for (
-        const state of
-        peerConnections.values()
-    ) {
-
-        const pc =
-            state.pc;
-
-        if (
-            pc.connectionState !==
-            "connected"
-        ) {
-            continue;
-        }
-
-        try {
-
-            const stats =
-                await pc.getStats();
-
-            let outbound = null;
-
-            stats.forEach(
-                report => {
-
-                    if (
-                        report.type ===
-                            "outbound-rtp" &&
-                        (
-                            report.kind ===
-                                "video" ||
-                            report.mediaType ===
-                                "video"
-                        )
-                    ) {
-
-                        outbound =
-                            report;
+                send(
+                    {
+                        type:
+                            "ping"
                     }
-                }
-            );
-
-            if (!outbound) {
-                continue;
-            }
-
-            const lost =
-                Number(
-                    outbound.packetsLost ||
-                    0
                 );
 
-            const sent =
-                Number(
-                    outbound.packetsSent ||
-                    0
-                );
+            },
+            15000
+        );
+}
 
-            const total =
-                sent + lost;
 
-            if (total <= 0) {
-                continue;
-            }
-
-            const loss =
-                lost / total;
-
-            worstLoss =
-                Math.max(
-                    worstLoss,
-                    loss
-                );
-
-        } catch {}
-    }
-
+function stopHeartbeat() {
 
     if (
-        worstLoss > 0.08 &&
-        currentMaxBitrate > 250000
+        heartbeatTimer
     ) {
 
-        currentMaxBitrate =
-            currentMaxBitrate === 700000
-                ? 450000
-                : 250000;
-
-
-        for (
-            const state of
-            peerConnections.values()
-        ) {
-
-            await applyVideoQuality(
-                state.pc
-            );
-        }
-    }
-}
-
-
-async function updateViewerCount() {
-
-    if (!streamId) {
-        return;
-    }
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/streams",
-                {
-                    cache:
-                        "no-store"
-                }
-            );
-
-        if (!response.ok) {
-            return;
-        }
-
-        const data =
-            await response.json();
-
-        const streams =
-            Array.isArray(
-                data.streams
-            )
-                ? data.streams
-                : Array.isArray(data)
-                    ? data
-                    : [];
-
-        const current =
-            streams.find(
-                item =>
-                    String(
-                        getId(item)
-                    ) ===
-                    String(streamId)
-            );
-
-        if (current) {
-
-            stream = current;
-
-            updateRealtimeViewerCount(
-                getViewers(current)
-            );
-        }
-
-    } catch {}
-}
-
-
-async function loadMessages() {
-
-    if (!streamId) {
-        return;
-    }
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/chat/messages?stream_id=" +
-                encodeURIComponent(streamId),
-                {
-                    cache:
-                        "no-store"
-                }
-            );
-
-        if (!response.ok) {
-            return;
-        }
-
-        const data =
-            await response.json();
-
-        const list =
-            Array.isArray(
-                data.messages
-            )
-                ? data.messages
-                : Array.isArray(data)
-                    ? data
-                    : [];
-
-        messages.innerHTML =
-            list
-                .map(
-                    item => {
-
-                        const username =
-                            item.username ||
-                            item.user ||
-                            "کاربر";
-
-                        const text =
-                            item.message ??
-                            item.text ??
-                            "";
-
-                        return `
-                            <div class="message">
-
-                                <div class="message-user">
-                                    ${escapeHtml(username)}
-                                </div>
-
-                                <div class="message-text">
-                                    ${escapeHtml(text)}
-                                </div>
-
-                            </div>
-                        `;
-                    }
-                )
-                .join("");
-
-        messages.scrollTop =
-            messages.scrollHeight;
-
-    } catch {}
-}
-
-
-async function sendChat() {
-
-    const text =
-        chatInput.value.trim();
-
-    if (
-        !text ||
-        !streamId
-    ) {
-        return;
-    }
-
-    chatSend.disabled =
-        true;
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/chat/send",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            stream_id:
-                                String(streamId),
-
-                            username:
-                                currentUsername,
-
-                            message:
-                                text
-                        })
-                }
-            );
-
-        if (response.ok) {
-
-            chatInput.value = "";
-
-            await loadMessages();
-        }
-
-    } catch {
-
-    } finally {
-
-        chatSend.disabled =
-            false;
-    }
-}
-
-
-function getShareUrl() {
-
-    return (
-        window.location.origin +
-        "/viewer.html?id=" +
-        encodeURIComponent(streamId)
-    );
-}
-
-
-function openShare() {
-
-    shareLink.value =
-        getShareUrl();
-
-    shareModal.classList.add("show");
-}
-
-
-function closeShare() {
-
-    shareModal.classList.remove("show");
-}
-
-
-async function copyShare() {
-
-    const url =
-        getShareUrl();
-
-    try {
-
-        await navigator.clipboard
-            .writeText(url);
-
-        alert(
-            "لینک لایو کپی شد."
+        clearInterval(
+            heartbeatTimer
         );
 
-    } catch {
-
-        shareLink.select();
-
-        document.execCommand("copy");
-
-        alert(
-            "لینک لایو کپی شد."
-        );
+        heartbeatTimer =
+            null;
     }
 }
 
 
-async function nativeShare() {
+/* =========================
+   CAMERA / MICROPHONE
+   ========================= */
 
-    const url =
-        getShareUrl();
-
-    if (navigator.share) {
-
-        try {
-
-            await navigator.share({
-                title:
-                    getTitle(stream),
-
-                text:
-                    "تماشای لایو در LainoLive",
-
-                url
-            });
-
-        } catch {}
-
-        return;
-    }
-
-    await copyShare();
-}
-
-
-async function switchCamera() {
-
-    if (!localStream) {
-        return;
-    }
-
-    const oldTrack =
-        localStream
-            .getVideoTracks()[0];
-
-    if (!oldTrack) {
-        return;
-    }
-
-    const settings =
-        oldTrack.getSettings();
-
-    const currentFacing =
-        settings.facingMode || "user";
-
-    const nextFacing =
-        currentFacing === "environment"
-            ? "user"
-            : "environment";
+async function startMedia() {
 
     try {
-
-        const newStream =
-            await navigator.mediaDevices
-                .getUserMedia({
-
-                    video: {
-                        facingMode: {
-                            exact:
-                                nextFacing
-                        }
-                    },
-
-                    audio: false
-                });
-
-        const newTrack =
-            newStream
-                .getVideoTracks()[0];
-
-        if (!newTrack) {
-            return;
-        }
-
-        for (
-            const state of
-            peerConnections.values()
-        ) {
-
-            const sender =
-                state.pc
-                    .getSenders()
-                    .find(
-                        item =>
-                            item.track &&
-                            item.track.kind ===
-                                "video"
-                    );
-
-            if (sender) {
-
-                await sender.replaceTrack(
-                    newTrack
-                );
-
-                await applyVideoQuality(
-                    state.pc
-                );
-            }
-        }
-
-        oldTrack.stop();
-
-        const audioTracks =
-            localStream.getAudioTracks();
 
         localStream =
-            new MediaStream([
-                newTrack,
-                ...audioTracks
-            ]);
+            await navigator.mediaDevices.getUserMedia(
+                {
+                    video:
+                        {
+                            width:
+                                {
+                                    ideal:
+                                        1280
+                                },
+
+                            height:
+                                {
+                                    ideal:
+                                        720
+                                },
+
+                            frameRate:
+                                {
+                                    ideal:
+                                        30,
+
+                                    max:
+                                        30
+                                }
+                        },
+
+                    audio:
+                        {
+                            echoCancellation:
+                                true,
+
+                            noiseSuppression:
+                                true,
+
+                            autoGainControl:
+                                true
+                        }
+                }
+            );
+
 
         localVideo.srcObject =
             localStream;
 
+
+        setStatus(
+            "دوربین و میکروفون فعال شدند"
+        );
+
+
     } catch (error) {
 
-        console.warn(
-            "switch camera error",
+        console.error(
+            "media error:",
             error
+        );
+
+
+        setStatus(
+            "دسترسی دوربین یا میکروفون داده نشد"
+        );
+
+
+        alert(
+            "دسترسی دوربین و میکروفون لازم است."
         );
     }
 }
 
 
-async function stopStream() {
+/* =========================
+   APPLY TRACKS TO PEERS
+   ========================= */
+
+function replaceTrackForAllPeers(
+    kind,
+    track
+) {
+
+    peerConnections.forEach(
+        pc => {
+
+            pc.getSenders()
+                .forEach(
+                    sender => {
+
+                        if (
+                            sender.track &&
+                            sender.track.kind ===
+                            kind
+                        ) {
+
+                            sender.replaceTrack(
+                                track
+                            );
+                        }
+                    }
+                );
+        }
+    );
+}
+
+
+/* =========================
+   CAMERA TOGGLE
+   ========================= */
+
+cameraButton.addEventListener(
+    "click",
+    () => {
+
+        if (!localStream) {
+            return;
+        }
+
+
+        const tracks =
+            localStream.getVideoTracks();
+
+
+        if (!tracks.length) {
+            return;
+        }
+
+
+        const enabled =
+            !tracks[0].enabled;
+
+
+        tracks.forEach(
+            track => {
+
+                track.enabled =
+                    enabled;
+            }
+        );
+
+
+        cameraButton.classList.toggle(
+            "active",
+            enabled
+        );
+
+
+        cameraButton.textContent =
+            enabled
+                ? "📷 دوربین"
+                : "🚫 دوربین خاموش";
+    }
+);
+
+
+/* =========================
+   MIC TOGGLE
+   ========================= */
+
+micButton.addEventListener(
+    "click",
+    () => {
+
+        if (!localStream) {
+            return;
+        }
+
+
+        const tracks =
+            localStream.getAudioTracks();
+
+
+        if (!tracks.length) {
+            return;
+        }
+
+
+        const enabled =
+            !tracks[0].enabled;
+
+
+        tracks.forEach(
+            track => {
+
+                track.enabled =
+                    enabled;
+            }
+        );
+
+
+        micButton.classList.toggle(
+            "active",
+            enabled
+        );
+
+
+        micButton.textContent =
+            enabled
+                ? "🎙 میکروفون"
+                : "🔇 میکروفون خاموش";
+    }
+);
+
+
+/* =========================
+   SHARE
+   ========================= */
+
+shareButton.addEventListener(
+    "click",
+    async () => {
+
+        const shareUrl =
+            window.location.origin +
+            "/viewer.html?id=" +
+            encodeURIComponent(
+                String(streamId)
+            );
+
+
+        try {
+
+            if (
+                navigator.share
+            ) {
+
+                await navigator.share(
+                    {
+                        title:
+                            title,
+
+                        text:
+                            "مشاهده لایو در LainoLive",
+
+                        url:
+                            shareUrl
+                    }
+                );
+
+                return;
+            }
+
+
+            await navigator.clipboard.writeText(
+                shareUrl
+            );
+
+
+            alert(
+                "لینک لایو کپی شد."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "share error:",
+                error
+            );
+        }
+    }
+);
+
+
+/* =========================
+   CHAT
+   ========================= */
+
+function appendChatMessage(
+    chatUser,
+    message
+) {
+
+    if (!message) {
+        return;
+    }
+
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "message";
+
+
+    const userEl =
+        document.createElement(
+            "div"
+        );
+
+    userEl.className =
+        "message-user";
+
+    userEl.textContent =
+        "👤 " +
+        chatUser;
+
+
+    const textEl =
+        document.createElement(
+            "div"
+        );
+
+    textEl.className =
+        "message-text";
+
+    textEl.textContent =
+        message;
+
+
+    wrapper.appendChild(
+        userEl
+    );
+
+    wrapper.appendChild(
+        textEl
+    );
+
+
+    chatMessages.appendChild(
+        wrapper
+    );
+
+
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+}
+
+
+chatForm.addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+
+        const message =
+            chatInput.value.trim();
+
+
+        if (!message) {
+            return;
+        }
+
+
+        if (
+            send(
+                {
+                    type:
+                        "chat-message",
+
+                    room_id:
+                        String(
+                            streamId
+                        ),
+
+                    username:
+                        username,
+
+                    message:
+                        message
+                }
+            )
+        ) {
+
+            appendChatMessage(
+                username,
+                message
+            );
+
+            chatInput.value =
+                "";
+        }
+    }
+);
+
+
+/* =========================
+   STOP LIVE
+   ========================= */
+
+async function stopLive() {
 
     if (stopped) {
         return;
     }
 
+
     stopped = true;
 
-    if (qualityMonitorTimer) {
 
-        clearInterval(
-            qualityMonitorTimer
-        );
+    setStatus(
+        "در حال پایان لایو..."
+    );
 
-        qualityMonitorTimer =
-            null;
-    }
 
-    if (reconnectTimer) {
+    stopHeartbeat();
 
-        clearTimeout(
-            reconnectTimer
-        );
 
-        reconnectTimer =
-            null;
-    }
+    peerConnections.forEach(
+        pc => {
+
+            try {
+                pc.close();
+            } catch {}
+        }
+    );
+
+
+    peerConnections.clear();
+
 
     try {
 
-        await fetch(
-            "/api/streams/stop",
-            {
-                method: "POST",
+        if (
+            socket &&
+            socket.readyState ===
+            WebSocket.OPEN
+        ) {
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+            send(
+                {
+                    type:
+                        "leave",
 
-                body:
-                    JSON.stringify({
-                        stream_id:
-                            String(streamId),
-
-                        username:
-                            currentUsername
-                    }),
-
-                keepalive: true
-            }
-        );
+                    room_id:
+                        String(
+                            streamId
+                        )
+                }
+            );
+        }
 
     } catch {}
 
-    if (
-        socket &&
-        socket.readyState === WebSocket.OPEN
-    ) {
 
-        try {
+    try {
 
-            socket.send(
-                JSON.stringify({
-                    type: "leave",
-                    room_id:
-                        String(streamId),
-                    role: "host"
-                })
+        const response =
+            await fetch(
+                "/api/streams/stop",
+                {
+                    method:
+                        "POST",
+
+                    headers:
+                        {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                    body:
+                        JSON.stringify(
+                            {
+                                stream_id:
+                                    String(
+                                        streamId
+                                    ),
+
+                                username:
+                                    username
+                            }
+                        )
+                }
             );
 
-        } catch {}
+
+        if (!response.ok) {
+
+            throw new Error(
+                "stop request failed"
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "stop live error:",
+            error
+        );
     }
 
-    for (
-        const state of
-        peerConnections.values()
-    ) {
-
-        try {
-            state.pc.close();
-        } catch {}
-    }
-
-    peerConnections.clear();
 
     if (localStream) {
 
         localStream
             .getTracks()
             .forEach(
-                track =>
-                    track.stop()
+                track => {
+
+                    try {
+                        track.stop();
+                    } catch {}
+                }
             );
     }
 
-    if (socket) {
 
-        try {
+    try {
+
+        if (
+            socket &&
+            socket.readyState !==
+            WebSocket.CLOSED
+        ) {
+
             socket.close();
-        } catch {}
-    }
+        }
+
+    } catch {}
+
 
     sessionStorage.removeItem(
         CURRENT_STREAM_KEY
     );
+
 
     window.location.href =
         "/index.html";
 }
 
 
-document
-    .getElementById("backButton")
-    .addEventListener(
-        "click",
-        () => {
-
-            if (
-                confirm(
-                    "لایو متوقف شود؟"
-                )
-            ) {
-
-                stopStream();
-            }
-        }
-    );
-
-
-document
-    .getElementById("stopButton")
-    .addEventListener(
-        "click",
-        () => {
-
-            if (
-                confirm(
-                    "آیا مطمئن هستید که می‌خواهید لایو را پایان دهید؟"
-                )
-            ) {
-
-                stopStream();
-            }
-        }
-    );
-
-
-document
-    .getElementById("cameraButton")
-    .addEventListener(
-        "click",
-        switchCamera
-    );
-
-
-document
-    .getElementById("shareButton")
-    .addEventListener(
-        "click",
-        openShare
-    );
-
-
-document
-    .getElementById("shareAction")
-    .addEventListener(
-        "click",
-        openShare
-    );
-
-
-document
-    .getElementById("closeShareButton")
-    .addEventListener(
-        "click",
-        closeShare
-    );
-
-
-document
-    .getElementById("copyShareButton")
-    .addEventListener(
-        "click",
-        copyShare
-    );
-
-
-document
-    .getElementById("nativeShareButton")
-    .addEventListener(
-        "click",
-        nativeShare
-    );
-
-
-shareModal.addEventListener(
+stopButton.addEventListener(
     "click",
-    event => {
+    async () => {
 
-        if (
-            event.target ===
-            shareModal
-        ) {
+        const confirmed =
+            window.confirm(
+                "آیا می‌خواهید لایو را پایان دهید؟"
+            );
 
-            closeShare();
+
+        if (!confirmed) {
+            return;
         }
+
+
+        await stopLive();
     }
 );
 
 
-chatSend.addEventListener(
+/* =========================
+   CLOSE
+   ========================= */
+
+closeButton.addEventListener(
     "click",
-    sendChat
-);
+    async () => {
 
-
-chatInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            event.preventDefault();
-
-            sendChat();
-        }
+        await stopLive();
     }
 );
 
+
+/* =========================
+   BEFORE UNLOAD
+   ========================= */
 
 window.addEventListener(
     "beforeunload",
     () => {
 
-        if (stopped) {
-            return;
-        }
+        try {
 
-        if (
-            socket &&
-            socket.readyState === WebSocket.OPEN
-        ) {
-
-            try {
+            if (
+                socket &&
+                socket.readyState ===
+                WebSocket.OPEN
+            ) {
 
                 socket.send(
-                    JSON.stringify({
-                        type: "leave",
-                        room_id:
-                            String(streamId),
-                        role: "host"
-                    })
-                );
+                    JSON.stringify(
+                        {
+                            type:
+                                "leave",
 
-            } catch {}
-        }
+                            room_id:
+                                String(
+                                    streamId
+                                )
+                        }
+                    )
+                );
+            }
+
+        } catch {}
     }
 );
 
 
-async function start() {
+/* =========================
+   START
+   ========================= */
 
-    try {
+(async function init() {
 
-        if (!loadStoredStream()) {
-
-            setStatus(
-                "لایو پیدا نشد",
-                "error"
-            );
-
-            return;
-        }
-
-        renderStream();
-
-        await startCamera();
-
-        connectSignaling();
-
-        await loadMessages();
-
-        await updateViewerCount();
-
-        setInterval(
-            loadMessages,
-            3000
-        );
-
-        setInterval(
-            updateViewerCount,
-            3000
-        );
-
-        qualityMonitorTimer =
-            setInterval(
-                monitorConnectionQuality,
-                4000
-            );
-
-    } catch (error) {
-
-        console.error(
-            "LIVE START ERROR",
-            error
-        );
+    if (!streamId) {
 
         setStatus(
-            "اجرای لایو ناموفق بود",
-            "error"
+            "شناسه لایو نامعتبر است."
         );
+
+        return;
     }
-}
 
 
-start();
+    await startMedia();
+
+    connectSocket();
+
+})();
+
 </script>
 
 </body>
