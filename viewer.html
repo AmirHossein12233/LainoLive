@@ -1,3 +1,889 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta
+        name="theme-color"
+        content="#090b12"
+    >
+
+    <title>LainoLive - تماشای لایو</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(90, 58, 180, 0.16),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 150, 255, 0.07),
+                    transparent 35%
+                ),
+                #090b12;
+
+            color: #fff;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app {
+            min-height: 100vh;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding:
+                calc(12px + env(safe-area-inset-top))
+                14px
+                12px;
+
+            background:
+                rgba(9, 11, 18, 0.96);
+
+            border-bottom:
+                1px solid
+                #202536;
+
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: #171b29;
+            color: #fff;
+
+            font-size: 20px;
+        }
+
+        .top-title {
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            padding:
+                8px
+                12px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255, 45, 85, 0.14);
+
+            color: #ff5578;
+
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #ff365f;
+
+            box-shadow:
+                0 0 12px
+                rgba(255, 54, 95, 0.75);
+        }
+
+        .main {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+            padding: 14px;
+        }
+
+        .video-card,
+        .info-card,
+        .audio-card,
+        .chat-card {
+            background: #10131c;
+
+            border:
+                1px solid
+                #23283a;
+
+            border-radius: 18px;
+        }
+
+        .video-card {
+            overflow: hidden;
+        }
+
+        .video-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+
+            background: #000;
+            overflow: hidden;
+        }
+
+        #remoteVideo {
+            display: block;
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+            background: #000;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .status-pill,
+        .viewer-pill {
+            position: absolute;
+
+            top: 11px;
+
+            padding:
+                7px
+                10px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.65);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.1);
+
+            font-size: 10px;
+        }
+
+        .status-pill {
+            right: 11px;
+        }
+
+        .viewer-pill {
+            left: 11px;
+        }
+
+        .video-message {
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            text-align: center;
+
+            background:
+                rgba(0, 0, 0, 0.7);
+
+            color: #e5e8ef;
+
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .video-message.hidden {
+            display: none;
+        }
+
+        .info-card {
+            margin-top: 13px;
+            padding: 15px;
+        }
+
+        .stream-title {
+            margin: 0;
+
+            font-size: 19px;
+            line-height: 1.6;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .meta {
+            padding:
+                7px
+                10px;
+
+            border-radius: 10px;
+
+            background: #181c29;
+            color: #bcc2d2;
+
+            font-size: 10px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .control-btn {
+            min-height: 43px;
+
+            padding:
+                0
+                13px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: #191e2d;
+            color: #fff;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .control-btn.active {
+            background: #5d45d9;
+        }
+
+        .audio-card {
+            margin-top: 14px;
+            padding: 15px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .audio-status {
+            margin-top: 10px;
+
+            padding:
+                10px
+                12px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(106, 76, 255, 0.08);
+
+            border:
+                1px solid
+                rgba(106, 76, 255, 0.18);
+
+            color: #c9c2ff;
+
+            font-size: 11px;
+            line-height: 1.9;
+        }
+
+        .audio-status.ok {
+            background:
+                rgba(46, 180, 110, 0.08);
+
+            border-color:
+                rgba(46, 180, 110, 0.2);
+
+            color: #a9efc8;
+        }
+
+        .audio-status.warning {
+            background:
+                rgba(255, 170, 55, 0.08);
+
+            border-color:
+                rgba(255, 170, 55, 0.2);
+
+            color: #ffd49b;
+        }
+
+        .audio-row {
+            margin-top: 15px;
+        }
+
+        .audio-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 8px;
+
+            color: #d7dae2;
+
+            font-size: 11px;
+        }
+
+        .audio-state {
+            color: #8d95a8;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: #6a4cff;
+        }
+
+        .chat-card {
+            margin-top: 14px;
+
+            display: flex;
+            flex-direction: column;
+
+            height: 430px;
+
+            overflow: hidden;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding:
+                13px
+                15px;
+
+            border-bottom:
+                1px solid
+                #23283a;
+        }
+
+        .chat-status {
+            color: #8f97aa;
+            font-size: 10px;
+        }
+
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .empty-chat {
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #70798d;
+
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .message {
+            margin-bottom: 9px;
+
+            padding:
+                9px
+                11px;
+
+            border-radius: 12px;
+
+            background: #171b28;
+        }
+
+        .message-user {
+            margin-bottom: 4px;
+
+            color: #967fff;
+
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .message-text {
+            color: #e6e8ef;
+
+            font-size: 12px;
+            line-height: 1.8;
+
+            word-break: break-word;
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 8px;
+
+            padding: 10px;
+
+            border-top:
+                1px solid
+                #23283a;
+        }
+
+        .chat-input {
+            flex: 1;
+            min-width: 0;
+
+            height: 43px;
+
+            padding:
+                0
+                11px;
+
+            border:
+                1px solid
+                #2a3043;
+
+            border-radius: 12px;
+
+            outline: none;
+
+            background: #0d1018;
+            color: #fff;
+        }
+
+        .send-btn {
+            width: 48px;
+            height: 43px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: #6a4cff;
+            color: #fff;
+
+            font-size: 17px;
+        }
+
+        .notice {
+            display: none;
+
+            margin-top: 12px;
+
+            padding:
+                11px
+                13px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,45,85,.1);
+
+            border:
+                1px solid
+                rgba(255,45,85,.2);
+
+            color: #ff9eb0;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        .notice.show {
+            display: block;
+        }
+
+        .hidden-audio {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+
+            .main {
+                padding: 8px;
+            }
+
+            .topbar {
+                padding:
+                    calc(9px + env(safe-area-inset-top))
+                    10px
+                    9px;
+            }
+
+            .top-title {
+                font-size: 14px;
+            }
+
+            .video-card,
+            .info-card,
+            .audio-card,
+            .chat-card {
+                border-radius: 15px;
+            }
+
+            .control-btn {
+                flex:
+                    1 1
+                    calc(50% - 8px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <button
+                id="backBtn"
+                class="back-btn"
+                type="button"
+            >
+                ←
+            </button>
+
+            <div class="top-title">
+                تماشای پخش زنده
+            </div>
+
+        </div>
+
+        <div class="live-badge">
+            <span class="live-dot"></span>
+            LIVE
+        </div>
+
+    </header>
+
+
+    <main class="main">
+
+        <section class="video-card">
+
+            <div class="video-wrap">
+
+                <video
+                    id="remoteVideo"
+                    autoplay
+                    playsinline
+                ></video>
+
+                <div class="overlay">
+
+                    <div
+                        id="status"
+                        class="status-pill"
+                    >
+                        در حال اتصال...
+                    </div>
+
+                    <div class="viewer-pill">
+                        👁
+                        <span id="viewerCount">
+                            0
+                        </span>
+                    </div>
+
+                    <div
+                        id="videoMessage"
+                        class="video-message"
+                    >
+                        در حال دریافت پخش...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div
+            id="notice"
+            class="notice"
+        ></div>
+
+
+        <section class="info-card">
+
+            <h1
+                id="streamTitle"
+                class="stream-title"
+            >
+                پخش زنده LainoLive
+            </h1>
+
+            <div class="meta-row">
+
+                <div
+                    id="streamCategory"
+                    class="meta"
+                >
+                    عمومی
+                </div>
+
+                <div
+                    id="streamOwner"
+                    class="meta"
+                >
+                    👤 کاربر
+                </div>
+
+                <div
+                    id="streamId"
+                    class="meta"
+                >
+                    Stream: -
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="controls">
+
+            <button
+                id="playBtn"
+                class="control-btn active"
+                type="button"
+            >
+                ▶️ پخش
+            </button>
+
+            <button
+                id="muteBtn"
+                class="control-btn"
+                type="button"
+            >
+                🔊 صدا
+            </button>
+
+            <button
+                id="fullscreenBtn"
+                class="control-btn"
+                type="button"
+            >
+                ⛶ تمام صفحه
+            </button>
+
+            <button
+                id="reloadBtn"
+                class="control-btn"
+                type="button"
+            >
+                🔄 اتصال مجدد
+            </button>
+
+        </div>
+
+
+        <section class="audio-card">
+
+            <div class="section-title">
+                🎚️ صدای جداگانه
+            </div>
+
+            <div
+                id="audioStatus"
+                class="audio-status"
+            >
+                منتظر دریافت ترک‌های صوتی...
+            </div>
+
+
+            <div class="audio-row">
+
+                <div class="audio-head">
+
+                    <span>
+                        🔊 صدای سیستم / آهنگ
+                    </span>
+
+                    <span
+                        id="systemAudioState"
+                        class="audio-state"
+                    >
+                        100%
+                    </span>
+
+                </div>
+
+                <input
+                    id="systemAudioVolume"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                >
+
+            </div>
+
+
+            <div class="audio-row">
+
+                <div class="audio-head">
+
+                    <span>
+                        🎤 میکروفن / صحبت
+                    </span>
+
+                    <span
+                        id="microphoneAudioState"
+                        class="audio-state"
+                    >
+                        100%
+                    </span>
+
+                </div>
+
+                <input
+                    id="microphoneAudioVolume"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                >
+
+            </div>
+
+
+            <audio
+                id="systemAudio"
+                class="hidden-audio"
+                autoplay
+                playsinline
+            ></audio>
+
+            <audio
+                id="microphoneAudio"
+                class="hidden-audio"
+                autoplay
+                playsinline
+            ></audio>
+
+        </section>
+
+
+        <section class="chat-card">
+
+            <div class="chat-header">
+
+                <div class="section-title">
+                    💬 چت زنده
+                </div>
+
+                <div
+                    id="chatStatus"
+                    class="chat-status"
+                >
+                    قطع
+                </div>
+
+            </div>
+
+
+            <div id="messages">
+
+                <div
+                    id="emptyChat"
+                    class="empty-chat"
+                >
+                    هنوز پیامی ارسال نشده است.
+                </div>
+
+            </div>
+
+
+            <form
+                id="chatForm"
+                class="chat-form"
+            >
+
+                <input
+                    id="chatInput"
+                    class="chat-input"
+                    type="text"
+                    maxlength="500"
+                    autocomplete="off"
+                    placeholder="پیام بنویسید..."
+                >
+
+                <button
+                    class="send-btn"
+                    type="submit"
+                >
+                    ➤
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
 "use strict";
 
 /* =====================================================
@@ -52,22 +938,13 @@ let socket = null;
 
 let peer = null;
 
-let ending = false;
-
 let queuedIceCandidates = [];
 
-/*
-    Host sends:
+let ending = false;
 
-    video track
-    system audio track
-    microphone track
+let receivedSystemAudio = false;
 
-    We keep audio tracks separate.
-*/
-
-let systemAudioStream = null;
-let microphoneAudioStream = null;
+let receivedMicrophone = false;
 
 
 /* =====================================================
@@ -75,274 +952,210 @@ let microphoneAudioStream = null;
 ===================================================== */
 
 const remoteVideo =
-    document.getElementById(
-        "remoteVideo"
-    );
+    document.getElementById("remoteVideo");
 
 const systemAudio =
-    document.getElementById(
-        "systemAudio"
-    );
+    document.getElementById("systemAudio");
 
 const microphoneAudio =
-    document.getElementById(
-        "microphoneAudio"
-    );
+    document.getElementById("microphoneAudio");
 
 const statusElement =
-    document.getElementById(
-        "status"
-    );
+    document.getElementById("status");
 
 const viewerCount =
-    document.getElementById(
-        "viewerCount"
-    );
+    document.getElementById("viewerCount");
 
 const videoMessage =
-    document.getElementById(
-        "videoMessage"
-    );
+    document.getElementById("videoMessage");
 
 const notice =
-    document.getElementById(
-        "notice"
-    );
+    document.getElementById("notice");
+
+const audioStatus =
+    document.getElementById("audioStatus");
 
 const streamTitle =
-    document.getElementById(
-        "streamTitle"
-    );
+    document.getElementById("streamTitle");
 
 const streamCategory =
-    document.getElementById(
-        "streamCategory"
-    );
+    document.getElementById("streamCategory");
 
 const streamOwner =
-    document.getElementById(
-        "streamOwner"
-    );
+    document.getElementById("streamOwner");
 
 const streamIdElement =
-    document.getElementById(
-        "streamId"
-    );
+    document.getElementById("streamId");
 
 const playBtn =
-    document.getElementById(
-        "playBtn"
-    );
+    document.getElementById("playBtn");
 
 const muteBtn =
-    document.getElementById(
-        "muteBtn"
-    );
+    document.getElementById("muteBtn");
 
 const fullscreenBtn =
-    document.getElementById(
-        "fullscreenBtn"
-    );
+    document.getElementById("fullscreenBtn");
 
 const reloadBtn =
-    document.getElementById(
-        "reloadBtn"
-    );
+    document.getElementById("reloadBtn");
 
 const systemAudioVolume =
-    document.getElementById(
-        "systemAudioVolume"
-    );
+    document.getElementById("systemAudioVolume");
 
 const microphoneAudioVolume =
-    document.getElementById(
-        "microphoneAudioVolume"
-    );
+    document.getElementById("microphoneAudioVolume");
 
 const systemAudioState =
-    document.getElementById(
-        "systemAudioState"
-    );
+    document.getElementById("systemAudioState");
 
 const microphoneAudioState =
-    document.getElementById(
-        "microphoneAudioState"
-    );
+    document.getElementById("microphoneAudioState");
 
 const chatStatus =
-    document.getElementById(
-        "chatStatus"
-    );
+    document.getElementById("chatStatus");
 
 const messages =
-    document.getElementById(
-        "messages"
-    );
+    document.getElementById("messages");
 
 const emptyChat =
-    document.getElementById(
-        "emptyChat"
-    );
+    document.getElementById("emptyChat");
 
 const chatForm =
-    document.getElementById(
-        "chatForm"
-    );
+    document.getElementById("chatForm");
 
 const chatInput =
-    document.getElementById(
-        "chatInput"
-    );
+    document.getElementById("chatInput");
 
 
 /* =====================================================
-   UI HELPERS
+   UI
 ===================================================== */
 
 function setStatus(text) {
-    if (statusElement) {
-        statusElement.textContent = text;
-    }
+    statusElement.textContent = text;
 }
-
 
 function showNotice(text) {
-    if (!notice) {
-        return;
-    }
-
     notice.textContent = text;
-
-    notice.classList.add(
-        "show"
-    );
+    notice.classList.add("show");
 }
-
 
 function hideNotice() {
-    if (!notice) {
-        return;
-    }
-
-    notice.classList.remove(
-        "show"
-    );
+    notice.classList.remove("show");
 }
-
 
 function showVideoMessage(text) {
-    if (!videoMessage) {
-        return;
-    }
-
     videoMessage.textContent = text;
-
-    videoMessage.classList.remove(
-        "hidden"
-    );
+    videoMessage.classList.remove("hidden");
 }
 
-
 function hideVideoMessage() {
-    if (!videoMessage) {
+    videoMessage.classList.add("hidden");
+}
+
+function updateAudioStatus() {
+
+    if (
+        receivedSystemAudio &&
+        receivedMicrophone
+    ) {
+
+        audioStatus.className =
+            "audio-status ok";
+
+        audioStatus.innerHTML =
+            "✅ صدای سیستم دریافت شد<br>" +
+            "✅ صدای میکروفن دریافت شد<br>" +
+            "هر دو صدا جداگانه کنترل می‌شوند.";
+
         return;
     }
 
-    videoMessage.classList.add(
-        "hidden"
-    );
+    if (
+        receivedSystemAudio &&
+        !receivedMicrophone
+    ) {
+
+        audioStatus.className =
+            "audio-status warning";
+
+        audioStatus.innerHTML =
+            "✅ صدای سیستم دریافت شد<br>" +
+            "⚠️ میکروفن دریافت نشد.";
+
+        return;
+    }
+
+    if (
+        !receivedSystemAudio &&
+        receivedMicrophone
+    ) {
+
+        audioStatus.className =
+            "audio-status warning";
+
+        audioStatus.innerHTML =
+            "⚠️ صدای سیستم دریافت نشد<br>" +
+            "✅ صدای میکروفن دریافت شد.";
+
+        return;
+    }
+
+    audioStatus.className =
+        "audio-status warning";
+
+    audioStatus.innerHTML =
+        "⏳ منتظر دریافت صدای سیستم و میکروفن...";
 }
 
 
 /* =====================================================
-   STORAGE HELPERS
+   STORAGE
 ===================================================== */
 
 function readStorage(keys) {
 
-    for (
-        const key
-        of keys
-    ) {
+    for (const key of keys) {
 
         try {
 
-            const sessionValue =
-                sessionStorage.getItem(
-                    key
-                );
+            const value =
+                sessionStorage.getItem(key);
 
-            if (sessionValue) {
-                return sessionValue;
+            if (value) {
+                return value;
             }
 
-        } catch (
-            error
-        ) {
-
-            console.warn(
-                "session storage:",
-                error
-            );
-        }
-
+        } catch {}
 
         try {
 
-            const localValue =
-                localStorage.getItem(
-                    key
-                );
+            const value =
+                localStorage.getItem(key);
 
-            if (localValue) {
-                return localValue;
+            if (value) {
+                return value;
             }
 
-        } catch (
-            error
-        ) {
-
-            console.warn(
-                "local storage:",
-                error
-            );
-        }
+        } catch {}
     }
 
     return null;
 }
 
 
-/* =====================================================
-   STREAM DATA
-===================================================== */
-
 function readStreamData() {
 
     const raw =
-        readStorage(
-            STREAM_KEYS
-        );
+        readStorage(STREAM_KEYS);
 
     if (!raw) {
         return {};
     }
 
     try {
-
-        return JSON.parse(
-            raw
-        );
-
-    } catch (
-        error
-    ) {
-
-        console.error(
-            "stream JSON error:",
-            error
-        );
-
+        return JSON.parse(raw);
+    } catch {
         return {};
     }
 }
@@ -381,34 +1194,15 @@ function getUsername(data) {
 
     return String(
         data.viewer_username ??
-        readStorage(
-            USERNAME_KEYS
-        ) ??
+        readStorage(USERNAME_KEYS) ??
         "کاربر"
     );
 }
 
 
 /* =====================================================
-   PEER CLEANUP
+   PEER
 ===================================================== */
-
-function clearRemoteAudio() {
-
-    systemAudioStream = null;
-
-    microphoneAudioStream = null;
-
-
-    if (systemAudio) {
-        systemAudio.srcObject = null;
-    }
-
-    if (microphoneAudio) {
-        microphoneAudio.srcObject = null;
-    }
-}
-
 
 function closePeer() {
 
@@ -417,43 +1211,28 @@ function closePeer() {
         try {
             peer.ontrack = null;
             peer.onicecandidate = null;
-            peer.onconnectionstatechange = null;
-            peer.oniceconnectionstatechange = null;
-
             peer.close();
-
-        } catch (
-            error
-        ) {
-
-            console.warn(
-                "peer close:",
-                error
-            );
-        }
+        } catch {}
     }
 
     peer = null;
 
     queuedIceCandidates = [];
 
-    clearRemoteAudio();
+    receivedSystemAudio = false;
+    receivedMicrophone = false;
 
+    systemAudio.srcObject = null;
+    microphoneAudio.srcObject = null;
+    remoteVideo.srcObject = null;
 
-    if (remoteVideo) {
-        remoteVideo.srcObject = null;
-    }
+    updateAudioStatus();
 }
 
-
-/* =====================================================
-   CREATE PEER
-===================================================== */
 
 function createPeer() {
 
     closePeer();
-
 
     peer =
         new RTCPeerConnection(
@@ -467,33 +1246,22 @@ function createPeer() {
             const track =
                 event.track;
 
-
             if (
                 track.kind ===
                 "video"
             ) {
 
-                /*
-                    Video فقط داخل video element.
-                */
-
                 const videoStream =
                     new MediaStream();
 
-                videoStream.addTrack(
-                    track
-                );
-
+                videoStream.addTrack(track);
 
                 remoteVideo.srcObject =
                     videoStream;
 
-
                 hideVideoMessage();
 
-
                 playRemoteVideo();
-
 
                 return;
             }
@@ -507,218 +1275,169 @@ function createPeer() {
             }
 
 
-            /*
-                WebRTC transceiver ordering:
+            const audioStream =
+                new MediaStream();
 
-                Host:
+            audioStream.addTrack(track);
+
+
+            /*
+                Host creates tracks in this order:
+
                 video
                 system audio
                 microphone
 
-                We inspect receiver/transceiver
-                position to keep them separate.
+                We identify the audio track
+                through the receiver/transceiver.
             */
 
-            let audioIndex =
-                -1;
-
+            let transceiverIndex = -1;
 
             try {
 
                 const transceivers =
                     peer.getTransceivers();
 
-                const currentTransceiver =
-                    event.transceiver;
-
-                audioIndex =
+                transceiverIndex =
                     transceivers.indexOf(
-                        currentTransceiver
+                        event.transceiver
                     );
 
-            } catch (
-                error
-            ) {
-
-                console.warn(
-                    "transceiver index:",
-                    error
-                );
-            }
-
-
-            const stream =
-                new MediaStream();
-
-            stream.addTrack(
-                track
-            );
+            } catch {}
 
 
             if (
-                audioIndex === 1
+                transceiverIndex === 1
             ) {
 
-                /*
-                    SYSTEM AUDIO
-                */
-
-                systemAudioStream =
-                    stream;
-
+                receivedSystemAudio =
+                    true;
 
                 systemAudio.srcObject =
-                    stream;
-
+                    audioStream;
 
                 systemAudio.volume =
                     Number(
-                        systemAudioVolume?.value ||
-                        100
+                        systemAudioVolume.value
                     ) / 100;
-
 
                 systemAudio.muted =
                     false;
-
 
                 systemAudio.play()
                     .catch(
                         () => {}
                     );
 
+                systemAudioState.textContent =
+                    "فعال";
 
-                if (
-                    systemAudioState
-                ) {
-                    systemAudioState.textContent =
-                        "فعال";
-                }
-
+                updateAudioStatus();
 
                 return;
             }
 
 
             if (
-                audioIndex === 2
+                transceiverIndex === 2
             ) {
 
-                /*
-                    MICROPHONE
-                */
-
-                microphoneAudioStream =
-                    stream;
-
+                receivedMicrophone =
+                    true;
 
                 microphoneAudio.srcObject =
-                    stream;
-
+                    audioStream;
 
                 microphoneAudio.volume =
                     Number(
-                        microphoneAudioVolume?.value ||
-                        100
+                        microphoneAudioVolume.value
                     ) / 100;
-
 
                 microphoneAudio.muted =
                     false;
-
 
                 microphoneAudio.play()
                     .catch(
                         () => {}
                     );
 
+                microphoneAudioState.textContent =
+                    "فعال";
 
-                if (
-                    microphoneAudioState
-                ) {
-                    microphoneAudioState.textContent =
-                        "فعال";
-                }
-
+                updateAudioStatus();
 
                 return;
             }
 
 
             /*
-                Fallback:
-                اگر مرورگر ترتیب transceiver
-                را متفاوت گزارش کند.
+                Fallback
             */
 
             if (
-                !systemAudioStream
+                !receivedSystemAudio
             ) {
 
-                systemAudioStream =
-                    stream;
-
+                receivedSystemAudio =
+                    true;
 
                 systemAudio.srcObject =
-                    stream;
-
+                    audioStream;
 
                 systemAudio.volume =
                     Number(
-                        systemAudioVolume?.value ||
-                        100
+                        systemAudioVolume.value
                     ) / 100;
-
 
                 systemAudio.play()
                     .catch(
                         () => {}
                     );
 
+                systemAudioState.textContent =
+                    "فعال";
+
             } else {
 
-                microphoneAudioStream =
-                    stream;
-
+                receivedMicrophone =
+                    true;
 
                 microphoneAudio.srcObject =
-                    stream;
-
+                    audioStream;
 
                 microphoneAudio.volume =
                     Number(
-                        microphoneAudioVolume?.value ||
-                        100
+                        microphoneAudioVolume.value
                     ) / 100;
-
 
                 microphoneAudio.play()
                     .catch(
                         () => {}
                     );
+
+                microphoneAudioState.textContent =
+                    "فعال";
             }
+
+            updateAudioStatus();
         };
 
 
     peer.onicecandidate =
         event => {
 
-            if (
-                !event.candidate
-            ) {
+            if (!event.candidate) {
                 return;
             }
 
+            sendSignal({
+                type:
+                    "ice-candidate",
 
-            sendSignal(
-                {
-                    type:
-                        "ice-candidate",
-
-                    candidate:
-                        event.candidate
-                }
-            );
+                candidate:
+                    event.candidate
+            });
         };
 
 
@@ -729,10 +1448,8 @@ function createPeer() {
                 return;
             }
 
-
             const state =
                 peer.connectionState;
-
 
             if (
                 state ===
@@ -748,19 +1465,17 @@ function createPeer() {
                 return;
             }
 
-
             if (
                 state ===
                 "connecting"
             ) {
 
                 setStatus(
-                    "در حال اتصال به پخش..."
+                    "در حال اتصال..."
                 );
 
                 return;
             }
-
 
             if (
                 state ===
@@ -773,7 +1488,6 @@ function createPeer() {
 
                 return;
             }
-
 
             if (
                 state ===
@@ -798,13 +1512,8 @@ function createPeer() {
                 return;
             }
 
-
-            const state =
-                peer.iceConnectionState;
-
-
             if (
-                state ===
+                peer.iceConnectionState ===
                 "checking"
             ) {
 
@@ -813,11 +1522,10 @@ function createPeer() {
                 );
             }
 
-
             if (
-                state ===
+                peer.iceConnectionState ===
                     "connected" ||
-                state ===
+                peer.iceConnectionState ===
                     "completed"
             ) {
 
@@ -826,9 +1534,8 @@ function createPeer() {
                 );
             }
 
-
             if (
-                state ===
+                peer.iceConnectionState ===
                 "failed"
             ) {
 
@@ -837,7 +1544,6 @@ function createPeer() {
                 );
             }
         };
-
 
     return peer;
 }
@@ -852,30 +1558,20 @@ function sendSignal(message) {
     if (
         !socket ||
         socket.readyState !==
-            WebSocket.OPEN
+        WebSocket.OPEN
     ) {
         return false;
     }
 
-
     try {
 
         socket.send(
-            JSON.stringify(
-                message
-            )
+            JSON.stringify(message)
         );
 
         return true;
 
-    } catch (
-        error
-    ) {
-
-        console.error(
-            "signal send error:",
-            error
-        );
+    } catch {
 
         return false;
     }
@@ -883,7 +1579,7 @@ function sendSignal(message) {
 
 
 /* =====================================================
-   ICE QUEUE
+   ICE
 ===================================================== */
 
 async function addIceCandidate(
@@ -893,7 +1589,6 @@ async function addIceCandidate(
     if (!candidate) {
         return;
     }
-
 
     if (
         !peer ||
@@ -906,7 +1601,6 @@ async function addIceCandidate(
 
         return;
     }
-
 
     try {
 
@@ -921,7 +1615,7 @@ async function addIceCandidate(
     ) {
 
         console.warn(
-            "ICE error:",
+            "ICE:",
             error
         );
     }
@@ -937,16 +1631,14 @@ async function flushIceCandidates() {
         return;
     }
 
-
-    const list =
+    const candidates =
         queuedIceCandidates;
 
     queuedIceCandidates = [];
 
-
     for (
         const candidate
-        of list
+        of candidates
     ) {
 
         try {
@@ -957,15 +1649,7 @@ async function flushIceCandidates() {
                 )
             );
 
-        } catch (
-            error
-        ) {
-
-            console.warn(
-                "queued ICE error:",
-                error
-            );
-        }
+        } catch {}
     }
 }
 
@@ -982,13 +1666,11 @@ async function handleOffer(
         return;
     }
 
-
     try {
 
         setStatus(
-            "در حال دریافت پخش..."
+            "در حال دریافت تصویر و صدا..."
         );
-
 
         const connection =
             createPeer();
@@ -1014,27 +1696,25 @@ async function handleOffer(
 
 
         const sent =
-            sendSignal(
-                {
-                    type:
-                        "answer",
+            sendSignal({
+                type:
+                    "answer",
 
-                    answer:
-                        connection.localDescription
-                }
-            );
+                answer:
+                    connection.localDescription
+            });
 
 
         if (!sent) {
 
             throw new Error(
-                "answer ارسال نشد"
+                "Answer ارسال نشد"
             );
         }
 
 
         setStatus(
-            "در انتظار تصویر و صدا..."
+            "در انتظار پخش..."
         );
 
     } catch (
@@ -1042,27 +1722,16 @@ async function handleOffer(
     ) {
 
         console.error(
-            "offer handling error:",
+            "Offer error:",
             error
         );
-
 
         setStatus(
             "خطا در دریافت پخش"
         );
 
-
-        showNotice(
-            "دریافت پخش انجام نشد: " +
-            (
-                error?.message ||
-                "خطای نامشخص"
-            )
-        );
-
-
         showVideoMessage(
-            "تصویر یا صدا دریافت نشد."
+            "دریافت تصویر و صدا انجام نشد."
         );
     }
 }
@@ -1080,37 +1749,20 @@ function connectSignaling() {
             "شناسه لایو پیدا نشد"
         );
 
-        showNotice(
-            "شناسه لایو در لینک وجود ندارد."
-        );
-
         showVideoMessage(
             "شناسه لایو پیدا نشد."
         );
 
-        return;
-    }
+        showNotice(
+            "از صفحه اصلی دوباره وارد لایو شوید."
+        );
 
-
-    if (
-        socket &&
-        (
-            socket.readyState ===
-                WebSocket.OPEN ||
-            socket.readyState ===
-                WebSocket.CONNECTING
-        )
-    ) {
         return;
     }
 
 
     setStatus(
         "در حال اتصال به سرور..."
-    );
-
-    showVideoMessage(
-        "در حال اتصال به پخش زنده..."
     );
 
 
@@ -1125,12 +1777,10 @@ function connectSignaling() {
         error
     ) {
 
-        console.error(
-            error
-        );
+        console.error(error);
 
         showNotice(
-            "اتصال به سرور ایجاد نشد."
+            "اتصال به سرور لایو ایجاد نشد."
         );
 
         return;
@@ -1140,37 +1790,26 @@ function connectSignaling() {
     socket.onopen =
         () => {
 
-            if (chatStatus) {
-                chatStatus.textContent =
-                    "متصل";
-            }
+            chatStatus.textContent =
+                "متصل";
 
 
-            sendSignal(
-                {
-                    type:
-                        "join",
+            sendSignal({
+                type:
+                    "join",
 
-                    role:
-                        "viewer",
+                role:
+                    "viewer",
 
-                    room_id:
-                        streamId
-                }
-            );
+                room_id:
+                    streamId
+            });
 
 
-            /*
-                signaling.py فعلی
-                viewer-ready را می‌فهمد.
-            */
-
-            sendSignal(
-                {
-                    type:
-                        "ready"
-                }
-            );
+            sendSignal({
+                type:
+                    "ready"
+            });
         };
 
 
@@ -1179,7 +1818,6 @@ function connectSignaling() {
 
             let message;
 
-
             try {
 
                 message =
@@ -1187,22 +1825,111 @@ function connectSignaling() {
                         event.data
                     );
 
-            } catch (
-                error
-            ) {
-
-                console.warn(
-                    "invalid signaling message:",
-                    error
-                );
+            } catch {
 
                 return;
             }
 
 
-            await handleSignalingMessage(
-                message
-            );
+            switch (
+                message.type
+            ) {
+
+                case "joined":
+
+                    viewerId =
+                        message.viewer_id ||
+                        "";
+
+                    if (
+                        typeof message.viewer_count ===
+                        "number"
+                    ) {
+
+                        viewerCount.textContent =
+                            String(
+                                message.viewer_count
+                            );
+                    }
+
+                    setStatus(
+                        "در انتظار تصویر..."
+                    );
+
+                    break;
+
+
+                case "room-info":
+
+                    if (
+                        typeof message.viewer_count ===
+                        "number"
+                    ) {
+
+                        viewerCount.textContent =
+                            String(
+                                message.viewer_count
+                            );
+                    }
+
+                    break;
+
+
+                case "offer":
+
+                    await handleOffer(
+                        message.offer
+                    );
+
+                    break;
+
+
+                case "ice-candidate":
+
+                    await addIceCandidate(
+                        message.candidate
+                    );
+
+                    break;
+
+
+                case "chat-message":
+
+                    addChatMessage(
+                        message.username ||
+                        "کاربر",
+
+                        message.message ||
+                        ""
+                    );
+
+                    break;
+
+
+                case "host-left":
+
+                    setStatus(
+                        "لایو پایان یافت"
+                    );
+
+                    showVideoMessage(
+                        "میزبان لایو را پایان داد."
+                    );
+
+                    closePeer();
+
+                    break;
+
+
+                case "error":
+
+                    showNotice(
+                        message.message ||
+                        "خطای سرور"
+                    );
+
+                    break;
+            }
         };
 
 
@@ -1210,19 +1937,15 @@ function connectSignaling() {
         error => {
 
             console.error(
-                "WebSocket error:",
+                "WebSocket:",
                 error
             );
 
-
-            if (chatStatus) {
-                chatStatus.textContent =
-                    "خطا";
-            }
-
+            chatStatus.textContent =
+                "خطا";
 
             setStatus(
-                "خطا در اتصال به سرور"
+                "خطا در اتصال"
             );
         };
 
@@ -1234,158 +1957,21 @@ function connectSignaling() {
                 return;
             }
 
-
-            if (chatStatus) {
-                chatStatus.textContent =
-                    "قطع";
-            }
-
+            chatStatus.textContent =
+                "قطع";
 
             setStatus(
                 "اتصال قطع شد"
-            );
-
-
-            showVideoMessage(
-                "ارتباط با سرور قطع شد."
             );
         };
 }
 
 
 /* =====================================================
-   SIGNAL HANDLER
-===================================================== */
-
-async function handleSignalingMessage(
-    message
-) {
-
-    if (!message) {
-        return;
-    }
-
-
-    switch (
-        message.type
-    ) {
-
-        case "joined":
-
-            viewerId =
-                message.viewer_id ||
-                "";
-
-
-            if (
-                typeof message.viewer_count ===
-                "number"
-            ) {
-
-                viewerCount.textContent =
-                    String(
-                        message.viewer_count
-                    );
-            }
-
-
-            setStatus(
-                "در انتظار تصویر..."
-            );
-
-            break;
-
-
-        case "room-info":
-
-            if (
-                typeof message.viewer_count ===
-                "number"
-            ) {
-
-                viewerCount.textContent =
-                    String(
-                        message.viewer_count
-                    );
-            }
-
-            break;
-
-
-        case "offer":
-
-            await handleOffer(
-                message.offer
-            );
-
-            break;
-
-
-        case "ice-candidate":
-
-            await addIceCandidate(
-                message.candidate
-            );
-
-            break;
-
-
-        case "chat-message":
-
-            addChatMessage(
-                message.username ||
-                    message.user ||
-                    "کاربر",
-
-                message.message ||
-                    message.text ||
-                    ""
-            );
-
-            break;
-
-
-        case "host-left":
-
-            setStatus(
-                "لایو پایان یافت"
-            );
-
-            showVideoMessage(
-                "میزبان لایو را پایان داد."
-            );
-
-            closePeer();
-
-            break;
-
-
-        case "error":
-
-            setStatus(
-                "خطای سرور"
-            );
-
-            showNotice(
-                message.message ||
-                    "خطای سرور"
-            );
-
-            break;
-    }
-}
-
-
-/* =====================================================
-   VIDEO
+   PLAY
 ===================================================== */
 
 async function playRemoteVideo() {
-
-    if (!remoteVideo) {
-        return;
-    }
-
 
     try {
 
@@ -1393,19 +1979,89 @@ async function playRemoteVideo() {
 
         hideVideoMessage();
 
-    } catch (
-        error
-    ) {
-
-        console.warn(
-            "video play:",
-            error
-        );
+    } catch {
 
         showVideoMessage(
             "برای شروع پخش روی «پخش» بزنید."
         );
     }
+
+
+    try {
+
+        await systemAudio.play();
+
+    } catch {}
+
+
+    try {
+
+        await microphoneAudio.play();
+
+    } catch {}
+}
+
+
+/* =====================================================
+   AUDIO
+===================================================== */
+
+systemAudioVolume.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            Number(
+                systemAudioVolume.value
+            ) / 100;
+
+        systemAudio.volume =
+            value;
+
+        systemAudioState.textContent =
+            Math.round(
+                value * 100
+            ) + "%";
+    }
+);
+
+
+microphoneAudioVolume.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            Number(
+                microphoneAudioVolume.value
+            ) / 100;
+
+        microphoneAudio.volume =
+            value;
+
+        microphoneAudioState.textContent =
+            Math.round(
+                value * 100
+            ) + "%";
+    }
+);
+
+
+function toggleMute() {
+
+    const muted =
+        systemAudio.muted &&
+        microphoneAudio.muted;
+
+    systemAudio.muted =
+        !muted;
+
+    microphoneAudio.muted =
+        !muted;
+
+    muteBtn.textContent =
+        muted
+            ? "🔊 صدا"
+            : "🔇 بی‌صدا";
 }
 
 
@@ -1423,53 +2079,52 @@ function addChatMessage(
             "none";
     }
 
-
-    const box =
+    const wrapper =
         document.createElement(
             "div"
         );
 
-    box.className =
+    wrapper.className =
         "message";
 
 
-    const userElement =
+    const userEl =
         document.createElement(
             "div"
         );
 
-    userElement.className =
+    userEl.className =
         "message-user";
 
-    userElement.textContent =
+    userEl.textContent =
         user ||
         "کاربر";
 
 
-    const textElement =
+    const textEl =
         document.createElement(
             "div"
         );
 
-    textElement.className =
+    textEl.className =
         "message-text";
 
-    textElement.textContent =
+    textEl.textContent =
         text ||
         "";
 
 
-    box.appendChild(
-        userElement
+    wrapper.appendChild(
+        userEl
     );
 
-    box.appendChild(
-        textElement
+    wrapper.appendChild(
+        textEl
     );
 
 
     messages.appendChild(
-        box
+        wrapper
     );
 
 
@@ -1486,26 +2141,20 @@ async function sendChat(
         return;
     }
 
+    if (
+        sendSignal({
+            type:
+                "chat-message",
 
-    const sent =
-        sendSignal(
-            {
-                type:
-                    "chat-message",
+            username:
+                username,
 
-                username:
-                    username,
-
-                message:
-                    text
-            }
-        );
-
-
-    if (sent) {
+            message:
+                text
+        })
+    ) {
         return;
     }
-
 
     try {
 
@@ -1535,20 +2184,13 @@ async function sendChat(
                 }
             );
 
-
         if (!response.ok) {
             throw new Error(
                 "chat failed"
             );
         }
 
-    } catch (
-        error
-    ) {
-
-        console.error(
-            error
-        );
+    } catch {
 
         showNotice(
             "ارسال پیام انجام نشد."
@@ -1557,16 +2199,11 @@ async function sendChat(
 }
 
 
-/* =====================================================
-   CHAT HISTORY
-===================================================== */
-
 async function loadChat() {
 
     if (!streamId) {
         return;
     }
-
 
     try {
 
@@ -1582,15 +2219,12 @@ async function loadChat() {
                 }
             );
 
-
         if (!response.ok) {
             return;
         }
 
-
         const data =
             await response.json();
-
 
         const list =
             Array.isArray(data)
@@ -1603,7 +2237,6 @@ async function loadChat() {
                         : []
                 );
 
-
         for (
             const item
             of list
@@ -1611,172 +2244,15 @@ async function loadChat() {
 
             addChatMessage(
                 item.username ||
-                    item.user ||
-                    "کاربر",
+                "کاربر",
 
                 item.message ||
-                    item.text ||
-                    ""
+                item.text ||
+                ""
             );
         }
 
-    } catch (
-        error
-    ) {
-
-        console.warn(
-            "chat history:",
-            error
-        );
-    }
-}
-
-
-/* =====================================================
-   AUDIO CONTROLS
-===================================================== */
-
-function updateSystemVolume() {
-
-    if (!systemAudio) {
-        return;
-    }
-
-
-    const value =
-        Number(
-            systemAudioVolume.value
-        ) / 100;
-
-
-    systemAudio.volume =
-        value;
-
-
-    if (systemAudioState) {
-
-        systemAudioState.textContent =
-            Math.round(
-                value * 100
-            ) + "%";
-    }
-}
-
-
-function updateMicrophoneVolume() {
-
-    if (!microphoneAudio) {
-        return;
-    }
-
-
-    const value =
-        Number(
-            microphoneAudioVolume.value
-        ) / 100;
-
-
-    microphoneAudio.volume =
-        value;
-
-
-    if (microphoneAudioState) {
-
-        microphoneAudioState.textContent =
-            Math.round(
-                value * 100
-            ) + "%";
-    }
-}
-
-
-if (systemAudioVolume) {
-
-    systemAudioVolume.addEventListener(
-        "input",
-        updateSystemVolume
-    );
-}
-
-
-if (microphoneAudioVolume) {
-
-    microphoneAudioVolume.addEventListener(
-        "input",
-        updateMicrophoneVolume
-    );
-}
-
-
-/* =====================================================
-   MUTE BOTH
-===================================================== */
-
-function toggleMute() {
-
-    const currentlyMuted =
-        systemAudio.muted &&
-        microphoneAudio.muted;
-
-
-    systemAudio.muted =
-        !currentlyMuted;
-
-    microphoneAudio.muted =
-        !currentlyMuted;
-
-
-    muteBtn.textContent =
-        currentlyMuted
-            ? "🔊 صدا"
-            : "🔇 بی‌صدا";
-}
-
-
-/* =====================================================
-   FULLSCREEN
-===================================================== */
-
-async function toggleFullscreen() {
-
-    try {
-
-        if (
-            document.fullscreenElement
-        ) {
-
-            await document.exitFullscreen();
-
-            return;
-        }
-
-
-        if (
-            remoteVideo.requestFullscreen
-        ) {
-
-            await remoteVideo.requestFullscreen();
-
-            return;
-        }
-
-
-        if (
-            remoteVideo.webkitEnterFullscreen
-        ) {
-
-            remoteVideo.webkitEnterFullscreen();
-        }
-
-    } catch (
-        error
-    ) {
-
-        console.warn(
-            "fullscreen:",
-            error
-        );
-    }
+    } catch {}
 }
 
 
@@ -1785,21 +2261,16 @@ async function toggleFullscreen() {
 ===================================================== */
 
 document
-    .getElementById(
-        "backBtn"
-    )
-    ?.addEventListener(
+    .getElementById("backBtn")
+    .addEventListener(
         "click",
         () => {
 
-            ending =
-                true;
-
+            ending = true;
 
             try {
                 socket?.close();
             } catch {}
-
 
             window.location.href =
                 "/index.html";
@@ -1807,77 +2278,88 @@ document
     );
 
 
-playBtn?.addEventListener(
+playBtn.addEventListener(
     "click",
     playRemoteVideo
 );
 
 
-remoteVideo?.addEventListener(
+remoteVideo.addEventListener(
     "click",
     playRemoteVideo
 );
 
 
-muteBtn?.addEventListener(
+muteBtn.addEventListener(
     "click",
     toggleMute
 );
 
 
-fullscreenBtn?.addEventListener(
+fullscreenBtn.addEventListener(
     "click",
-    toggleFullscreen
+    async () => {
+
+        try {
+
+            if (
+                document.fullscreenElement
+            ) {
+
+                await document.exitFullscreen();
+
+            } else if (
+                remoteVideo.requestFullscreen
+            ) {
+
+                await remoteVideo.requestFullscreen();
+            }
+
+        } catch (
+            error
+        ) {
+
+            console.warn(
+                error
+            );
+        }
+    }
 );
 
 
-reloadBtn?.addEventListener(
+reloadBtn.addEventListener(
     "click",
     () => {
 
         closePeer();
 
-
         try {
-
             socket?.close();
-
         } catch {}
 
-
         setTimeout(
-            () => {
-
-                if (!ending) {
-                    connectSignaling();
-                }
-
-            },
+            connectSignaling,
             300
         );
     }
 );
 
 
-chatForm?.addEventListener(
+chatForm.addEventListener(
     "submit",
     async event => {
 
         event.preventDefault();
 
-
         const text =
             chatInput.value.trim();
-
 
         if (!text) {
             return;
         }
 
-
         chatInput.value =
             "";
-
 
         await sendChat(
             text
@@ -1887,7 +2369,7 @@ chatForm?.addEventListener(
 
 
 /* =====================================================
-   INITIALIZE
+   INIT
 ===================================================== */
 
 async function initialize() {
@@ -1895,12 +2377,10 @@ async function initialize() {
     streamData =
         readStreamData();
 
-
     streamId =
         getStreamId(
             streamData
         );
-
 
     username =
         getUsername(
@@ -1908,44 +2388,35 @@ async function initialize() {
         );
 
 
-    if (streamTitle) {
-
-        streamTitle.textContent =
-            streamData.title ||
-            "پخش زنده LainoLive";
-    }
+    streamTitle.textContent =
+        streamData.title ||
+        "پخش زنده LainoLive";
 
 
-    if (streamCategory) {
-
-        streamCategory.textContent =
-            streamData.category ||
-            "عمومی";
-    }
+    streamCategory.textContent =
+        streamData.category ||
+        "عمومی";
 
 
-    if (streamOwner) {
-
-        streamOwner.textContent =
-            "👤 " +
-            (
-                streamData.username ||
-                streamData.owner ||
-                streamData.creator ||
-                "کاربر"
-            );
-    }
+    streamOwner.textContent =
+        "👤 " +
+        (
+            streamData.username ||
+            streamData.owner ||
+            streamData.creator ||
+            "کاربر"
+        );
 
 
-    if (streamIdElement) {
+    streamIdElement.textContent =
+        "Stream: " +
+        (
+            streamId ||
+            "-"
+        );
 
-        streamIdElement.textContent =
-            "Stream: " +
-            (
-                streamId ||
-                "-"
-            );
-    }
+
+    updateAudioStatus();
 
 
     if (!streamId) {
@@ -1967,7 +2438,6 @@ async function initialize() {
 
 
     await loadChat();
-
 
     connectSignaling();
 }
@@ -1997,3 +2467,7 @@ window.addEventListener(
 ===================================================== */
 
 initialize();
+</script>
+
+</body>
+</html>
