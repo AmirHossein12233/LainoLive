@@ -1,113 +1,905 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="theme-color" content="#09090f">
 
-    <meta
-        name="theme-color"
-        content="#111827"
-    >
-
-    <title>لاینو | LainoLive</title>
-
-    <link
-        rel="stylesheet"
-        href="/style.css"
-    >
+    <title>LainoLive</title>
 
     <style>
-        .status-text {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 12px;
-            margin: 10px 0 16px;
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .live-card {
-            cursor: pointer;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
+            background:
+                radial-gradient(
+                    circle at top,
+                    #17172a 0%,
+                    #0b0b12 45%,
+                    #050509 100%
+                );
+            color: #ffffff;
         }
 
-        .live-card.owner {
-            border-color: #22c55e;
+        body {
+            min-height: 100vh;
         }
 
-        .owner-badge {
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            padding: 5px 8px;
-            border-radius: 8px;
-            background: #132b1d;
-            color: #86efac;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .stream-category {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 8px;
-            background: #132b1d;
-            color: #86efac;
-            font-size: 11px;
-        }
-
-        .empty-live {
-            grid-column: 1 / -1;
-        }
-
-        .logout-button {
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 9px 12px;
-            background: #1e293b;
-            color: #fca5a5;
+        button,
+        input,
+        select {
             font-family: inherit;
-            font-size: 11px;
-            font-weight: bold;
+        }
+
+        button {
             cursor: pointer;
-            touch-action: manipulation;
         }
 
-        .logout-button:hover {
-            background: #3f0a0a;
+        .page {
+            min-height: 100vh;
+            padding-bottom: 92px;
         }
 
-        .logout-button:active {
-            transform: scale(0.98);
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            padding:
+                calc(14px + env(safe-area-inset-top))
+                16px
+                14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            background: rgba(8, 8, 15, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .user-actions {
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2757,
+                    #8b35ff
+                );
+
+            box-shadow:
+                0 8px 30px rgba(255, 39, 87, 0.28);
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .brand-sub {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #9f9fae;
+        }
+
+        .header-right {
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .popular-nav-item {
-            color: #fbbf24;
+        .user-pill {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
+
+            color: #fff;
+
+            border-radius: 999px;
+            padding: 8px 12px;
+
+            font-size: 12px;
+            white-space: nowrap;
         }
 
-        .popular-nav-item .nav-icon {
-            filter: drop-shadow(
-                0 0 6px rgba(251, 191, 36, 0.25)
-            );
+        .logout-btn {
+            border: none;
+            background: rgba(255, 60, 86, 0.12);
+            color: #ff667d;
+
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
         }
 
-        @media (max-width: 600px) {
-            .logout-button {
-                padding: 8px 10px;
-                font-size: 10px;
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-area {
+            padding: 18px 16px 8px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 50px;
+
+            padding:
+                0 48px
+                0 16px;
+
+            color: white;
+            background: rgba(255, 255, 255, 0.06);
+
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            border-color: rgba(139, 53, 255, 0.7);
+            box-shadow:
+                0 0 0 3px rgba(139, 53, 255, 0.12);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            font-size: 19px;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            margin: 12px 16px 4px;
+            padding: 20px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 39, 87, 0.17),
+                    rgba(139, 53, 255, 0.18)
+                );
+
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .hero-title {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 7px;
+        }
+
+        .hero-text {
+            color: #aaaab7;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .hero-button {
+            margin-top: 14px;
+
+            width: 100%;
+            min-height: 48px;
+
+            border: none;
+            border-radius: 15px;
+
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2757,
+                    #8b35ff
+                );
+
+            box-shadow:
+                0 10px 30px rgba(139, 53, 255, 0.24);
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section-header {
+            padding:
+                22px
+                16px
+                12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: rgba(255, 255, 255, 0.06);
+            color: #dddde8;
+
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+        }
+
+        /* =========================
+           LIVE LIST
+        ========================= */
+
+        .live-list {
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .live-card {
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(255,255,255,0.055),
+                    rgba(255,255,255,0.025)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 18px;
+
+            transition:
+                transform 0.18s ease,
+                border-color 0.18s ease;
+        }
+
+        .live-card:active {
+            transform: scale(0.98);
+        }
+
+        .live-card:hover {
+            border-color:
+                rgba(139, 53, 255, 0.45);
+        }
+
+        .live-cover {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #161622,
+                    #29213d
+                );
+
+            overflow: hidden;
+        }
+
+        .live-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .live-cover-placeholder {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+            opacity: 0.45;
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 9px;
+            right: 9px;
+
+            padding: 5px 9px;
+
+            border-radius: 999px;
+
+            background: #ff1e48;
+            color: white;
+
+            font-size: 10px;
+            font-weight: 900;
+
+            box-shadow:
+                0 5px 18px rgba(255, 30, 72, 0.35);
+        }
+
+        .viewer-badge {
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+
+            padding: 5px 8px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(0, 0, 0, 0.62);
+
+            color: white;
+
+            font-size: 10px;
+        }
+
+        .live-info {
+            padding: 12px;
+        }
+
+        .live-title {
+            font-size: 14px;
+            font-weight: 800;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .live-user {
+            margin-top: 7px;
+
+            color: #aaaab8;
+            font-size: 11px;
+        }
+
+        .live-category {
+            display: inline-block;
+
+            margin-top: 8px;
+
+            padding: 4px 8px;
+
+            border-radius: 999px;
+
+            color: #c9a9ff;
+            background:
+                rgba(139, 53, 255, 0.13);
+
+            font-size: 10px;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty-box {
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 40px 20px;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            border:
+                1px dashed
+                rgba(255,255,255,0.09);
+
+            border-radius: 18px;
+
+            color: #9999a8;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* =========================
+           BOTTOM NAV
+        ========================= */
+
+        .bottom-nav {
+            position: fixed;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: 200;
+
+            padding:
+                10px
+                10px
+                calc(10px + env(safe-area-inset-bottom));
+
+            background:
+                rgba(7, 7, 12, 0.92);
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 8px;
+        }
+
+        .nav-btn {
+            min-height: 52px;
+
+            border: none;
+            border-radius: 15px;
+
+            background: transparent;
+
+            color: #8d8d9a;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            gap: 4px;
+        }
+
+        .nav-btn span:first-child {
+            font-size: 20px;
+        }
+
+        .nav-btn.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 39, 87, 0.14),
+                    rgba(139, 53, 255, 0.16)
+                );
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+
+            z-index: 500;
+
+            display: none;
+
+            align-items: flex-end;
+            justify-content: center;
+
+            background:
+                rgba(0, 0, 0, 0.72);
+
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+
+            padding: 0;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 560px;
+
+            max-height: 92vh;
+            overflow-y: auto;
+
+            border-radius:
+                24px 24px 0 0;
+
+            padding:
+                18px
+                16px
+                calc(22px + env(safe-area-inset-bottom));
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #171721,
+                    #0d0d14
+                );
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            box-shadow:
+                0 -20px 50px rgba(0,0,0,0.38);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+
+            border: none;
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: white;
+
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #d9d9e3;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            min-height: 50px;
+
+            padding: 0 14px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background:
+                rgba(255,255,255,0.055);
+
+            color: white;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color:
+                rgba(139,53,255,0.75);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(139,53,255,0.11);
+        }
+
+        .form-select option {
+            background: #181821;
+            color: white;
+        }
+
+        /* =========================
+           COVER UPLOAD
+        ========================= */
+
+        .cover-upload {
+            border:
+                1px dashed
+                rgba(255,255,255,0.13);
+
+            border-radius: 16px;
+
+            padding: 14px;
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+        .cover-upload input[type="file"] {
+            width: 100%;
+
+            color: #aaaab9;
+
+            font-size: 12px;
+        }
+
+        .cover-hint {
+            margin-top: 8px;
+
+            color: #858593;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .cover-preview {
+            margin-top: 12px;
+
+            display: none;
+
+            overflow: hidden;
+
+            border-radius: 16px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: #08080d;
+        }
+
+        .cover-preview.show {
+            display: block;
+        }
+
+        .cover-preview img {
+            display: block;
+
+            width: 100%;
+            max-height: 230px;
+
+            object-fit: cover;
+        }
+
+        .cover-remove {
+            width: 100%;
+
+            min-height: 42px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,60,86,0.10);
+
+            color: #ff7085;
+
+            font-size: 12px;
+        }
+
+        .start-live-btn {
+            width: 100%;
+            min-height: 54px;
+
+            margin-top: 5px;
+
+            border: none;
+            border-radius: 16px;
+
+            color: white;
+
+            font-size: 15px;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2757,
+                    #8b35ff
+                );
+
+            box-shadow:
+                0 12px 35px
+                rgba(139,53,255,0.25);
+        }
+
+        .start-live-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        .toast {
+            position: fixed;
+
+            left: 50%;
+
+            bottom:
+                calc(84px + env(safe-area-inset-bottom));
+
+            transform:
+                translateX(-50%)
+                translateY(20px);
+
+            z-index: 1000;
+
+            min-width: min(320px, calc(100% - 30px));
+
+            padding: 13px 16px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(24,24,32,0.96);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            color: white;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transition:
+                opacity .2s ease,
+                transform .2s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+        }
+
+        /* =========================
+           DESKTOP
+        ========================= */
+
+        @media (min-width: 700px) {
+
+            .page {
+                padding-bottom: 96px;
             }
 
-            .user-button {
-                max-width: 150px;
+            .live-list {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+
+            .search-area,
+            .hero,
+            .section-header {
+                max-width: 1100px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero {
+                margin-top: 18px;
+            }
+
+            .bottom-nav {
+                left: 50%;
+                right: auto;
+
+                width: min(700px, calc(100% - 30px));
+
+                transform:
+                    translateX(-50%);
+
+                border:
+                    1px solid
+                    rgba(255,255,255,0.07);
+
+                border-radius: 22px;
+
+                bottom: 14px;
+
+                padding:
+                    8px;
+            }
+
+            .modal {
+                align-items: center;
+                padding: 20px;
+            }
+
+            .modal-card {
+                border-radius: 24px;
+                max-height: 90vh;
+            }
+        }
+
+        @media (max-width: 390px) {
+
+            .live-list {
+                grid-template-columns: 1fr;
+            }
+
+            .user-pill {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     </style>
@@ -115,256 +907,188 @@
 
 <body>
 
-<script>
-    /* =====================================================
-       AUTH CHECK
-    ===================================================== */
+<div class="page">
 
-    const loggedIn =
-        localStorage.getItem(
-            "lainolive_logged_in"
-        );
+    <!-- HEADER -->
+    <header class="header">
 
-    const currentUsername =
-        localStorage.getItem(
-            "lainolive_username"
-        );
+        <div class="brand">
+            <div class="brand-icon">
+                📺
+            </div>
 
-    if (
-        loggedIn !== "true" ||
-        !currentUsername
-    ) {
+            <div>
+                <div class="brand-name">
+                    LainoLive
+                </div>
 
-        window.location.replace(
-            "/login.html"
-        );
-    }
-</script>
-
-
-<header class="topbar">
-
-    <div class="topbar-left">
-
-        <div class="logo">
-            لاینو
+                <div class="brand-sub">
+                    پخش زنده برای همه
+                </div>
+            </div>
         </div>
 
-    </div>
+        <div class="header-right">
 
-
-    <div class="topbar-right">
-
-        <div class="user-actions">
-
-            <button
-                id="profileButton"
-                class="user-button"
-                type="button"
+            <div
+                id="userPill"
+                class="user-pill"
             >
-                👤
-                <span id="userName">
-                    کاربر
-                </span>
-            </button>
+                کاربر
+            </div>
 
             <button
                 id="logoutButton"
-                class="logout-button"
+                class="logout-btn"
                 type="button"
+                title="خروج"
             >
-                خروج از حساب
+                🚪
             </button>
 
         </div>
 
-    </div>
-
-</header>
+    </header>
 
 
-<main class="main-content">
+    <!-- SEARCH -->
+    <section class="search-area">
 
-    <section class="welcome-section">
+        <div class="search-box">
 
-        <div>
+            <span class="search-icon">
+                🔎
+            </span>
 
-            <h1 id="welcomeTitle">
-                سلام 👋
-            </h1>
-
-            <p>
-                پخش زنده‌های لاینو را تماشا کن.
-            </p>
+            <input
+                id="searchInput"
+                class="search-input"
+                type="search"
+                placeholder="جستجوی لایو..."
+                autocomplete="off"
+            >
 
         </div>
 
+    </section>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-title">
+            🔴 آماده‌ای لایو بروی؟
+        </div>
+
+        <div class="hero-text">
+            لایو خودت را شروع کن، با بقیه گفتگو کن
+            و بیننده‌هایت را ببین.
+        </div>
 
         <button
-            id="startLiveButton"
-            class="primary-button"
+            id="openStartLiveButton"
+            class="hero-button"
             type="button"
         >
-            🔴 شروع پخش زنده
+            🎥 شروع پخش زنده
         </button>
 
     </section>
 
 
-    <div
-        id="serverStatus"
-        class="status-text"
-    >
-        در حال دریافت لایوها...
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+
+        <div class="section-title">
+            🔴 لایوهای در حال پخش
+        </div>
+
+        <button
+            id="refreshButton"
+            class="refresh-btn"
+            type="button"
+            title="تازه‌سازی"
+        >
+            🔄
+        </button>
+
     </div>
 
 
-    <section class="section">
+    <!-- LIVE LIST -->
+    <main
+        id="liveList"
+        class="live-list"
+    >
 
-        <div class="section-header">
-
-            <h2>
-                پخش‌های زنده
-            </h2>
-
-            <span
-                id="liveCount"
-                class="section-count"
-            >
-                0 پخش
-            </span>
-
+        <div class="empty-box">
+            در حال دریافت لایوها...
         </div>
 
+    </main>
 
-        <div
-            id="liveList"
-            class="live-list"
-        ></div>
-
-    </section>
-
-</main>
+</div>
 
 
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
 
     <button
-        class="nav-item active"
+        id="homeButton"
+        class="nav-btn active"
         type="button"
     >
-        <span class="nav-icon">
-            🏠
-        </span>
-
-        <span>
-            خانه
-        </span>
+        <span>🏠</span>
+        <span>خانه</span>
     </button>
-
-
-    <button
-        id="popularButton"
-        class="nav-item popular-nav-item"
-        type="button"
-    >
-        <span class="nav-icon">
-            🔥
-        </span>
-
-        <span>
-            محبوب
-        </span>
-    </button>
-
 
     <button
         id="searchButton"
-        class="nav-item"
+        class="nav-btn"
         type="button"
     >
-        <span class="nav-icon">
-            🔎
-        </span>
-
-        <span>
-            جستجو
-        </span>
+        <span>🔎</span>
+        <span>جستجو</span>
     </button>
 
-
     <button
-        id="createButton"
-        class="nav-item"
+        id="popularButton"
+        class="nav-btn"
         type="button"
     >
-        <span class="nav-icon">
-            ➕
-        </span>
-
-        <span>
-            ایجاد
-        </span>
+        <span>🔥</span>
+        <span>محبوب</span>
     </button>
 
-
     <button
-        id="messagesButton"
-        class="nav-item"
+        id="profileButton"
+        class="nav-btn"
         type="button"
     >
-        <span class="nav-icon">
-            💬
-        </span>
-
-        <span>
-            پیام
-        </span>
-    </button>
-
-
-    <button
-        id="bottomProfileButton"
-        class="nav-item"
-        type="button"
-    >
-        <span class="nav-icon">
-            👤
-        </span>
-
-        <span>
-            پروفایل
-        </span>
+        <span>👤</span>
+        <span>پروفایل</span>
     </button>
 
 </nav>
 
 
-<!-- =====================================================
-     START LIVE MODAL
-===================================================== -->
-
+<!-- START LIVE MODAL -->
 <div
-    id="liveModal"
-    class="modal hidden"
+    id="startLiveModal"
+    class="modal"
 >
 
-    <div
-        class="modal-backdrop"
-    ></div>
-
-
-    <div class="modal-box">
+    <div class="modal-card">
 
         <div class="modal-header">
 
-            <h2>
+            <div class="modal-title">
                 شروع پخش زنده
-            </h2>
+            </div>
 
             <button
-                id="closeLiveModal"
-                class="close-button"
+                id="closeStartLiveButton"
+                class="modal-close"
                 type="button"
             >
                 ✕
@@ -373,53 +1097,137 @@
         </div>
 
 
-        <label for="liveTitle">
-            عنوان لایو
-        </label>
+        <!-- TITLE -->
+        <div class="form-group">
 
-        <input
-            id="liveTitle"
-            type="text"
-            maxlength="100"
-            placeholder="مثلاً بازی آنلاین"
-        >
+            <label
+                class="form-label"
+                for="liveTitle"
+            >
+                عنوان لایو
+            </label>
 
+            <input
+                id="liveTitle"
+                class="form-input"
+                type="text"
+                maxlength="100"
+                placeholder="مثلاً بازی، موسیقی، گفتگو..."
+            >
 
-        <label for="liveCategory">
-            دسته‌بندی
-        </label>
-
-        <select id="liveCategory">
-
-            <option value="عمومی">
-                عمومی
-            </option>
-
-            <option value="بازی">
-                بازی
-            </option>
-
-            <option value="موسیقی">
-                موسیقی
-            </option>
-
-            <option value="گفتگو">
-                گفتگو
-            </option>
-
-            <option value="آموزشی">
-                آموزشی
-            </option>
-
-        </select>
+        </div>
 
 
+        <!-- CATEGORY -->
+        <div class="form-group">
+
+            <label
+                class="form-label"
+                for="liveCategory"
+            >
+                دسته‌بندی
+            </label>
+
+            <select
+                id="liveCategory"
+                class="form-select"
+            >
+
+                <option value="عمومی">
+                    عمومی
+                </option>
+
+                <option value="گیم">
+                    🎮 گیم
+                </option>
+
+                <option value="موسیقی">
+                    🎵 موسیقی
+                </option>
+
+                <option value="گفتگو">
+                    💬 گفتگو
+                </option>
+
+                <option value="سرگرمی">
+                    😂 سرگرمی
+                </option>
+
+                <option value="آموزش">
+                    📚 آموزش
+                </option>
+
+                <option value="ورزش">
+                    ⚽ ورزش
+                </option>
+
+                <option value="فناوری">
+                    💻 فناوری
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- COVER -->
+        <div class="form-group">
+
+            <label
+                class="form-label"
+                for="liveCover"
+            >
+                📷 عکس لایو
+            </label>
+
+            <div class="cover-upload">
+
+                <input
+                    id="liveCover"
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                >
+
+                <div class="cover-hint">
+                    با گوشی می‌توانی دوربین را باز کنی و
+                    یک عکس بگیری، یا از گالری عکس انتخاب کنی.
+                </div>
+
+                <div
+                    id="coverPreview"
+                    class="cover-preview"
+                >
+
+                    <img
+                        id="coverPreviewImage"
+                        src=""
+                        alt="پیش‌نمایش عکس لایو"
+                    >
+
+                </div>
+
+                <button
+                    id="removeCoverButton"
+                    class="cover-remove"
+                    type="button"
+                    style="display:none;"
+                >
+                    🗑 حذف عکس
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- START -->
         <button
-            id="confirmLiveButton"
-            class="primary-button full"
+            id="startLiveButton"
+            class="start-live-btn"
             type="button"
         >
-            شروع لایو
+            🎥 شروع لایو
         </button>
 
     </div>
@@ -427,270 +1235,402 @@
 </div>
 
 
+<!-- TOAST -->
 <div
     id="toast"
     class="toast"
-></div>
+>
+</div>
 
 
 <script>
+    /* =====================================================
+       CONFIG
+    ====================================================== */
+
+    const API_BASE = "";
+
+    const LOGIN_KEY = "lainolive_logged_in";
+    const USERNAME_KEY = "lainolive_username";
+
+    const CURRENT_STREAM_KEY =
+        "lainolive_current_stream";
+
+    const VIEW_STREAM_KEY =
+        "lainolive_view_stream";
 
     /* =====================================================
        ELEMENTS
-    ===================================================== */
+    ====================================================== */
 
-    const liveList =
-        document.getElementById(
-            "liveList"
-        );
-
-
-    const liveCount =
-        document.getElementById(
-            "liveCount"
-        );
-
-
-    const serverStatus =
-        document.getElementById(
-            "serverStatus"
-        );
-
-
-    const liveModal =
-        document.getElementById(
-            "liveModal"
-        );
-
-
-    const liveTitle =
-        document.getElementById(
-            "liveTitle"
-        );
-
-
-    const liveCategory =
-        document.getElementById(
-            "liveCategory"
-        );
-
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
+    const userPill =
+        document.getElementById("userPill");
 
     const logoutButton =
-        document.getElementById(
-            "logoutButton"
-        );
+        document.getElementById("logoutButton");
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const liveList =
+        document.getElementById("liveList");
+
+    const refreshButton =
+        document.getElementById("refreshButton");
+
+    const openStartLiveButton =
+        document.getElementById("openStartLiveButton");
+
+    const startLiveModal =
+        document.getElementById("startLiveModal");
+
+    const closeStartLiveButton =
+        document.getElementById("closeStartLiveButton");
+
+    const liveTitle =
+        document.getElementById("liveTitle");
+
+    const liveCategory =
+        document.getElementById("liveCategory");
+
+    const liveCover =
+        document.getElementById("liveCover");
+
+    const coverPreview =
+        document.getElementById("coverPreview");
+
+    const coverPreviewImage =
+        document.getElementById("coverPreviewImage");
+
+    const removeCoverButton =
+        document.getElementById("removeCoverButton");
+
+    const startLiveButton =
+        document.getElementById("startLiveButton");
+
+    const searchButton =
+        document.getElementById("searchButton");
+
+    const popularButton =
+        document.getElementById("popularButton");
+
+    const profileButton =
+        document.getElementById("profileButton");
+
+    /* =====================================================
+       STATE
+    ====================================================== */
+
+    let allStreams = [];
+
+    let selectedCoverFile = null;
+
+    let selectedCoverPreviewUrl = "";
 
 
     /* =====================================================
-       USER UI
-    ===================================================== */
+       AUTH
+    ====================================================== */
 
-    document.getElementById(
-        "userName"
-    ).textContent =
-        currentUsername;
+    function isLoggedIn() {
 
-
-    document.getElementById(
-        "welcomeTitle"
-    ).textContent =
-        "سلام " +
-        currentUsername +
-        " 👋";
-
-
-    /* =====================================================
-       TOAST
-    ===================================================== */
-
-    function showToast(
-        text
-    ) {
-
-        toast.textContent =
-            text;
-
-        toast.classList.add(
-            "show"
+        return (
+            localStorage.getItem(LOGIN_KEY) === "true"
+            &&
+            !!localStorage.getItem(USERNAME_KEY)
         );
 
-        setTimeout(
-            function() {
+    }
 
-                toast.classList.remove(
-                    "show"
-                );
 
-            },
-            2200
+    function requireLogin() {
+
+        if (!isLoggedIn()) {
+
+            window.location.href =
+                "/login.html";
+
+            return false;
+        }
+
+        return true;
+    }
+
+
+    if (!requireLogin()) {
+
+        throw new Error(
+            "User is not logged in."
         );
+
     }
 
 
     /* =====================================================
-       ESCAPE
-    ===================================================== */
+       USER
+    ====================================================== */
 
-    function escapeHtml(
-        text
+    const currentUsername =
+        localStorage.getItem(USERNAME_KEY)
+        || "کاربر";
+
+
+    userPill.textContent =
+        "👤 " + currentUsername;
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    let toastTimer = null;
+
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 2500);
+
+    }
+
+
+    /* =====================================================
+       API HELPER
+    ====================================================== */
+
+    async function apiFetch(
+        url,
+        options = {}
     ) {
 
-        return String(
-            text ?? ""
-        )
-            .replaceAll(
-                "&",
-                "&amp;"
-            )
-            .replaceAll(
-                "<",
-                "&lt;"
-            )
-            .replaceAll(
-                ">",
-                "&gt;"
-            )
-            .replaceAll(
-                '"',
-                "&quot;"
-            )
-            .replaceAll(
-                "'",
-                "&#039;"
+        const response =
+            await fetch(
+                API_BASE + url,
+                {
+                    ...options,
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        ...(options.headers || {})
+                    }
+                }
             );
+
+        let data = null;
+
+        try {
+
+            data =
+                await response.json();
+
+        } catch {
+
+            data = {};
+
+        }
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message
+                ||
+                data.error
+                ||
+                "خطا در ارتباط با سرور"
+            );
+
+        }
+
+        return data;
+
     }
 
 
     /* =====================================================
        LOAD STREAMS
-    ===================================================== */
+    ====================================================== */
 
     async function loadStreams() {
 
         try {
 
-            serverStatus.textContent =
-                "در حال دریافت لایوها...";
-
-
-            const response =
-                await fetch(
-                    "/api/streams",
-                    {
-                        cache:
-                            "no-store"
-                    }
-                );
-
-
             const data =
-                await response.json();
-
-
-            if (
-                !response.ok ||
-                !data.success
-            ) {
-
-                throw new Error(
-                    data.message ||
-                    "خطا در دریافت لایوها."
+                await apiFetch(
+                    "/api/streams"
                 );
-            }
 
-
-            const streams =
-                Array.isArray(
-                    data.streams
-                )
-                    ? data.streams
-                    : [];
-
+            allStreams =
+                Array.isArray(data)
+                    ? data
+                    : (
+                        Array.isArray(data.streams)
+                            ? data.streams
+                            : []
+                    );
 
             renderStreams(
-                streams
+                searchInput.value.trim()
             );
-
-
-            serverStatus.textContent =
-                "سرور لایو فعال است";
-
 
         } catch (error) {
 
-            console.error(
-                "Streams:",
-                error
-            );
-
-
-            serverStatus.textContent =
-                "خطا در دریافت لایوها";
-
+            console.error(error);
 
             liveList.innerHTML = `
-                <div class="empty-live">
-
-                    <div class="empty-icon">
-                        ⚠️
-                    </div>
-
-                    <h3>
-                        اتصال به لایوها ناموفق بود
-                    </h3>
-
-                    <p>
-                        دوباره صفحه را تازه‌سازی کن.
-                    </p>
-
+                <div class="empty-box">
+                    دریافت لایوها انجام نشد.<br>
+                    اتصال اینترنت و سرور را بررسی کنید.
                 </div>
             `;
+
         }
+
     }
 
 
     /* =====================================================
        RENDER STREAMS
-    ===================================================== */
+    ====================================================== */
+
+    function normalizeText(value) {
+
+        return String(
+            value || ""
+        )
+            .trim()
+            .toLowerCase();
+
+    }
+
+
+    function getStreamUsername(stream) {
+
+        return (
+            stream.username
+            ||
+            stream.user
+            ||
+            stream.owner
+            ||
+            stream.creator
+            ||
+            "کاربر"
+        );
+
+    }
+
+
+    function getViewerCount(stream) {
+
+        return Number(
+            stream.viewer_count
+            ??
+            stream.viewers
+            ??
+            0
+        );
+
+    }
+
+
+    function getStreamTitle(stream) {
+
+        return (
+            stream.title
+            ||
+            "لایو بدون عنوان"
+        );
+
+    }
+
+
+    function getStreamCategory(stream) {
+
+        return (
+            stream.category
+            ||
+            "عمومی"
+        );
+
+    }
+
+
+    function getStreamId(stream) {
+
+        return (
+            stream.id
+            ??
+            stream.stream_id
+        );
+
+    }
+
 
     function renderStreams(
-        streams
+        searchValue = ""
     ) {
 
-        liveList.innerHTML =
-            "";
+        const search =
+            normalizeText(searchValue);
 
 
-        liveCount.textContent =
-            streams.length +
-            " پخش";
+        const filtered =
+            allStreams.filter(
+                stream => {
+
+                    const title =
+                        normalizeText(
+                            getStreamTitle(stream)
+                        );
+
+                    const username =
+                        normalizeText(
+                            getStreamUsername(stream)
+                        );
+
+                    const category =
+                        normalizeText(
+                            getStreamCategory(stream)
+                        );
+
+                    if (!search) {
+                        return true;
+                    }
+
+                    return (
+                        title.includes(search)
+                        ||
+                        username.includes(search)
+                        ||
+                        category.includes(search)
+                    );
+
+                }
+            );
 
 
-        if (
-            !streams.length
-        ) {
+        if (!filtered.length) {
 
             liveList.innerHTML = `
-                <div class="empty-live">
-
-                    <div class="empty-icon">
-                        📺
-                    </div>
-
-                    <h3>
-                        هنوز لایو فعالی وجود ندارد
-                    </h3>
-
-                    <p>
-                        اولین لایو را شروع کن.
-                    </p>
-
+                <div class="empty-box">
+                    ${
+                        search
+                            ? "لایوی با این جستجو پیدا نشد. 🔎"
+                            : "فعلاً هیچ لایوی در حال پخش نیست. 🎥"
+                    }
                 </div>
             `;
 
@@ -698,100 +1638,43 @@
         }
 
 
-        streams.forEach(
-            stream => {
-
-                const card =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                const isOwner =
-                    String(
-                        stream.username
-                    ) ===
-                    String(
-                        currentUsername
-                    );
+        liveList.innerHTML =
+            filtered
+                .map(
+                    stream =>
+                        createStreamCard(
+                            stream
+                        )
+                )
+                .join("");
 
 
-                card.className =
-                    "live-card" +
-                    (
-                        isOwner
-                            ? " owner"
-                            : ""
-                    );
-
-
-                card.innerHTML = `
-
-                    <div class="live-thumbnail">
-
-                        <div class="live-badge">
-                            LIVE
-                        </div>
-
-                        <div class="thumbnail-icon">
-                            📹
-                        </div>
-
-                        <div class="viewer-count">
-                            👁
-                            ${Number(
-                                stream.viewer_count ??
-                                stream.viewers ??
-                                0
-                            )}
-                        </div>
-
-                        ${
-                            isOwner
-                                ? `
-                                    <div class="owner-badge">
-                                        لایو شما
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-                    </div>
-
-
-                    <div class="live-info">
-
-                        <div class="stream-title">
-                            ${escapeHtml(
-                                stream.title ||
-                                "پخش زنده"
-                            )}
-                        </div>
-
-
-                        <div class="stream-user">
-                            👤
-                            ${escapeHtml(
-                                stream.username ||
-                                "کاربر"
-                            )}
-                        </div>
-
-
-                        <div class="stream-category">
-                            ${escapeHtml(
-                                stream.category ||
-                                "عمومی"
-                            )}
-                        </div>
-
-                    </div>
-                `;
-
+        liveList
+            .querySelectorAll(
+                "[data-stream-id]"
+            )
+            .forEach(card => {
 
                 card.addEventListener(
                     "click",
-                    function() {
+                    () => {
+
+                        const id =
+                            card.dataset.streamId;
+
+                        const stream =
+                            allStreams.find(
+                                item =>
+                                    String(
+                                        getStreamId(item)
+                                    )
+                                    ===
+                                    String(id)
+                            );
+
+                        if (!stream) {
+                            return;
+                        }
 
                         openStream(
                             stream
@@ -800,285 +1683,576 @@
                     }
                 );
 
+            });
 
-                liveList.appendChild(
-                    card
-                );
-            }
-        );
+    }
+
+
+    /* =====================================================
+       STREAM CARD
+    ====================================================== */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    function createStreamCard(stream) {
+
+        const id =
+            getStreamId(stream);
+
+        const title =
+            escapeHtml(
+                getStreamTitle(stream)
+            );
+
+        const username =
+            escapeHtml(
+                getStreamUsername(stream)
+            );
+
+        const category =
+            escapeHtml(
+                getStreamCategory(stream)
+            );
+
+        const viewers =
+            getViewerCount(stream);
+
+
+        return `
+            <article
+                class="live-card"
+                data-stream-id="${escapeHtml(id)}"
+            >
+
+                <div class="live-cover">
+
+                    ${
+                        stream.cover_url
+                            || stream.cover
+                            || stream.thumbnail
+                            ? `
+                                <img
+                                    src="${escapeHtml(
+                                        stream.cover_url
+                                        || stream.cover
+                                        || stream.thumbnail
+                                    )}"
+                                    alt="${title}"
+                                >
+                            `
+                            : `
+                                <div
+                                    class="live-cover-placeholder"
+                                >
+                                    📺
+                                </div>
+                            `
+                    }
+
+                    <div class="live-badge">
+                        ● LIVE
+                    </div>
+
+                    <div class="viewer-badge">
+                        👁 ${viewers}
+                    </div>
+
+                </div>
+
+                <div class="live-info">
+
+                    <div class="live-title">
+                        ${title}
+                    </div>
+
+                    <div class="live-user">
+                        👤 ${username}
+                    </div>
+
+                    <div class="live-category">
+                        ${category}
+                    </div>
+
+                </div>
+
+            </article>
+        `;
+
     }
 
 
     /* =====================================================
        OPEN STREAM
-    ===================================================== */
+    ====================================================== */
 
-    function openStream(
-        stream
-    ) {
+    function openStream(stream) {
+
+        const streamId =
+            getStreamId(stream);
 
         if (
-            !stream ||
-            stream.id ===
-            undefined ||
-            stream.id ===
-            null
+            String(
+                getStreamUsername(stream)
+            )
+            ===
+            String(currentUsername)
         ) {
+
+            sessionStorage.setItem(
+                CURRENT_STREAM_KEY,
+                JSON.stringify(stream)
+            );
+
+            sessionStorage.setItem(
+                VIEW_STREAM_KEY,
+                JSON.stringify(stream)
+            );
+
+            window.location.href =
+                "/live.html";
+
             return;
         }
 
 
         sessionStorage.setItem(
-            "lainolive_view_stream",
-            JSON.stringify(
-                stream
-            )
+            VIEW_STREAM_KEY,
+            JSON.stringify(stream)
         );
-
-
-        if (
-            String(
-                stream.username
-            ) ===
-            String(
-                currentUsername
-            )
-        ) {
-
-            sessionStorage.setItem(
-                "lainolive_current_stream",
-                JSON.stringify(
-                    stream
-                )
-            );
-
-
-            window.location.href =
-                "/live.html";
-
-
-            return;
-        }
 
 
         window.location.href =
-            "/viewer.html?id=" +
+            "/viewer.html?id="
+            +
             encodeURIComponent(
-                stream.id
+                streamId
             );
+
     }
 
 
     /* =====================================================
-       START LIVE MODAL
-    ===================================================== */
+       MODAL
+    ====================================================== */
 
-    function openLiveModal() {
+    function openStartModal() {
 
-        liveModal.classList.remove(
-            "hidden"
+        startLiveModal.classList.add(
+            "show"
         );
 
+        document.body.style.overflow =
+            "hidden";
 
-        setTimeout(
-            () => {
+        setTimeout(() => {
 
-                liveTitle.focus();
+            liveTitle.focus();
 
-            },
-            50
-        );
+        }, 100);
+
     }
 
 
-    function closeLiveModal() {
+    function closeStartModal() {
 
-        liveModal.classList.add(
-            "hidden"
+        startLiveModal.classList.remove(
+            "show"
         );
+
+        document.body.style.overflow =
+            "";
+
     }
 
 
-    document.getElementById(
-        "startLiveButton"
-    ).addEventListener(
+    openStartLiveButton.addEventListener(
         "click",
-        openLiveModal
+        openStartModal
     );
 
 
-    document.getElementById(
-        "createButton"
-    ).addEventListener(
+    closeStartLiveButton.addEventListener(
         "click",
-        openLiveModal
+        closeStartModal
     );
 
 
-    document.getElementById(
-        "closeLiveModal"
-    ).addEventListener(
+    startLiveModal.addEventListener(
         "click",
-        closeLiveModal
-    );
-
-
-    liveModal
-        .querySelector(
-            ".modal-backdrop"
-        )
-        .addEventListener(
-            "click",
-            closeLiveModal
-        );
-
-
-    /* =====================================================
-       CREATE STREAM
-    ===================================================== */
-
-    document.getElementById(
-        "confirmLiveButton"
-    ).addEventListener(
-        "click",
-        async function() {
-
-            const title =
-                liveTitle.value.trim();
-
-
-            const category =
-                liveCategory.value;
-
+        event => {
 
             if (
-                !title
+                event.target ===
+                startLiveModal
             ) {
 
-                showToast(
-                    "عنوان لایو را وارد کن."
-                );
+                closeStartModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       COVER PHOTO
+    ====================================================== */
+
+    function resetCover() {
+
+        selectedCoverFile = null;
+
+        if (selectedCoverPreviewUrl) {
+
+            URL.revokeObjectURL(
+                selectedCoverPreviewUrl
+            );
+
+        }
+
+        selectedCoverPreviewUrl = "";
+
+        liveCover.value = "";
+
+        coverPreview.classList.remove(
+            "show"
+        );
+
+        coverPreviewImage.src = "";
+
+        removeCoverButton.style.display =
+            "none";
+
+    }
+
+
+    liveCover.addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files
+                &&
+                event.target.files[0];
+
+            if (!file) {
+
+                resetCover();
 
                 return;
             }
 
 
-            const button =
-                document.getElementById(
-                    "confirmLiveButton"
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                showToast(
+                    "لطفاً یک عکس انتخاب کنید."
+                );
+
+                resetCover();
+
+                return;
+            }
+
+
+            const maxSize =
+                10 * 1024 * 1024;
+
+
+            if (file.size > maxSize) {
+
+                showToast(
+                    "حجم عکس نباید بیشتر از ۱۰ مگابایت باشد."
+                );
+
+                resetCover();
+
+                return;
+            }
+
+
+            selectedCoverFile =
+                file;
+
+
+            if (selectedCoverPreviewUrl) {
+
+                URL.revokeObjectURL(
+                    selectedCoverPreviewUrl
+                );
+
+            }
+
+
+            selectedCoverPreviewUrl =
+                URL.createObjectURL(
+                    file
                 );
 
 
-            button.disabled =
+            coverPreviewImage.src =
+                selectedCoverPreviewUrl;
+
+
+            coverPreview.classList.add(
+                "show"
+            );
+
+
+            removeCoverButton.style.display =
+                "block";
+
+        }
+    );
+
+
+    removeCoverButton.addEventListener(
+        "click",
+        resetCover
+    );
+
+
+    /* =====================================================
+       START LIVE
+    ====================================================== */
+
+    startLiveButton.addEventListener(
+        "click",
+        async () => {
+
+            const title =
+                liveTitle.value.trim();
+
+            const category =
+                liveCategory.value;
+
+
+            if (!title) {
+
+                showToast(
+                    "عنوان لایو را وارد کنید."
+                );
+
+                liveTitle.focus();
+
+                return;
+            }
+
+
+            startLiveButton.disabled =
                 true;
 
-
-            button.textContent =
-                "در حال ساخت...";
+            startLiveButton.textContent =
+                "⏳ در حال ساخت لایو...";
 
 
             try {
 
-                const response =
-                    await fetch(
+                const result =
+                    await apiFetch(
                         "/api/streams/create",
                         {
-                            method:
-                                "POST",
+                            method: "POST",
 
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
+                            body: JSON.stringify({
+                                username:
+                                    currentUsername,
 
-                            body:
-                                JSON.stringify({
+                                title:
+                                    title,
 
-                                    username:
-                                        currentUsername,
-
-                                    title:
-                                        title,
-
-                                    category:
-                                        category
-
-                                })
+                                category:
+                                    category
+                            })
                         }
                     );
 
 
-                const data =
-                    await response.json();
+                const stream =
+                    result.stream
+                    ||
+                    result.data
+                    ||
+                    result;
 
 
                 if (
-                    !response.ok ||
-                    !data.success
+                    !stream
+                    ||
+                    !getStreamId(stream)
                 ) {
 
-                    showToast(
-                        data.message ||
-                        "ساخت لایو ناموفق بود."
+                    throw new Error(
+                        "سرور اطلاعات لایو را برنگرداند."
                     );
 
-                    return;
+                }
+
+
+                /*
+                 * اطلاعات عکس فعلاً
+                 * برای ادامه کار در همین مرورگر
+                 * ذخیره می‌شود.
+                 *
+                 * ذخیره واقعی روی سرور
+                 * در مرحله بک‌اند انجام می‌شود.
+                 */
+
+                if (selectedCoverFile) {
+
+                    try {
+
+                        const reader =
+                            new FileReader();
+
+
+                        const coverData =
+                            await new Promise(
+                                (resolve, reject) => {
+
+                                    reader.onload =
+                                        () =>
+                                            resolve(
+                                                reader.result
+                                            );
+
+                                    reader.onerror =
+                                        () =>
+                                            reject(
+                                                new Error(
+                                                    "خواندن عکس ناموفق بود."
+                                                )
+                                            );
+
+                                    reader.readAsDataURL(
+                                        selectedCoverFile
+                                    );
+
+                                }
+                            );
+
+
+                        stream.local_cover =
+                            coverData;
+
+                    } catch (coverError) {
+
+                        console.warn(
+                            "Cover preview could not be stored:",
+                            coverError
+                        );
+
+                    }
+
                 }
 
 
                 sessionStorage.setItem(
-                    "lainolive_current_stream",
-                    JSON.stringify(
-                        data.stream
-                    )
+                    CURRENT_STREAM_KEY,
+                    JSON.stringify(stream)
                 );
 
 
                 sessionStorage.setItem(
-                    "lainolive_view_stream",
-                    JSON.stringify(
-                        data.stream
-                    )
+                    VIEW_STREAM_KEY,
+                    JSON.stringify(stream)
                 );
+
+
+                closeStartModal();
+
+
+                /*
+                 * پاکسازی فرم
+                 */
+
+                liveTitle.value = "";
+
+                liveCategory.value =
+                    "عمومی";
+
+                resetCover();
 
 
                 window.location.href =
                     "/live.html";
 
-
             } catch (error) {
 
-                console.error(
-                    "Create stream:",
-                    error
-                );
-
+                console.error(error);
 
                 showToast(
-                    "خطا در ارتباط با سرور."
+                    error.message
+                    ||
+                    "شروع لایو ناموفق بود."
                 );
 
             } finally {
 
-                button.disabled =
+                startLiveButton.disabled =
                     false;
 
-                button.textContent =
-                    "شروع لایو";
+                startLiveButton.textContent =
+                    "🎥 شروع لایو";
+
             }
+
         }
     );
 
 
     /* =====================================================
-       POPULAR
-    ===================================================== */
+       SEARCH
+    ====================================================== */
 
-    document.getElementById(
-        "popularButton"
-    ).addEventListener(
+    searchInput.addEventListener(
+        "input",
+        () => {
+
+            renderStreams(
+                searchInput.value
+            );
+
+        }
+    );
+
+
+    searchButton.addEventListener(
         "click",
-        function() {
+        () => {
+
+            searchInput.focus();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+    );
+
+
+    /* =====================================================
+       NAVIGATION
+    ====================================================== */
+
+    popularButton.addEventListener(
+        "click",
+        () => {
 
             window.location.href =
                 "/popular.html";
@@ -1087,131 +2261,143 @@
     );
 
 
+    profileButton.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "/profile.html";
+
+        }
+    );
+
+
+    document
+        .getElementById("homeButton")
+        .addEventListener(
+            "click",
+            () => {
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+    /* =====================================================
+       REFRESH
+    ====================================================== */
+
+    refreshButton.addEventListener(
+        "click",
+        async () => {
+
+            refreshButton
+                .animate(
+                    [
+                        {
+                            transform:
+                                "rotate(0deg)"
+                        },
+                        {
+                            transform:
+                                "rotate(360deg)"
+                        }
+                    ],
+                    {
+                        duration: 450
+                    }
+                );
+
+            await loadStreams();
+
+        }
+    );
+
+
     /* =====================================================
        LOGOUT
-    ===================================================== */
+    ====================================================== */
 
     logoutButton.addEventListener(
         "click",
-        function() {
+        () => {
 
-            const accepted =
-                window.confirm(
-                    "آیا مطمئنی می‌خواهی از حساب خارج شوی؟"
+            const shouldLogout =
+                confirm(
+                    "از حساب خود خارج شوید؟"
                 );
 
-
-            if (
-                !accepted
-            ) {
+            if (!shouldLogout) {
                 return;
             }
 
 
             localStorage.removeItem(
-                "lainolive_logged_in"
+                LOGIN_KEY
             );
-
 
             localStorage.removeItem(
-                "lainolive_username"
+                USERNAME_KEY
             );
 
 
             sessionStorage.removeItem(
-                "lainolive_current_stream"
+                CURRENT_STREAM_KEY
             );
-
 
             sessionStorage.removeItem(
-                "lainolive_view_stream"
+                VIEW_STREAM_KEY
             );
 
-
-            window.location.replace(
-                "/login.html"
-            );
-        }
-    );
-
-
-    /* =====================================================
-       PROFILE
-    ===================================================== */
-
-    document.getElementById(
-        "profileButton"
-    ).addEventListener(
-        "click",
-        function() {
 
             window.location.href =
-                "/profile.html";
-
-        }
-    );
-
-
-    document.getElementById(
-        "bottomProfileButton"
-    ).addEventListener(
-        "click",
-        function() {
-
-            window.location.href =
-                "/profile.html";
+                "/login.html";
 
         }
     );
 
 
     /* =====================================================
-       SEARCH / MESSAGES
-    ===================================================== */
-
-    document.getElementById(
-        "searchButton"
-    ).addEventListener(
-        "click",
-        function() {
-
-            showToast(
-                "جستجو در مرحله بعد اضافه می‌شود."
-            );
-
-        }
-    );
-
-
-    document.getElementById(
-        "messagesButton"
-    ).addEventListener(
-        "click",
-        function() {
-
-            showToast(
-                "پیام خصوصی در مرحله بعد اضافه می‌شود."
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       LOAD
-    ===================================================== */
+       AUTO REFRESH
+    ====================================================== */
 
     loadStreams();
 
 
     setInterval(
-        loadStreams,
+        () => {
+
+            loadStreams();
+
+        },
         5000
+    );
+
+
+    /* =====================================================
+       ESCAPE KEY
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeStartModal();
+
+            }
+
+        }
     );
 
 </script>
 
 </body>
-
 </html>
-```
