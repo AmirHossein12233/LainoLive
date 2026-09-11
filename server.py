@@ -6,6 +6,7 @@ import secrets
 import threading
 import time
 import urllib.parse
+import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -22,8 +23,30 @@ BASE_DIR = Path(__file__).resolve().parent
 USERS_FILE = BASE_DIR / "users.json"
 HISTORY_FILE = BASE_DIR / "streams_history.json"
 
+UPLOADS_DIR = BASE_DIR / "uploads"
+COVER_DIR = UPLOADS_DIR / "covers"
+
+UPLOADS_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+COVER_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
+
 MAX_MESSAGE_LENGTH = 500
 MAX_CHAT_MESSAGES = 200
+
+MAX_COVER_SIZE = 10 * 1024 * 1024
+
+ALLOWED_COVER_TYPES = {
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/webp": ".webp",
+    "image/gif": ".gif"
+}
 
 PASSWORD_ITERATIONS = 310_000
 
@@ -45,12 +68,15 @@ next_chat_id = 1
 # =========================================================
 
 def send_json(handler, status_code, data):
+
     body = json.dumps(
         data,
         ensure_ascii=False
     ).encode("utf-8")
 
-    handler.send_response(status_code)
+    handler.send_response(
+        status_code
+    )
 
     handler.send_header(
         "Content-Type",
@@ -92,14 +118,18 @@ def send_json(handler, status_code, data):
 # =========================================================
 
 def read_json(handler):
+
     try:
+
         length = int(
             handler.headers.get(
                 "Content-Length",
                 "0"
             )
         )
+
     except ValueError:
+
         return {}
 
     if length <= 0:
@@ -109,7 +139,10 @@ def read_json(handler):
         return {}
 
     try:
-        raw = handler.rfile.read(length)
+
+        raw = handler.rfile.read(
+            length
+        )
 
         return json.loads(
             raw.decode("utf-8")
@@ -119,6 +152,7 @@ def read_json(handler):
         json.JSONDecodeError,
         UnicodeDecodeError
     ):
+
         return {}
 
 
@@ -130,6 +164,7 @@ def clean_text(
     value,
     max_length=500
 ):
+
     value = str(
         value or ""
     ).strip()
@@ -138,6 +173,7 @@ def clean_text(
 
 
 def clean_username(value):
+
     username = str(
         value or ""
     ).strip()
@@ -163,6 +199,7 @@ def valid_username(username):
             or char in "_-"
             or "\u0600" <= char <= "\u06ff"
         ):
+
             return False
 
     return True
@@ -189,7 +226,10 @@ def hash_password(
 ):
 
     if salt is None:
-        salt = secrets.token_bytes(16)
+
+        salt = secrets.token_bytes(
+            16
+        )
 
     password_hash = (
         hashlib.pbkdf2_hmac(
@@ -274,13 +314,19 @@ def load_users():
         )
 
         users_data = {
+
             default_username: {
+
                 **hash_password(
                     default_password
                 ),
+
                 "created_at":
-                    int(time.time())
+                    int(
+                        time.time()
+                    )
             }
+
         }
 
         save_users(
@@ -301,6 +347,7 @@ def load_users():
             data,
             dict
         ):
+
             return data
 
         return {}
@@ -313,7 +360,9 @@ def load_users():
         return {}
 
 
-def save_users(users_data):
+def save_users(
+    users_data
+):
 
     temporary = (
         USERS_FILE.with_suffix(
@@ -359,6 +408,7 @@ def load_stream_history():
             data,
             list
         ):
+
             return data
 
         return []
@@ -420,6 +470,7 @@ def initialize_next_stream_id():
                 )
 
                 if value > highest_id:
+
                     highest_id = value
 
             except (
@@ -432,7 +483,9 @@ def initialize_next_stream_id():
     return highest_id + 1
 
 
-next_stream_id = initialize_next_stream_id()
+next_stream_id = (
+    initialize_next_stream_id()
+)
 
 
 # =========================================================
@@ -442,6 +495,7 @@ next_stream_id = initialize_next_stream_id()
 def stream_public_data(stream):
 
     return {
+
         "id":
             stream["id"],
 
@@ -451,11 +505,34 @@ def stream_public_data(stream):
         "username":
             stream["username"],
 
+        "category":
+            stream.get(
+                "category",
+                "عمومی"
+            ),
+
         "created_at":
             stream["created_at"],
 
+        "started_at":
+            stream.get(
+                "started_at",
+                stream["created_at"]
+            ),
+
         "viewer_count":
-            stream["viewer_count"]
+            stream["viewer_count"],
+
+        "viewer_peak":
+            stream.get(
+                "viewer_peak",
+                0
+            ),
+
+        "cover_url":
+            stream.get(
+                "cover_url"
+            )
     }
 
 
@@ -466,6 +543,7 @@ def stream_public_data(stream):
 def history_public_data(stream):
 
     return {
+
         "id":
             stream["id"],
 
@@ -474,6 +552,12 @@ def history_public_data(stream):
 
         "username":
             stream["username"],
+
+        "category":
+            stream.get(
+                "category",
+                "عمومی"
+            ),
 
         "created_at":
             stream["created_at"],
@@ -505,7 +589,189 @@ def history_public_data(stream):
             stream.get(
                 "viewer_count",
                 0
+            ),
+
+        "cover_url":
+            stream.get(
+                "cover_url"
             )
+    }
+
+
+# =========================================================
+# MULTIPART COVER UPLOAD
+# =========================================================
+
+def parse_multipart(
+    body,
+    content_type
+):
+
+    if not content_type.startswith(
+        "multipart/form-data"
+    ):
+
+        return None
+
+    marker = "boundary="
+
+    if marker not in content_type:
+
+        return None
+
+    boundary = content_type.split(
+        marker,
+        1
+    )[1].strip()
+
+    if boundary.startswith('"') and boundary.endswith('"'):
+
+        boundary = boundary[1:-1]
+
+    boundary_bytes = (
+        b"--" +
+        boundary.encode("utf-8")
+    )
+
+    parts = body.split(
+        boundary_bytes
+    )
+
+    fields = {}
+
+    files = {}
+
+    for part in parts:
+
+        part = part.strip()
+
+        if not part or part == b"--":
+
+            continue
+
+        if part.endswith(
+            b"--"
+        ):
+
+            part = part[:-2]
+
+        if b"\r\n\r\n" not in part:
+
+            continue
+
+        header_raw, content = (
+            part.split(
+                b"\r\n\r\n",
+                1
+            )
+        )
+
+        headers = {}
+
+        for line in header_raw.split(
+            b"\r\n"
+        ):
+
+            if b":" not in line:
+                continue
+
+            key, value = (
+                line.split(
+                    b":",
+                    1
+                )
+            )
+
+            headers[
+                key.decode(
+                    "latin1"
+                ).strip().lower()
+            ] = value.decode(
+                "latin1"
+            ).strip()
+
+        disposition = headers.get(
+            "content-disposition",
+            ""
+        )
+
+        if "name=" not in disposition:
+
+            continue
+
+        name_part = disposition.split(
+            "name=",
+            1
+        )[1]
+
+        if name_part.startswith('"'):
+
+            field_name = name_part.split(
+                '"',
+                2
+            )[1]
+
+        else:
+
+            field_name = name_part.split(
+                ";",
+                1
+            )[0].strip()
+
+        filename = None
+
+        if "filename=" in disposition:
+
+            filename_part = disposition.split(
+                "filename=",
+                1
+            )[1]
+
+            if filename_part.startswith('"'):
+
+                filename = filename_part.split(
+                    '"',
+                    2
+                )[1]
+
+            else:
+
+                filename = filename_part.split(
+                    ";",
+                    1
+                )[0].strip()
+
+        if filename is not None:
+
+            files[
+                field_name
+            ] = {
+
+                "filename":
+                    filename,
+
+                "content_type":
+                    headers.get(
+                        "content-type",
+                        "application/octet-stream"
+                    ),
+
+                "data":
+                    content
+            }
+
+        else:
+
+            fields[
+                field_name
+            ] = content.decode(
+                "utf-8",
+                errors="replace"
+            ).strip()
+
+    return {
+        "fields": fields,
+        "files": files
     }
 
 
@@ -577,6 +843,7 @@ class LainoHandler(
                 self,
                 200,
                 {
+
                     "status":
                         "ok",
 
@@ -587,6 +854,9 @@ class LainoHandler(
                         True,
 
                     "chat":
+                        True,
+
+                    "covers":
                         True
                 }
             )
@@ -610,6 +880,7 @@ class LainoHandler(
                 self,
                 200,
                 {
+
                     "success":
                         True,
 
@@ -620,7 +891,10 @@ class LainoHandler(
                         stream_count,
 
                     "history":
-                        history_count
+                        history_count,
+
+                    "covers":
+                        True
                 }
             )
 
@@ -630,11 +904,14 @@ class LainoHandler(
             with streams_lock:
 
                 result = [
+
                     stream_public_data(
                         stream
                     )
+
                     for stream
                     in streams.values()
+
                 ]
 
             result.sort(
@@ -647,11 +924,13 @@ class LainoHandler(
                 self,
                 200,
                 {
+
                     "success":
                         True,
 
                     "streams":
                         result
+
                 }
             )
 
@@ -664,6 +943,22 @@ class LainoHandler(
         if path == "/api/chat/messages":
 
             return self.get_chat_messages()
+
+        # COVER FILE
+        if path.startswith(
+            "/uploads/covers/"
+        ):
+
+            filename = Path(
+                path[len(
+                    "/uploads/covers/"
+                ):]
+            ).name
+
+            return self.serve_upload(
+                COVER_DIR,
+                filename
+            )
 
         # HOME
         if path == "/":
@@ -684,9 +979,12 @@ class LainoHandler(
             return
 
         # STATIC FILE
-        relative_path = path.lstrip("/")
+        relative_path = path.lstrip(
+            "/"
+        )
 
         allowed_extensions = {
+
             ".html",
             ".css",
             ".js",
@@ -702,6 +1000,7 @@ class LainoHandler(
             ".wav",
             ".mp4",
             ".webm"
+
         }
 
         extension = Path(
@@ -718,11 +1017,13 @@ class LainoHandler(
             self,
             404,
             {
+
                 "success":
                     False,
 
                 "message":
                     "مسیر پیدا نشد."
+
             }
         )
 
@@ -749,6 +1050,10 @@ class LainoHandler(
 
             return self.create_stream()
 
+        if path == "/api/streams/cover":
+
+            return self.upload_cover()
+
         if path == "/api/streams/stop":
 
             return self.stop_stream()
@@ -765,11 +1070,13 @@ class LainoHandler(
             self,
             404,
             {
+
                 "success":
                     False,
 
                 "message":
                     "مسیر پیدا نشد."
+
             }
         )
 
@@ -805,11 +1112,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "نام کاربری و رمز عبور را وارد کنید."
+
                 }
             )
 
@@ -831,11 +1140,13 @@ class LainoHandler(
                     self,
                     401,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "نام کاربری یا رمز عبور اشتباه است."
+
                     }
                 )
 
@@ -843,11 +1154,13 @@ class LainoHandler(
             self,
             200,
             {
+
                 "success":
                     True,
 
                 "username":
                     username
+
             }
         )
 
@@ -882,11 +1195,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "نام کاربری باید بین 3 تا 30 کاراکتر باشد."
+
                 }
             )
 
@@ -898,11 +1213,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "رمز عبور باید حداقل 6 کاراکتر باشد."
+
                 }
             )
 
@@ -914,22 +1231,27 @@ class LainoHandler(
                     self,
                     409,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "این نام کاربری قبلاً ثبت شده است."
+
                     }
                 )
 
             users[username] = {
+
                 **hash_password(
                     password
                 ),
+
                 "created_at":
                     int(
                         time.time()
                     )
+
             }
 
             save_users(
@@ -940,6 +1262,7 @@ class LainoHandler(
             self,
             201,
             {
+
                 "success":
                     True,
 
@@ -948,6 +1271,7 @@ class LainoHandler(
 
                 "message":
                     "ثبت‌نام با موفقیت انجام شد."
+
             }
         )
 
@@ -974,17 +1298,30 @@ class LainoHandler(
             100
         )
 
+        category = clean_text(
+            data.get(
+                "category"
+            ),
+            50
+        )
+
+        if not category:
+
+            category = "عمومی"
+
         if not username:
 
             return send_json(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "نام کاربری ارسال نشده است."
+
                 }
             )
 
@@ -996,11 +1333,13 @@ class LainoHandler(
                     self,
                     401,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "کاربر پیدا نشد."
+
                     }
                 )
 
@@ -1026,6 +1365,7 @@ class LainoHandler(
             next_stream_id += 1
 
             stream = {
+
                 "id":
                     stream_id,
 
@@ -1034,6 +1374,9 @@ class LainoHandler(
 
                 "username":
                     username,
+
+                "category":
+                    category,
 
                 "created_at":
                     now,
@@ -1045,7 +1388,11 @@ class LainoHandler(
                     0,
 
                 "viewer_peak":
-                    0
+                    0,
+
+                "cover_url":
+                    None
+
             }
 
             streams[
@@ -1062,6 +1409,7 @@ class LainoHandler(
             self,
             201,
             {
+
                 "success":
                     True,
 
@@ -1069,6 +1417,416 @@ class LainoHandler(
                     stream_public_data(
                         stream
                     )
+
+            }
+        )
+
+    # =====================================================
+    # UPLOAD COVER
+    # =====================================================
+
+    def upload_cover(self):
+
+        try:
+
+            content_length = int(
+                self.headers.get(
+                    "Content-Length",
+                    "0"
+                )
+            )
+
+        except ValueError:
+
+            content_length = 0
+
+        if content_length <= 0:
+
+            return send_json(
+                self,
+                400,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "فایلی ارسال نشده است."
+
+                }
+            )
+
+        if content_length > (
+            MAX_COVER_SIZE + 1024 * 1024
+        ):
+
+            return send_json(
+                self,
+                413,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "حجم عکس نباید بیشتر از ۱۰ مگابایت باشد."
+
+                }
+            )
+
+        content_type = self.headers.get(
+            "Content-Type",
+            ""
+        )
+
+        body = self.rfile.read(
+            content_length
+        )
+
+        parsed = parse_multipart(
+            body,
+            content_type
+        )
+
+        if not parsed:
+
+            return send_json(
+                self,
+                400,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "فرمت آپلود نامعتبر است."
+
+                }
+            )
+
+        fields = parsed[
+            "fields"
+        ]
+
+        files = parsed[
+            "files"
+        ]
+
+        stream_id = str(
+            fields.get(
+                "stream_id",
+                ""
+            )
+        ).strip()
+
+        username = clean_username(
+            fields.get(
+                "username",
+                ""
+            )
+        )
+
+        file_info = files.get(
+            "cover"
+        )
+
+        if not stream_id:
+
+            return send_json(
+                self,
+                400,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "شناسه لایو ارسال نشده است."
+
+                }
+            )
+
+        if not username:
+
+            return send_json(
+                self,
+                400,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "نام کاربری ارسال نشده است."
+
+                }
+            )
+
+        if not file_info:
+
+            return send_json(
+                self,
+                400,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "عکس انتخاب نشده است."
+
+                }
+            )
+
+        with streams_lock:
+
+            stream = streams.get(
+                stream_id
+            )
+
+            if not stream:
+
+                return send_json(
+                    self,
+                    404,
+                    {
+
+                        "success":
+                            False,
+
+                        "message":
+                            "لایو پیدا نشد."
+
+                    }
+                )
+
+            if stream[
+                "username"
+            ] != username:
+
+                return send_json(
+                    self,
+                    403,
+                    {
+
+                        "success":
+                            False,
+
+                        "message":
+                            "شما صاحب این لایو نیستید."
+
+                    }
+                )
+
+        content_type_file = (
+            file_info.get(
+                "content_type",
+                ""
+            ).lower()
+        )
+
+        extension = (
+            ALLOWED_COVER_TYPES.get(
+                content_type_file
+            )
+        )
+
+        if extension is None:
+
+            return send_json(
+                self,
+                400,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "فقط JPG، PNG، WEBP و GIF مجاز هستند."
+
+                }
+            )
+
+        image_data = file_info.get(
+            "data",
+            b""
+        )
+
+        if not image_data:
+
+            return send_json(
+                self,
+                400,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "عکس خالی است."
+
+                }
+            )
+
+        if len(image_data) > MAX_COVER_SIZE:
+
+            return send_json(
+                self,
+                413,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "حجم عکس نباید بیشتر از ۱۰ مگابایت باشد."
+
+                }
+            )
+
+        filename = (
+            uuid.uuid4().hex
+            + extension
+        )
+
+        destination = (
+            COVER_DIR /
+            filename
+        )
+
+        try:
+
+            destination.write_bytes(
+                image_data
+            )
+
+        except OSError as error:
+
+            print(
+                "Cover upload error:",
+                error
+            )
+
+            return send_json(
+                self,
+                500,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "ذخیره عکس انجام نشد."
+
+                }
+            )
+
+        cover_url = (
+            "/uploads/covers/"
+            + filename
+        )
+
+        old_cover = None
+
+        with streams_lock:
+
+            stream = streams.get(
+                stream_id
+            )
+
+            if not stream:
+
+                destination.unlink(
+                    missing_ok=True
+                )
+
+                return send_json(
+                    self,
+                    404,
+                    {
+
+                        "success":
+                            False,
+
+                        "message":
+                            "لایو پیدا نشد."
+
+                    }
+                )
+
+            if stream[
+                "username"
+            ] != username:
+
+                destination.unlink(
+                    missing_ok=True
+                )
+
+                return send_json(
+                    self,
+                    403,
+                    {
+
+                        "success":
+                            False,
+
+                        "message":
+                            "شما صاحب این لایو نیستید."
+
+                    }
+                )
+
+            old_cover = stream.get(
+                "cover_url"
+            )
+
+            stream[
+                "cover_url"
+            ] = cover_url
+
+            updated_stream = (
+                stream_public_data(
+                    stream
+                )
+            )
+
+        # حذف کاور قبلی همان لایو
+        if old_cover:
+
+            old_filename = Path(
+                old_cover
+            ).name
+
+            if old_filename:
+                try:
+
+                    (
+                        COVER_DIR /
+                        old_filename
+                    ).unlink(
+                        missing_ok=True
+                    )
+
+                except OSError:
+                    pass
+
+        return send_json(
+            self,
+            200,
+            {
+
+                "success":
+                    True,
+
+                "message":
+                    "عکس کاور با موفقیت ذخیره شد.",
+
+                "cover_url":
+                    cover_url,
+
+                "stream":
+                    updated_stream
+
             }
         )
 
@@ -1101,11 +1859,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "شناسه لایو نامعتبر است."
+
                 }
             )
 
@@ -1121,11 +1881,13 @@ class LainoHandler(
                     self,
                     404,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "لایو پیدا نشد."
+
                     }
                 )
 
@@ -1139,11 +1901,13 @@ class LainoHandler(
                     self,
                     403,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "شما صاحب این لایو نیستید."
+
                     }
                 )
 
@@ -1167,6 +1931,7 @@ class LainoHandler(
             )
 
             history_item = {
+
                 "id":
                     stream["id"],
 
@@ -1175,6 +1940,12 @@ class LainoHandler(
 
                 "username":
                     stream["username"],
+
+                "category":
+                    stream.get(
+                        "category",
+                        "عمومی"
+                    ),
 
                 "created_at":
                     stream["created_at"],
@@ -1201,7 +1972,13 @@ class LainoHandler(
                     stream.get(
                         "viewer_count",
                         0
+                    ),
+
+                "cover_url":
+                    stream.get(
+                        "cover_url"
                     )
+
             }
 
             streams.pop(
@@ -1209,14 +1986,12 @@ class LainoHandler(
                 None
             )
 
-        # ذخیره تاریخچه
         with history_lock:
 
             stream_history.append(
                 history_item
             )
 
-            # جدیدترین لایوها اول باشند
             stream_history.sort(
                 key=lambda item:
                     item.get(
@@ -1239,6 +2014,7 @@ class LainoHandler(
             self,
             200,
             {
+
                 "success":
                     True,
 
@@ -1249,6 +2025,7 @@ class LainoHandler(
                     history_public_data(
                         history_item
                     )
+
             }
         )
 
@@ -1285,11 +2062,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "عملیات نامعتبر است."
+
                 }
             )
 
@@ -1305,11 +2084,13 @@ class LainoHandler(
                     self,
                     404,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "لایو پیدا نشد."
+
                     }
                 )
 
@@ -1319,11 +2100,15 @@ class LainoHandler(
                     "viewer_count"
                 ] += 1
 
-                if stream[
-                    "viewer_count"
-                ] > stream.get(
-                    "viewer_peak",
-                    0
+                if (
+                    stream[
+                        "viewer_count"
+                    ]
+                    >
+                    stream.get(
+                        "viewer_peak",
+                        0
+                    )
                 ):
 
                     stream[
@@ -1343,9 +2128,11 @@ class LainoHandler(
                     ] - 1
                 )
 
-            count = stream[
-                "viewer_count"
-            ]
+            count = (
+                stream[
+                    "viewer_count"
+                ]
+            )
 
             peak = stream.get(
                 "viewer_peak",
@@ -1356,6 +2143,7 @@ class LainoHandler(
             self,
             200,
             {
+
                 "success":
                     True,
 
@@ -1364,6 +2152,7 @@ class LainoHandler(
 
                 "viewer_peak":
                     peak
+
             }
         )
 
@@ -1419,8 +2208,10 @@ class LainoHandler(
 
             items = [
                 item
+
                 for item
                 in items
+
                 if item.get(
                     "username"
                 ) == username
@@ -1441,6 +2232,7 @@ class LainoHandler(
             history_public_data(
                 item
             )
+
             for item
             in items
         ]
@@ -1449,6 +2241,7 @@ class LainoHandler(
             self,
             200,
             {
+
                 "success":
                     True,
 
@@ -1457,6 +2250,7 @@ class LainoHandler(
 
                 "history":
                     result
+
             }
         )
 
@@ -1496,11 +2290,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "شناسه لایو نامعتبر است."
+
                 }
             )
 
@@ -1510,11 +2306,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "نام کاربری نامعتبر است."
+
                 }
             )
 
@@ -1524,11 +2322,13 @@ class LainoHandler(
                 self,
                 400,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "پیام خالی است."
+
                 }
             )
 
@@ -1540,11 +2340,13 @@ class LainoHandler(
                     self,
                     401,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "کاربر پیدا نشد."
+
                     }
                 )
 
@@ -1556,17 +2358,20 @@ class LainoHandler(
                     self,
                     404,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "لایو پیدا نشد."
+
                     }
                 )
 
         global next_chat_id
 
         message = {
+
             "id":
                 str(
                     next_chat_id
@@ -1582,15 +2387,18 @@ class LainoHandler(
                 int(
                     time.time()
                 )
+
         }
 
         next_chat_id += 1
 
         with chat_lock:
 
-            messages = chat_messages.setdefault(
-                stream_id,
-                []
+            messages = (
+                chat_messages.setdefault(
+                    stream_id,
+                    []
+                )
             )
 
             messages.append(
@@ -1607,11 +2415,13 @@ class LainoHandler(
             self,
             201,
             {
+
                 "success":
                     True,
 
                 "message":
                     message
+
             }
         )
 
@@ -1647,11 +2457,13 @@ class LainoHandler(
                     self,
                     404,
                     {
+
                         "success":
                             False,
 
                         "message":
                             "لایو پیدا نشد."
+
                     }
                 )
 
@@ -1673,12 +2485,16 @@ class LainoHandler(
                 )
 
                 messages = [
+
                     message
+
                     for message
                     in messages
+
                     if int(
                         message["id"]
                     ) > after_number
+
                 ]
 
             except ValueError:
@@ -1689,12 +2505,168 @@ class LainoHandler(
             self,
             200,
             {
+
                 "success":
                     True,
 
                 "messages":
                     messages
+
             }
+        )
+
+    # =====================================================
+    # SERVE UPLOAD
+    # =====================================================
+
+    def serve_upload(
+        self,
+        directory,
+        filename
+    ):
+
+        requested = Path(
+            filename
+        )
+
+        if (
+            requested.is_absolute()
+            or ".." in requested.parts
+        ):
+
+            return send_json(
+                self,
+                403,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "دسترسی غیرمجاز."
+
+                }
+            )
+
+        file_path = (
+            directory /
+            requested
+        ).resolve()
+
+        try:
+
+            file_path.relative_to(
+                directory.resolve()
+            )
+
+        except ValueError:
+
+            return send_json(
+                self,
+                403,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "دسترسی غیرمجاز."
+
+                }
+            )
+
+        if not file_path.is_file():
+
+            return send_json(
+                self,
+                404,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "فایل پیدا نشد."
+
+                }
+            )
+
+        try:
+
+            data = file_path.read_bytes()
+
+        except OSError:
+
+            return send_json(
+                self,
+                500,
+                {
+
+                    "success":
+                        False,
+
+                    "message":
+                        "خواندن فایل ناموفق بود."
+
+                }
+            )
+
+        extension = (
+            file_path.suffix.lower()
+        )
+
+        content_types = {
+
+            ".png":
+                "image/png",
+
+            ".jpg":
+                "image/jpeg",
+
+            ".jpeg":
+                "image/jpeg",
+
+            ".gif":
+                "image/gif",
+
+            ".webp":
+                "image/webp"
+
+        }
+
+        self.send_response(
+            200
+        )
+
+        self.send_header(
+            "Content-Type",
+            content_types.get(
+                extension,
+                "application/octet-stream"
+            )
+        )
+
+        self.send_header(
+            "Content-Length",
+            str(
+                len(data)
+            )
+        )
+
+        self.send_header(
+            "Cache-Control",
+            "public, max-age=3600"
+        )
+
+        self.send_header(
+            "Access-Control-Allow-Origin",
+            "*"
+        )
+
+        self.end_headers()
+
+        self.wfile.write(
+            data
         )
 
     # =====================================================
@@ -1719,11 +2691,13 @@ class LainoHandler(
                 self,
                 403,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "دسترسی غیرمجاز."
+
                 }
             )
 
@@ -1744,11 +2718,13 @@ class LainoHandler(
                 self,
                 403,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "دسترسی غیرمجاز."
+
                 }
             )
 
@@ -1758,11 +2734,13 @@ class LainoHandler(
                 self,
                 404,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "فایل پیدا نشد."
+
                 }
             )
 
@@ -1776,11 +2754,13 @@ class LainoHandler(
                 self,
                 500,
                 {
+
                     "success":
                         False,
 
                     "message":
                         "خواندن فایل ناموفق بود."
+
                 }
             )
 
@@ -1789,6 +2769,7 @@ class LainoHandler(
         )
 
         content_types = {
+
             ".html":
                 "text/html; charset=utf-8",
 
@@ -1833,6 +2814,7 @@ class LainoHandler(
 
             ".webm":
                 "video/webm"
+
         }
 
         self.send_response(
@@ -1892,6 +2874,10 @@ def main():
         f"History count: {len(stream_history)}"
     )
 
+    print(
+        f"Cover folder: {COVER_DIR}"
+    )
+
     server = ThreadingHTTPServer(
         (
             HOST,
@@ -1901,11 +2887,11 @@ def main():
     )
 
     print(
-        f"Home:   http://127.0.0.1:{PORT}/"
+        f"Home:    http://127.0.0.1:{PORT}/"
     )
 
     print(
-        f"Health: http://127.0.0.1:{PORT}/health"
+        f"Health:  http://127.0.0.1:{PORT}/health"
     )
 
     print(
@@ -1922,6 +2908,10 @@ def main():
 
     print(
         "History: enabled"
+    )
+
+    print(
+        "Cover upload: enabled"
     )
 
     print(
