@@ -1,0 +1,1657 @@
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090f">
+
+    <title>جستجو - LainoLive</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            font-family: Tahoma, Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #19192b 0%,
+                    #0b0b12 48%,
+                    #050508 100%
+                );
+
+            color: #fff;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding-bottom:
+                calc(
+                    92px +
+                    env(safe-area-inset-bottom)
+                );
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            padding:
+                calc(
+                    14px +
+                    env(safe-area-inset-top)
+                )
+                16px
+                14px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            background:
+                rgba(8,8,15,.9);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.07);
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            border: none;
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            color: white;
+
+            font-size: 20px;
+        }
+
+        .header-info {
+            min-width: 0;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .header-subtitle {
+            margin-top: 4px;
+
+            color: #9797a5;
+
+            font-size: 10px;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-area {
+            padding:
+                18px
+                16px
+                10px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 54px;
+
+            padding:
+                0
+                48px
+                0
+                48px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius: 17px;
+
+            outline: none;
+
+            background:
+                rgba(255,255,255,.055);
+
+            color: white;
+
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            border-color:
+                rgba(139,53,255,.75);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(139,53,255,.1);
+        }
+
+        .search-icon {
+            position: absolute;
+
+            right: 16px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            font-size: 19px;
+
+            pointer-events: none;
+
+            opacity: .75;
+        }
+
+        .clear-button {
+            position: absolute;
+
+            left: 8px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            width: 38px;
+            height: 38px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                rgba(255,255,255,.06);
+
+            color: #aaaab6;
+
+            display: none;
+        }
+
+        .clear-button.show {
+            display: block;
+        }
+
+        /* =========================
+           FILTERS
+        ========================= */
+
+        .filters {
+            padding:
+                4px
+                16px
+                14px;
+
+            display: flex;
+            gap: 8px;
+
+            overflow-x: auto;
+
+            scrollbar-width: none;
+        }
+
+        .filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            flex-shrink: 0;
+
+            border: none;
+
+            border-radius: 999px;
+
+            padding:
+                8px
+                13px;
+
+            background:
+                rgba(255,255,255,.055);
+
+            color: #a9a9b5;
+
+            font-size: 11px;
+        }
+
+        .filter-btn.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2757,
+                    #8b35ff
+                );
+        }
+
+        /* =========================
+           RESULT INFO
+        ========================= */
+
+        .result-bar {
+            padding:
+                6px
+                16px
+                12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .result-text {
+            color: #9a9aa8;
+            font-size: 11px;
+        }
+
+        .refresh-btn {
+            width: 40px;
+            height: 40px;
+
+            border: none;
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,.06);
+
+            color: white;
+        }
+
+        /* =========================
+           RESULTS
+        ========================= */
+
+        .results {
+            padding:
+                0
+                16px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0,1fr)
+                );
+
+            gap: 12px;
+        }
+
+        .card {
+            overflow: hidden;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.025)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            transition:
+                transform .18s ease,
+                border-color .18s ease;
+        }
+
+        .card:active {
+            transform: scale(.98);
+        }
+
+        .card:hover {
+            border-color:
+                rgba(139,53,255,.42);
+        }
+
+        .cover {
+            position: relative;
+
+            overflow: hidden;
+
+            aspect-ratio:
+                16 / 10;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #161622,
+                    #29213d
+                );
+        }
+
+        .cover img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+
+            opacity: .45;
+        }
+
+        .live-badge {
+            position: absolute;
+
+            top: 8px;
+            right: 8px;
+
+            padding:
+                5px
+                9px;
+
+            border-radius: 999px;
+
+            background:
+                #ff1e48;
+
+            color: white;
+
+            font-size: 9px;
+            font-weight: 900;
+        }
+
+        .viewer-badge {
+            position: absolute;
+
+            left: 8px;
+            bottom: 8px;
+
+            padding:
+                5px
+                8px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(0,0,0,.65);
+
+            color: white;
+
+            font-size: 10px;
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 900;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-user {
+            margin-top: 7px;
+
+            color: #aaaab6;
+
+            font-size: 11px;
+        }
+
+        .card-footer {
+            margin-top: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 8px;
+        }
+
+        .category {
+            min-width: 0;
+            max-width: 60%;
+
+            padding:
+                4px
+                8px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(139,53,255,.12);
+
+            color: #cdb4ff;
+
+            font-size: 9px;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .viewer-text {
+            color: #ffb6c5;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+
+            padding:
+                45px
+                20px;
+
+            text-align: center;
+
+            color: #91919e;
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px dashed
+                rgba(255,255,255,.09);
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* =========================
+           BOTTOM NAV
+        ========================= */
+
+        .bottom-nav {
+            position: fixed;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: 200;
+
+            padding:
+                10px
+                10px
+                calc(
+                    10px +
+                    env(safe-area-inset-bottom)
+                );
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 8px;
+
+            background:
+                rgba(7,7,12,.93);
+
+            border-top:
+                1px solid
+                rgba(255,255,255,.07);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+        }
+
+        .nav-btn {
+            min-height: 52px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background: transparent;
+
+            color: #8f8f9c;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 4px;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .nav-btn span:first-child {
+            font-size: 20px;
+        }
+
+        .nav-btn.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,39,87,.14),
+                    rgba(139,53,255,.16)
+                );
+        }
+
+        /* =========================
+           DESKTOP
+        ========================= */
+
+        @media (min-width:700px) {
+
+            .page {
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+
+            .results {
+                grid-template-columns:
+                    repeat(
+                        3,
+                        minmax(0,1fr)
+                    );
+            }
+
+            .bottom-nav {
+                left: 50%;
+                right: auto;
+
+                width:
+                    min(
+                        700px,
+                        calc(100% - 30px)
+                    );
+
+                transform:
+                    translateX(-50%);
+
+                bottom: 14px;
+
+                border:
+                    1px solid
+                    rgba(255,255,255,.07);
+
+                border-radius: 22px;
+
+                padding: 8px;
+            }
+        }
+
+        @media (max-width:390px) {
+
+            .results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="header">
+
+        <button
+            id="backButton"
+            class="back-btn"
+            type="button"
+        >
+            ←
+        </button>
+
+        <div class="header-info">
+
+            <div class="header-title">
+                🔎 جستجوی لایو
+            </div>
+
+            <div class="header-subtitle">
+                لایو موردنظرت را پیدا کن
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- SEARCH -->
+    <section class="search-area">
+
+        <div class="search-box">
+
+            <span class="search-icon">
+                🔎
+            </span>
+
+            <input
+                id="searchInput"
+                class="search-input"
+                type="search"
+                placeholder="عنوان، نام کاربری یا دسته‌بندی..."
+                autocomplete="off"
+            >
+
+            <button
+                id="clearButton"
+                class="clear-button"
+                type="button"
+                title="پاک کردن"
+            >
+                ✕
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FILTERS -->
+    <div class="filters">
+
+        <button
+            class="filter-btn active"
+            data-filter="all"
+            type="button"
+        >
+            همه
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="گیم"
+            type="button"
+        >
+            🎮 گیم
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="موسیقی"
+            type="button"
+        >
+            🎵 موسیقی
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="گفتگو"
+            type="button"
+        >
+            💬 گفتگو
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="سرگرمی"
+            type="button"
+        >
+            😂 سرگرمی
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="آموزش"
+            type="button"
+        >
+            📚 آموزش
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="ورزش"
+            type="button"
+        >
+            ⚽ ورزش
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="فناوری"
+            type="button"
+        >
+            💻 فناوری
+        </button>
+
+    </div>
+
+
+    <!-- RESULT BAR -->
+    <div class="result-bar">
+
+        <div
+            id="resultText"
+            class="result-text"
+        >
+            در حال دریافت...
+        </div>
+
+        <button
+            id="refreshButton"
+            class="refresh-btn"
+            type="button"
+        >
+            🔄
+        </button>
+
+    </div>
+
+
+    <!-- RESULTS -->
+    <main
+        id="results"
+        class="results"
+    >
+
+        <div class="empty">
+            در حال دریافت لایوها...
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+
+    <button
+        id="homeButton"
+        class="nav-btn"
+        type="button"
+    >
+        <span>🏠</span>
+        <span>خانه</span>
+    </button>
+
+    <button
+        id="searchNavButton"
+        class="nav-btn active"
+        type="button"
+    >
+        <span>🔎</span>
+        <span>جستجو</span>
+    </button>
+
+    <button
+        id="popularButton"
+        class="nav-btn"
+        type="button"
+    >
+        <span>🔥</span>
+        <span>محبوب</span>
+    </button>
+
+    <button
+        id="profileButton"
+        class="nav-btn"
+        type="button"
+    >
+        <span>👤</span>
+        <span>پروفایل</span>
+    </button>
+
+</nav>
+
+
+<script>
+    /* =====================================================
+       CONFIG
+    ====================================================== */
+
+    const LOGIN_KEY =
+        "lainolive_logged_in";
+
+    const USERNAME_KEY =
+        "lainolive_username";
+
+    const VIEW_STREAM_KEY =
+        "lainolive_view_stream";
+
+    const CURRENT_STREAM_KEY =
+        "lainolive_current_stream";
+
+
+    /* =====================================================
+       AUTH
+    ====================================================== */
+
+    if (
+        localStorage.getItem(
+            LOGIN_KEY
+        ) !== "true"
+    ) {
+
+        window.location.href =
+            "/login.html";
+    }
+
+
+    /* =====================================================
+       ELEMENTS
+    ====================================================== */
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+    const clearButton =
+        document.getElementById(
+            "clearButton"
+        );
+
+    const results =
+        document.getElementById(
+            "results"
+        );
+
+    const resultText =
+        document.getElementById(
+            "resultText"
+        );
+
+    const refreshButton =
+        document.getElementById(
+            "refreshButton"
+        );
+
+
+    /* =====================================================
+       STATE
+    ====================================================== */
+
+    let allStreams = [];
+
+    let activeFilter = "all";
+
+
+    /* =====================================================
+       HELPERS
+    ====================================================== */
+
+    function normalize(value) {
+
+        return String(
+            value ?? ""
+        )
+            .trim()
+            .toLowerCase();
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(
+            value ?? ""
+        )
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+    }
+
+
+    function getId(stream) {
+
+        return (
+            stream.id
+            ??
+            stream.stream_id
+        );
+    }
+
+
+    function getTitle(stream) {
+
+        return (
+            stream.title
+            ||
+            "لایو بدون عنوان"
+        );
+    }
+
+
+    function getUsername(stream) {
+
+        return (
+            stream.username
+            ||
+            stream.user
+            ||
+            stream.owner
+            ||
+            "کاربر"
+        );
+    }
+
+
+    function getCategory(stream) {
+
+        return (
+            stream.category
+            ||
+            "عمومی"
+        );
+    }
+
+
+    function getViewers(stream) {
+
+        return Number(
+            stream.viewer_count
+            ??
+            stream.viewers
+            ??
+            0
+        );
+    }
+
+
+    function getCover(stream) {
+
+        return (
+            stream.cover_url
+            ||
+            stream.cover
+            ||
+            stream.thumbnail
+            ||
+            ""
+        );
+    }
+
+
+    /* =====================================================
+       LOAD
+    ====================================================== */
+
+    async function loadStreams() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/streams"
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "خطا در دریافت لایوها"
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            allStreams =
+                Array.isArray(
+                    data.streams
+                )
+                    ? data.streams
+                    : (
+                        Array.isArray(
+                            data
+                        )
+                            ? data
+                            : []
+                    );
+
+
+            render();
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+            resultText.textContent =
+                "خطا در دریافت اطلاعات";
+
+            results.innerHTML = `
+                <div class="empty">
+                    دریافت لایوها انجام نشد.<br>
+                    اتصال سرور را بررسی کنید.
+                </div>
+            `;
+        }
+    }
+
+
+    /* =====================================================
+       FILTER
+    ====================================================== */
+
+    function getFilteredStreams() {
+
+        const query =
+            normalize(
+                searchInput.value
+            );
+
+
+        return allStreams.filter(
+            stream => {
+
+                const title =
+                    normalize(
+                        getTitle(
+                            stream
+                        )
+                    );
+
+                const username =
+                    normalize(
+                        getUsername(
+                            stream
+                        )
+                    );
+
+                const category =
+                    normalize(
+                        getCategory(
+                            stream
+                        )
+                    );
+
+
+                const matchesSearch =
+                    !query
+                    ||
+                    title.includes(
+                        query
+                    )
+                    ||
+                    username.includes(
+                        query
+                    )
+                    ||
+                    category.includes(
+                        query
+                    );
+
+
+                const matchesCategory =
+                    activeFilter ===
+                    "all"
+                    ||
+                    normalize(
+                        getCategory(
+                            stream
+                        )
+                    )
+                    ===
+                    normalize(
+                        activeFilter
+                    );
+
+
+                return (
+                    matchesSearch
+                    &&
+                    matchesCategory
+                );
+            }
+        );
+    }
+
+
+    /* =====================================================
+       RENDER
+    ====================================================== */
+
+    function render() {
+
+        const filtered =
+            getFilteredStreams();
+
+
+        resultText.textContent =
+            filtered.length
+            + " لایو پیدا شد";
+
+
+        clearButton.classList.toggle(
+            "show",
+            !!searchInput.value
+        );
+
+
+        if (!filtered.length) {
+
+            results.innerHTML = `
+                <div class="empty">
+                    ${
+                        searchInput.value.trim()
+                            || activeFilter !== "all"
+                            ? "لایوی با این جستجو پیدا نشد. 🔎"
+                            : "فعلاً هیچ لایوی در حال پخش نیست. 🎥"
+                    }
+                </div>
+            `;
+
+            return;
+        }
+
+
+        results.innerHTML =
+            filtered
+                .map(
+                    stream =>
+                        createCard(
+                            stream
+                        )
+                )
+                .join("");
+
+
+        results
+            .querySelectorAll(
+                "[data-stream-id]"
+            )
+            .forEach(
+                card => {
+
+                    card.addEventListener(
+                        "click",
+                        () => {
+
+                            const id =
+                                card.dataset.streamId;
+
+                            const stream =
+                                filtered.find(
+                                    item =>
+                                        String(
+                                            getId(
+                                                item
+                                            )
+                                        )
+                                        ===
+                                        String(
+                                            id
+                                        )
+                                );
+
+
+                            if (!stream) {
+                                return;
+                            }
+
+
+                            openStream(
+                                stream
+                            );
+                        }
+                    );
+                }
+            );
+    }
+
+
+    /* =====================================================
+       CARD
+    ====================================================== */
+
+    function createCard(
+        stream
+    ) {
+
+        const id =
+            getId(
+                stream
+            );
+
+        const title =
+            escapeHtml(
+                getTitle(
+                    stream
+                )
+            );
+
+        const username =
+            escapeHtml(
+                getUsername(
+                    stream
+                )
+            );
+
+        const category =
+            escapeHtml(
+                getCategory(
+                    stream
+                )
+            );
+
+        const viewers =
+            getViewers(
+                stream
+            );
+
+        const cover =
+            getCover(
+                stream
+            );
+
+
+        return `
+            <article
+                class="card"
+                data-stream-id="${escapeHtml(id)}"
+            >
+
+                <div class="cover">
+
+                    ${
+                        cover
+                            ? `
+                                <img
+                                    src="${escapeHtml(
+                                        cover
+                                    )}"
+                                    alt="${title}"
+                                    loading="lazy"
+                                >
+                            `
+                            : `
+                                <div
+                                    class="placeholder"
+                                >
+                                    📺
+                                </div>
+                            `
+                    }
+
+                    <div class="live-badge">
+                        ● LIVE
+                    </div>
+
+                    <div class="viewer-badge">
+                        👁 ${viewers}
+                    </div>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <div class="card-title">
+                        ${title}
+                    </div>
+
+                    <div class="card-user">
+                        👤 ${username}
+                    </div>
+
+                    <div class="card-footer">
+
+                        <div class="category">
+                            ${category}
+                        </div>
+
+                        <div class="viewer-text">
+                            ${viewers} بیننده
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+        `;
+    }
+
+
+    /* =====================================================
+       OPEN
+    ====================================================== */
+
+    function openStream(
+        stream
+    ) {
+
+        const id =
+            getId(
+                stream
+            );
+
+        const currentUsername =
+            localStorage.getItem(
+                USERNAME_KEY
+            );
+
+
+        sessionStorage.setItem(
+            VIEW_STREAM_KEY,
+            JSON.stringify(
+                stream
+            )
+        );
+
+
+        if (
+            String(
+                getUsername(
+                    stream
+                )
+            )
+            ===
+            String(
+                currentUsername
+            )
+        ) {
+
+            sessionStorage.setItem(
+                CURRENT_STREAM_KEY,
+                JSON.stringify(
+                    stream
+                )
+            );
+
+            window.location.href =
+                "/live.html";
+
+            return;
+        }
+
+
+        window.location.href =
+            "/viewer.html?id="
+            +
+            encodeURIComponent(
+                id
+            );
+    }
+
+
+    /* =====================================================
+       INPUT
+    ====================================================== */
+
+    searchInput.addEventListener(
+        "input",
+        () => {
+
+            render();
+
+        }
+    );
+
+
+    clearButton.addEventListener(
+        "click",
+        () => {
+
+            searchInput.value =
+                "";
+
+            searchInput.focus();
+
+            render();
+
+        }
+    );
+
+
+    /* =====================================================
+       CATEGORY BUTTONS
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            ".filter-btn"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".filter-btn"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        activeFilter =
+                            button.dataset.filter
+                            ||
+                            "all";
+
+
+                        render();
+                    }
+                );
+            }
+        );
+
+
+    /* =====================================================
+       REFRESH
+    ====================================================== */
+
+    refreshButton.addEventListener(
+        "click",
+        async () => {
+
+            refreshButton.animate(
+                [
+                    {
+                        transform:
+                            "rotate(0deg)"
+                    },
+                    {
+                        transform:
+                            "rotate(360deg)"
+                    }
+                ],
+                {
+                    duration: 450
+                }
+            );
+
+
+            await loadStreams();
+        }
+    );
+
+
+    /* =====================================================
+       NAVIGATION
+    ====================================================== */
+
+    document
+        .getElementById(
+            "backButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "/index.html";
+            }
+        );
+
+
+    document
+        .getElementById(
+            "homeButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "/index.html";
+            }
+        );
+
+
+    document
+        .getElementById(
+            "popularButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "/popular.html";
+            }
+        );
+
+
+    document
+        .getElementById(
+            "profileButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "/profile.html";
+            }
+        );
+
+
+    /* =====================================================
+       KEYBOARD
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "/"
+                &&
+                document.activeElement !==
+                    searchInput
+            ) {
+
+                event.preventDefault();
+
+                searchInput.focus();
+            }
+        }
+    );
+
+
+    /* =====================================================
+       START
+    ====================================================== */
+
+    loadStreams();
+
+
+    setInterval(
+        loadStreams,
+        5000
+    );
+</script>
+
+</body>
+</html>
+```
