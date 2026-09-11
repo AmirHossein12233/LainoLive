@@ -1,2854 +1,981 @@
 <!DOCTYPE html>
+
 <html lang="fa" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<meta
-    name="theme-color"
-    content="#ff2757"
->
-
-<meta
-    name="mobile-web-app-capable"
-    content="yes"
->
-
-<meta
-    name="apple-mobile-web-app-capable"
-    content="yes"
->
-
-<link
-    rel="manifest"
-    href="/manifest.json"
->
-
-<link
-    rel="apple-touch-icon"
-    href="/icons/icon-192.png"
->
-
-<title>LainoLive - شروع لایو</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff2757">
+<title>LainoLive - پخش زنده</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+* {
+    box-sizing: border-box;
 }
 
-html,
-body{
-
-    margin:0;
-    padding:0;
-    min-height:100%;
-
-    font-family:
-        Tahoma,
-        Arial,
-        sans-serif;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #25193d 0%,
-            #100b1c 38%,
-            #050508 100%
-        );
-
-    color:#fff;
-
+body {
+    margin: 0;
+    background: #0d0f14;
+    color: #fff;
+    font-family: Tahoma, Arial, sans-serif;
 }
 
-body{
-    min-height:100vh;
+.container {
+    width: min(1000px, 94%);
+    margin: 25px auto;
 }
 
-button,
-input,
-select{
-    font-family:inherit;
+.card {
+    background: #171a21;
+    border: 1px solid #292e38;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 15px 45px rgba(0,0,0,.25);
 }
 
-button{
-    cursor:pointer;
+h1 {
+    margin-top: 0;
 }
 
-button:disabled{
-    cursor:not-allowed;
-    opacity:.45;
+video {
+    width: 100%;
+    max-height: 65vh;
+    background: #000;
+    border-radius: 15px;
+    display: block;
+    object-fit: contain;
 }
 
-.page{
-    min-height:100vh;
-    padding-bottom:40px;
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.header{
-
-    position:sticky;
-    top:0;
-    z-index:20;
-
-    padding:14px 18px;
-
-    background:
-        rgba(8,7,15,.88);
-
-    backdrop-filter:
-        blur(18px);
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
-
+button {
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    background: #ff2757;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
 }
 
-.header-row{
-
-    max-width:1100px;
-    margin:auto;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-
+button.secondary {
+    background: #292e38;
 }
 
-.brand{
-
-    display:flex;
-    align-items:center;
-    gap:10px;
-
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
 }
 
-.brand-icon{
-
-    width:42px;
-    height:42px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff2757,
-            #8b35ff
-        );
-
-    font-size:22px;
-
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
-.brand-text{
-
-    font-size:21px;
-    font-weight:900;
-
+input {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    border: 1px solid #343a46;
+    background: #0f1217;
+    color: white;
+    outline: none;
 }
 
-.brand-sub{
-
-    color:#9d97ab;
-    font-size:10px;
-    margin-top:3px;
-
+.status {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    background: #10131a;
+    color: #ddd;
+    white-space: pre-wrap;
 }
 
-.back-btn{
-
-    width:44px;
-    height:44px;
-
-    border:0;
-    border-radius:14px;
-
-    background:
-        rgba(255,255,255,.08);
-
-    color:#fff;
-    font-size:19px;
-
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.container{
-
-    width:
-        min(
-            calc(100% - 24px),
-            1100px
-        );
-
-    margin:
-        14px auto 0;
-
+.stat {
+    background: #10131a;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
 }
 
-.layout{
-
-    display:grid;
-
-    grid-template-columns:
-        minmax(0, 1.6fr)
-        minmax(290px, .9fr);
-
-    gap:14px;
-
+.stat b {
+    display: block;
+    font-size: 22px;
+    margin-top: 5px;
 }
 
-.card{
-
-    background:
-        rgba(255,255,255,.055);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:24px;
-
-    box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.22);
-
-}
-
-.preview-card{
-
-    padding:14px;
-
-}
-
-.preview-wrap{
-
-    position:relative;
-
-    width:100%;
-
-    aspect-ratio:16/9;
-
-    overflow:hidden;
-
-    border-radius:20px;
-
-    background:#000;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-}
-
-#preview{
-
-    width:100%;
-    height:100%;
-
-    display:block;
-
-    object-fit:cover;
-
-    background:#000;
-
-}
-
-.preview-overlay{
-
-    position:absolute;
-
-    inset:0;
-
-    pointer-events:none;
-
-}
-
-.live-badge{
-
-    position:absolute;
-
-    top:12px;
-    right:12px;
-
-    display:none;
-
-    align-items:center;
-    gap:6px;
-
-    padding:7px 11px;
-
-    border-radius:999px;
-
-    background:
-        rgba(255,24,72,.92);
-
-    font-size:11px;
-    font-weight:900;
-
-}
-
-.live-badge.active{
-    display:flex;
-}
-
-.dot{
-
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    animation:
-        blink 1s infinite;
-
-}
-
-@keyframes blink{
-
-    0%,100%{
-        opacity:1;
+@media (max-width: 700px) {
+    .row {
+        grid-template-columns: 1fr;
     }
 
-    50%{
-        opacity:.35;
+    .stats {
+        grid-template-columns: 1fr;
     }
-
 }
-
-.source-badge{
-
-    position:absolute;
-
-    left:12px;
-    top:12px;
-
-    padding:7px 10px;
-
-    border-radius:999px;
-
-    background:
-        rgba(0,0,0,.62);
-
-    color:#eee;
-
-    font-size:10px;
-
-}
-
-.preview-bottom{
-
-    position:absolute;
-
-    left:12px;
-    right:12px;
-    bottom:12px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:8px;
-
-}
-
-.connection-pill{
-
-    padding:7px 10px;
-
-    border-radius:999px;
-
-    background:
-        rgba(0,0,0,.64);
-
-    font-size:10px;
-
-}
-
-.viewer-pill{
-
-    padding:7px 10px;
-
-    border-radius:999px;
-
-    background:
-        rgba(0,0,0,.64);
-
-    font-size:10px;
-
-}
-
-.info-strip{
-
-    margin-top:12px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap:8px;
-
-}
-
-.stat{
-
-    padding:10px;
-
-    border-radius:14px;
-
-    background:
-        rgba(255,255,255,.045);
-
-    text-align:center;
-
-}
-
-.stat-value{
-
-    font-size:13px;
-    font-weight:900;
-
-}
-
-.stat-label{
-
-    color:#898394;
-    font-size:9px;
-    margin-top:4px;
-
-}
-
-.side{
-
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-
-}
-
-.form-card{
-
-    padding:18px;
-
-}
-
-.card-title{
-
-    font-size:15px;
-    font-weight:900;
-
-    margin-bottom:14px;
-
-}
-
-.field{
-
-    margin-bottom:13px;
-
-}
-
-.field label{
-
-    display:block;
-
-    margin-bottom:7px;
-
-    color:#a9a1b5;
-
-    font-size:10px;
-
-}
-
-.input,
-.select{
-
-    width:100%;
-    height:46px;
-
-    border:0;
-    outline:none;
-
-    border-radius:14px;
-
-    padding:
-        0 13px;
-
-    background:
-        rgba(255,255,255,.08);
-
-    color:#fff;
-
-}
-
-.select option{
-
-    background:#16121f;
-    color:#fff;
-
-}
-
-.quality-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap:7px;
-
-}
-
-.quality-btn{
-
-    min-height:40px;
-
-    border:1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:11px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    color:#b7afc1;
-
-    font-size:10px;
-    font-weight:800;
-
-}
-
-.quality-btn.active{
-
-    border-color:
-        transparent;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff2757,
-            #8b35ff
-        );
-
-    color:#fff;
-
-}
-
-.source-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap:8px;
-
-}
-
-.source-btn{
-
-    min-height:48px;
-
-    border:1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:14px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    color:#fff;
-
-    font-size:11px;
-    font-weight:800;
-
-}
-
-.source-btn.active{
-
-    background:
-        rgba(255,39,87,.18);
-
-    border-color:
-        rgba(255,39,87,.5);
-
-}
-
-.action-row{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:8px;
-
-}
-
-.btn{
-
-    min-height:48px;
-
-    border:0;
-    border-radius:15px;
-
-    color:#fff;
-
-    font-weight:900;
-    font-size:12px;
-
-}
-
-.btn-primary{
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff2757,
-            #8b35ff
-        );
-
-}
-
-.btn-secondary{
-
-    background:
-        rgba(255,255,255,.08);
-
-}
-
-.btn-danger{
-
-    background:
-        rgba(255,39,87,.18);
-
-    color:#ffb0bd;
-
-}
-
-.source-actions{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:8px;
-
-    margin-top:8px;
-
-}
-
-.status-box{
-
-    padding:12px;
-
-    border-radius:14px;
-
-    background:
-        rgba(255,255,255,.045);
-
-}
-
-.status-line{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:10px;
-
-    padding:6px 0;
-
-}
-
-.status-name{
-
-    color:#91899c;
-    font-size:10px;
-
-}
-
-.status-value{
-
-    font-size:10px;
-    font-weight:900;
-
-}
-
-.green{
-    color:#69f0a4;
-}
-
-.red{
-    color:#ff718a;
-}
-
-.yellow{
-    color:#ffd66b;
-}
-
-.hint{
-
-    margin-top:10px;
-
-    color:#8f8897;
-
-    font-size:10px;
-
-    line-height:1.9;
-
-}
-
-.bottom-note{
-
-    max-width:1100px;
-
-    margin:
-        14px auto 0;
-
-    padding:12px 14px;
-
-    border-radius:16px;
-
-    background:
-        rgba(255,255,255,.035);
-
-    border:
-        1px solid
-        rgba(255,255,255,.06);
-
-    color:#85808e;
-
-    font-size:10px;
-
-    line-height:2;
-
-}
-
-@media (max-width:850px){
-
-    .layout{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .quality-grid{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-}
-
-@media (max-width:520px){
-
-    .container{
-
-        width:
-            calc(100% - 16px);
-
-    }
-
-    .header{
-
-        padding:11px 10px;
-
-    }
-
-    .brand-text{
-        font-size:18px;
-    }
-
-    .info-strip{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-    .source-grid{
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-}
-
 </style>
 
 </head>
 
-
 <body>
 
-<div class="page">
+<div class="container">
 
+```
+<div class="card">
 
-<header class="header">
+    <h1>🔴 LainoLive</h1>
 
-<div class="header-row">
+    <div class="row">
+        <div>
+            <label>شناسه لایو</label>
+            <input
+                id="streamId"
+                value="9b995ee8-8196-4d3b-b508-0c78c5d9ea8a"
+                placeholder="stream_id"
+            >
+        </div>
 
-<div class="brand">
+        <div>
+            <label>نام کاربری</label>
+            <input
+                id="username"
+                value="testuser"
+                placeholder="username"
+            >
+        </div>
+    </div>
 
-<div class="brand-icon">
-🎥
-</div>
+    <video
+        id="preview"
+        autoplay
+        muted
+        playsinline
+    ></video>
 
-<div>
+    <div class="controls">
+        <button id="cameraBtn">📷 دوربین</button>
+        <button id="screenBtn" class="secondary">🖥️ اشتراک صفحه</button>
+        <button id="tabBtn" class="secondary">🌐 اشتراک تب</button>
+        <button id="micBtn" class="secondary">🎤 میکروفن</button>
+        <button id="stopSourceBtn" class="secondary">⏹ توقف منبع</button>
+        <button id="startBtn">🔴 اتصال به لایو</button>
+        <button id="stopBtn" class="secondary">⛔ قطع لایو</button>
+    </div>
 
-<div class="brand-text">
-LainoLive
-</div>
+    <div class="stats">
+        <div class="stat">
+            بیننده
+            <b id="viewerCount">0</b>
+        </div>
 
-<div class="brand-sub">
-پخش زنده آنلاین
-</div>
+        <div class="stat">
+            Broadcaster
+            <b id="broadcasterCount">0</b>
+        </div>
 
-</div>
+        <div class="stat">
+            وضعیت
+            <b id="state">آماده</b>
+        </div>
+    </div>
 
-</div>
-
-
-<button
-    class="back-btn"
-    id="backButton"
-    aria-label="بازگشت"
->
-←
-</button>
-
-</div>
-
-</header>
-
-
-
-<main class="container">
-
-<div class="layout">
-
-
-<section class="card preview-card">
-
-
-<div class="preview-wrap">
-
-
-<video
-    id="preview"
-    autoplay
-    muted
-    playsinline
-></video>
-
-
-<div class="preview-overlay">
-
-
-<div
-    id="liveBadge"
-    class="live-badge"
->
-<span class="dot"></span>
-LIVE
-</div>
-
-
-<div
-    id="sourceBadge"
-    class="source-badge"
->
-منبع: دوربین
-</div>
-
-
-<div class="preview-bottom">
-
-
-<div
-    id="connectionPill"
-    class="connection-pill"
->
-● آماده
-</div>
-
-
-<div
-    id="viewerPill"
-    class="viewer-pill"
->
-👁 0
-</div>
+    <div id="status" class="status">
+        آماده شروع.
+    </div>
 
 </div>
+```
 
 </div>
-
-</div>
-
-
-
-<div class="info-strip">
-
-
-<div class="stat">
-
-<div
-    id="videoStat"
-    class="stat-value"
->
-720p
-</div>
-
-<div class="stat-label">
-کیفیت تصویر
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div
-    id="audioStat"
-    class="stat-value"
->
-128 kbps
-</div>
-
-<div class="stat-label">
-کیفیت صدا
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div
-    id="sourceStat"
-    class="stat-value"
->
-دوربین
-</div>
-
-<div class="stat-label">
-منبع
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div
-    id="statusStat"
-    class="stat-value"
->
-آماده
-</div>
-
-<div class="stat-label">
-وضعیت
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<aside class="side">
-
-
-<section class="card form-card">
-
-
-<div class="card-title">
-📝 اطلاعات لایو
-</div>
-
-
-<div class="field">
-
-<label for="liveTitle">
-عنوان لایو
-</label>
-
-<input
-    id="liveTitle"
-    class="input"
-    maxlength="120"
-    placeholder="عنوان لایو را وارد کنید"
->
-
-</div>
-
-
-<div class="field">
-
-<label>
-کیفیت تصویر
-</label>
-
-<div class="quality-grid">
-
-
-<button
-    class="quality-btn"
-    data-video-quality="360"
->
-360p
-</button>
-
-
-<button
-    class="quality-btn"
-    data-video-quality="480"
->
-480p
-</button>
-
-
-<button
-    class="quality-btn active"
-    data-video-quality="720"
->
-720p HD
-</button>
-
-
-<button
-    class="quality-btn"
-    data-video-quality="1080"
->
-1080p
-</button>
-
-
-</div>
-
-</div>
-
-
-<div class="field">
-
-<label>
-کیفیت صدا
-</label>
-
-<div class="quality-grid">
-
-
-<button
-    class="quality-btn"
-    data-audio-quality="64000"
->
-64 kbps
-</button>
-
-
-<button
-    class="quality-btn active"
-    data-audio-quality="128000"
->
-128 kbps
-</button>
-
-
-<button
-    class="quality-btn"
-    data-audio-quality="192000"
->
-192 kbps
-</button>
-
-
-<button
-    class="quality-btn"
-    data-audio-quality="320000"
->
-320 kbps
-</button>
-
-
-</div>
-
-</div>
-
-
-</section>
-
-
-
-<section class="card form-card">
-
-
-<div class="card-title">
-🎥 منبع پخش
-</div>
-
-
-<div class="source-grid">
-
-
-<button
-    id="cameraSource"
-    class="source-btn active"
->
-📷 دوربین
-</button>
-
-
-<button
-    id="screenSource"
-    class="source-btn"
->
-🖥️ صفحه
-</button>
-
-
-<button
-    id="tabSource"
-    class="source-btn"
->
-🌐 تب
-</button>
-
-
-<button
-    id="micSource"
-    class="source-btn"
->
-🎤 میکروفن
-</button>
-
-</div>
-
-
-<div class="source-actions">
-
-
-<button
-    id="sourceStartButton"
-    class="btn btn-secondary"
->
-▶️ فعال‌سازی منبع
-</button>
-
-
-<button
-    id="sourceStopButton"
-    class="btn btn-danger"
->
-⏹ توقف منبع
-</button>
-
-</div>
-
-
-<div class="hint">
-
-برای «تب» یا «صفحه»، مرورگر پنجره انتخاب منبع را نمایش می‌دهد.
-صدای منبع فقط در صورتی در دسترس است که مرورگر آن را ارائه کند.
-
-</div>
-
-</section>
-
-
-
-<section class="card form-card">
-
-
-<div class="card-title">
-🔴 کنترل لایو
-</div>
-
-
-<div class="action-row">
-
-
-<button
-    id="startButton"
-    class="btn btn-primary"
->
-🔴 شروع لایو
-</button>
-
-
-<button
-    id="stopButton"
-    class="btn btn-danger"
-    disabled
->
-⏹ پایان لایو
-</button>
-
-</div>
-
-
-<button
-    id="backButton2"
-    class="btn btn-secondary"
-    style="width:100%;margin-top:8px"
->
-بازگشت
-</button>
-
-</section>
-
-
-
-<section class="card form-card">
-
-
-<div class="card-title">
-📡 وضعیت اتصال
-</div>
-
-
-<div class="status-box">
-
-
-<div class="status-line">
-
-<div class="status-name">
-سرور
-</div>
-
-<div
-    id="serverStatus"
-    class="status-value yellow"
->
-بررسی...
-</div>
-
-</div>
-
-
-<div class="status-line">
-
-<div class="status-name">
-دوربین
-</div>
-
-<div
-    id="cameraStatus"
-    class="status-value"
->
-خاموش
-</div>
-
-</div>
-
-
-<div class="status-line">
-
-<div class="status-name">
-میکروفن
-</div>
-
-<div
-    id="micStatus"
-    class="status-value"
->
-خاموش
-</div>
-
-</div>
-
-
-<div class="status-line">
-
-<div class="status-name">
-استریم
-</div>
-
-<div
-    id="streamStatus"
-    class="status-value"
->
-آماده
-</div>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-</aside>
-
-</div>
-
-
-<div class="bottom-note">
-
-LainoLive • قبل از شروع، اجازه دسترسی به دوربین و میکروفن را تأیید کنید.
-برای استفاده آنلاین، این صفحه باید با HTTPS باز شده باشد.
-
-</div>
-
-</main>
-
-
-</div>
-
-
-<script
-    src="/live-webrtc.js"
-></script>
-
 
 <script>
-
 "use strict";
 
+/* =========================================================
+   CONFIG
+========================================================= */
 
+const API_BASE = window.location.origin;
 
-const API_BASE =
-    "";
+const streamIdInput = document.getElementById("streamId");
+const usernameInput = document.getElementById("username");
 
+const preview = document.getElementById("preview");
 
+const cameraBtn = document.getElementById("cameraBtn");
+const screenBtn = document.getElementById("screenBtn");
+const tabBtn = document.getElementById("tabBtn");
+const micBtn = document.getElementById("micBtn");
+const stopSourceBtn = document.getElementById("stopSourceBtn");
 
-let mediaStream = null;
-let streamId = null;
-let liveStarted = false;
-let selectedSource = "camera";
+const startBtn = document.getElementById("startBtn");
+const stopBtn = document.getElementById("stopBtn");
 
-let selectedVideoQuality =
-    localStorage.getItem(
-        "lainolive_video_quality"
-    )
-    ||
-    "720p";
+const viewerCount = document.getElementById("viewerCount");
+const broadcasterCount = document.getElementById("broadcasterCount");
+const stateEl = document.getElementById("state");
+const statusEl = document.getElementById("status");
 
-let selectedAudioBitrate =
-    Number(
-        localStorage.getItem(
-            "lainolive_audio_bitrate"
-        )
-        ||
-        "128000"
-    );
+let localStream = null;
+let websocket = null;
 
+let isConnected = false;
+let currentSource = null;
 
+const peerConnections = new Map();
 
-const preview =
-    document.getElementById(
-        "preview"
-    );
+/* =========================================================
+   HELPERS
+========================================================= */
 
-const titleInput =
-    document.getElementById(
-        "liveTitle"
-    );
-
-const liveBadge =
-    document.getElementById(
-        "liveBadge"
-    );
-
-const sourceBadge =
-    document.getElementById(
-        "sourceBadge"
-    );
-
-const connectionPill =
-    document.getElementById(
-        "connectionPill"
-    );
-
-const viewerPill =
-    document.getElementById(
-        "viewerPill"
-    );
-
-const videoStat =
-    document.getElementById(
-        "videoStat"
-    );
-
-const audioStat =
-    document.getElementById(
-        "audioStat"
-    );
-
-const sourceStat =
-    document.getElementById(
-        "sourceStat"
-    );
-
-const statusStat =
-    document.getElementById(
-        "statusStat"
-    );
-
-const serverStatus =
-    document.getElementById(
-        "serverStatus"
-    );
-
-const cameraStatus =
-    document.getElementById(
-        "cameraStatus"
-    );
-
-const micStatus =
-    document.getElementById(
-        "micStatus"
-    );
-
-const streamStatus =
-    document.getElementById(
-        "streamStatus"
-    );
-
-const startButton =
-    document.getElementById(
-        "startButton"
-    );
-
-const stopButton =
-    document.getElementById(
-        "stopButton"
-    );
-
-
-
-function apiUrl(path){
-
-    return API_BASE + path;
-
+function setStatus(text) {
+    statusEl.textContent = text;
 }
 
+function setState(text) {
+    stateEl.textContent = text;
+}
 
+function getStreamId() {
+    return streamIdInput.value.trim();
+}
 
-function getResolution(){
+function getUsername() {
+    return usernameInput.value.trim() || "testuser";
+}
 
-    switch(selectedVideoQuality){
+function wsUrl() {
+    const protocol =
+        location.protocol === "https:"
+            ? "wss:"
+            : "ws:";
 
-        case "360p":
-            return {
-                width:640,
-                height:360
-            };
+    return (
+        protocol +
+        "//" +
+        location.host +
+        "/ws/stream/" +
+        encodeURIComponent(getStreamId()) +
+        "?role=broadcaster&username=" +
+        encodeURIComponent(getUsername())
+    );
+}
 
-        case "480p":
-            return {
-                width:854,
-                height:480
-            };
+/* =========================================================
+   API
+========================================================= */
 
-        case "1080p":
-            return {
-                width:1920,
-                height:1080
-            };
+async function getStreamInfo() {
+    const id = getStreamId();
 
-        default:
-            return {
-                width:1280,
-                height:720
-            };
-
+    if (!id) {
+        throw new Error("stream_id وارد نشده است.");
     }
 
-}
-
-
-
-function setConnection(
-    text,
-    color="yellow"
-){
-
-    connectionPill.textContent =
-        "● " + text;
-
-    connectionPill.style.color =
-        color === "green"
-            ? "#69f0a4"
-            : color === "red"
-                ? "#ff718a"
-                : "#ffd66b";
-
-}
-
-
-
-function setStatus(
-    text
-){
-
-    statusStat.textContent =
-        text;
-
-    streamStatus.textContent =
-        text;
-
-}
-
-
-
-function updateStats(){
-
-    videoStat.textContent =
-        selectedVideoQuality;
-
-    audioStat.textContent =
-        Math.round(
-            selectedAudioBitrate / 1000
-        ) + " kbps";
-
-    sourceStat.textContent =
-        sourceLabel();
-
-}
-
-
-
-function sourceLabel(){
-
-    switch(selectedSource){
-
-        case "screen":
-            return "صفحه";
-
-        case "tab":
-            return "تب";
-
-        case "mic":
-            return "میکروفن";
-
-        default:
-            return "دوربین";
-
-    }
-
-}
-
-
-
-function setSource(
-    source
-){
-
-    selectedSource =
-        source;
-
-    document
-        .querySelectorAll(
-            ".source-btn"
-        )
-        .forEach(
-            btn =>
-                btn.classList.remove(
-                    "active"
-                )
-        );
-
-    const map = {
-
-        camera:
-            "cameraSource",
-
-        screen:
-            "screenSource",
-
-        tab:
-            "tabSource",
-
-        mic:
-            "micSource"
-
-    };
-
-    document
-        .getElementById(
-            map[source]
-        )
-        .classList.add(
-            "active"
-        );
-
-    sourceBadge.textContent =
-        "منبع: " +
-        sourceLabel();
-
-    updateStats();
-
-}
-
-
-
-async function checkServer(){
-
-    try{
-
-        const response =
-            await fetch(
-                apiUrl("/health"),
-                {
-                    method:"GET",
-                    cache:"no-store"
-                }
-            );
-
-        if(!response.ok){
-
-            throw new Error(
-                "health failed"
-            );
-
+    const response = await fetch(
+        API_BASE + "/api/streams/" + encodeURIComponent(id),
+        {
+            method: "GET",
+            cache: "no-store"
         }
+    );
 
-        serverStatus.textContent =
-            "آنلاین";
+    const data = await response.json();
 
-        serverStatus.className =
-            "status-value green";
-
-        return true;
-
-    }catch(error){
-
-        console.error(error);
-
-        serverStatus.textContent =
-            "دردسترس نیست";
-
-        serverStatus.className =
-            "status-value red";
-
-        return false;
-
-    }
-
-}
-
-
-
-function stopTracks(){
-
-    if(!mediaStream){
-
-        return;
-
-    }
-
-    mediaStream
-        .getTracks()
-        .forEach(
-            track =>
-                track.stop()
+    if (!response.ok || data.success !== true) {
+        throw new Error(
+            data.message || "لایو پیدا نشد."
         );
+    }
 
-    mediaStream =
-        null;
-
-    preview.srcObject =
-        null;
-
-    cameraStatus.textContent =
-        "خاموش";
-
-    cameraStatus.className =
-        "status-value";
-
-    micStatus.textContent =
-        "خاموش";
-
-    micStatus.className =
-        "status-value";
-
+    return data.stream;
 }
 
+/* =========================================================
+   CAMERA
+========================================================= */
 
-
-async function startCamera(){
-
-    const resolution =
-        getResolution();
-
-    try{
-
-        stopTracks();
+async function startCamera() {
+    try {
+        stopLocalTracks();
 
         const stream =
-            await navigator.mediaDevices
-                .getUserMedia({
-
-                    video:{
-                        width:{
-                            ideal:
-                                resolution.width
-                        },
-                        height:{
-                            ideal:
-                                resolution.height
-                        },
-                        facingMode:
-                            "user"
+            await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: {
+                        ideal: 1280
                     },
-
-                    audio:{
-                        echoCancellation:true,
-                        noiseSuppression:true,
-                        autoGainControl:true,
-                        channelCount:2,
-                        sampleRate:48000
-                    }
-
-                });
-
-        mediaStream =
-            stream;
-
-        preview.srcObject =
-            mediaStream;
-
-        await preview.play()
-            .catch(()=>{});
-
-        cameraStatus.textContent =
-            "فعال";
-
-        cameraStatus.className =
-            "status-value green";
-
-        micStatus.textContent =
-            "فعال";
-
-        micStatus.className =
-            "status-value green";
-
-        setSource("camera");
-
-        setConnection(
-            "دوربین آماده",
-            "green"
-        );
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "camera error",
-            error
-        );
-
-        cameraStatus.textContent =
-            "خطا";
-
-        cameraStatus.className =
-            "status-value red";
-
-        setConnection(
-            "دسترسی رد شد",
-            "red"
-        );
-
-        setStatus(
-            "دسترسی دوربین/میکروفن لازم است"
-        );
-
-        return false;
-
-    }
-
-}
-
-
-
-async function startScreen(){
-
-    try{
-
-        stopTracks();
-
-        const screenStream =
-            await navigator.mediaDevices
-                .getDisplayMedia({
-
-                    video:{
-                        frameRate:{
-                            ideal:30
-                        }
+                    height: {
+                        ideal: 720
                     },
-
-                    audio:true
-
-                });
-
-        mediaStream =
-            screenStream;
-
-        preview.srcObject =
-            mediaStream;
-
-        await preview.play()
-            .catch(()=>{});
-
-        const videoTrack =
-            mediaStream.getVideoTracks()[0];
-
-        if(videoTrack){
-
-            videoTrack.addEventListener(
-                "ended",
-                ()=>{
-                    if(!liveStarted){
-                        stopTracks();
+                    frameRate: {
+                        ideal: 30,
+                        max: 30
                     }
+                },
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true
                 }
-            );
+            });
 
-        }
+        localStream = stream;
+        currentSource = "camera";
 
-        cameraStatus.textContent =
-            "صفحه فعال";
+        preview.srcObject = stream;
 
-        cameraStatus.className =
-            "status-value green";
-
-        micStatus.textContent =
-            mediaStream.getAudioTracks().length
-                ? "صدای منبع فعال"
-                : "بدون صدای منبع";
-
-        micStatus.className =
-            mediaStream.getAudioTracks().length
-                ? "status-value green"
-                : "status-value yellow";
-
-        setSource("screen");
-
-        setConnection(
-            "صفحه آماده",
-            "green"
-        );
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "screen error",
-            error
-        );
-
-        setConnection(
-            "اشتراک صفحه لغو شد",
-            "yellow"
-        );
-
-        return false;
-
+        setStatus("دوربین و میکروفن فعال شدند.");
+        setState("دوربین");
     }
-
-}
-
-
-
-async function startTab(){
-
-    try{
-
-        stopTracks();
-
-        const tabStream =
-            await navigator.mediaDevices
-                .getDisplayMedia({
-
-                    video:{
-                        frameRate:{
-                            ideal:30
-                        }
-                    },
-
-                    audio:{
-                        echoCancellation:false,
-                        noiseSuppression:false,
-                        autoGainControl:false
-                    }
-
-                });
-
-        mediaStream =
-            tabStream;
-
-        preview.srcObject =
-            mediaStream;
-
-        await preview.play()
-            .catch(()=>{});
-
-        const audioTracks =
-            mediaStream.getAudioTracks();
-
-        micStatus.textContent =
-            audioTracks.length
-                ? "صدای تب فعال"
-                : "صدای تب ندارد";
-
-        micStatus.className =
-            audioTracks.length
-                ? "status-value green"
-                : "status-value yellow";
-
-        cameraStatus.textContent =
-            "تب فعال";
-
-        cameraStatus.className =
-            "status-value green";
-
-        const videoTrack =
-            mediaStream.getVideoTracks()[0];
-
-        if(videoTrack){
-
-            videoTrack.addEventListener(
-                "ended",
-                ()=>{
-                    if(!liveStarted){
-                        stopTracks();
-                    }
-                }
-            );
-
-        }
-
-        setSource("tab");
-
-        setConnection(
-            "تب آماده",
-            "green"
-        );
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "tab error",
-            error
-        );
-
-        setConnection(
-            "اشتراک تب لغو شد",
-            "yellow"
-        );
-
-        return false;
-
-    }
-
-}
-
-
-
-async function startMicrophone(){
-
-    try{
-
-        stopTracks();
-
-        const micStream =
-            await navigator.mediaDevices
-                .getUserMedia({
-
-                    audio:{
-                        echoCancellation:true,
-                        noiseSuppression:true,
-                        autoGainControl:true,
-                        channelCount:2,
-                        sampleRate:48000
-                    }
-
-                });
-
-        mediaStream =
-            micStream;
-
-        preview.srcObject =
-            null;
-
-        cameraStatus.textContent =
-            "غیرفعال";
-
-        micStatus.textContent =
-            "فعال";
-
-        micStatus.className =
-            "status-value green";
-
-        setSource("mic");
-
-        setConnection(
-            "میکروفن آماده",
-            "green"
-        );
-
-        return true;
-
-    }catch(error){
-
+    catch (error) {
         console.error(error);
 
-        setConnection(
-            "میکروفن در دسترس نیست",
-            "red"
+        setStatus(
+            "خطا در دسترسی به دوربین/میکروفن:\n" +
+            error.message
         );
-
-        return false;
-
     }
-
 }
 
+/* =========================================================
+   SCREEN
+========================================================= */
 
+async function startScreenShare(withAudio = true) {
+    try {
+        stopLocalTracks();
 
-async function activateSelectedSource(){
+        const stream =
+            await navigator.mediaDevices.getDisplayMedia({
+                video: {
+                    frameRate: {
+                        ideal: 30,
+                        max: 30
+                    }
+                },
+                audio: withAudio
+            });
 
-    switch(selectedSource){
+        localStream = stream;
+        currentSource = "screen";
 
-        case "screen":
-            return await startScreen();
+        preview.srcObject = stream;
 
-        case "tab":
-            return await startTab();
+        const videoTrack =
+            stream.getVideoTracks()[0];
 
-        case "mic":
-            return await startMicrophone();
+        if (videoTrack) {
+            videoTrack.addEventListener(
+                "ended",
+                () => {
+                    setStatus(
+                        "اشتراک صفحه توسط مرورگر متوقف شد."
+                    );
 
-        default:
-            return await startCamera();
-
-    }
-
-}
-
-
-
-async function createLive(){
-
-    if(!mediaStream){
-
-        const ok =
-            await activateSelectedSource();
-
-        if(!ok){
-
-            return null;
-
+                    stopLocalTracks();
+                }
+            );
         }
 
+        setStatus(
+            withAudio
+                ? "اشتراک صفحه با صدا فعال شد."
+                : "اشتراک صفحه فعال شد."
+        );
+
+        setState("صفحه");
+    }
+    catch (error) {
+        console.error(error);
+
+        setStatus(
+            "اشتراک صفحه فعال نشد:\n" +
+            error.message
+        );
+    }
+}
+
+/* =========================================================
+   TAB
+========================================================= */
+
+async function startTabShare() {
+    await startScreenShare(true);
+}
+
+/* =========================================================
+   MICROPHONE
+========================================================= */
+
+async function enableMicrophone() {
+    try {
+        const micStream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true
+                }
+            });
+
+        if (!localStream) {
+            localStream = micStream;
+        }
+        else {
+            for (
+                const track of
+                micStream.getAudioTracks()
+            ) {
+                localStream.addTrack(track);
+            }
+        }
+
+        preview.srcObject = localStream;
+
+        setStatus("میکروفن فعال شد.");
+    }
+    catch (error) {
+        console.error(error);
+
+        setStatus(
+            "میکروفن فعال نشد:\n" +
+            error.message
+        );
+    }
+}
+
+/* =========================================================
+   STOP TRACKS
+========================================================= */
+
+function stopLocalTracks() {
+    if (localStream) {
+        for (
+            const track of
+            localStream.getTracks()
+        ) {
+            try {
+                track.stop();
+            }
+            catch (_) {}
+        }
     }
 
-    const username =
-        localStorage.getItem(
-            "lainolive_username"
-        )
-        ||
-        "guest";
+    localStream = null;
+    preview.srcObject = null;
+    currentSource = null;
+}
 
-    const payload = {
+/* =========================================================
+   RTC
+========================================================= */
 
-        title:
-            titleInput.value.trim()
-            ||
-            "LainoLive",
+function createPeerConnection(viewerId) {
 
-        username,
+    const pc =
+        new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: "stun:stun.l.google.com:19302"
+                },
+                {
+                    urls: "stun:stun1.l.google.com:19302"
+                }
+            ]
+        });
 
-        videoQuality:
-            selectedVideoQuality,
+    if (localStream) {
+        for (
+            const track
+            of localStream.getTracks()
+        ) {
+            pc.addTrack(
+                track,
+                localStream
+            );
+        }
+    }
 
-        audioQuality:
-            String(
-                selectedAudioBitrate
-            ),
+    pc.onicecandidate = event => {
 
-        source:
-            selectedSource
+        if (!event.candidate) {
+            return;
+        }
 
+        sendSignal({
+            type: "ice",
+            target: viewerId,
+            candidate: event.candidate
+        });
     };
 
-    try{
+    pc.onconnectionstatechange = () => {
 
-        setStatus(
-            "در حال ساخت لایو..."
+        console.log(
+            "PC",
+            viewerId,
+            pc.connectionState
         );
 
-        const response =
-            await fetch(
-                apiUrl(
-                    "/api/streams/start"
-                ),
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":
-                            "application/json",
-                        "Accept":
-                            "application/json"
-                    },
-                    body:
-                        JSON.stringify(
-                            payload
-                        )
-                }
+        if (
+            pc.connectionState ===
+            "failed" ||
+            pc.connectionState ===
+            "closed"
+        ) {
+            try {
+                pc.close();
+            }
+            catch (_) {}
+
+            peerConnections.delete(
+                viewerId
             );
-
-        const data =
-            await response.json();
-
-        if(!response.ok){
-
-            throw new Error(
-                data.message
-                ||
-                "start failed"
-            );
-
         }
+    };
 
-        streamId =
-            data.stream_id
-            ||
-            data.stream?.id;
+    peerConnections.set(
+        viewerId,
+        pc
+    );
 
-        if(!streamId){
-
-            throw new Error(
-                "stream id missing"
-            );
-
-        }
-
-        localStorage.setItem(
-            "lainolive_current_stream",
-            JSON.stringify(
-                data.stream || data
-            )
-        );
-
-        return data;
-
-    }catch(error){
-
-        console.error(
-            "create live error",
-            error
-        );
-
-        setStatus(
-            "اتصال به سرور ناموفق بود"
-        );
-
-        setConnection(
-            "خطا",
-            "red"
-        );
-
-        return null;
-
-    }
-
+    return pc;
 }
 
+/* =========================================================
+   SIGNAL
+========================================================= */
 
+function sendSignal(data) {
 
-async function startLive(){
-
-    if(liveStarted){
-
+    if (
+        !websocket ||
+        websocket.readyState !==
+        WebSocket.OPEN
+    ) {
         return;
-
     }
 
-    const serverOk =
-        await checkServer();
+    websocket.send(
+        JSON.stringify(data)
+    );
+}
 
-    if(!serverOk){
+/* =========================================================
+   OFFER
+========================================================= */
 
-        setStatus(
-            "سرور در دسترس نیست"
+async function sendOffer(viewerId) {
+
+    let pc =
+        peerConnections.get(viewerId);
+
+    if (!pc) {
+        pc =
+            createPeerConnection(
+                viewerId
+            );
+    }
+
+    const offer =
+        await pc.createOffer();
+
+    await pc.setLocalDescription(
+        offer
+    );
+
+    sendSignal({
+        type: "offer",
+        target: viewerId,
+        sdp: pc.localDescription
+    });
+}
+
+/* =========================================================
+   WEBSOCKET
+========================================================= */
+
+function connectWebSocket() {
+
+    if (websocket) {
+        try {
+            websocket.close();
+        }
+        catch (_) {}
+    }
+
+    websocket =
+        new WebSocket(
+            wsUrl()
         );
 
-        return;
+    websocket.onopen = async () => {
 
-    }
+        setStatus(
+            "اتصال WebSocket برقرار شد."
+        );
 
-    if(!mediaStream){
+        setState("متصل");
 
-        const ok =
-            await activateSelectedSource();
+        isConnected = true;
 
-        if(!ok){
+        try {
+            const stream =
+                await getStreamInfo();
 
+            viewerCount.textContent =
+                stream.viewers ?? 0;
+
+            broadcasterCount.textContent =
+                stream.broadcasters ?? 0;
+        }
+        catch (_) {}
+    };
+
+    websocket.onmessage = async event => {
+
+        let data;
+
+        try {
+            data =
+                JSON.parse(
+                    event.data
+                );
+        }
+        catch (_) {
             return;
-
         }
 
-    }
+        console.log(
+            "SIGNAL:",
+            data
+        );
 
-    const result =
-        await createLive();
+        switch (data.type) {
 
-    if(!result){
+            case "viewer_joined":
 
-        return;
+                {
+                    const viewerId =
+                        data.viewer_id ||
+                        data.viewerId ||
+                        data.id;
 
-    }
+                    if (viewerId) {
 
-    liveStarted =
-        true;
+                        await sendOffer(
+                            String(viewerId)
+                        );
+                    }
+                }
 
-    liveBadge.classList.add(
-        "active"
-    );
+                break;
 
-    startButton.disabled =
-        true;
+            case "answer":
 
-    stopButton.disabled =
-        false;
+                {
+                    const viewerId =
+                        data.viewer_id ||
+                        data.viewerId ||
+                        data.sender ||
+                        data.from ||
+                        data.id;
 
-    setStatus(
-        "در حال پخش"
-    );
+                    const pc =
+                        peerConnections.get(
+                            String(viewerId)
+                        );
 
-    streamStatus.textContent =
-        "در حال پخش";
+                    if (
+                        pc &&
+                        data.sdp
+                    ) {
+                        await pc.setRemoteDescription(
+                            new RTCSessionDescription(
+                                data.sdp
+                            )
+                        );
+                    }
+                }
 
-    streamStatus.className =
-        "status-value green";
+                break;
 
-    setConnection(
-        "پخش زنده",
-        "green"
-    );
+            case "ice":
 
-    /*
-        اتصال به فایل WebRTC
-        در صورتی که نسخه موجود آن
-        از متد start پشتیبانی کند.
-    */
+                {
+                    const viewerId =
+                        data.viewer_id ||
+                        data.viewerId ||
+                        data.sender ||
+                        data.from;
 
-    try{
+                    const pc =
+                        peerConnections.get(
+                            String(viewerId)
+                        );
 
-        if(
-            window.LainoWebRTC
-            &&
-            typeof
-                window.LainoWebRTC.start
-                ===
-                "function"
-        ){
+                    if (
+                        pc &&
+                        data.candidate
+                    ) {
+                        try {
+                            await pc.addIceCandidate(
+                                new RTCIceCandidate(
+                                    data.candidate
+                                )
+                            );
+                        }
+                        catch (error) {
+                            console.warn(
+                                "ICE error:",
+                                error
+                            );
+                        }
+                    }
+                }
 
-            window.LainoWebRTC.start(
-                streamId,
-                mediaStream
-            );
+                break;
 
+            case "viewer_left":
+
+                {
+                    const viewerId =
+                        data.viewer_id ||
+                        data.viewerId ||
+                        data.id;
+
+                    const pc =
+                        peerConnections.get(
+                            String(viewerId)
+                        );
+
+                    if (pc) {
+                        try {
+                            pc.close();
+                        }
+                        catch (_) {}
+
+                        peerConnections.delete(
+                            String(viewerId)
+                        );
+                    }
+                }
+
+                break;
+
+            case "stats":
+
+                viewerCount.textContent =
+                    data.viewers ?? 0;
+
+                broadcasterCount.textContent =
+                    data.broadcasters ?? 0;
+
+                break;
+
+            case "error":
+
+                setStatus(
+                    "خطای سرور:\n" +
+                    (
+                        data.message ||
+                        "خطای نامشخص"
+                    )
+                );
+
+                break;
+
+            default:
+
+                console.log(
+                    "Unhandled signal:",
+                    data
+                );
         }
+    };
 
-    }catch(error){
+    websocket.onerror = error => {
 
         console.error(
-            "WebRTC start error",
+            "WebSocket error:",
             error
         );
 
-    }
+        setStatus(
+            "خطا در WebSocket."
+        );
 
+        setState("خطا");
+    };
+
+    websocket.onclose = () => {
+
+        isConnected = false;
+
+        setState("قطع");
+
+        setStatus(
+            "اتصال WebSocket قطع شد."
+        );
+    };
 }
 
+/* =========================================================
+   START
+========================================================= */
 
+startBtn.addEventListener(
+    "click",
+    async () => {
 
-async function stopLive(){
+        try {
 
-    if(!liveStarted && !streamId){
+            if (!localStream) {
+                await startCamera();
+            }
 
-        stopTracks();
+            if (!localStream) {
+                return;
+            }
 
-        return;
+            const info =
+                await getStreamInfo();
 
-    }
-
-    try{
-
-        if(streamId){
-
-            await fetch(
-                apiUrl(
-                    "/api/streams/stop"
-                ),
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-                    body:
-                        JSON.stringify({
-                            stream_id:
-                                String(
-                                    streamId
-                                )
-                        })
-                }
-            ).catch(
-                ()=>{}
+            setStatus(
+                "لایو پیدا شد:\n" +
+                info.title
             );
 
+            connectWebSocket();
         }
-
-    }finally{
-
-        try{
-
-            if(
-                window.LainoWebRTC
-                &&
-                window.LainoWebRTC.peer
-            ){
-
-                window.LainoWebRTC.peer.close();
-
-            }
-
-            if(
-                window.LainoWebRTC
-                &&
-                window.LainoWebRTC.socket
-            ){
-
-                window.LainoWebRTC.socket.close();
-
-            }
-
-        }catch(error){
+        catch (error) {
 
             console.error(error);
 
+            setStatus(
+                "شروع اتصال انجام نشد:\n" +
+                error.message
+            );
+        }
+    }
+);
+
+/* =========================================================
+   STOP
+========================================================= */
+
+stopBtn.addEventListener(
+    "click",
+    () => {
+
+        for (
+            const pc
+            of peerConnections.values()
+        ) {
+            try {
+                pc.close();
+            }
+            catch (_) {}
         }
 
-        stopTracks();
+        peerConnections.clear();
 
-        streamId =
-            null;
+        if (websocket) {
+            try {
+                websocket.close();
+            }
+            catch (_) {}
+        }
 
-        liveStarted =
-            false;
+        websocket = null;
 
-        localStorage.removeItem(
-            "lainolive_current_stream"
-        );
+        stopLocalTracks();
 
-        liveBadge.classList.remove(
-            "active"
-        );
-
-        startButton.disabled =
-            false;
-
-        stopButton.disabled =
-            true;
+        setState("متوقف");
 
         setStatus(
-            "لایو پایان یافت"
+            "پخش متوقف شد."
         );
-
-        setConnection(
-            "آماده",
-            "yellow"
-        );
-
-        streamStatus.textContent =
-            "آماده";
-
-        streamStatus.className =
-            "status-value";
-
     }
+);
 
-}
+/* =========================================================
+   BUTTONS
+========================================================= */
 
-
-
-async function updateViewerCount(){
-
-    if(!streamId){
-
-        viewerPill.textContent =
-            "👁 0";
-
-        return;
-
-    }
-
-    try{
-
-        const response =
-            await fetch(
-                apiUrl(
-                    "/api/streams/"
-                    +
-                    encodeURIComponent(
-                        streamId
-                    )
-                ),
-                {
-                    cache:
-                        "no-store"
-                }
-            );
-
-        if(!response.ok){
-
-            return;
-
-        }
-
-        const data =
-            await response.json();
-
-        const viewers =
-            Number(
-                data.stream?.viewers
-                ||
-                0
-            );
-
-        viewerPill.textContent =
-            "👁 " +
-            viewers;
-
-    }catch(error){
-
-        console.log(
-            error
-        );
-
-    }
-
-}
-
-
-
-document
-    .querySelectorAll(
-        "[data-video-quality]"
-    )
-    .forEach(
-        button => {
-
-            button.addEventListener(
-                "click",
-                async ()=>{
-
-                    document
-                        .querySelectorAll(
-                            "[data-video-quality]"
-                        )
-                        .forEach(
-                            item =>
-                                item.classList
-                                    .remove(
-                                        "active"
-                                    )
-                        );
-
-                    button.classList.add(
-                        "active"
-                    );
-
-                    selectedVideoQuality =
-                        button.dataset
-                            .videoQuality;
-
-                    localStorage.setItem(
-                        "lainolive_video_quality",
-                        selectedVideoQuality
-                    );
-
-                    updateStats();
-
-                    if(
-                        selectedSource ===
-                        "camera"
-                        &&
-                        !liveStarted
-                    ){
-
-                        await startCamera();
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-
-document
-    .querySelectorAll(
-        "[data-audio-quality]"
-    )
-    .forEach(
-        button => {
-
-            button.addEventListener(
-                "click",
-                ()=>{
-
-                    document
-                        .querySelectorAll(
-                            "[data-audio-quality]"
-                        )
-                        .forEach(
-                            item =>
-                                item.classList
-                                    .remove(
-                                        "active"
-                                    )
-                        );
-
-                    button.classList.add(
-                        "active"
-                    );
-
-                    selectedAudioBitrate =
-                        Number(
-                            button.dataset
-                                .audioQuality
-                        );
-
-                    localStorage.setItem(
-                        "lainolive_audio_bitrate",
-                        String(
-                            selectedAudioBitrate
-                        )
-                    );
-
-                    updateStats();
-
-                }
-            );
-
-        }
-    );
-
-
-
-document
-    .getElementById(
-        "cameraSource"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-            setSource(
-                "camera"
-            );
-        }
-    );
-
-
-
-document
-    .getElementById(
-        "screenSource"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-            setSource(
-                "screen"
-            );
-        }
-    );
-
-
-
-document
-    .getElementById(
-        "tabSource"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-            setSource(
-                "tab"
-            );
-        }
-    );
-
-
-
-document
-    .getElementById(
-        "micSource"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-            setSource(
-                "mic"
-            );
-        }
-    );
-
-
-
-document
-    .getElementById(
-        "sourceStartButton"
-    )
-    .addEventListener(
-        "click",
-        async ()=>{
-            await activateSelectedSource();
-        }
-    );
-
-
-
-document
-    .getElementById(
-        "sourceStopButton"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-            stopTracks();
-
-            setConnection(
-                "منبع متوقف شد",
-                "yellow"
-            );
-
-            setStatus(
-                liveStarted
-                    ? "لایو فعال است"
-                    : "آماده"
-            );
-        }
-    );
-
-
-
-startButton.addEventListener(
+cameraBtn.addEventListener(
     "click",
-    startLive
+    startCamera
 );
 
-
-
-stopButton.addEventListener(
+screenBtn.addEventListener(
     "click",
-    stopLive
+    () => startScreenShare(false)
 );
 
-
-
-document
-    .getElementById(
-        "backButton"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-            if(liveStarted){
-                stopLive()
-                    .finally(
-                        ()=>{
-                            history.back();
-                        }
-                    );
-            }else{
-                history.back();
-            }
-        }
-    );
-
-
-
-document
-    .getElementById(
-        "backButton2"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-            if(liveStarted){
-                stopLive()
-                    .finally(
-                        ()=>{
-                            location.href =
-                                "/index.html";
-                        }
-                    );
-            }else{
-                location.href =
-                    "/index.html";
-            }
-        }
-    );
-
-
-
-window.addEventListener(
-    "beforeunload",
-    ()=>{
-        if(mediaStream){
-            mediaStream
-                .getTracks()
-                .forEach(
-                    track =>
-                        track.stop()
-                );
-        }
-    }
+tabBtn.addEventListener(
+    "click",
+    startTabShare
 );
 
+micBtn.addEventListener(
+    "click",
+    enableMicrophone
+);
 
+stopSourceBtn.addEventListener(
+    "click",
+    stopLocalTracks
+);
 
-/*
-    بارگذاری تنظیمات قبلی
-*/
+/* =========================================================
+   INIT
+========================================================= */
 
-(function loadSavedSettings(){
+(async function init() {
 
-    const savedVideo =
-        localStorage.getItem(
-            "lainolive_video_quality"
+    try {
+
+        const info =
+            await getStreamInfo();
+
+        viewerCount.textContent =
+            info.viewers ?? 0;
+
+        broadcasterCount.textContent =
+            info.broadcasters ?? 0;
+
+        setStatus(
+            "لایو آماده است: " +
+            info.title
         );
-
-    if(
-        savedVideo &&
-        ["360p","480p","720p","1080p"]
-            .includes(
-                savedVideo
-            )
-    ){
-
-        selectedVideoQuality =
-            savedVideo;
 
     }
+    catch (error) {
 
-    const savedAudio =
-        localStorage.getItem(
-            "lainolive_audio_bitrate"
+        setStatus(
+            "در حال آماده‌سازی لایو..."
         );
-
-    if(savedAudio){
-
-        const parsed =
-            Number(
-                savedAudio
-            );
-
-        if(
-            [64000,128000,192000,320000]
-                .includes(
-                    parsed
-                )
-        ){
-
-            selectedAudioBitrate =
-                parsed;
-
-        }
-
     }
-
-
-    document
-        .querySelectorAll(
-            "[data-video-quality]"
-        )
-        .forEach(
-            button =>{
-                button.classList.toggle(
-                    "active",
-                    button.dataset
-                        .videoQuality
-                    ===
-                    selectedVideoQuality
-                );
-            }
-        );
-
-
-    document
-        .querySelectorAll(
-            "[data-audio-quality]"
-        )
-        .forEach(
-            button =>{
-                button.classList.toggle(
-                    "active",
-                    Number(
-                        button.dataset
-                            .audioQuality
-                    )
-                    ===
-                    selectedAudioBitrate
-                );
-            }
-        );
-
-
-    updateStats();
 
 })();
-
-
-
-/*
-    فقط وضعیت سرور را می‌سنجد.
-    برای جلوگیری از باز شدن خودکار
-    مجوز دوربین، دوربین را خودکار روشن نمی‌کنیم.
-*/
-
-checkServer();
-
 </script>
 
 </body>
-
 </html>
