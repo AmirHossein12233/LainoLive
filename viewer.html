@@ -114,7 +114,6 @@
             max-width: 1000px;
 
             margin: 0 auto;
-
             padding: 16px;
         }
 
@@ -156,8 +155,7 @@
             top: 12px;
             right: 12px;
 
-            padding:
-                6px 10px;
+            padding: 6px 10px;
 
             border-radius: 999px;
 
@@ -175,8 +173,7 @@
             left: 12px;
             top: 12px;
 
-            padding:
-                7px 10px;
+            padding: 7px 10px;
 
             border-radius: 999px;
 
@@ -194,7 +191,6 @@
             inset: 0;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -363,13 +359,11 @@
 
         #chatInput {
             flex: 1;
-
             min-width: 0;
 
             height: 46px;
 
-            padding:
-                0 13px;
+            padding: 0 13px;
 
             border:
                 1px solid
@@ -449,7 +443,6 @@
             id="backButton"
             class="back-btn"
             type="button"
-            aria-label="بازگشت"
         >
             ✕
         </button>
@@ -488,7 +481,6 @@
                     id="playButton"
                     class="play-button"
                     type="button"
-                    aria-label="پخش"
                 >
                     ▶
                 </button>
@@ -506,7 +498,6 @@
             >
                 لایو
             </div>
-
 
             <div class="meta">
 
@@ -556,9 +547,7 @@
                 💬 چت لایو
             </div>
 
-
             <div id="chatMessages"></div>
-
 
             <form
                 id="chatForm"
@@ -582,7 +571,6 @@
 
             </form>
 
-
             <div
                 id="log"
                 class="log"
@@ -600,10 +588,6 @@
 "use strict";
 
 
-/* =========================
-   STORAGE
-   ========================= */
-
 const LOGIN_KEY =
     "lainolive_logged_in";
 
@@ -615,99 +599,57 @@ const VIEW_STREAM_KEY =
 
 
 if (
-    localStorage.getItem(
-        LOGIN_KEY
-    ) !== "true"
+    localStorage.getItem(LOGIN_KEY) !== "true"
 ) {
-
-    window.location.href =
-        "/login.html";
+    window.location.href = "/login.html";
 }
 
 
-/* =========================
-   ELEMENTS
-   ========================= */
-
 const remoteVideo =
-    document.getElementById(
-        "remoteVideo"
-    );
+    document.getElementById("remoteVideo");
 
 const statusEl =
-    document.getElementById(
-        "status"
-    );
+    document.getElementById("status");
 
 const viewerBadge =
-    document.getElementById(
-        "viewerBadge"
-    );
+    document.getElementById("viewerBadge");
 
 const playOverlay =
-    document.getElementById(
-        "playOverlay"
-    );
+    document.getElementById("playOverlay");
 
 const playButton =
-    document.getElementById(
-        "playButton"
-    );
+    document.getElementById("playButton");
 
 const backButton =
-    document.getElementById(
-        "backButton"
-    );
+    document.getElementById("backButton");
 
 const shareButton =
-    document.getElementById(
-        "shareButton"
-    );
+    document.getElementById("shareButton");
 
 const fullscreenButton =
-    document.getElementById(
-        "fullscreenButton"
-    );
+    document.getElementById("fullscreenButton");
 
 const streamTitle =
-    document.getElementById(
-        "streamTitle"
-    );
+    document.getElementById("streamTitle");
 
 const usernameTag =
-    document.getElementById(
-        "usernameTag"
-    );
+    document.getElementById("usernameTag");
 
 const categoryTag =
-    document.getElementById(
-        "categoryTag"
-    );
+    document.getElementById("categoryTag");
 
 const chatMessages =
-    document.getElementById(
-        "chatMessages"
-    );
+    document.getElementById("chatMessages");
 
 const chatForm =
-    document.getElementById(
-        "chatForm"
-    );
+    document.getElementById("chatForm");
 
 const chatInput =
-    document.getElementById(
-        "chatInput"
-    );
+    document.getElementById("chatInput");
 
 const logEl =
-    document.getElementById(
-        "log"
-    );
+    document.getElementById("log");
 
-
-/* =========================
-   STREAM
-   ========================= */
 
 function getStreamFromStorage() {
 
@@ -722,9 +664,7 @@ function getStreamFromStorage() {
             return null;
         }
 
-        return JSON.parse(
-            raw
-        );
+        return JSON.parse(raw);
 
     } catch (error) {
 
@@ -748,15 +688,10 @@ const queryId =
     urlParams.get("id");
 
 
-let stream =
+const stream =
     getStreamFromStorage();
 
 
-/*
- * اگر id در URL وجود داشته باشد
- * و stream ذخیره شده برای همان id نباشد،
- * فقط id را به عنوان شناسه استفاده می‌کنیم.
- */
 const streamId =
     queryId ||
     stream?.id ||
@@ -768,13 +703,8 @@ if (!streamId) {
 
     statusEl.textContent =
         "شناسه لایو پیدا نشد.";
-
 }
 
-
-/* =========================
-   DATA
-   ========================= */
 
 const title =
     stream?.title ||
@@ -800,9 +730,25 @@ categoryTag.textContent =
     "📂 " + category;
 
 
-/* =========================
-   SIGNALING
-   ========================= */
+/*
+ * بدون TURN
+ * فقط STUN
+ */
+const rtcConfig = {
+
+    iceServers: [
+
+        {
+            urls: [
+                "stun:stun.l.google.com:19302",
+                "stun:stun1.l.google.com:19302"
+            ]
+        }
+
+    ]
+
+};
+
 
 const SIGNALING_URL =
     "wss://lainolive-signaling.onrender.com";
@@ -817,9 +763,6 @@ let peerConnection =
 let viewerId =
     null;
 
-let joined =
-    false;
-
 let stopped =
     false;
 
@@ -830,56 +773,21 @@ let heartbeatTimer =
     null;
 
 
-/* =========================
-   ICE
-   ========================= */
-
-const rtcConfig = {
-
-    iceServers: [
-
-        {
-            urls:
-                [
-                    "stun:stun.l.google.com:19302",
-                    "stun:stun1.l.google.com:19302"
-                ]
-        }
-
-    ]
-
-};
-
-
-/* =========================
-   STATUS / LOG
-   ========================= */
-
-function setStatus(
-    text
-) {
+function setStatus(text) {
 
     statusEl.textContent =
         text;
 }
 
 
-function log(
-    text
-) {
+function log(text) {
 
     logEl.textContent =
         text;
 }
 
 
-/* =========================
-   VIEWER COUNT
-   ========================= */
-
-function updateViewerCount(
-    count
-) {
+function updateViewerCount(count) {
 
     const value =
         Math.max(
@@ -888,24 +796,15 @@ function updateViewerCount(
         );
 
     viewerBadge.textContent =
-        "👁 " +
-        value +
-        " بیننده";
+        "👁 " + value + " بیننده";
 }
 
 
-/* =========================
-   SEND
-   ========================= */
-
-function send(
-    data
-) {
+function send(data) {
 
     if (
         !socket ||
-        socket.readyState !==
-        WebSocket.OPEN
+        socket.readyState !== WebSocket.OPEN
     ) {
 
         return false;
@@ -932,10 +831,6 @@ function send(
 }
 
 
-/* =========================
-   CREATE PEER
-   ========================= */
-
 function createPeerConnection() {
 
     if (peerConnection) {
@@ -944,8 +839,7 @@ function createPeerConnection() {
             peerConnection.close();
         } catch {}
 
-        peerConnection =
-            null;
+        peerConnection = null;
     }
 
 
@@ -1010,10 +904,7 @@ function createPeerConnection() {
     pc.onicecandidate =
         event => {
 
-            if (
-                !event.candidate
-            ) {
-
+            if (!event.candidate) {
                 return;
             }
 
@@ -1041,8 +932,7 @@ function createPeerConnection() {
 
 
             if (
-                state ===
-                "connected"
+                state === "connected"
             ) {
 
                 setStatus(
@@ -1056,8 +946,7 @@ function createPeerConnection() {
 
 
             if (
-                state ===
-                "disconnected"
+                state === "disconnected"
             ) {
 
                 setStatus(
@@ -1067,8 +956,7 @@ function createPeerConnection() {
 
 
             if (
-                state ===
-                "failed"
+                state === "failed"
             ) {
 
                 setStatus(
@@ -1078,8 +966,7 @@ function createPeerConnection() {
 
 
             if (
-                state ===
-                "closed"
+                state === "closed"
             ) {
 
                 setStatus(
@@ -1093,17 +980,12 @@ function createPeerConnection() {
 }
 
 
-/* =========================
-   JOIN STREAM
-   ========================= */
-
 function joinStream() {
 
     if (
         !streamId ||
         stopped
     ) {
-
         return;
     }
 
@@ -1131,16 +1013,9 @@ function joinStream() {
 }
 
 
-/* =========================
-   CONNECT
-   ========================= */
-
 function connectSocket() {
 
-    if (
-        stopped
-    ) {
-
+    if (stopped) {
         return;
     }
 
@@ -1204,13 +1079,8 @@ function connectSocket() {
                 message?.type;
 
 
-            /* =====================
-               JOINED
-               ===================== */
-
             if (
-                type ===
-                "joined"
+                type === "joined"
             ) {
 
                 viewerId =
@@ -1219,34 +1089,8 @@ function connectSocket() {
                     null;
 
 
-                joined =
-                    true;
-
-
                 createPeerConnection();
 
-
-                /*
-                 * به سرور اعلام می‌کنیم
-                 * که آماده دریافت offer هستیم.
-                 */
-
-                send(
-                    {
-                        type:
-                            "ready",
-
-                        viewer_id:
-                            viewerId
-                    }
-                );
-
-
-                /*
-                 * بعضی نسخه‌های سرور
-                 * offer را بلافاصله بعد از joined
-                 * می‌فرستند.
-                 */
 
                 setStatus(
                     "منتظر شروع پخش..."
@@ -1256,13 +1100,8 @@ function connectSocket() {
             }
 
 
-            /* =====================
-               OFFER
-               ===================== */
-
             if (
-                type ===
-                "offer"
+                type === "offer"
             ) {
 
                 const incomingViewerId =
@@ -1284,18 +1123,13 @@ function connectSocket() {
                 }
 
 
-                if (
-                    !peerConnection
-                ) {
+                if (!peerConnection) {
 
                     createPeerConnection();
                 }
 
 
-                if (
-                    !message?.sdp
-                ) {
-
+                if (!message?.sdp) {
                     return;
                 }
 
@@ -1352,13 +1186,8 @@ function connectSocket() {
             }
 
 
-            /* =====================
-               ICE
-               ===================== */
-
             if (
-                type ===
-                "ice-candidate"
+                type === "ice-candidate"
             ) {
 
                 const incomingViewerId =
@@ -1409,13 +1238,8 @@ function connectSocket() {
             }
 
 
-            /* =====================
-               ROOM INFO
-               ===================== */
-
             if (
-                type ===
-                "room-info"
+                type === "room-info"
             ) {
 
                 updateViewerCount(
@@ -1426,38 +1250,27 @@ function connectSocket() {
             }
 
 
-            /* =====================
-               VIEWER LEFT / HOST LEFT
-               ===================== */
-
             if (
-                type ===
-                "host-left"
+                type === "host-left"
             ) {
 
                 setStatus(
                     "پخش‌کننده لایو را پایان داد."
                 );
 
-
                 playOverlay.style.display =
                     "flex";
 
-
                 try {
-
                     remoteVideo.pause();
-
                 } catch {}
-
 
                 return;
             }
 
 
             if (
-                type ===
-                "stream-ended"
+                type === "stream-ended"
             ) {
 
                 setStatus(
@@ -1468,13 +1281,8 @@ function connectSocket() {
             }
 
 
-            /* =====================
-               CHAT
-               ===================== */
-
             if (
-                type ===
-                "chat-message"
+                type === "chat-message"
             ) {
 
                 appendChatMessage(
@@ -1484,8 +1292,6 @@ function connectSocket() {
                     message?.message ||
                         ""
                 );
-
-                return;
             }
         };
 
@@ -1497,9 +1303,6 @@ function connectSocket() {
 
 
             if (!stopped) {
-
-                joined =
-                    false;
 
                 setStatus(
                     "ارتباط قطع شد؛ تلاش مجدد..."
@@ -1521,17 +1324,12 @@ function connectSocket() {
 }
 
 
-/* =========================
-   RECONNECT
-   ========================= */
-
 function scheduleReconnect() {
 
     if (
         reconnectTimer ||
         stopped
     ) {
-
         return;
     }
 
@@ -1550,10 +1348,6 @@ function scheduleReconnect() {
         );
 }
 
-
-/* =========================
-   HEARTBEAT
-   ========================= */
 
 function startHeartbeat() {
 
@@ -1579,9 +1373,7 @@ function startHeartbeat() {
 
 function stopHeartbeat() {
 
-    if (
-        heartbeatTimer
-    ) {
+    if (heartbeatTimer) {
 
         clearInterval(
             heartbeatTimer
@@ -1592,10 +1384,6 @@ function stopHeartbeat() {
     }
 }
 
-
-/* =========================
-   CHAT
-   ========================= */
 
 function appendChatMessage(
     chatUser,
@@ -1625,8 +1413,7 @@ function appendChatMessage(
         "message-user";
 
     userEl.textContent =
-        "👤 " +
-        chatUser;
+        "👤 " + chatUser;
 
 
     const textEl =
@@ -1715,10 +1502,6 @@ chatForm.addEventListener(
 );
 
 
-/* =========================
-   PLAY
-   ========================= */
-
 async function playVideo() {
 
     try {
@@ -1751,10 +1534,6 @@ playButton.addEventListener(
 );
 
 
-/* =========================
-   VIDEO EVENTS
-   ========================= */
-
 remoteVideo.addEventListener(
     "playing",
     () => {
@@ -1779,10 +1558,6 @@ remoteVideo.addEventListener(
     }
 );
 
-
-/* =========================
-   SHARE
-   ========================= */
 
 shareButton.addEventListener(
     "click",
@@ -1841,10 +1616,6 @@ shareButton.addEventListener(
 );
 
 
-/* =========================
-   FULLSCREEN
-   ========================= */
-
 fullscreenButton.addEventListener(
     "click",
     async () => {
@@ -1878,10 +1649,6 @@ fullscreenButton.addEventListener(
     }
 );
 
-
-/* =========================
-   LEAVE SERVER
-   ========================= */
 
 async function notifyLeave() {
 
@@ -1938,10 +1705,6 @@ async function notifyLeave() {
 }
 
 
-/* =========================
-   BACK
-   ========================= */
-
 async function leaveViewer() {
 
     if (stopped) {
@@ -1996,20 +1759,14 @@ async function leaveViewer() {
             peerConnection.close();
         } catch {}
 
-        peerConnection =
-            null;
+        peerConnection = null;
     }
 
 
     try {
 
-        if (
-            remoteVideo.srcObject
-        ) {
-
-            remoteVideo.srcObject =
-                null;
-        }
+        remoteVideo.srcObject =
+            null;
 
     } catch {}
 
@@ -2041,10 +1798,6 @@ backButton.addEventListener(
     }
 );
 
-
-/* =========================
-   PAGE EXIT
-   ========================= */
 
 window.addEventListener(
     "beforeunload",
@@ -2115,10 +1868,6 @@ window.addEventListener(
 );
 
 
-/* =========================
-   REGISTER VIEWER
-   ========================= */
-
 async function registerViewer() {
 
     if (!streamId) {
@@ -2163,9 +1912,7 @@ async function registerViewer() {
             );
 
 
-        if (
-            !response.ok
-        ) {
+        if (!response.ok) {
 
             console.warn(
                 "viewer register failed:",
@@ -2200,10 +1947,6 @@ async function registerViewer() {
     }
 }
 
-
-/* =========================
-   START
-   ========================= */
 
 (async function init() {
 

@@ -89,7 +89,6 @@
 
         .status {
             margin-top: 4px;
-
             color: #aaaab7;
             font-size: 10px;
         }
@@ -105,7 +104,6 @@
                 rgba(255,255,255,.07);
 
             color: white;
-
             font-size: 18px;
         }
 
@@ -114,7 +112,6 @@
             max-width: 1000px;
 
             margin: 0 auto;
-
             padding: 16px;
         }
 
@@ -128,8 +125,7 @@
 
             border-radius: 22px;
 
-            background:
-                #000;
+            background: #000;
 
             border:
                 1px solid
@@ -157,8 +153,7 @@
             top: 12px;
             right: 12px;
 
-            padding:
-                6px 10px;
+            padding: 6px 10px;
 
             border-radius: 999px;
 
@@ -176,8 +171,7 @@
             left: 12px;
             top: 12px;
 
-            padding:
-                7px 10px;
+            padding: 7px 10px;
 
             border-radius: 999px;
 
@@ -212,15 +206,12 @@
         .meta {
             display: flex;
             flex-wrap: wrap;
-
             gap: 8px;
-
             margin-top: 10px;
         }
 
         .tag {
-            padding:
-                6px 10px;
+            padding: 6px 10px;
 
             border-radius: 999px;
 
@@ -322,7 +313,6 @@
 
         .message {
             margin-bottom: 9px;
-
             padding: 8px 10px;
 
             border-radius: 12px;
@@ -353,13 +343,11 @@
 
         #chatInput {
             flex: 1;
-
             min-width: 0;
 
             height: 46px;
 
-            padding:
-                0 13px;
+            padding: 0 13px;
 
             border:
                 1px solid
@@ -400,13 +388,13 @@
 
         @media (max-width: 560px) {
 
+            .stream-title {
+                font-size: 17px;
+            }
+
             .controls {
                 grid-template-columns:
                     repeat(3, 1fr);
-            }
-
-            .stream-title {
-                font-size: 17px;
             }
         }
 
@@ -583,10 +571,6 @@
 "use strict";
 
 
-/* =========================
-   STORAGE
-   ========================= */
-
 const LOGIN_KEY =
     "lainolive_logged_in";
 
@@ -598,102 +582,59 @@ const CURRENT_STREAM_KEY =
 
 
 if (
-    localStorage.getItem(
-        LOGIN_KEY
-    ) !== "true"
+    localStorage.getItem(LOGIN_KEY) !== "true"
 ) {
-
-    window.location.href =
-        "/login.html";
+    window.location.href = "/login.html";
 }
 
 
-/* =========================
-   ELEMENTS
-   ========================= */
-
 const localVideo =
-    document.getElementById(
-        "localVideo"
-    );
+    document.getElementById("localVideo");
 
 const statusEl =
-    document.getElementById(
-        "status"
-    );
+    document.getElementById("status");
 
 const viewerBadge =
-    document.getElementById(
-        "viewerBadge"
-    );
+    document.getElementById("viewerBadge");
 
 const streamTitle =
-    document.getElementById(
-        "streamTitle"
-    );
+    document.getElementById("streamTitle");
 
 const usernameTag =
-    document.getElementById(
-        "usernameTag"
-    );
+    document.getElementById("usernameTag");
 
 const categoryTag =
-    document.getElementById(
-        "categoryTag"
-    );
+    document.getElementById("categoryTag");
 
 const cameraButton =
-    document.getElementById(
-        "cameraButton"
-    );
+    document.getElementById("cameraButton");
 
 const micButton =
-    document.getElementById(
-        "micButton"
-    );
+    document.getElementById("micButton");
 
 const shareButton =
-    document.getElementById(
-        "shareButton"
-    );
+    document.getElementById("shareButton");
 
 const stopButton =
-    document.getElementById(
-        "stopButton"
-    );
+    document.getElementById("stopButton");
 
 const closeButton =
-    document.getElementById(
-        "closeButton"
-    );
+    document.getElementById("closeButton");
 
 const chatMessages =
-    document.getElementById(
-        "chatMessages"
-    );
+    document.getElementById("chatMessages");
 
 const chatForm =
-    document.getElementById(
-        "chatForm"
-    );
+    document.getElementById("chatForm");
 
 const chatInput =
-    document.getElementById(
-        "chatInput"
-    );
+    document.getElementById("chatInput");
 
 const logEl =
-    document.getElementById(
-        "log"
-    );
+    document.getElementById("log");
 
 
-/* =========================
-   STREAM DATA
-   ========================= */
-
-let stream =
-    null;
+let stream = null;
 
 try {
 
@@ -714,13 +655,8 @@ if (!stream) {
 
     statusEl.textContent =
         "اطلاعات لایو پیدا نشد.";
-
 }
 
-
-/* =========================
-   VALUES
-   ========================= */
 
 const streamId =
     stream?.id ??
@@ -754,12 +690,29 @@ categoryTag.textContent =
     "📂 " + category;
 
 
-/* =========================
-   WEBRTC
-   ========================= */
+/*
+ * بدون TURN
+ * فقط STUN
+ */
+const rtcConfig = {
+
+    iceServers: [
+
+        {
+            urls: [
+                "stun:stun.l.google.com:19302",
+                "stun:stun1.l.google.com:19302"
+            ]
+        }
+
+    ]
+
+};
+
 
 const SIGNALING_URL =
     "wss://lainolive-signaling.onrender.com";
+
 
 let socket =
     null;
@@ -770,71 +723,32 @@ let localStream =
 let reconnectTimer =
     null;
 
-let stopped =
-    false;
-
 let heartbeatTimer =
     null;
 
+let stopped =
+    false;
 
-/*
- * یک PeerConnection
- * برای هر بیننده
- */
+
 const peerConnections =
     new Map();
 
 
-/* =========================
-   ICE CONFIG
-   ========================= */
-
-const rtcConfig = {
-
-    iceServers: [
-
-        {
-            urls:
-                [
-                    "stun:stun.l.google.com:19302",
-                    "stun:stun1.l.google.com:19302"
-                ]
-        }
-
-    ]
-
-};
-
-
-/* =========================
-   LOG
-   ========================= */
-
-function setStatus(
-    text
-) {
+function setStatus(text) {
 
     statusEl.textContent =
         text;
 }
 
 
-function log(
-    text
-) {
+function log(text) {
 
     logEl.textContent =
         text;
 }
 
 
-/* =========================
-   VIEWERS
-   ========================= */
-
-function updateViewerCount(
-    count
-) {
+function updateViewerCount(count) {
 
     const value =
         Math.max(
@@ -843,24 +757,15 @@ function updateViewerCount(
         );
 
     viewerBadge.textContent =
-        "👁 " +
-        value +
-        " بیننده";
+        "👁 " + value + " بیننده";
 }
 
 
-/* =========================
-   SOCKET SEND
-   ========================= */
-
-function send(
-    data
-) {
+function send(data) {
 
     if (
         !socket ||
-        socket.readyState !==
-        WebSocket.OPEN
+        socket.readyState !== WebSocket.OPEN
     ) {
 
         return false;
@@ -886,13 +791,7 @@ function send(
 }
 
 
-/* =========================
-   CREATE PEER
-   ========================= */
-
-async function createPeerConnection(
-    viewerId
-) {
+async function createPeerConnection(viewerId) {
 
     if (
         peerConnections.has(
@@ -937,13 +836,9 @@ async function createPeerConnection(
     pc.onicecandidate =
         event => {
 
-            if (
-                !event.candidate
-            ) {
-
+            if (!event.candidate) {
                 return;
             }
-
 
             send(
                 {
@@ -968,16 +863,13 @@ async function createPeerConnection(
 
 
             if (
-                state ===
-                "failed" ||
-                state ===
-                "closed"
+                state === "failed" ||
+                state === "closed"
             ) {
 
                 try {
                     pc.close();
                 } catch {}
-
 
                 peerConnections.delete(
                     viewerId
@@ -990,13 +882,7 @@ async function createPeerConnection(
 }
 
 
-/* =========================
-   OFFER TO VIEWER
-   ========================= */
-
-async function createOfferForViewer(
-    viewerId
-) {
+async function createOfferForViewer(viewerId) {
 
     try {
 
@@ -1007,15 +893,7 @@ async function createOfferForViewer(
 
 
         const offer =
-            await pc.createOffer(
-                {
-                    offerToReceiveAudio:
-                        false,
-
-                    offerToReceiveVideo:
-                        false
-                }
-            );
+            await pc.createOffer();
 
 
         await pc.setLocalDescription(
@@ -1050,10 +928,6 @@ async function createOfferForViewer(
     }
 }
 
-
-/* =========================
-   SOCKET CONNECT
-   ========================= */
 
 function connectSocket() {
 
@@ -1136,8 +1010,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "joined"
+                type === "joined"
             ) {
 
                 setStatus(
@@ -1149,16 +1022,13 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "viewer-joined"
+                type === "viewer-joined"
             ) {
 
                 const viewerId =
                     message?.viewer_id;
 
-                if (
-                    viewerId
-                ) {
+                if (viewerId) {
 
                     await createOfferForViewer(
                         viewerId
@@ -1170,8 +1040,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "answer"
+                type === "answer"
             ) {
 
                 const viewerId =
@@ -1210,8 +1079,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "ice-candidate"
+                type === "ice-candidate"
             ) {
 
                 const viewerId =
@@ -1250,8 +1118,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "viewer-left"
+                type === "viewer-left"
             ) {
 
                 const viewerId =
@@ -1280,8 +1147,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "room-info"
+                type === "room-info"
             ) {
 
                 updateViewerCount(
@@ -1293,8 +1159,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "chat-message"
+                type === "chat-message"
             ) {
 
                 appendChatMessage(
@@ -1304,8 +1169,6 @@ function connectSocket() {
                     message?.message ||
                         ""
                 );
-
-                return;
             }
         };
 
@@ -1338,10 +1201,6 @@ function connectSocket() {
 }
 
 
-/* =========================
-   RECONNECT
-   ========================= */
-
 function scheduleReconnect() {
 
     if (
@@ -1368,10 +1227,6 @@ function scheduleReconnect() {
 }
 
 
-/* =========================
-   HEARTBEAT
-   ========================= */
-
 function startHeartbeat() {
 
     stopHeartbeat();
@@ -1396,9 +1251,7 @@ function startHeartbeat() {
 
 function stopHeartbeat() {
 
-    if (
-        heartbeatTimer
-    ) {
+    if (heartbeatTimer) {
 
         clearInterval(
             heartbeatTimer
@@ -1410,10 +1263,6 @@ function stopHeartbeat() {
 }
 
 
-/* =========================
-   CAMERA / MICROPHONE
-   ========================= */
-
 async function startMedia() {
 
     try {
@@ -1421,41 +1270,26 @@ async function startMedia() {
         localStream =
             await navigator.mediaDevices.getUserMedia(
                 {
-                    video:
-                        {
-                            width:
-                                {
-                                    ideal:
-                                        1280
-                                },
-
-                            height:
-                                {
-                                    ideal:
-                                        720
-                                },
-
-                            frameRate:
-                                {
-                                    ideal:
-                                        30,
-
-                                    max:
-                                        30
-                                }
+                    video: {
+                        width: {
+                            ideal: 1280
                         },
 
-                    audio:
-                        {
-                            echoCancellation:
-                                true,
+                        height: {
+                            ideal: 720
+                        },
 
-                            noiseSuppression:
-                                true,
-
-                            autoGainControl:
-                                true
+                        frameRate: {
+                            ideal: 30,
+                            max: 30
                         }
+                    },
+
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    }
                 }
             );
 
@@ -1468,7 +1302,6 @@ async function startMedia() {
             "دوربین و میکروفون فعال شدند"
         );
 
-
     } catch (error) {
 
         console.error(
@@ -1476,11 +1309,9 @@ async function startMedia() {
             error
         );
 
-
         setStatus(
             "دسترسی دوربین یا میکروفون داده نشد"
         );
-
 
         alert(
             "دسترسی دوربین و میکروفون لازم است."
@@ -1488,43 +1319,6 @@ async function startMedia() {
     }
 }
 
-
-/* =========================
-   APPLY TRACKS TO PEERS
-   ========================= */
-
-function replaceTrackForAllPeers(
-    kind,
-    track
-) {
-
-    peerConnections.forEach(
-        pc => {
-
-            pc.getSenders()
-                .forEach(
-                    sender => {
-
-                        if (
-                            sender.track &&
-                            sender.track.kind ===
-                            kind
-                        ) {
-
-                            sender.replaceTrack(
-                                track
-                            );
-                        }
-                    }
-                );
-        }
-    );
-}
-
-
-/* =========================
-   CAMERA TOGGLE
-   ========================= */
 
 cameraButton.addEventListener(
     "click",
@@ -1550,7 +1344,6 @@ cameraButton.addEventListener(
 
         tracks.forEach(
             track => {
-
                 track.enabled =
                     enabled;
             }
@@ -1570,10 +1363,6 @@ cameraButton.addEventListener(
     }
 );
 
-
-/* =========================
-   MIC TOGGLE
-   ========================= */
 
 micButton.addEventListener(
     "click",
@@ -1599,7 +1388,6 @@ micButton.addEventListener(
 
         tracks.forEach(
             track => {
-
                 track.enabled =
                     enabled;
             }
@@ -1620,10 +1408,6 @@ micButton.addEventListener(
 );
 
 
-/* =========================
-   SHARE
-   ========================= */
-
 shareButton.addEventListener(
     "click",
     async () => {
@@ -1638,9 +1422,7 @@ shareButton.addEventListener(
 
         try {
 
-            if (
-                navigator.share
-            ) {
+            if (navigator.share) {
 
                 await navigator.share(
                     {
@@ -1679,10 +1461,6 @@ shareButton.addEventListener(
 );
 
 
-/* =========================
-   CHAT
-   ========================= */
-
 function appendChatMessage(
     chatUser,
     message
@@ -1711,8 +1489,7 @@ function appendChatMessage(
         "message-user";
 
     userEl.textContent =
-        "👤 " +
-        chatUser;
+        "👤 " + chatUser;
 
 
     const textEl =
@@ -1793,10 +1570,6 @@ chatForm.addEventListener(
     }
 );
 
-
-/* =========================
-   STOP LIVE
-   ========================= */
 
 async function stopLive() {
 
@@ -1959,10 +1732,6 @@ stopButton.addEventListener(
 );
 
 
-/* =========================
-   CLOSE
-   ========================= */
-
 closeButton.addEventListener(
     "click",
     async () => {
@@ -1971,10 +1740,6 @@ closeButton.addEventListener(
     }
 );
 
-
-/* =========================
-   BEFORE UNLOAD
-   ========================= */
 
 window.addEventListener(
     "beforeunload",
@@ -2007,10 +1772,6 @@ window.addEventListener(
     }
 );
 
-
-/* =========================
-   START
-   ========================= */
 
 (async function init() {
 
