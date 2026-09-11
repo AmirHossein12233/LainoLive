@@ -1,131 +1,185 @@
 <!DOCTYPE html>
 
 <html lang="fa" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ff2757">
+    <meta charset="UTF-8">
+
+```
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="theme-color"
+    content="#ff2757"
+>
+
 <title>LainoLive - تماشای لایو</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #0d0f14;
-    color: white;
-    font-family: Tahoma, Arial, sans-serif;
-}
-
-.container {
-    width: min(1100px, 94%);
-    margin: 25px auto;
-}
-
-.card {
-    background: #171a21;
-    border: 1px solid #292e38;
-    border-radius: 18px;
-    padding: 18px;
-}
-
-h1 {
-    margin-top: 0;
-}
-
-.row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-input {
-    width: 100%;
-    padding: 13px;
-    border-radius: 12px;
-    border: 1px solid #343a46;
-    background: #0f1217;
-    color: white;
-}
-
-button {
-    border: 0;
-    border-radius: 12px;
-    padding: 12px 18px;
-    background: #ff2757;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-video {
-    width: 100%;
-    min-height: 300px;
-    max-height: 70vh;
-    background: black;
-    border-radius: 15px;
-    object-fit: contain;
-}
-
-.status {
-    margin-top: 15px;
-    background: #10131a;
-    padding: 14px;
-    border-radius: 12px;
-    white-space: pre-wrap;
-}
-
-.info {
-    margin-top: 12px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.box {
-    background: #10131a;
-    padding: 12px;
-    text-align: center;
-    border-radius: 12px;
-}
-
-.box b {
-    display: block;
-    margin-top: 5px;
-    font-size: 20px;
-}
-
-@media(max-width:700px) {
-    .row {
-        grid-template-columns: 1fr;
+    * {
+        box-sizing: border-box;
     }
 
-    .info {
-        grid-template-columns: 1fr;
+    body {
+        margin: 0;
+        background: #0b0d12;
+        color: #ffffff;
+        font-family: Tahoma, Arial, sans-serif;
     }
-}
+
+    .page {
+        width: min(1100px, 94%);
+        margin: 25px auto;
+    }
+
+    .card {
+        background: #151820;
+        border: 1px solid #292e38;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 18px 55px rgba(0, 0, 0, .28);
+    }
+
+    h1 {
+        margin: 0 0 18px;
+        font-size: 26px;
+    }
+
+    .connect-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    input {
+        width: 100%;
+        border: 1px solid #343a46;
+        background: #0e1116;
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 13px;
+        outline: none;
+        font-size: 14px;
+    }
+
+    input:focus {
+        border-color: #ff2757;
+    }
+
+    button {
+        border: 0;
+        border-radius: 12px;
+        padding: 12px 18px;
+        background: #ff2757;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    button.secondary {
+        background: #2a2f3a;
+    }
+
+    video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        max-height: 72vh;
+        background: #000000;
+        border-radius: 16px;
+        object-fit: contain;
+        display: block;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    .stat {
+        background: #0e1116;
+        border-radius: 14px;
+        padding: 13px;
+        text-align: center;
+    }
+
+    .stat-title {
+        color: #9ca3af;
+        font-size: 13px;
+    }
+
+    .stat-value {
+        display: block;
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 6px;
+    }
+
+    .status {
+        margin-top: 14px;
+        background: #0e1116;
+        border-radius: 14px;
+        padding: 14px;
+        white-space: pre-wrap;
+        line-height: 1.8;
+        color: #d7dbe2;
+    }
+
+    .small {
+        margin-top: 10px;
+        color: #89919e;
+        font-size: 12px;
+    }
+
+    @media (max-width: 750px) {
+
+        .connect-row {
+            grid-template-columns: 1fr;
+        }
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        button {
+            width: 100%;
+        }
+    }
 </style>
+```
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="page">
 
 ```
 <div class="card">
 
-    <h1>📺 تماشای LainoLive</h1>
+    <h1>📺 LainoLive — تماشای لایو</h1>
 
-    <div class="row">
+    <div class="connect-row">
 
         <input
             id="streamId"
+            type="text"
             value="9b995ee8-8196-4d3b-b508-0c78c5d9ea8a"
             placeholder="stream_id"
+            autocomplete="off"
         >
 
         <button id="connectBtn">
@@ -141,27 +195,69 @@ video {
         controls
     ></video>
 
-    <div class="info">
+    <div class="buttons">
 
-        <div class="box">
-            وضعیت
-            <b id="state">
+        <button
+            id="playBtn"
+            class="secondary"
+        >
+            ▶️ پخش
+        </button>
+
+        <button
+            id="disconnectBtn"
+            class="secondary"
+        >
+            ⛔ قطع
+        </button>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <span class="stat-title">
+                وضعیت
+            </span>
+
+            <span
+                id="state"
+                class="stat-value"
+            >
                 آماده
-            </b>
+            </span>
+
         </div>
 
-        <div class="box">
-            بینندگان
-            <b id="viewers">
+        <div class="stat">
+
+            <span class="stat-title">
+                بینندگان
+            </span>
+
+            <span
+                id="viewerCount"
+                class="stat-value"
+            >
                 0
-            </b>
+            </span>
+
         </div>
 
-        <div class="box">
-            پخش‌کنندگان
-            <b id="broadcasters">
+        <div class="stat">
+
+            <span class="stat-title">
+                پخش‌کنندگان
+            </span>
+
+            <span
+                id="broadcasterCount"
+                class="stat-value"
+            >
                 0
-            </b>
+            </span>
+
         </div>
 
     </div>
@@ -170,7 +266,11 @@ video {
         id="status"
         class="status"
     >
-        stream_id را وارد کنید و روی اتصال بزنید.
+        آماده اتصال.
+    </div>
+
+    <div class="small">
+        LainoLive WebRTC Viewer
     </div>
 
 </div>
@@ -181,47 +281,130 @@ video {
 <script>
 "use strict";
 
-const video =
-    document.getElementById("video");
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
 const streamIdInput =
     document.getElementById("streamId");
 
+const video =
+    document.getElementById("video");
+
 const connectBtn =
     document.getElementById("connectBtn");
 
-const statusEl =
-    document.getElementById("status");
+const playBtn =
+    document.getElementById("playBtn");
+
+const disconnectBtn =
+    document.getElementById("disconnectBtn");
 
 const stateEl =
     document.getElementById("state");
 
-const viewersEl =
-    document.getElementById("viewers");
+const viewerCountEl =
+    document.getElementById("viewerCount");
 
-const broadcastersEl =
-    document.getElementById("broadcasters");
+const broadcasterCountEl =
+    document.getElementById("broadcasterCount");
+
+const statusEl =
+    document.getElementById("status");
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let websocket = null;
+
 let peerConnection = null;
+
+let viewerClientId = null;
+
+let broadcasterClientId = null;
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function setStatus(text) {
-    statusEl.textContent = text;
-}
-
-function setState(text) {
-    stateEl.textContent = text;
-}
-
 function getStreamId() {
     return streamIdInput.value.trim();
 }
 
-function socketUrl() {
+function setState(text) {
+    stateEl.textContent =
+        String(text || "");
+}
+
+function setStatus(text) {
+    statusEl.textContent =
+        String(text || "");
+}
+
+function isSocketOpen() {
+
+    return (
+        websocket &&
+        websocket.readyState ===
+        WebSocket.OPEN
+    );
+}
+
+/* =========================================================
+   API
+========================================================= */
+
+async function getStreamInfo() {
+
+    const streamId =
+        getStreamId();
+
+    if (!streamId) {
+        throw new Error(
+            "stream_id وارد نشده است."
+        );
+    }
+
+    const response =
+        await fetch(
+            "/api/streams/" +
+            encodeURIComponent(
+                streamId
+            ),
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+    let data = {};
+
+    try {
+        data =
+            await response.json();
+    }
+    catch (_) {}
+
+    if (
+        !response.ok ||
+        data.success !== true
+    ) {
+
+        throw new Error(
+            data.message ||
+            "لایو پیدا نشد."
+        );
+    }
+
+    return data.stream;
+}
+
+/* =========================================================
+   SOCKET URL
+========================================================= */
+
+function getViewerSocketUrl() {
 
     const protocol =
         location.protocol === "https:"
@@ -232,12 +415,41 @@ function socketUrl() {
         protocol +
         "//" +
         location.host +
-        "/ws/stream/" +
+        "/ws/viewer/" +
         encodeURIComponent(
             getStreamId()
-        ) +
-        "?role=viewer"
+        )
     );
+}
+
+/* =========================================================
+   SIGNAL
+========================================================= */
+
+function sendSignal(payload) {
+
+    if (!isSocketOpen()) {
+        return false;
+    }
+
+    try {
+
+        websocket.send(
+            JSON.stringify(payload)
+        );
+
+        return true;
+
+    }
+    catch (error) {
+
+        console.error(
+            "SIGNAL ERROR:",
+            error
+        );
+
+        return false;
+    }
 }
 
 /* =========================================================
@@ -247,6 +459,7 @@ function socketUrl() {
 function createPeerConnection() {
 
     if (peerConnection) {
+
         try {
             peerConnection.close();
         }
@@ -257,10 +470,12 @@ function createPeerConnection() {
         new RTCPeerConnection({
             iceServers: [
                 {
-                    urls: "stun:stun.l.google.com:19302"
+                    urls:
+                        "stun:stun.l.google.com:19302"
                 },
                 {
-                    urls: "stun:stun1.l.google.com:19302"
+                    urls:
+                        "stun:stun1.l.google.com:19302"
                 }
             ]
         });
@@ -270,44 +485,57 @@ function createPeerConnection() {
 
             if (
                 event.streams &&
-                event.streams[0]
+                event.streams.length
             ) {
+
                 video.srcObject =
                     event.streams[0];
+
             }
             else {
 
-                let stream =
-                    video.srcObject;
-
-                if (!stream) {
-                    stream =
-                        new MediaStream();
+                if (
+                    !video.srcObject
+                ) {
 
                     video.srcObject =
-                        stream;
+                        new MediaStream();
                 }
 
-                stream.addTrack(
+                video.srcObject.addTrack(
                     event.track
                 );
             }
 
-            setState("در حال پخش");
-            setStatus(
-                "تصویر لایو دریافت شد."
+            setState(
+                "در حال پخش"
             );
+
+            setStatus(
+                "تصویر و صدای لایو دریافت شد."
+            );
+
+            video.play()
+                .catch(() => {});
+
         };
 
     peerConnection.onicecandidate =
         event => {
 
-            if (!event.candidate) {
+            if (
+                !event.candidate
+            ) {
                 return;
             }
 
             sendSignal({
-                type: "ice",
+                type:
+                    "ice-candidate",
+
+                target:
+                    broadcasterClientId,
+
                 candidate:
                     event.candidate
             });
@@ -319,91 +547,260 @@ function createPeerConnection() {
             const state =
                 peerConnection.connectionState;
 
-            setState(state);
+            console.log(
+                "VIEWER RTC:",
+                state
+            );
 
             if (
-                state ===
-                "connected"
+                state === "connected"
             ) {
+
+                setState(
+                    "متصل"
+                );
+
                 setStatus(
-                    "به لایو متصل شدی."
+                    "اتصال WebRTC برقرار شد."
                 );
             }
 
-            if (
-                state ===
-                "failed"
+            else if (
+                state === "connecting"
             ) {
+
+                setState(
+                    "در حال اتصال"
+                );
+            }
+
+            else if (
+                state === "disconnected"
+            ) {
+
+                setState(
+                    "قطع موقت"
+                );
+            }
+
+            else if (
+                state === "failed"
+            ) {
+
+                setState(
+                    "خطا"
+                );
+
                 setStatus(
                     "اتصال WebRTC ناموفق شد."
                 );
             }
         };
 
+    peerConnection.oniceconnectionstatechange =
+        () => {
+
+            console.log(
+                "VIEWER ICE:",
+                peerConnection.iceConnectionState
+            );
+        };
+
     return peerConnection;
 }
 
 /* =========================================================
-   SIGNAL
+   HANDLE OFFER
 ========================================================= */
 
-function sendSignal(data) {
+async function handleOffer(
+    data
+) {
+
+    if (!data.sdp) {
+        return;
+    }
+
+    broadcasterClientId =
+        data.sender ||
+        data.broadcaster_id ||
+        data.broadcasterId ||
+        broadcasterClientId;
+
+    const pc =
+        createPeerConnection();
+
+    try {
+
+        await pc.setRemoteDescription(
+            new RTCSessionDescription(
+                data.sdp
+            )
+        );
+
+        const answer =
+            await pc.createAnswer();
+
+        await pc.setLocalDescription(
+            answer
+        );
+
+        sendSignal({
+            type:
+                "answer",
+
+            target:
+                broadcasterClientId,
+
+            sdp:
+                pc.localDescription
+        });
+
+        setState(
+            "در حال مذاکره"
+        );
+
+        setStatus(
+            "Offer دریافت شد و Answer ارسال شد."
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "OFFER HANDLE ERROR:",
+            error
+        );
+
+        setState(
+            "خطا"
+        );
+
+        setStatus(
+            "پردازش Offer ناموفق بود:\n" +
+            error.message
+        );
+    }
+}
+
+/* =========================================================
+   HANDLE ICE
+========================================================= */
+
+async function handleIce(
+    data
+) {
 
     if (
-        !websocket ||
-        websocket.readyState !==
-        WebSocket.OPEN
+        !peerConnection ||
+        !data.candidate
     ) {
         return;
     }
 
-    websocket.send(
-        JSON.stringify(data)
-    );
+    try {
+
+        await peerConnection.addIceCandidate(
+            new RTCIceCandidate(
+                data.candidate
+            )
+        );
+
+    }
+    catch (error) {
+
+        console.warn(
+            "ADD ICE ERROR:",
+            error
+        );
+    }
 }
 
 /* =========================================================
-   WEBSOCKET
+   CONNECT VIEWER
 ========================================================= */
 
-async function connect() {
+async function connectViewer() {
 
     const streamId =
         getStreamId();
 
     if (!streamId) {
+
         setStatus(
             "stream_id را وارد کنید."
         );
+
         return;
     }
 
-    disconnect();
+    disconnectViewer();
 
-    createPeerConnection();
+    try {
 
-    setState("در حال اتصال");
+        const stream =
+            await getStreamInfo();
+
+        if (
+            stream.is_live !== true
+        ) {
+
+            setStatus(
+                "این لایو در حال حاضر فعال نیست."
+            );
+
+            setState(
+                "آفلاین"
+            );
+
+            return;
+        }
+
+        viewerCountEl.textContent =
+            stream.viewers ??
+            0;
+
+        broadcasterCountEl.textContent =
+            stream.broadcasters ??
+            0;
+
+    }
+    catch (error) {
+
+        setStatus(
+            error.message
+        );
+
+        return;
+    }
+
+    setState(
+        "در حال اتصال"
+    );
 
     setStatus(
-        "در حال اتصال به سرور..."
+        "در حال اتصال Viewer به سرور..."
     );
 
     websocket =
         new WebSocket(
-            socketUrl()
+            getViewerSocketUrl()
         );
 
     websocket.onopen =
         () => {
 
-            setState("متصل");
+            setState(
+                "متصل به سرور"
+            );
 
             setStatus(
-                "اتصال به سرور برقرار شد. منتظر پخش‌کننده..."
+                "Viewer به WebSocket متصل شد."
             );
 
             sendSignal({
-                type: "join"
+                type:
+                    "viewer-ready"
             });
         };
 
@@ -413,12 +810,15 @@ async function connect() {
             let data;
 
             try {
+
                 data =
                     JSON.parse(
                         event.data
                     );
+
             }
             catch (_) {
+
                 return;
             }
 
@@ -429,6 +829,30 @@ async function connect() {
 
             switch (data.type) {
 
+                case "connected":
+
+                    viewerClientId =
+                        data.client_id ||
+                        null;
+
+                    viewerCountEl.textContent =
+                        data.viewer_count ??
+                        0;
+
+                    setStatus(
+                        "Viewer ثبت شد. منتظر broadcaster..."
+                    );
+
+                    break;
+
+                case "broadcaster-ready":
+
+                    setStatus(
+                        "Broadcaster پیدا شد. منتظر Offer..."
+                    );
+
+                    break;
+
                 case "offer":
 
                     await handleOffer(
@@ -437,70 +861,56 @@ async function connect() {
 
                     break;
 
-                case "ice":
+                case "ice-candidate":
 
-                    if (
-                        peerConnection &&
-                        data.candidate
-                    ) {
-
-                        try {
-                            await peerConnection
-                                .addIceCandidate(
-                                    new RTCIceCandidate(
-                                        data.candidate
-                                    )
-                                );
-                        }
-                        catch (error) {
-
-                            console.warn(
-                                "ICE:",
-                                error
-                            );
-                        }
-                    }
-
-                    break;
-
-                case "stats":
-
-                    viewersEl.textContent =
-                        data.viewers ?? 0;
-
-                    broadcastersEl.textContent =
-                        data.broadcasters ?? 0;
-
-                    break;
-
-                case "stream_started":
-
-                    setStatus(
-                        "پخش شروع شده است."
+                    await handleIce(
+                        data
                     );
 
                     break;
 
-                case "stream_stopped":
+                case "candidate":
+
+                    await handleIce(
+                        data
+                    );
+
+                    break;
+
+                case "viewer-count":
+
+                    viewerCountEl.textContent =
+                        data.count ??
+                        0;
+
+                    break;
+
+                case "stream-ended":
 
                     video.srcObject =
                         null;
 
                     setState(
-                        "متوقف"
+                        "پایان یافته"
                     );
 
                     setStatus(
-                        "پخش توسط broadcaster متوقف شد."
+                        "این لایو به پایان رسید."
                     );
 
                     break;
 
-                case "error":
+                case "broadcaster-left":
+
+                    video.srcObject =
+                        null;
+
+                    setState(
+                        "قطع"
+                    );
 
                     setStatus(
-                        data.message ||
-                        "خطای سرور"
+                        "Broadcaster از لایو خارج شد."
                     );
 
                     break;
@@ -508,23 +918,28 @@ async function connect() {
                 default:
 
                     console.log(
-                        "Unhandled:",
+                        "Unhandled viewer event:",
                         data
                     );
             }
+
+            await refreshStreamStats();
         };
 
     websocket.onerror =
         error => {
 
             console.error(
+                "VIEWER WS ERROR:",
                 error
             );
 
-            setState("خطا");
+            setState(
+                "خطا"
+            );
 
             setStatus(
-                "خطا در اتصال WebSocket."
+                "خطا در WebSocket Viewer."
             );
         };
 
@@ -533,64 +948,78 @@ async function connect() {
 
             if (
                 stateEl.textContent !==
-                "در حال پخش"
+                "پایان یافته"
             ) {
-                setState("قطع");
+
+                setState(
+                    "قطع"
+                );
             }
 
             setStatus(
-                "اتصال سیگنالینگ قطع شد."
+                "WebSocket Viewer قطع شد."
             );
         };
 }
 
 /* =========================================================
-   OFFER
+   REFRESH
 ========================================================= */
 
-async function handleOffer(data) {
+async function refreshStreamStats() {
 
-    if (!peerConnection) {
-        createPeerConnection();
+    try {
+
+        const stream =
+            await getStreamInfo();
+
+        viewerCountEl.textContent =
+            stream.viewers ??
+            0;
+
+        broadcasterCountEl.textContent =
+            stream.broadcasters ??
+            0;
+
     }
+    catch (_) {}
+}
 
-    const sdp =
-        data.sdp;
+/* =========================================================
+   PLAY
+========================================================= */
 
-    if (!sdp) {
-        return;
+async function playVideo() {
+
+    try {
+
+        await video.play();
+
+        setStatus(
+            "پخش فعال شد."
+        );
+
     }
+    catch (error) {
 
-    await peerConnection.setRemoteDescription(
-        new RTCSessionDescription(
-            sdp
-        )
-    );
+        console.error(
+            error
+        );
 
-    const answer =
-        await peerConnection.createAnswer();
-
-    await peerConnection.setLocalDescription(
-        answer
-    );
-
-    sendSignal({
-        type: "answer",
-        sdp: peerConnection.localDescription
-    });
-
-    setStatus(
-        "در حال برقراری اتصال ویدیو..."
-    );
+        setStatus(
+            "مرورگر اجازه پخش خودکار را نداد. روی پخش بزنید."
+        );
+    }
 }
 
 /* =========================================================
    DISCONNECT
 ========================================================= */
 
-function disconnect() {
+function disconnectViewer() {
 
     if (websocket) {
+
         try {
             websocket.close();
         }
@@ -600,6 +1029,7 @@ function disconnect() {
     websocket = null;
 
     if (peerConnection) {
+
         try {
             peerConnection.close();
         }
@@ -608,35 +1038,78 @@ function disconnect() {
 
     peerConnection = null;
 
-    video.srcObject = null;
+    viewerClientId = null;
+
+    broadcasterClientId =
+        null;
+
+    video.srcObject =
+        null;
 }
 
 /* =========================================================
-   BUTTON
+   BUTTONS
 ========================================================= */
 
 connectBtn.addEventListener(
     "click",
-    connect
+    connectViewer
 );
 
-/* =========================================================
-   AUTO CONNECT
-========================================================= */
+playBtn.addEventListener(
+    "click",
+    playVideo
+);
 
-window.addEventListener(
-    "load",
+disconnectBtn.addEventListener(
+    "click",
     () => {
 
-        if (
-            getStreamId()
-        ) {
-            connect();
-        }
+        disconnectViewer();
 
+        setState(
+            "متوقف"
+        );
+
+        setStatus(
+            "اتصال Viewer متوقف شد."
+        );
     }
 );
 
+/* =========================================================
+   INIT
+========================================================= */
+
+(async function init() {
+
+    try {
+
+        const stream =
+            await getStreamInfo();
+
+        viewerCountEl.textContent =
+            stream.viewers ??
+            0;
+
+        broadcasterCountEl.textContent =
+            stream.broadcasters ??
+            0;
+
+        setStatus(
+            "لایو آماده است: " +
+            (stream.title || "بدون عنوان")
+        );
+
+    }
+    catch (_) {
+
+        setStatus(
+            "برای این stream_id لایو فعالی پیدا نشد."
+        );
+    }
+
+})();
 </script>
 
 </body>
