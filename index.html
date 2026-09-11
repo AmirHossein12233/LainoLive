@@ -1,6 +1,8 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -18,6 +20,7 @@
     </title>
 
     <style>
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -464,7 +467,7 @@
                     0,
                     0,
                     0,
-                    .68
+                    .72
                 );
 
             font-size: 10px;
@@ -543,6 +546,126 @@
             white-space: nowrap;
         }
 
+        /* =================================================
+           LIVE INFO
+        ================================================= */
+
+        .live-info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap: 6px;
+
+            margin-top: 10px;
+        }
+
+        .live-info-item {
+            min-width: 0;
+
+            padding:
+                7px
+                8px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .045
+                );
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+            color: #b7b7c3;
+
+            font-size: 9px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .live-info-item strong {
+            color: #ffffff;
+
+            font-weight: 900;
+        }
+
+        .live-quality-row {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 6px;
+
+            margin-top: 8px;
+        }
+
+        .quality-tag {
+            padding:
+                5px
+                7px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(
+                    106,
+                    76,
+                    255,
+                    .10
+                );
+
+            color: #cfc4ff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+        }
+
+        .quality-tag.audio {
+            background:
+                rgba(
+                    30,
+                    180,
+                    120,
+                    .09
+                );
+
+            color: #a8efca;
+        }
+
+        .users-tag {
+            background:
+                rgba(
+                    255,
+                    65,
+                    110,
+                    .10
+                );
+
+            color: #ffafbf;
+        }
+
         .empty {
             grid-column:
                 1 / -1;
@@ -578,6 +701,10 @@
 
             line-height: 1.9;
         }
+
+        /* =================================================
+           MODAL
+        ================================================= */
 
         .start-modal {
             position: fixed;
@@ -794,6 +921,10 @@
             color: #c4c4ce;
         }
 
+        /* =================================================
+           NAV
+        ================================================= */
+
         .bottom-nav {
             position: fixed;
 
@@ -953,13 +1084,22 @@
                 grid-template-columns:
                     1fr;
             }
+
+            .live-info {
+                grid-template-columns:
+                    1fr;
+            }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
 <div class="page">
+
 
     <header class="header">
 
@@ -977,6 +1117,7 @@
 
             </div>
 
+
             <div class="header-actions">
 
                 <button
@@ -986,6 +1127,7 @@
                 >
                     🔄
                 </button>
+
 
                 <button
                     id="profileButtonTop"
@@ -1024,10 +1166,12 @@
             🔴 همین حالا لایو شو
         </div>
 
+
         <div class="hero-text">
             لایو خودت را شروع کن و تصویر و
             صدایت را برای بیننده‌ها پخش کن.
         </div>
+
 
         <button
             id="startLiveButton"
@@ -1045,6 +1189,7 @@
         <div class="section-title">
             🔴 لایوهای در حال پخش
         </div>
+
 
         <button
             id="popularButton"
@@ -1089,6 +1234,7 @@
         <span>خانه</span>
     </button>
 
+
     <button
         id="popularNavButton"
         class="nav-btn"
@@ -1097,6 +1243,7 @@
         <span>🔥</span>
         <span>محبوب</span>
     </button>
+
 
     <button
         id="profileButton"
@@ -1129,6 +1276,7 @@
             عنوان لایو
         </label>
 
+
         <input
             id="liveTitle"
             class="form-input"
@@ -1144,6 +1292,7 @@
         >
             دسته‌بندی
         </label>
+
 
         <select
             id="liveCategory"
@@ -1188,6 +1337,7 @@
             تصویر کاور
         </label>
 
+
         <input
             id="liveCover"
             class="file-input"
@@ -1206,10 +1356,12 @@
             id="coverPreview"
             class="cover-preview"
         >
+
             <img
                 id="coverPreviewImage"
                 alt="پیش‌نمایش کاور"
             >
+
         </div>
 
 
@@ -1229,6 +1381,7 @@
                 لغو
             </button>
 
+
             <button
                 id="confirmStartButton"
                 class="modal-btn primary"
@@ -1244,12 +1397,17 @@
 </div>
 
 
-<script
-    src="/streams-cache.js"
-></script>
+<script src="/streams-cache.js"></script>
 
 
 <script>
+
+"use strict";
+
+
+/* =====================================================
+   CONFIG
+===================================================== */
 
 const LOGIN_KEY =
     "lainolive_logged_in";
@@ -1264,6 +1422,10 @@ const CURRENT_STREAM_KEY =
     "lainolive_current_stream";
 
 
+/* =====================================================
+   LOGIN
+===================================================== */
+
 if (
     localStorage.getItem(
         LOGIN_KEY
@@ -1272,63 +1434,79 @@ if (
 
     window.location.href =
         "/login.html";
+
 }
 
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 const streamsList =
     document.getElementById(
         "streamsList"
     );
 
+
 const statusText =
     document.getElementById(
         "statusText"
     );
+
 
 const refreshButton =
     document.getElementById(
         "refreshButton"
     );
 
+
 const searchInput =
     document.getElementById(
         "searchInput"
     );
+
 
 const startModal =
     document.getElementById(
         "startModal"
     );
 
+
 const liveTitle =
     document.getElementById(
         "liveTitle"
     );
+
 
 const liveCategory =
     document.getElementById(
         "liveCategory"
     );
 
+
 const liveCover =
     document.getElementById(
         "liveCover"
     );
+
 
 const coverPreview =
     document.getElementById(
         "coverPreview"
     );
 
+
 const coverPreviewImage =
     document.getElementById(
         "coverPreviewImage"
     );
 
+
 const uploadStatus =
     document.getElementById(
         "uploadStatus"
     );
+
 
 const currentUsername =
     localStorage.getItem(
@@ -1341,12 +1519,17 @@ let allStreams = [];
 let selectedCoverFile =
     null;
 
+let streamsLoading =
+    false;
 
-/* =========================
+
+/* =====================================================
    HELPERS
-   ========================= */
+===================================================== */
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     return String(
         value ?? ""
@@ -1371,64 +1554,109 @@ function escapeHtml(value) {
             "'",
             "&#039;"
         );
+
 }
 
 
-function getId(stream) {
+function getId(
+    stream
+) {
 
     return (
         stream?.id
         ??
         stream?.stream_id
     );
+
 }
 
 
-function getTitle(stream) {
+function getTitle(
+    stream
+) {
 
     return (
         stream?.title
         ||
         "لایو بدون عنوان"
     );
+
 }
 
 
-function getUsername(stream) {
+function getUsername(
+    stream
+) {
 
     return (
         stream?.username
         ||
         stream?.user
         ||
+        stream?.owner
+        ||
         "کاربر"
     );
+
 }
 
 
-function getCategory(stream) {
+function getCategory(
+    stream
+) {
 
     return (
         stream?.category
         ||
         "عمومی"
     );
+
 }
 
 
-function getViewers(stream) {
+function getViewers(
+    stream
+) {
 
     return Number(
         stream?.viewer_count
         ??
         stream?.viewers
         ??
+        stream?.viewer_count_now
+        ??
         0
     );
+
 }
 
 
-function getCover(stream) {
+function getUsers(
+    stream
+) {
+
+    return Number(
+        stream?.users_count
+        ??
+        stream?.user_count
+        ??
+        stream?.online_users
+        ??
+        stream?.online_count
+        ??
+        stream?.viewer_count
+        ??
+        stream?.viewers
+        ??
+        0
+    );
+
+}
+
+
+function getCover(
+    stream
+) {
 
     return (
         stream?.cover_url
@@ -1439,24 +1667,492 @@ function getCover(stream) {
         ||
         ""
     );
+
 }
 
 
-function normalizeText(
-    value
+/* =====================================================
+   VIDEO QUALITY
+===================================================== */
+
+function getVideoQuality(
+    stream
 ) {
 
-    return String(
-        value ?? ""
-    )
-        .trim()
-        .toLowerCase();
+    const value =
+        stream?.video_quality
+        ??
+        stream?.quality
+        ??
+        stream?.resolution
+        ??
+        stream?.video_resolution
+        ??
+        "";
+
+
+    if (
+        value
+    ) {
+
+        const text =
+            String(
+                value
+            ).trim();
+
+
+        if (
+            text
+                .toLowerCase()
+                .includes("1080")
+        ) {
+
+            return "1080p";
+
+        }
+
+
+        if (
+            text
+                .toLowerCase()
+                .includes("720")
+        ) {
+
+            return "720p";
+
+        }
+
+
+        if (
+            text
+                .toLowerCase()
+                .includes("480")
+        ) {
+
+            return "480p";
+
+        }
+
+
+        return text;
+
+    }
+
+
+    if (
+        stream?.video_width &&
+        stream?.video_height
+    ) {
+
+        return (
+            String(
+                stream.video_width
+            ) +
+            "×" +
+            String(
+                stream.video_height
+            )
+        );
+
+    }
+
+
+    if (
+        stream?.width &&
+        stream?.height
+    ) {
+
+        return (
+            String(
+                stream.width
+            ) +
+            "×" +
+            String(
+                stream.height
+            )
+        );
+
+    }
+
+
+    return "نامشخص";
+
 }
 
 
-/* =========================
+/* =====================================================
+   AUDIO QUALITY
+===================================================== */
+
+function getAudioQuality(
+    stream
+) {
+
+    const raw =
+        stream?.audio_bitrate
+        ??
+        stream?.audio_quality
+        ??
+        stream?.bitrate_audio
+        ??
+        stream?.audio_kbps
+        ??
+        "";
+
+
+    if (
+        raw === ""
+        ||
+        raw === null
+        ||
+        typeof raw ===
+            "undefined"
+    ) {
+
+        return "نامشخص";
+
+    }
+
+
+    const numberValue =
+        Number(
+            raw
+        );
+
+
+    if (
+        Number.isFinite(
+            numberValue
+        )
+    ) {
+
+        if (
+            numberValue >= 1000
+        ) {
+
+            return (
+                Math.round(
+                    numberValue /
+                    1000
+                ) +
+                " kbps"
+            );
+
+        }
+
+
+        return (
+            Math.round(
+                numberValue
+            ) +
+            " kbps"
+        );
+
+    }
+
+
+    const text =
+        String(
+            raw
+        ).trim();
+
+
+    if (
+        text
+            .toLowerCase()
+            .includes("kbps")
+    ) {
+
+        return text;
+
+    }
+
+
+    return text;
+
+}
+
+
+/* =====================================================
+   USERS LIST
+===================================================== */
+
+function getUsersList(
+    stream
+) {
+
+    const users =
+        stream?.users
+        ||
+        stream?.viewers_list
+        ||
+        stream?.viewer_users
+        ||
+        stream?.online_users_list
+        ||
+        [];
+
+
+    if (
+        !Array.isArray(
+            users
+        )
+    ) {
+
+        return [];
+
+    }
+
+
+    return users
+        .map(
+            item => {
+
+                if (
+                    typeof item ===
+                    "string"
+                ) {
+
+                    return item;
+
+                }
+
+
+                return (
+                    item?.username
+                    ||
+                    item?.user
+                    ||
+                    item?.name
+                    ||
+                    ""
+                );
+
+            }
+        )
+        .filter(
+            Boolean
+        );
+
+}
+
+
+/* =====================================================
+   OWN STREAM FALLBACK
+===================================================== */
+
+function getOwnStreamSettings(
+    stream
+) {
+
+    const owner =
+        getUsername(
+            stream
+        );
+
+
+    if (
+        String(owner)
+        !==
+        String(
+            currentUsername
+        )
+    ) {
+
+        return {};
+
+    }
+
+
+    let stored =
+        null;
+
+
+    try {
+
+        const raw =
+            sessionStorage.getItem(
+                CURRENT_STREAM_KEY
+            );
+
+
+        if (
+            raw
+        ) {
+
+            stored =
+                JSON.parse(
+                    raw
+                );
+
+            if (
+                String(
+                    getId(
+                        stored
+                    )
+                )
+                !==
+                String(
+                    getId(
+                        stream
+                    )
+                )
+            ) {
+
+                stored =
+                    null;
+
+            }
+
+        }
+
+    }
+    catch {}
+
+
+    if (
+        !stored
+    ) {
+
+        try {
+
+            const raw =
+                localStorage.getItem(
+                    CURRENT_STREAM_KEY
+                );
+
+
+            if (
+                raw
+            ) {
+
+                stored =
+                    JSON.parse(
+                        raw
+                    );
+
+            }
+
+        }
+        catch {}
+
+    }
+
+
+    if (
+        !stored
+    ) {
+
+        return {};
+
+    }
+
+
+    return {
+
+        videoQuality:
+            stored.video_quality
+            ||
+            stored.quality
+            ||
+            "",
+
+        audioQuality:
+            stored.audio_bitrate
+            ||
+            stored.audio_quality
+            ||
+            "",
+
+        users:
+            stored.users
+            ||
+            stored.viewers_list
+            ||
+            []
+
+    };
+
+}
+
+
+/* =====================================================
+   QUALITY MERGE
+===================================================== */
+
+function getEffectiveVideoQuality(
+    stream
+) {
+
+    const own =
+        getOwnStreamSettings(
+            stream
+        );
+
+
+    if (
+        own.videoQuality
+    ) {
+
+        const fakeStream =
+            {
+                video_quality:
+                    own.videoQuality
+            };
+
+
+        return getVideoQuality(
+            fakeStream
+        );
+
+    }
+
+
+    return getVideoQuality(
+        stream
+    );
+
+}
+
+
+function getEffectiveAudioQuality(
+    stream
+) {
+
+    const own =
+        getOwnStreamSettings(
+            stream
+        );
+
+
+    if (
+        own.audioQuality
+    ) {
+
+        const fakeStream =
+            {
+                audio_bitrate:
+                    own.audioQuality
+            };
+
+
+        return getAudioQuality(
+            fakeStream
+        );
+
+    }
+
+
+    return getAudioQuality(
+        stream
+    );
+
+}
+
+
+/* =====================================================
    RENDER
-   ========================= */
+===================================================== */
 
 function renderStreams(
     streams
@@ -1488,12 +2184,14 @@ function renderStreams(
                             stream
                         );
 
+
                     const title =
                         escapeHtml(
                             getTitle(
                                 stream
                             )
                         );
+
 
                     const username =
                         escapeHtml(
@@ -1502,6 +2200,7 @@ function renderStreams(
                             )
                         );
 
+
                     const category =
                         escapeHtml(
                             getCategory(
@@ -1509,15 +2208,58 @@ function renderStreams(
                             )
                         );
 
+
                     const viewers =
                         getViewers(
                             stream
                         );
 
+
+                    const users =
+                        getUsers(
+                            stream
+                        );
+
+
                     const cover =
                         getCover(
                             stream
                         );
+
+
+                    const videoQuality =
+                        escapeHtml(
+                            getEffectiveVideoQuality(
+                                stream
+                            )
+                        );
+
+
+                    const audioQuality =
+                        escapeHtml(
+                            getEffectiveAudioQuality(
+                                stream
+                            )
+                        );
+
+
+                    const usersList =
+                        getUsersList(
+                            stream
+                        );
+
+
+                    const usersText =
+                        usersList.length
+                            ? usersList
+                                .slice(
+                                    0,
+                                    5
+                                )
+                                .join(
+                                    "، "
+                                )
+                            : "";
 
 
                     return `
@@ -1571,6 +2313,8 @@ function renderStreams(
 
                                 <div class="viewer-count">
                                     👁 ${viewers}
+                                    &nbsp;
+                                    👤 ${users}
                                 </div>
 
                             </div>
@@ -1582,15 +2326,18 @@ function renderStreams(
                                     ${title}
                                 </div>
 
+
                                 <div class="card-user">
                                     👤 ${username}
                                 </div>
+
 
                                 <div class="card-bottom">
 
                                     <div class="category">
                                         ${category}
                                     </div>
+
 
                                     <div class="views">
                                         ${viewers}
@@ -1599,10 +2346,59 @@ function renderStreams(
 
                                 </div>
 
+
+                                <div class="live-quality-row">
+
+                                    <div class="quality-tag">
+                                        🎥
+                                        ${videoQuality}
+                                    </div>
+
+
+                                    <div class="quality-tag audio">
+                                        🎵
+                                        ${audioQuality}
+                                    </div>
+
+
+                                    <div class="quality-tag users-tag">
+                                        👤
+                                        ${users}
+                                    </div>
+
+                                </div>
+
+
+                                ${
+                                    usersText
+                                        ? `
+                                            <div
+                                                class="live-info-item"
+                                                style="
+                                                    margin-top:7px;
+                                                    white-space:nowrap;
+                                                    overflow:hidden;
+                                                    text-overflow:ellipsis;
+                                                    width:100%;
+                                                "
+                                                title="${escapeHtml(
+                                                    usersText
+                                                )}"
+                                            >
+                                                👤
+                                                ${escapeHtml(
+                                                    usersText
+                                                )}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
                             </div>
 
                         </article>
                     `;
+
                 }
             )
             .join("");
@@ -1622,6 +2418,7 @@ function renderStreams(
                         const id =
                             card.dataset.id;
 
+
                         const stream =
                             allStreams.find(
                                 item =>
@@ -1636,11 +2433,15 @@ function renderStreams(
                                     )
                             );
 
+
                         if (
                             !stream
                         ) {
+
                             return;
+
                         }
+
 
                         sessionStorage.setItem(
                             VIEW_STREAM_KEY,
@@ -1671,10 +2472,13 @@ function renderStreams(
                                 )
                             );
 
+
                             window.location.href =
                                 "/live.html";
 
+
                             return;
+
                         }
 
 
@@ -1683,16 +2487,32 @@ function renderStreams(
                             encodeURIComponent(
                                 id
                             );
+
                     }
                 );
+
             }
         );
+
 }
 
 
-/* =========================
-   FILTER
-   ========================= */
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function normalizeText(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .trim()
+        .toLowerCase();
+
+}
+
 
 function applySearch() {
 
@@ -1702,13 +2522,16 @@ function applySearch() {
         );
 
 
-    if (!query) {
+    if (
+        !query
+    ) {
 
         renderStreams(
             allStreams
         );
 
         return;
+
     }
 
 
@@ -1723,12 +2546,14 @@ function applySearch() {
                         )
                     );
 
+
                 const username =
                     normalizeText(
                         getUsername(
                             stream
                         )
                     );
+
 
                 const category =
                     normalizeText(
@@ -1738,19 +2563,54 @@ function applySearch() {
                     );
 
 
+                const video =
+                    normalizeText(
+                        getEffectiveVideoQuality(
+                            stream
+                        )
+                    );
+
+
+                const audio =
+                    normalizeText(
+                        getEffectiveAudioQuality(
+                            stream
+                        )
+                    );
+
+
                 return (
+
                     title.includes(
                         query
                     )
+
                     ||
+
                     username.includes(
                         query
                     )
+
                     ||
+
                     category.includes(
                         query
                     )
+
+                    ||
+
+                    video.includes(
+                        query
+                    )
+
+                    ||
+
+                    audio.includes(
+                        query
+                    )
+
                 );
+
             }
         );
 
@@ -1758,15 +2618,13 @@ function applySearch() {
     renderStreams(
         filtered
     );
+
 }
 
 
-/* =========================
+/* =====================================================
    LOAD STREAMS
-   ========================= */
-
-let streamsLoading = false;
-
+===================================================== */
 
 async function loadStreams(
     force = false
@@ -1775,11 +2633,14 @@ async function loadStreams(
     if (
         streamsLoading
     ) {
+
         return;
+
     }
 
 
-    streamsLoading = true;
+    streamsLoading =
+        true;
 
 
     refreshButton.disabled =
@@ -1790,11 +2651,13 @@ async function loadStreams(
 
         const streams =
             await LainoLiveStreams.fetch({
+
                 force:
                     force,
 
                 ttl:
                     1000
+
             });
 
 
@@ -1808,14 +2671,19 @@ async function loadStreams(
 
         statusText.textContent =
             allStreams.length
+
                 ? allStreams.length +
                     " لایو در حال پخش"
+
                 : "فعلاً لایوی فعال نیست";
 
 
         applySearch();
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             "load streams error:",
@@ -1835,34 +2703,42 @@ async function loadStreams(
                         اتصال سرور را بررسی کنید.
                     </div>
                 `;
+
         }
+
 
         statusText.textContent =
             "خطا در دریافت لایوها";
 
-    } finally {
+    }
+    finally {
 
         streamsLoading =
             false;
 
+
         refreshButton.disabled =
             false;
+
     }
+
 }
 
 
-/* =========================
-   START LIVE MODAL
-   ========================= */
+/* =====================================================
+   START MODAL
+===================================================== */
 
 function openStartModal() {
 
     uploadStatus.textContent =
         "";
 
+
     startModal.classList.add(
         "show"
     );
+
 }
 
 
@@ -1871,6 +2747,7 @@ function closeStartModal() {
     startModal.classList.remove(
         "show"
     );
+
 }
 
 
@@ -1886,17 +2763,22 @@ liveCover.addEventListener(
             file || null;
 
 
-        if (!file) {
+        if (
+            !file
+        ) {
 
             coverPreview.classList.remove(
                 "show"
             );
 
+
             coverPreviewImage.removeAttribute(
                 "src"
             );
 
+
             return;
+
         }
 
 
@@ -1909,6 +2791,7 @@ liveCover.addEventListener(
         coverPreviewImage.src =
             url;
 
+
         coverPreview.classList.add(
             "show"
         );
@@ -1916,9 +2799,14 @@ liveCover.addEventListener(
 
         uploadStatus.textContent =
             "کاور انتخاب شد.";
+
     }
 );
 
+
+/* =====================================================
+   UPLOAD COVER
+===================================================== */
 
 async function uploadCover(
     streamId
@@ -1929,6 +2817,7 @@ async function uploadCover(
     ) {
 
         return null;
+
     }
 
 
@@ -1981,6 +2870,7 @@ async function uploadCover(
         throw new Error(
             "cover upload failed"
         );
+
     }
 
 
@@ -1993,8 +2883,13 @@ async function uploadCover(
 
 
     return data;
+
 }
 
+
+/* =====================================================
+   START LIVE
+===================================================== */
 
 async function startLive() {
 
@@ -2034,8 +2929,10 @@ async function startLive() {
                         "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
@@ -2049,7 +2946,9 @@ async function startLive() {
 
                             category:
                                 category
+
                         })
+
                 }
             );
 
@@ -2061,6 +2960,7 @@ async function startLive() {
             throw new Error(
                 "stream create failed"
             );
+
         }
 
 
@@ -2081,14 +2981,19 @@ async function startLive() {
 
 
         if (
+
             streamId === null
             ||
-            typeof streamId === "undefined"
+
+            typeof streamId ===
+                "undefined"
+
         ) {
 
             throw new Error(
                 "stream id missing"
             );
+
         }
 
 
@@ -2099,13 +3004,9 @@ async function startLive() {
             await uploadCover(
                 streamId
             );
+
         }
 
-
-        /*
-         * کش قبلی را حذف می‌کنیم تا
-         * صفحه بعدی لایو جدید را ببیند.
-         */
 
         if (
             window.LainoLiveStreams
@@ -2116,28 +3017,45 @@ async function startLive() {
         ) {
 
             window.LainoLiveStreams.clear();
+
         }
 
 
-        const streamForSession =
-            {
-                ...createdStream,
+        const streamForSession = {
 
-                id:
-                    streamId,
+            ...createdStream,
 
-                stream_id:
-                    streamId,
+            id:
+                streamId,
 
-                username:
-                    currentUsername,
+            stream_id:
+                streamId,
 
-                title:
-                    title,
+            username:
+                currentUsername,
 
-                category:
-                    category
-            };
+            title:
+                title,
+
+            category:
+                category,
+
+            viewer_count:
+                0,
+
+            users_count:
+                0,
+
+            video_quality:
+                "720p",
+
+            audio_bitrate:
+                128000,
+
+            users:
+                []
+
+        };
 
 
         sessionStorage.setItem(
@@ -2159,7 +3077,10 @@ async function startLive() {
         window.location.href =
             "/live.html";
 
-    } catch (error) {
+    }
+    catch (
+        error
+    ) {
 
         console.error(
             "start live error:",
@@ -2170,18 +3091,22 @@ async function startLive() {
         uploadStatus.textContent =
             "شروع لایو انجام نشد.";
 
+
         button.disabled =
             false;
 
+
         button.textContent =
             "شروع لایو";
+
     }
+
 }
 
 
-/* =========================
+/* =====================================================
    EVENTS
-   ========================= */
+===================================================== */
 
 document
     .getElementById(
@@ -2223,6 +3148,7 @@ document
 
             window.location.href =
                 "/popular.html";
+
         }
     );
 
@@ -2237,6 +3163,7 @@ document
 
             window.location.href =
                 "/popular.html";
+
         }
     );
 
@@ -2251,6 +3178,7 @@ document
 
             window.location.href =
                 "/profile.html";
+
         }
     );
 
@@ -2265,6 +3193,7 @@ document
 
             window.location.href =
                 "/profile.html";
+
         }
     );
 
@@ -2276,6 +3205,7 @@ refreshButton.addEventListener(
         loadStreams(
             true
         );
+
     }
 );
 
@@ -2291,7 +3221,8 @@ searchInput.addEventListener(
     event => {
 
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ) {
 
             window.location.href =
@@ -2299,7 +3230,9 @@ searchInput.addEventListener(
                 encodeURIComponent(
                     searchInput.value
                 );
+
         }
+
     }
 );
 
@@ -2314,14 +3247,16 @@ startModal.addEventListener(
         ) {
 
             closeStartModal();
+
         }
+
     }
 );
 
 
-/* =========================
+/* =====================================================
    START
-   ========================= */
+===================================================== */
 
 loadStreams();
 
@@ -2341,3 +3276,4 @@ setInterval(
 
 </body>
 </html>
+```
