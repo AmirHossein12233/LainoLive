@@ -50,14 +50,13 @@
 
         .page {
             min-height: 100vh;
+
             padding-bottom:
                 calc(
                     90px +
                     env(safe-area-inset-bottom)
                 );
         }
-
-        /* HEADER */
 
         .header {
             position: sticky;
@@ -93,6 +92,7 @@
         .header-left {
             display: flex;
             align-items: center;
+
             gap: 10px;
 
             min-width: 0;
@@ -135,8 +135,6 @@
             font-size: 10px;
         }
 
-        /* VIDEO */
-
         .video-box {
             position: relative;
 
@@ -162,6 +160,7 @@
 
         .video-placeholder {
             position: absolute;
+
             inset: 0;
 
             display: flex;
@@ -223,10 +222,9 @@
             background: #ff345b;
         }
 
-        /* INFO */
-
         .info {
-            padding: 15px 16px 8px;
+            padding:
+                15px 16px 8px;
         }
 
         .title {
@@ -275,11 +273,12 @@
             color: #ff809b;
         }
 
-        /* CHAT */
-
         .chat-section {
-            margin: 10px 16px;
-            padding: 15px;
+            margin:
+                10px 16px;
+
+            padding:
+                15px;
 
             border-radius: 20px;
 
@@ -309,7 +308,8 @@
         .message {
             margin-bottom: 8px;
 
-            padding: 9px 10px;
+            padding:
+                9px 10px;
 
             border-radius: 13px;
 
@@ -367,10 +367,6 @@
             font-size: 12px;
         }
 
-        .chat-input::placeholder {
-            color: #777785;
-        }
-
         .chat-send {
             border: none;
 
@@ -391,8 +387,6 @@
 
             font-weight: 900;
         }
-
-        /* BOTTOM */
 
         .bottom-bar {
             position: fixed;
@@ -429,10 +423,11 @@
         }
 
         .leave-button {
-            width: min(
-                650px,
-                100%
-            );
+            width:
+                min(
+                    650px,
+                    100%
+                );
 
             min-height: 50px;
 
@@ -448,8 +443,6 @@
             font-size: 13px;
             font-weight: 900;
         }
-
-        /* SHARE */
 
         .share-modal {
             position: fixed;
@@ -569,7 +562,7 @@
             color: #9999a5;
         }
 
-        @media (min-width: 700px) {
+        @media (min-width:700px) {
 
             .page {
                 max-width: 900px;
@@ -580,10 +573,11 @@
                 left: 50%;
                 right: auto;
 
-                width: min(
-                    700px,
-                    calc(100% - 30px)
-                );
+                width:
+                    min(
+                        700px,
+                        calc(100% - 30px)
+                    );
 
                 transform:
                     translateX(-50%);
@@ -597,15 +591,6 @@
                 border-radius: 20px;
 
                 padding: 8px;
-            }
-
-            .leave-button {
-                background:
-                    linear-gradient(
-                        135deg,
-                        #ff2757,
-                        #8b35ff
-                    );
             }
         }
     </style>
@@ -841,743 +826,690 @@
 
 
 <script>
-    /*
-     * ============================
-     * SETTINGS
-     * ============================
-     */
+const SIGNALING_URL =
+    "wss://lainolive-signaling.onrender.com";
 
-    const SIGNALING_URL =
-        "wss://lainolive-signaling.onrender.com";
+const LOGIN_KEY =
+    "lainolive_logged_in";
 
+const USERNAME_KEY =
+    "lainolive_username";
 
-    const LOGIN_KEY =
-        "lainolive_logged_in";
-
-    const USERNAME_KEY =
-        "lainolive_username";
-
-    const VIEW_STREAM_KEY =
-        "lainolive_view_stream";
+const VIEW_STREAM_KEY =
+    "lainolive_view_stream";
 
 
-    /*
-     * ============================
-     * ELEMENTS
-     * ============================
-     */
-
-    const remoteVideo =
-        document.getElementById(
-            "remoteVideo"
-        );
-
-    const videoPlaceholder =
-        document.getElementById(
-            "videoPlaceholder"
-        );
-
-    const videoStatus =
-        document.getElementById(
-            "videoStatus"
-        );
-
-    const videoSubstatus =
-        document.getElementById(
-            "videoSubstatus"
-        );
-
-    const statusDot =
-        document.getElementById(
-            "statusDot"
-        );
-
-    const headerTitle =
-        document.getElementById(
-            "headerTitle"
-        );
-
-    const headerUser =
-        document.getElementById(
-            "headerUser"
-        );
-
-    const streamTitle =
-        document.getElementById(
-            "streamTitle"
-        );
-
-    const streamUsername =
-        document.getElementById(
-            "streamUsername"
-        );
-
-    const viewerPill =
-        document.getElementById(
-            "viewerPill"
-        );
-
-    const categoryPill =
-        document.getElementById(
-            "categoryPill"
-        );
-
-    const messages =
-        document.getElementById(
-            "messages"
-        );
-
-    const chatInput =
-        document.getElementById(
-            "chatInput"
-        );
-
-    const chatSend =
-        document.getElementById(
-            "chatSend"
-        );
+if (
+    localStorage.getItem(
+        LOGIN_KEY
+    ) !== "true"
+) {
+    window.location.href =
+        "/login.html";
+}
 
 
-    /*
-     * ============================
-     * GLOBAL STATE
-     * ============================
-     */
+const remoteVideo =
+    document.getElementById(
+        "remoteVideo"
+    );
 
-    let stream = null;
+const videoPlaceholder =
+    document.getElementById(
+        "videoPlaceholder"
+    );
 
-    let streamId = null;
+const videoStatus =
+    document.getElementById(
+        "videoStatus"
+    );
 
-    let currentUsername =
-        localStorage.getItem(
-            USERNAME_KEY
-        ) || "";
+const videoSubstatus =
+    document.getElementById(
+        "videoSubstatus"
+    );
 
-    let socket = null;
+const headerTitle =
+    document.getElementById(
+        "headerTitle"
+    );
 
-    let peerConnection = null;
+const headerUser =
+    document.getElementById(
+        "headerUser"
+    );
 
-    let remoteDescriptionReady =
-        false;
+const streamTitle =
+    document.getElementById(
+        "streamTitle"
+    );
 
-    let pendingIceCandidates = [];
+const streamUsername =
+    document.getElementById(
+        "streamUsername"
+    );
 
-    let joinedViewer = false;
+const viewerPill =
+    document.getElementById(
+        "viewerPill"
+    );
 
-    let stopped = false;
+const categoryPill =
+    document.getElementById(
+        "categoryPill"
+    );
+
+const messages =
+    document.getElementById(
+        "messages"
+    );
+
+const chatInput =
+    document.getElementById(
+        "chatInput"
+    );
+
+const chatSend =
+    document.getElementById(
+        "chatSend"
+    );
 
 
-    /*
-     * ============================
-     * LOGIN
-     * ============================
-     */
+let stream = null;
 
-    if (
-        localStorage.getItem(
-            LOGIN_KEY
-        ) !== "true"
-    ) {
-        window.location.href =
-            "/login.html";
-    }
+let streamId = null;
+
+let currentUsername =
+    localStorage.getItem(
+        USERNAME_KEY
+    ) || "";
+
+let viewerId = null;
+
+let socket = null;
+
+let peerConnection = null;
+
+let remoteDescriptionReady =
+    false;
+
+let pendingIceCandidates = [];
+
+let stopped = false;
+
+let reconnectTimer = null;
 
 
-    /*
-     * ============================
-     * HELPERS
-     * ============================
-     */
+function escapeHtml(value) {
 
-    function escapeHtml(value) {
-
-        return String(
-            value ?? ""
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
         )
-            .replaceAll(
-                "&",
-                "&amp;"
-            )
-            .replaceAll(
-                "<",
-                "&lt;"
-            )
-            .replaceAll(
-                ">",
-                "&gt;"
-            )
-            .replaceAll(
-                '"',
-                "&quot;"
-            )
-            .replaceAll(
-                "'",
-                "&#039;"
-            );
-    }
-
-
-    function getId(item) {
-
-        return (
-            item?.id
-            ??
-            item?.stream_id
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
         );
-    }
+}
 
 
-    function getTitle(item) {
+function getId(item) {
 
-        return (
-            item?.title
-            ||
-            "لایو بدون عنوان"
+    return (
+        item?.id
+        ??
+        item?.stream_id
+    );
+}
+
+
+function getTitle(item) {
+
+    return (
+        item?.title
+        ||
+        "لایو بدون عنوان"
+    );
+}
+
+
+function getUsername(item) {
+
+    return (
+        item?.username
+        ||
+        item?.user
+        ||
+        "کاربر"
+    );
+}
+
+
+function getCategory(item) {
+
+    return (
+        item?.category
+        ||
+        "عمومی"
+    );
+}
+
+
+function getViewers(item) {
+
+    return Number(
+        item?.viewer_count
+        ??
+        item?.viewers
+        ??
+        0
+    );
+}
+
+
+function setStatus(
+    title,
+    subtitle,
+    type = "loading"
+) {
+
+    videoStatus.innerHTML =
+        `
+            <span
+                class="status-dot ${
+                    type === "online"
+                        ? "online"
+                        : type === "error"
+                            ? "error"
+                            : ""
+                }"
+            ></span>
+            ${escapeHtml(title)}
+        `;
+
+    videoSubstatus.textContent =
+        subtitle;
+
+    videoPlaceholder.style.display =
+        type === "online"
+            ? "none"
+            : "flex";
+}
+
+
+async function loadStream() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
         );
-    }
+
+    const urlId =
+        params.get("id");
 
 
-    function getUsername(item) {
+    if (urlId) {
 
-        return (
-            item?.username
-            ||
-            item?.user
-            ||
-            "کاربر"
-        );
-    }
+        streamId =
+            urlId;
 
-
-    function getCategory(item) {
-
-        return (
-            item?.category
-            ||
-            "عمومی"
-        );
-    }
-
-
-    function getViewers(item) {
-
-        return Number(
-            item?.viewer_count
-            ??
-            item?.viewers
-            ??
-            0
-        );
-    }
-
-
-    function setStatus(
-        title,
-        subtitle,
-        type = "loading"
-    ) {
-
-        videoStatus.innerHTML =
-            `
-                <span
-                    class="status-dot ${
-                        type === "online"
-                            ? "online"
-                            : type === "error"
-                                ? "error"
-                                : ""
-                    }"
-                ></span>
-                ${escapeHtml(title)}
-            `;
-
-        videoSubstatus.textContent =
-            subtitle;
-
-        if (
-            type === "online"
-        ) {
-
-            videoPlaceholder.style.display =
-                "none";
-
-        } else {
-
-            videoPlaceholder.style.display =
-                "flex";
-        }
-    }
-
-
-    function goBack() {
 
         try {
 
-            history.back();
+            const response =
+                await fetch(
+                    "/api/streams",
+                    {
+                        cache:
+                            "no-store"
+                    }
+                );
 
-        } catch {
 
-            window.location.href =
-                "/index.html";
-        }
+            if (response.ok) {
+
+                const data =
+                    await response.json();
+
+
+                const streams =
+                    Array.isArray(
+                        data.streams
+                    )
+                        ? data.streams
+                        : Array.isArray(data)
+                            ? data
+                            : [];
+
+
+                const found =
+                    streams.find(
+                        item =>
+                            String(
+                                getId(item)
+                            ) ===
+                            String(urlId)
+                    );
+
+
+                if (found) {
+                    stream =
+                        found;
+                }
+            }
+
+        } catch {}
     }
 
 
-    /*
-     * ============================
-     * LOAD STREAM
-     * ============================
-     */
+    if (!stream) {
 
-    async function loadStream() {
+        try {
 
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-        const urlId =
-            params.get("id");
+            const saved =
+                sessionStorage.getItem(
+                    VIEW_STREAM_KEY
+                );
 
 
-        /*
-         * First try URL ID.
-         */
+            if (saved) {
 
-        if (urlId) {
-
-            streamId =
-                urlId;
-
-            try {
-
-                const response =
-                    await fetch(
-                        "/api/streams",
-                        {
-                            cache:
-                                "no-store"
-                        }
+                const parsed =
+                    JSON.parse(
+                        saved
                     );
+
 
                 if (
-                    response.ok
+                    !urlId
+                    ||
+                    String(
+                        getId(parsed)
+                    ) ===
+                    String(urlId)
                 ) {
 
-                    const data =
-                        await response.json();
+                    stream =
+                        parsed;
 
-                    const streams =
-                        Array.isArray(
-                            data.streams
-                        )
-                            ? data.streams
-                            : Array.isArray(data)
-                                ? data
-                                : [];
-
-                    const found =
-                        streams.find(
-                            item =>
-                                String(
-                                    getId(item)
-                                )
-                                ===
-                                String(
-                                    urlId
-                                )
-                        );
-
-                    if (found) {
-
-                        stream =
-                            found;
-                    }
+                    streamId =
+                        getId(parsed);
                 }
-
-            } catch (error) {
-
-                console.error(
-                    "stream fetch error",
-                    error
-                );
             }
-        }
 
-
-        /*
-         * Fallback to sessionStorage.
-         */
-
-        if (!stream) {
-
-            try {
-
-                const saved =
-                    sessionStorage.getItem(
-                        VIEW_STREAM_KEY
-                    );
-
-                if (saved) {
-
-                    const parsed =
-                        JSON.parse(
-                            saved
-                        );
-
-                    if (
-                        !urlId
-                        ||
-                        String(
-                            getId(parsed)
-                        )
-                        ===
-                        String(
-                            urlId
-                        )
-                    ) {
-
-                        stream =
-                            parsed;
-
-                        streamId =
-                            getId(parsed);
-                    }
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "session stream error",
-                    error
-                );
-            }
-        }
-
-
-        if (
-            !streamId
-            &&
-            stream
-        ) {
-
-            streamId =
-                getId(stream);
-        }
-
-
-        if (
-            !stream
-            ||
-            streamId === null
-        ) {
-
-            setStatus(
-                "لایو پیدا نشد",
-                "این لایو دیگر در حال پخش نیست.",
-                "error"
-            );
-
-            return false;
-        }
-
-
-        renderStream();
-
-        return true;
+        } catch {}
     }
 
 
-    /*
-     * ============================
-     * RENDER STREAM
-     * ============================
-     */
-
-    function renderStream() {
-
-        const title =
-            getTitle(stream);
-
-        const username =
-            getUsername(stream);
-
-        const category =
-            getCategory(stream);
-
-        const viewers =
-            getViewers(stream);
-
-
-        document.title =
-            title +
-            " - LainoLive";
-
-
-        headerTitle.textContent =
-            title;
-
-        headerUser.textContent =
-            "👤 " +
-            username;
-
-
-        streamTitle.textContent =
-            title;
-
-        streamUsername.textContent =
-            "👤 " +
-            username;
-
-
-        viewerPill.textContent =
-            "👁 " +
-            viewers +
-            " بیننده";
-
-
-        categoryPill.textContent =
-            "🎮 " +
-            category;
+    if (
+        !streamId
+        &&
+        stream
+    ) {
+        streamId =
+            getId(stream);
     }
 
 
-    /*
-     * ============================
-     * WEBRTC
-     * ============================
-     */
+    if (
+        !stream
+        ||
+        streamId === null
+        ||
+        typeof streamId === "undefined"
+    ) {
 
-    function createPeerConnection() {
+        setStatus(
+            "لایو پیدا نشد",
+            "این لایو دیگر در حال پخش نیست.",
+            "error"
+        );
 
-        if (
-            peerConnection
-        ) {
-
-            return;
-        }
+        return false;
+    }
 
 
-        peerConnection =
-            new RTCPeerConnection(
+    renderStream();
+
+    return true;
+}
+
+
+function renderStream() {
+
+    const title =
+        getTitle(stream);
+
+    const username =
+        getUsername(stream);
+
+    const category =
+        getCategory(stream);
+
+
+    document.title =
+        title +
+        " - LainoLive";
+
+
+    headerTitle.textContent =
+        title;
+
+    headerUser.textContent =
+        "👤 " +
+        username;
+
+    streamTitle.textContent =
+        title;
+
+    streamUsername.textContent =
+        "👤 " +
+        username;
+
+    viewerPill.textContent =
+        "👁 " +
+        getViewers(stream) +
+        " بیننده";
+
+    categoryPill.textContent =
+        "🎮 " +
+        category;
+}
+
+
+function createPeerConnection() {
+
+    if (peerConnection) {
+
+        try {
+            peerConnection.close();
+        } catch {}
+    }
+
+
+    remoteDescriptionReady =
+        false;
+
+    pendingIceCandidates = [];
+
+
+    peerConnection =
+        new RTCPeerConnection({
+            bundlePolicy:
+                "max-bundle",
+
+            rtcpMuxPolicy:
+                "require",
+
+            iceServers: [
                 {
-                    iceServers: [
-                        {
-                            urls:
-                                "stun:stun.l.google.com:19302"
-                        },
-                        {
-                            urls:
-                                "stun:stun1.l.google.com:19302"
-                        }
-                    ]
+                    urls:
+                        "stun:stun.l.google.com:19302"
+                },
+                {
+                    urls:
+                        "stun:stun1.l.google.com:19302"
                 }
-            );
+            ]
+        });
 
 
-        peerConnection.onicecandidate =
-            event => {
+    peerConnection.onicecandidate =
+        event => {
+
+            if (
+                !event.candidate
+            ) {
+                return;
+            }
+
+
+            sendSignal({
+                type:
+                    "ice-candidate",
+
+                room_id:
+                    String(
+                        streamId
+                    ),
+
+                viewer_id:
+                    viewerId,
+
+                candidate:
+                    event.candidate
+            });
+        };
+
+
+    peerConnection.ontrack =
+        event => {
+
+            if (
+                event.streams
+                &&
+                event.streams[0]
+            ) {
+
+                remoteVideo.srcObject =
+                    event.streams[0];
+
+            } else {
 
                 if (
-                    !event.candidate
-                ) {
-                    return;
-                }
-
-                sendSignal({
-                    type:
-                        "ice-candidate",
-
-                    room_id:
-                        String(
-                            streamId
-                        ),
-
-                    candidate:
-                        event.candidate
-                });
-            };
-
-
-        peerConnection.ontrack =
-            event => {
-
-                console.log(
-                    "REMOTE TRACK",
-                    event
-                );
-
-
-                if (
-                    event.streams
-                    &&
-                    event.streams[0]
+                    !remoteVideo.srcObject
                 ) {
 
                     remoteVideo.srcObject =
-                        event.streams[0];
-
-                } else {
-
-                    if (
-                        !remoteVideo.srcObject
-                    ) {
-
-                        remoteVideo.srcObject =
-                            new MediaStream();
-                    }
-
-                    remoteVideo.srcObject.addTrack(
-                        event.track
-                    );
+                        new MediaStream();
                 }
 
 
-                remoteVideo.play()
-                    .catch(
-                        error => {
-
-                            console.warn(
-                                "video autoplay blocked",
-                                error
-                            );
-
-                        }
+                remoteVideo.srcObject
+                    .addTrack(
+                        event.track
                     );
+            }
 
+
+            remoteVideo.play()
+                .catch(
+                    () => {}
+                );
+
+
+            setStatus(
+                "لایو وصل شد",
+                "در حال پخش تصویر و صدا...",
+                "online"
+            );
+        };
+
+
+    peerConnection.onconnectionstatechange =
+        () => {
+
+            const state =
+                peerConnection.connectionState;
+
+
+            console.log(
+                "VIEWER connectionState:",
+                state
+            );
+
+
+            if (
+                state === "connected"
+            ) {
 
                 setStatus(
                     "لایو وصل شد",
-                    "در حال پخش تصویر و صدا...",
+                    "پخش زنده فعال است.",
                     "online"
                 );
-            };
+            }
 
 
-        peerConnection.onconnectionstatechange =
-            () => {
+            if (
+                state === "connecting"
+            ) {
 
-                const state =
-                    peerConnection
-                        .connectionState;
-
-                console.log(
-                    "connectionState:",
-                    state
+                setStatus(
+                    "در حال اتصال...",
+                    "در حال برقراری ارتباط."
                 );
+            }
 
 
-                if (
-                    state ===
-                    "connected"
-                ) {
+            if (
+                state === "disconnected"
+            ) {
 
-                    setStatus(
-                        "لایو وصل شد",
-                        "پخش زنده فعال است.",
-                        "online"
-                    );
-                }
-
-
-                if (
-                    state ===
-                    "connecting"
-                ) {
-
-                    setStatus(
-                        "در حال اتصال...",
-                        "در حال برقراری اتصال با پخش‌کننده."
-                    );
-                }
-
-
-                if (
-                    state ===
-                    "disconnected"
-                ) {
-
-                    setStatus(
-                        "اتصال قطع شد",
-                        "در حال تلاش برای اتصال مجدد...",
-                        "error"
-                    );
-                }
-
-
-                if (
-                    state ===
-                    "failed"
-                ) {
-
-                    setStatus(
-                        "اتصال برقرار نشد",
-                        "پخش‌کننده یا سرور ارتباطی در دسترس نیست.",
-                        "error"
-                    );
-                }
-
-
-                if (
-                    state ===
-                    "closed"
-                ) {
-
-                    setStatus(
-                        "اتصال بسته شد",
-                        "اتصال WebRTC بسته شده است.",
-                        "error"
-                    );
-                }
-            };
-
-
-        peerConnection.oniceconnectionstatechange =
-            () => {
-
-                console.log(
-                    "iceConnectionState:",
-                    peerConnection
-                        .iceConnectionState
+                setStatus(
+                    "اتصال ناپایدار شد",
+                    "در حال بررسی اتصال...",
+                    "error"
                 );
-            };
+            }
 
 
-        peerConnection.onsignalingstatechange =
-            () => {
+            if (
+                state === "failed"
+            ) {
 
-                console.log(
-                    "signalingState:",
-                    peerConnection
-                        .signalingState
+                setStatus(
+                    "اتصال برقرار نشد",
+                    "ارتباط WebRTC با پخش‌کننده ناموفق بود.",
+                    "error"
                 );
-            };
+            }
+        };
+
+
+    peerConnection.oniceconnectionstatechange =
+        () => {
+
+            console.log(
+                "VIEWER ICE:",
+                peerConnection
+                    .iceConnectionState
+            );
+        };
+}
+
+
+function sendSignal(
+    payload
+) {
+
+    if (
+        !socket
+        ||
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
+
+        return false;
     }
 
 
-    async function addIceCandidate(
-        candidate
+    try {
+
+        socket.send(
+            JSON.stringify(
+                payload
+            )
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "signal send error",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+async function handleIceCandidate(
+    candidate
+) {
+
+    if (
+        !candidate
+        ||
+        !peerConnection
+    ) {
+        return;
+    }
+
+
+    if (
+        !remoteDescriptionReady
     ) {
 
-        if (
-            !candidate
-            ||
-            !peerConnection
-        ) {
-            return;
-        }
+        pendingIceCandidates.push(
+            candidate
+        );
+
+        return;
+    }
 
 
-        if (
-            !remoteDescriptionReady
-        ) {
+    try {
 
-            pendingIceCandidates.push(
-                candidate
+        await peerConnection
+            .addIceCandidate(
+                new RTCIceCandidate(
+                    candidate
+                )
             );
 
-            return;
-        }
+    } catch (error) {
+
+        console.error(
+            "ICE error",
+            error
+        );
+    }
+}
+
+
+async function flushIce() {
+
+    if (
+        !peerConnection
+    ) {
+        return;
+    }
+
+
+    while (
+        pendingIceCandidates.length
+    ) {
+
+        const candidate =
+            pendingIceCandidates.shift();
 
 
         try {
@@ -1592,511 +1524,938 @@
         } catch (error) {
 
             console.error(
-                "add ICE error",
+                "flush ICE error",
                 error
             );
         }
     }
+}
 
 
-    async function flushIce() {
+async function handleSignal(
+    message
+) {
+
+    const type =
+        message?.type;
+
+
+    console.log(
+        "VIEWER SIGNAL:",
+        message
+    );
+
+
+    if (
+        type === "joined"
+    ) {
 
         if (
-            !peerConnection
+            message.viewer_id
         ) {
+
+            viewerId =
+                String(
+                    message.viewer_id
+                );
+        }
+
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "host-present"
+    ) {
+
+        setStatus(
+            "پخش‌کننده پیدا شد",
+            "در حال برقراری اتصال..."
+        );
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "host-not-present"
+    ) {
+
+        setStatus(
+            "پخش‌کننده آنلاین نیست",
+            "در حال انتظار برای پخش‌کننده.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "offer"
+    ) {
+
+        const messageViewerId =
+            message.viewer_id
+                ? String(
+                    message.viewer_id
+                )
+                : viewerId;
+
+
+        if (
+            messageViewerId
+        ) {
+
+            viewerId =
+                messageViewerId;
+        }
+
+
+        createPeerConnection();
+
+
+        const offer =
+            message.offer ||
+            message.description;
+
+
+        if (!offer) {
             return;
         }
 
 
-        while (
-            pendingIceCandidates.length
-        ) {
+        try {
 
-            const candidate =
-                pendingIceCandidates.shift();
+            await peerConnection
+                .setRemoteDescription(
+                    new RTCSessionDescription(
+                        offer
+                    )
+                );
+
+
+            remoteDescriptionReady =
+                true;
+
+
+            await flushIce();
+
+
+            const answer =
+                await peerConnection
+                    .createAnswer();
+
+
+            await peerConnection
+                .setLocalDescription(
+                    answer
+                );
+
+
+            sendSignal({
+                type:
+                    "answer",
+
+                room_id:
+                    String(
+                        streamId
+                    ),
+
+                viewer_id:
+                    viewerId,
+
+                answer:
+                    peerConnection
+                        .localDescription
+            });
+
+
+            setStatus(
+                "در حال اتصال...",
+                "پاسخ برای پخش‌کننده ارسال شد."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "offer error",
+                error
+            );
+
+
+            setStatus(
+                "خطای WebRTC",
+                "دریافت اتصال پخش‌کننده ناموفق بود.",
+                "error"
+            );
+        }
+
+
+        return;
+    }
+
+
+    if (
+        type === "ice-candidate"
+        ||
+        type === "candidate"
+        ||
+        type === "ice"
+    ) {
+
+        await handleIceCandidate(
+            message.candidate ||
+            message.ice
+        );
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "host-left"
+    ) {
+
+        setStatus(
+            "لایو پایان یافت",
+            "پخش‌کننده لایو را بسته است.",
+            "error"
+        );
+
+        return;
+    }
+}
+
+
+function connectSignaling() {
+
+    if (stopped) {
+        return;
+    }
+
+
+    if (
+        socket
+        &&
+        (
+            socket.readyState ===
+            WebSocket.OPEN
+            ||
+            socket.readyState ===
+            WebSocket.CONNECTING
+        )
+    ) {
+        return;
+    }
+
+
+    setStatus(
+        "در حال اتصال...",
+        "در حال اتصال به سرور ارتباطی."
+    );
+
+
+    try {
+
+        socket =
+            new WebSocket(
+                SIGNALING_URL
+            );
+
+    } catch (error) {
+
+        console.error(
+            "WebSocket error",
+            error
+        );
+
+        scheduleReconnect();
+
+        return;
+    }
+
+
+    socket.onopen =
+        () => {
+
+            sendSignal({
+                type:
+                    "join",
+
+                room_id:
+                    String(
+                        streamId
+                    ),
+
+                role:
+                    "viewer"
+            });
+        };
+
+
+    socket.onmessage =
+        async event => {
 
             try {
 
-                await peerConnection
-                    .addIceCandidate(
-                        new RTCIceCandidate(
-                            candidate
-                        )
+                const message =
+                    JSON.parse(
+                        event.data
                     );
+
+                await handleSignal(
+                    message
+                );
 
             } catch (error) {
 
                 console.error(
-                    "flush ICE error",
+                    "signal parse error",
                     error
                 );
             }
-        }
-    }
+        };
 
 
-    /*
-     * ============================
-     * SIGNALING
-     * ============================
-     */
-
-    function sendSignal(
-        payload
-    ) {
-
-        if (
-            !socket
-            ||
-            socket.readyState !==
-                WebSocket.OPEN
-        ) {
-
-            console.warn(
-                "socket not open",
-                payload
-            );
-
-            return false;
-        }
-
-
-        try {
-
-            socket.send(
-                JSON.stringify(
-                    payload
-                )
-            );
-
-            return true;
-
-        } catch (error) {
+    socket.onerror =
+        error => {
 
             console.error(
-                "send signal error",
-                error
-            );
-
-            return false;
-        }
-    }
-
-
-    function connectSignaling() {
-
-        setStatus(
-            "در حال اتصال...",
-            "در حال اتصال به سرور ارتباطی."
-        );
-
-
-        try {
-
-            socket =
-                new WebSocket(
-                    SIGNALING_URL
-                );
-
-        } catch (error) {
-
-            console.error(
-                "websocket create error",
+                "SIGNALING ERROR",
                 error
             );
 
             setStatus(
-                "خطای اتصال",
-                "اتصال به سرور ارتباطی ایجاد نشد.",
+                "خطای سرور ارتباطی",
+                "اتصال WebSocket برقرار نشد.",
+                "error"
+            );
+        };
+
+
+    socket.onclose =
+        () => {
+
+            if (stopped) {
+                return;
+            }
+
+
+            setStatus(
+                "اتصال سرور قطع شد",
+                "در حال تلاش مجدد...",
                 "error"
             );
 
-            return;
-        }
+
+            scheduleReconnect();
+        };
+}
 
 
-        socket.onopen =
+function scheduleReconnect() {
+
+    if (
+        stopped
+        ||
+        reconnectTimer
+    ) {
+        return;
+    }
+
+
+    reconnectTimer =
+        setTimeout(
             () => {
 
-                console.log(
-                    "SIGNALING CONNECTED"
-                );
+                reconnectTimer =
+                    null;
+
+                connectSignaling();
+
+            },
+            3000
+        );
+}
 
 
-                setStatus(
-                    "در حال انتظار برای پخش...",
-                    "در حال ورود به اتاق لایو."
-                );
+async function joinViewer() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/streams/viewer",
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            stream_id:
+                                String(
+                                    streamId
+                                ),
+
+                            action:
+                                "join"
+                        })
+                }
+            );
 
 
-                createPeerConnection();
+        if (response.ok) {
+
+            const data =
+                await response.json();
 
 
-                joinedViewer =
-                    sendSignal({
-                        type:
-                            "join",
+            if (
+                data
+                &&
+                typeof data.viewer_count !==
+                    "undefined"
+            ) {
 
-                        room_id:
+                viewerPill.textContent =
+                    "👁 " +
+                    Number(
+                        data.viewer_count
+                    ) +
+                    " بیننده";
+            }
+        }
+
+    } catch {}
+}
+
+
+async function leaveViewer() {
+
+    if (!streamId) {
+        return;
+    }
+
+
+    try {
+
+        await fetch(
+            "/api/streams/viewer",
+            {
+                method:
+                    "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify({
+                        stream_id:
                             String(
                                 streamId
                             ),
 
-                        role:
-                            "viewer"
-                    });
+                        action:
+                            "leave"
+                    }),
+
+                keepalive:
+                    true
+            }
+        );
+
+    } catch {}
+}
 
 
-                if (
-                    !joinedViewer
-                ) {
+async function loadMessages() {
 
-                    setStatus(
-                        "خطای اتصال",
-                        "پیام ورود به اتاق ارسال نشد.",
-                        "error"
-                    );
+    if (!streamId) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chat/messages?stream_id=" +
+                encodeURIComponent(
+                    streamId
+                ),
+                {
+                    cache:
+                        "no-store"
                 }
-            };
+            );
 
 
-        socket.onmessage =
-            async event => {
+        if (!response.ok) {
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const list =
+            Array.isArray(
+                data.messages
+            )
+                ? data.messages
+                : Array.isArray(data)
+                    ? data
+                    : [];
+
+
+        messages.innerHTML =
+            list
+                .map(
+                    item => {
+
+                        const user =
+                            item.username
+                            ||
+                            item.user
+                            ||
+                            "کاربر";
+
+                        const text =
+                            item.message
+                            ??
+                            item.text
+                            ??
+                            "";
+
+
+                        return `
+                            <div class="message">
+
+                                <div class="message-user">
+                                    ${escapeHtml(user)}
+                                </div>
+
+                                <div class="message-text">
+                                    ${escapeHtml(text)}
+                                </div>
+
+                            </div>
+                        `;
+                    }
+                )
+                .join("");
+
+
+        messages.scrollTop =
+            messages.scrollHeight;
+
+    } catch {}
+}
+
+
+async function sendChat() {
+
+    const text =
+        chatInput.value.trim();
+
+
+    if (
+        !text
+        ||
+        !streamId
+    ) {
+        return;
+    }
+
+
+    chatSend.disabled =
+        true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chat/send",
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            stream_id:
+                                String(
+                                    streamId
+                                ),
+
+                            username:
+                                currentUsername,
+
+                            message:
+                                text
+                        })
+                }
+            );
+
+
+        if (response.ok) {
+
+            chatInput.value =
+                "";
+
+            await loadMessages();
+        }
+
+    } catch {
+
+    } finally {
+
+        chatSend.disabled =
+            false;
+    }
+}
+
+
+function getShareUrl() {
+
+    return (
+        window.location.origin +
+        "/viewer.html?id=" +
+        encodeURIComponent(
+            streamId
+        )
+    );
+}
+
+
+function openShare() {
+
+    shareLink.value =
+        getShareUrl();
+
+    shareModal.classList.add(
+        "show"
+    );
+}
+
+
+function closeShare() {
+
+    shareModal.classList.remove(
+        "show"
+    );
+}
+
+
+async function copyShareLink() {
+
+    const url =
+        getShareUrl();
+
+
+    try {
+
+        await navigator.clipboard
+            .writeText(
+                url
+            );
+
+        alert(
+            "لینک لایو کپی شد."
+        );
+
+    } catch {
+
+        shareLink.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+        alert(
+            "لینک لایو کپی شد."
+        );
+    }
+}
+
+
+async function nativeShare() {
+
+    const url =
+        getShareUrl();
+
+
+    if (
+        navigator.share
+    ) {
+
+        try {
+
+            await navigator.share({
+                title:
+                    getTitle(
+                        stream
+                    ),
+
+                text:
+                    "تماشای لایو در LainoLive",
+
+                url
+            });
+
+        } catch {}
+
+        return;
+    }
+
+
+    await copyShareLink();
+}
+
+
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            stopped =
+                true;
+
+            await leaveViewer();
+
+
+            if (
+                socket
+                &&
+                socket.readyState ===
+                WebSocket.OPEN
+            ) {
 
                 try {
 
-                    const message =
-                        JSON.parse(
-                            event.data
-                        );
+                    socket.send(
+                        JSON.stringify({
+                            type:
+                                "leave",
 
+                            room_id:
+                                String(
+                                    streamId
+                                ),
 
-                    console.log(
-                        "SIGNAL:",
-                        message
+                            role:
+                                "viewer",
+
+                            viewer_id:
+                                viewerId
+                        })
                     );
 
-
-                    await handleSignal(
-                        message
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "signal message error",
-                        error
-                    );
-                }
-            };
-
-
-        socket.onerror =
-            error => {
-
-                console.error(
-                    "SIGNALING ERROR",
-                    error
-                );
-
-
-                setStatus(
-                    "خطای سرور ارتباطی",
-                    "اتصال WebSocket به سرور لایو برقرار نشد.",
-                    "error"
-                );
-            };
-
-
-        socket.onclose =
-            event => {
-
-                console.warn(
-                    "SIGNALING CLOSED",
-                    event.code,
-                    event.reason
-                );
-
-
-                if (
-                    stopped
-                ) {
-                    return;
-                }
-
-
-                setStatus(
-                    "اتصال سرور قطع شد",
-                    "ارتباط با سرور سیگنالینگ قطع شده است.",
-                    "error"
-                );
-            };
-    }
-
-
-    async function handleSignal(
-        message
-    ) {
-
-        const type =
-            message?.type;
-
-
-        if (
-            type ===
-            "host-present"
-        ) {
-
-            setStatus(
-                "پخش‌کننده پیدا شد",
-                "در حال برقراری اتصال..."
-            );
-
-            return;
-        }
-
-
-        if (
-            type ===
-            "viewer-joined"
-        ) {
-
-            return;
-        }
-
-
-        if (
-            type ===
-            "offer"
-        ) {
-
-            createPeerConnection();
-
-
-            try {
-
-                await peerConnection
-                    .setRemoteDescription(
-                        new RTCSessionDescription(
-                            message.offer
-                            ||
-                            message.description
-                            ||
-                            message
-                        )
-                    );
-
-
-                remoteDescriptionReady =
-                    true;
-
-
-                await flushIce();
-
-
-                const answer =
-                    await peerConnection
-                        .createAnswer();
-
-
-                await peerConnection
-                    .setLocalDescription(
-                        answer
-                    );
-
-
-                sendSignal({
-                    type:
-                        "answer",
-
-                    room_id:
-                        String(
-                            streamId
-                        ),
-
-                    answer:
-                        peerConnection
-                            .localDescription
-                });
-
-
-                setStatus(
-                    "در حال اتصال...",
-                    "پاسخ اتصال برای پخش‌کننده ارسال شد."
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "offer handling error",
-                    error
-                );
-
-
-                setStatus(
-                    "خطای WebRTC",
-                    "دریافت اتصال پخش‌کننده ناموفق بود.",
-                    "error"
-                );
+                } catch {}
             }
 
-            return;
+
+            if (peerConnection) {
+
+                try {
+                    peerConnection.close();
+                } catch {}
+            }
+
+
+            if (socket) {
+
+                try {
+                    socket.close();
+                } catch {}
+            }
+
+
+            window.location.href =
+                "/index.html";
         }
+    );
 
 
-        if (
-            type ===
-            "ice-candidate"
-            ||
-            type ===
-            "candidate"
-            ||
-            type ===
-            "ice"
-        ) {
+document
+    .getElementById(
+        "leaveButton"
+    )
+    .addEventListener(
+        "click",
+        async () => {
 
-            const candidate =
-                message.candidate
-                ||
-                message.ice;
+            stopped =
+                true;
 
+            await leaveViewer();
 
-            await addIceCandidate(
-                candidate
-            );
-
-            return;
-        }
-
-
-        if (
-            type ===
-            "host-left"
-        ) {
-
-            setStatus(
-                "لایو پایان یافت",
-                "پخش‌کننده لایو را بسته است.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (
-            type ===
-            "room-info"
-        ) {
 
             if (
-                message.host_present
-                ||
-                message.host
-                ||
-                message.hostPresent
+                socket
+                &&
+                socket.readyState ===
+                WebSocket.OPEN
             ) {
 
-                setStatus(
-                    "پخش‌کننده آنلاین است",
-                    "در حال اتصال به تصویر و صدا."
-                );
+                try {
+
+                    socket.send(
+                        JSON.stringify({
+                            type:
+                                "leave",
+
+                            room_id:
+                                String(
+                                    streamId
+                                ),
+
+                            role:
+                                "viewer",
+
+                            viewer_id:
+                                viewerId
+                        })
+                    );
+
+                } catch {}
             }
 
-            return;
+
+            if (peerConnection) {
+
+                try {
+                    peerConnection.close();
+                } catch {}
+            }
+
+
+            if (socket) {
+
+                try {
+                    socket.close();
+                } catch {}
+            }
+
+
+            window.location.href =
+                "/index.html";
         }
-    }
+    );
 
 
-    /*
-     * ============================
-     * VIEWER JOIN
-     * ============================
-     */
+document
+    .getElementById(
+        "shareButton"
+    )
+    .addEventListener(
+        "click",
+        openShare
+    );
 
-    async function joinViewer() {
+
+document
+    .getElementById(
+        "closeShareButton"
+    )
+    .addEventListener(
+        "click",
+        closeShare
+    );
+
+
+document
+    .getElementById(
+        "copyShareButton"
+    )
+    .addEventListener(
+        "click",
+        copyShareLink
+    );
+
+
+document
+    .getElementById(
+        "nativeShareButton"
+    )
+    .addEventListener(
+        "click",
+        nativeShare
+    );
+
+
+shareModal.addEventListener(
+    "click",
+    event => {
 
         if (
-            !streamId
+            event.target ===
+            shareModal
         ) {
+
+            closeShare();
+        }
+    }
+);
+
+
+chatSend.addEventListener(
+    "click",
+    sendChat
+);
+
+
+chatInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            event.preventDefault();
+
+            sendChat();
+        }
+    }
+);
+
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if (stopped) {
             return;
         }
 
 
         try {
 
-            const response =
-                await fetch(
-                    "/api/streams/viewer",
-                    {
-                        method:
-                            "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-                                stream_id:
-                                    String(
-                                        streamId
-                                    ),
-
-                                action:
-                                    "join"
-                            })
-                    }
-                );
-
-
-            if (
-                response.ok
-            ) {
-
-                const data =
-                    await response.json();
-
-
-                if (
-                    data
-                    &&
-                    typeof data.viewer_count
-                        !== "undefined"
-                ) {
-
-                    viewerPill.textContent =
-                        "👁 " +
-                        Number(
-                            data.viewer_count
-                        ) +
-                        " بیننده";
-                }
-            }
-
-        } catch (error) {
-
-            console.warn(
-                "viewer join error",
-                error
-            );
-        }
-    }
-
-
-    async function leaveViewer() {
-
-        if (
-            !streamId
-        ) {
-            return;
-        }
-
-
-        try {
-
-            await fetch(
+            fetch(
                 "/api/streams/viewer",
                 {
                     method:
@@ -2123,670 +2482,145 @@
                 }
             );
 
-        } catch (error) {
-
-            console.warn(
-                "viewer leave error",
-                error
-            );
-        }
-    }
-
-
-    /*
-     * ============================
-     * CHAT
-     * ============================
-     */
-
-    async function loadMessages() {
-
-        if (
-            !streamId
-        ) {
-            return;
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/chat/messages?stream_id="
-                    +
-                    encodeURIComponent(
-                        streamId
-                    ),
-                    {
-                        cache:
-                            "no-store"
-                    }
-                );
-
-
-            if (
-                !response.ok
-            ) {
-                return;
-            }
-
-
-            const data =
-                await response.json();
-
-
-            const list =
-                Array.isArray(
-                    data.messages
-                )
-                    ? data.messages
-                    : Array.isArray(data)
-                        ? data
-                        : [];
-
-
-            messages.innerHTML =
-                list
-                    .map(
-                        item => {
-
-                            const user =
-                                item.username
-                                ||
-                                item.user
-                                ||
-                                "کاربر";
-
-                            const text =
-                                item.message
-                                ??
-                                item.text
-                                ??
-                                "";
-
-
-                            return `
-                                <div class="message">
-
-                                    <div class="message-user">
-                                        ${escapeHtml(user)}
-                                    </div>
-
-                                    <div class="message-text">
-                                        ${escapeHtml(text)}
-                                    </div>
-
-                                </div>
-                            `;
-                        }
-                    )
-                    .join("");
-
-
-            messages.scrollTop =
-                messages.scrollHeight;
-
-        } catch (error) {
-
-            console.warn(
-                "chat load error",
-                error
-            );
-        }
-    }
-
-
-    async function sendChat() {
-
-        const text =
-            chatInput.value.trim();
+        } catch {}
 
 
         if (
-            !text
-            ||
-            !streamId
-        ) {
-            return;
-        }
-
-
-        chatSend.disabled =
-            true;
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/chat/send",
-                    {
-                        method:
-                            "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-                                stream_id:
-                                    String(
-                                        streamId
-                                    ),
-
-                                username:
-                                    currentUsername,
-
-                                message:
-                                    text
-                            })
-                    }
-                );
-
-
-            if (
-                response.ok
-            ) {
-
-                chatInput.value = "";
-
-                await loadMessages();
-            }
-
-        } catch (error) {
-
-            console.error(
-                "chat send error",
-                error
-            );
-
-        } finally {
-
-            chatSend.disabled =
-                false;
-        }
-    }
-
-
-    /*
-     * ============================
-     * SHARE
-     * ============================
-     */
-
-    const shareModal =
-        document.getElementById(
-            "shareModal"
-        );
-
-    const shareLink =
-        document.getElementById(
-            "shareLink"
-        );
-
-
-    function getShareUrl() {
-
-        return (
-            window.location.origin
-            +
-            "/viewer.html?id="
-            +
-            encodeURIComponent(
-                streamId
-            )
-        );
-    }
-
-
-    function openShare() {
-
-        shareLink.value =
-            getShareUrl();
-
-        shareModal.classList.add(
-            "show"
-        );
-    }
-
-
-    function closeShare() {
-
-        shareModal.classList.remove(
-            "show"
-        );
-    }
-
-
-    async function copyShareLink() {
-
-        const url =
-            getShareUrl();
-
-
-        try {
-
-            await navigator.clipboard
-                .writeText(
-                    url
-                );
-
-            alert(
-                "لینک لایو کپی شد."
-            );
-
-        } catch {
-
-            shareLink.select();
-
-            document.execCommand(
-                "copy"
-            );
-
-            alert(
-                "لینک لایو کپی شد."
-            );
-        }
-    }
-
-
-    async function nativeShare() {
-
-        const url =
-            getShareUrl();
-
-
-        if (
-            navigator.share
+            socket
+            &&
+            socket.readyState ===
+            WebSocket.OPEN
         ) {
 
             try {
 
-                await navigator.share({
-                    title:
-                        getTitle(
-                            stream
-                        ),
+                socket.send(
+                    JSON.stringify({
+                        type:
+                            "leave",
 
-                    text:
-                        "تماشای لایو در LainoLive",
+                        room_id:
+                            String(
+                                streamId
+                            ),
 
-                    url
-                });
+                        role:
+                            "viewer",
 
-            } catch {
-                // user cancelled
-            }
-
-            return;
-        }
-
-
-        await copyShareLink();
-    }
-
-
-    /*
-     * ============================
-     * EVENTS
-     * ============================
-     */
-
-    document
-        .getElementById(
-            "backButton"
-        )
-        .addEventListener(
-            "click",
-            () => {
-                goBack();
-            }
-        );
-
-
-    document
-        .getElementById(
-            "leaveButton"
-        )
-        .addEventListener(
-            "click",
-            async () => {
-
-                stopped =
-                    true;
-
-                await leaveViewer();
-
-                if (
-                    socket
-                    &&
-                    socket.readyState ===
-                        WebSocket.OPEN
-                ) {
-
-                    try {
-
-                        socket.send(
-                            JSON.stringify({
-                                type:
-                                    "leave",
-
-                                room_id:
-                                    String(
-                                        streamId
-                                    ),
-
-                                role:
-                                    "viewer"
-                            })
-                        );
-
-                    } catch {}
-                }
-
-
-                if (
-                    peerConnection
-                ) {
-
-                    try {
-                        peerConnection.close();
-                    } catch {}
-                }
-
-
-                if (
-                    socket
-                ) {
-
-                    try {
-                        socket.close();
-                    } catch {}
-                }
-
-
-                window.location.href =
-                    "/index.html";
-            }
-        );
-
-
-    document
-        .getElementById(
-            "shareButton"
-        )
-        .addEventListener(
-            "click",
-            openShare
-        );
-
-
-    document
-        .getElementById(
-            "closeShareButton"
-        )
-        .addEventListener(
-            "click",
-            closeShare
-        );
-
-
-    shareModal.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target ===
-                shareModal
-            ) {
-
-                closeShare();
-            }
-        }
-    );
-
-
-    document
-        .getElementById(
-            "copyShareButton"
-        )
-        .addEventListener(
-            "click",
-            copyShareLink
-        );
-
-
-    document
-        .getElementById(
-            "nativeShareButton"
-        )
-        .addEventListener(
-            "click",
-            nativeShare
-        );
-
-
-    chatSend.addEventListener(
-        "click",
-        sendChat
-    );
-
-
-    chatInput.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                sendChat();
-            }
-        }
-    );
-
-
-    /*
-     * ============================
-     * CLEANUP
-     * ============================
-     */
-
-    window.addEventListener(
-        "beforeunload",
-        () => {
-
-            stopped =
-                true;
-
-
-            /*
-             * Best-effort viewer leave.
-             */
-
-            try {
-
-                fetch(
-                    "/api/streams/viewer",
-                    {
-                        method:
-                            "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-                                stream_id:
-                                    String(
-                                        streamId
-                                    ),
-
-                                action:
-                                    "leave"
-                            }),
-
-                        keepalive:
-                            true
-                    }
+                        viewer_id:
+                            viewerId
+                    })
                 );
 
             } catch {}
+        }
+    }
+);
 
 
-            if (
-                socket
-                &&
-                socket.readyState ===
-                    WebSocket.OPEN
-            ) {
+async function start() {
+
+    try {
+
+        const ok =
+            await loadStream();
+
+
+        if (!ok) {
+            return;
+        }
+
+
+        await joinViewer();
+
+        await loadMessages();
+
+        connectSignaling();
+
+
+        setInterval(
+            loadMessages,
+            3000
+        );
+
+
+        setInterval(
+            async () => {
 
                 try {
 
-                    socket.send(
-                        JSON.stringify({
-                            type:
-                                "leave",
+                    const response =
+                        await fetch(
+                            "/api/streams",
+                            {
+                                cache:
+                                    "no-store"
+                            }
+                        );
 
-                            room_id:
+
+                    if (!response.ok) {
+                        return;
+                    }
+
+
+                    const data =
+                        await response.json();
+
+
+                    const streams =
+                        Array.isArray(
+                            data.streams
+                        )
+                            ? data.streams
+                            : Array.isArray(data)
+                                ? data
+                                : [];
+
+
+                    const current =
+                        streams.find(
+                            item =>
+                                String(
+                                    getId(item)
+                                ) ===
                                 String(
                                     streamId
-                                ),
+                                )
+                        );
 
-                            role:
-                                "viewer"
-                        })
-                    );
+
+                    if (current) {
+
+                        stream =
+                            current;
+
+                        renderStream();
+                    }
 
                 } catch {}
-            }
-        }
-    );
+            },
+            5000
+        );
+
+    } catch (error) {
+
+        console.error(
+            "viewer start error",
+            error
+        );
 
 
-    /*
-     * ============================
-     * START
-     * ============================
-     */
-
-    async function start() {
-
-        try {
-
-            const ok =
-                await loadStream();
-
-
-            if (!ok) {
-                return;
-            }
-
-
-            await joinViewer();
-
-
-            await loadMessages();
-
-
-            connectSignaling();
-
-
-            setInterval(
-                loadMessages,
-                3000
-            );
-
-
-            setInterval(
-                async () => {
-
-                    try {
-
-                        const response =
-                            await fetch(
-                                "/api/streams",
-                                {
-                                    cache:
-                                        "no-store"
-                                }
-                            );
-
-
-                        if (
-                            !response.ok
-                        ) {
-                            return;
-                        }
-
-
-                        const data =
-                            await response.json();
-
-
-                        const list =
-                            Array.isArray(
-                                data.streams
-                            )
-                                ? data.streams
-                                : Array.isArray(data)
-                                    ? data
-                                    : [];
-
-
-                        const current =
-                            list.find(
-                                item =>
-                                    String(
-                                        getId(item)
-                                    )
-                                    ===
-                                    String(
-                                        streamId
-                                    )
-                            );
-
-
-                        if (
-                            current
-                        ) {
-
-                            stream =
-                                current;
-
-                            renderStream();
-                        }
-
-                    } catch {}
-                },
-                5000
-            );
-
-        } catch (error) {
-
-            console.error(
-                "viewer startup error",
-                error
-            );
-
-
-            setStatus(
-                "خطا در باز کردن لایو",
-                "خطای برنامه رخ داد. صفحه را دوباره باز کنید.",
-                "error"
-            );
-        }
+        setStatus(
+            "خطا در باز کردن لایو",
+            "صفحه را دوباره باز کنید.",
+            "error"
+        );
     }
+}
 
 
-    start();
+start();
 </script>
 
 </body>

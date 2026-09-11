@@ -58,10 +58,6 @@
                 );
         }
 
-        /* =========================
-           HEADER
-        ========================= */
-
         .header {
             position: sticky;
             top: 0;
@@ -96,9 +92,7 @@
         .header-left {
             display: flex;
             align-items: center;
-
             gap: 10px;
-
             min-width: 0;
         }
 
@@ -133,15 +127,9 @@
 
         .header-user {
             margin-top: 3px;
-
             color: #9999a7;
-
             font-size: 10px;
         }
-
-        /* =========================
-           VIDEO
-        ========================= */
 
         .video-section {
             position: relative;
@@ -179,9 +167,7 @@
         }
 
         .status {
-            padding:
-                7px
-                10px;
+            padding: 7px 10px;
 
             border-radius: 999px;
 
@@ -216,9 +202,7 @@
         }
 
         .viewer-count {
-            padding:
-                7px
-                10px;
+            padding: 7px 10px;
 
             border-radius: 999px;
 
@@ -230,10 +214,6 @@
             backdrop-filter:
                 blur(10px);
         }
-
-        /* =========================
-           INFO
-        ========================= */
 
         .info {
             padding:
@@ -248,25 +228,19 @@
 
         .username {
             margin-top: 5px;
-
             color: #a5a5b1;
-
             font-size: 12px;
         }
 
         .meta {
             display: flex;
             flex-wrap: wrap;
-
             gap: 8px;
-
             margin-top: 12px;
         }
 
         .pill {
-            padding:
-                6px
-                10px;
+            padding: 6px 10px;
 
             border-radius: 999px;
 
@@ -274,7 +248,6 @@
                 rgba(255,255,255,.06);
 
             color: #ceced7;
-
             font-size: 10px;
         }
 
@@ -285,10 +258,6 @@
             color: #ff809b;
         }
 
-        /* =========================
-           ACTIONS
-        ========================= */
-
         .actions {
             display: grid;
 
@@ -297,15 +266,13 @@
 
             gap: 10px;
 
-            padding:
-                10px 16px;
+            padding: 10px 16px;
         }
 
         .action-btn {
             min-height: 48px;
 
             border: none;
-
             border-radius: 14px;
 
             background:
@@ -326,16 +293,9 @@
                 );
         }
 
-        /* =========================
-           CHAT
-        ========================= */
-
         .chat-section {
-            margin:
-                12px 16px;
-
-            padding:
-                15px;
+            margin: 12px 16px;
+            padding: 15px;
 
             border-radius: 20px;
 
@@ -354,17 +314,13 @@
 
         .messages {
             height: 190px;
-
             margin-top: 12px;
-
             overflow-y: auto;
         }
 
         .message {
             margin-bottom: 8px;
-
-            padding:
-                9px 10px;
+            padding: 9px 10px;
 
             border-radius: 13px;
 
@@ -374,7 +330,6 @@
 
         .message-user {
             color: #bd91ff;
-
             font-size: 10px;
             font-weight: 900;
         }
@@ -385,7 +340,6 @@
             color: #ececf2;
 
             font-size: 12px;
-
             line-height: 1.7;
 
             overflow-wrap: anywhere;
@@ -393,22 +347,18 @@
 
         .chat-input-row {
             display: flex;
-
             gap: 8px;
-
             margin-top: 10px;
         }
 
         .chat-input {
             flex: 1;
-
             min-width: 0;
 
             border: none;
             outline: none;
 
-            padding:
-                12px 13px;
+            padding: 12px 13px;
 
             border-radius: 13px;
 
@@ -416,19 +366,13 @@
                 rgba(255,255,255,.07);
 
             color: white;
-
             font-size: 12px;
-        }
-
-        .chat-input::placeholder {
-            color: #777784;
         }
 
         .chat-send {
             border: none;
 
-            padding:
-                0 15px;
+            padding: 0 15px;
 
             border-radius: 13px;
 
@@ -440,13 +384,8 @@
                 );
 
             color: white;
-
             font-weight: 900;
         }
-
-        /* =========================
-           BOTTOM
-        ========================= */
 
         .bottom-bar {
             position: fixed;
@@ -481,11 +420,9 @@
 
         .stop-button {
             width: 100%;
-
             min-height: 50px;
 
             border: none;
-
             border-radius: 15px;
 
             background:
@@ -500,10 +437,6 @@
             font-size: 13px;
             font-weight: 900;
         }
-
-        /* =========================
-           SHARE MODAL
-        ========================= */
 
         .modal {
             position: fixed;
@@ -543,12 +476,7 @@
                 0
                 0;
 
-            background:
-                #111119;
-
-            border-top:
-                1px solid
-                rgba(255,255,255,.08);
+            background: #111119;
         }
 
         .modal-title {
@@ -606,13 +534,11 @@
 
         .modal-close {
             width: 100%;
-
             margin-top: 9px;
 
             min-height: 43px;
 
             border: none;
-
             border-radius: 13px;
 
             background:
@@ -621,7 +547,7 @@
             color: #9999a5;
         }
 
-        @media (min-width:700px) {
+        @media (min-width: 700px) {
 
             .page {
                 max-width: 900px;
@@ -718,7 +644,6 @@
                 class="status"
             >
                 <span
-                    id="statusDot"
                     class="status-dot"
                 ></span>
 
@@ -893,12 +818,6 @@
 
 
 <script>
-/*
- * =========================================================
- * CONFIG
- * =========================================================
- */
-
 const SIGNALING_URL =
     "wss://lainolive-signaling.onrender.com";
 
@@ -912,83 +831,55 @@ const CURRENT_STREAM_KEY =
     "lainolive_current_stream";
 
 
-/*
- * =========================================================
- * ELEMENTS
- * =========================================================
- */
-
 const localVideo =
-    document.getElementById(
-        "localVideo"
-    );
+    document.getElementById("localVideo");
 
 const statusBox =
-    document.getElementById(
-        "statusBox"
-    );
+    document.getElementById("statusBox");
 
 const viewerCountElement =
-    document.getElementById(
-        "viewerCount"
-    );
+    document.getElementById("viewerCount");
 
 const headerTitle =
-    document.getElementById(
-        "headerTitle"
-    );
+    document.getElementById("headerTitle");
 
 const headerUser =
-    document.getElementById(
-        "headerUser"
-    );
+    document.getElementById("headerUser");
 
 const streamTitleElement =
-    document.getElementById(
-        "streamTitle"
-    );
+    document.getElementById("streamTitle");
 
 const streamUsernameElement =
-    document.getElementById(
-        "streamUsername"
-    );
+    document.getElementById("streamUsername");
 
 const categoryPill =
-    document.getElementById(
-        "categoryPill"
-    );
+    document.getElementById("categoryPill");
 
 const messages =
-    document.getElementById(
-        "messages"
-    );
+    document.getElementById("messages");
 
 const chatInput =
-    document.getElementById(
-        "chatInput"
-    );
+    document.getElementById("chatInput");
 
 const chatSend =
-    document.getElementById(
-        "chatSend"
-    );
+    document.getElementById("chatSend");
 
 const shareModal =
-    document.getElementById(
-        "shareModal"
-    );
+    document.getElementById("shareModal");
 
 const shareLink =
-    document.getElementById(
-        "shareLink"
-    );
+    document.getElementById("shareLink");
 
 
-/*
- * =========================================================
- * STATE
- * =========================================================
- */
+if (
+    localStorage.getItem(
+        LOGIN_KEY
+    ) !== "true"
+) {
+    window.location.href =
+        "/login.html";
+}
+
 
 let currentUsername =
     localStorage.getItem(
@@ -1003,27 +894,27 @@ let localStream = null;
 
 let socket = null;
 
-let peerConnection = null;
-
 let stopped = false;
-
-let remoteViewerWaiting = false;
-
-let remoteDescriptionReady = false;
-
-let pendingIceCandidates = [];
-
-let qualityMonitorTimer = null;
 
 let reconnectTimer = null;
 
+let qualityMonitorTimer = null;
+
+
+/*
+ * هر Viewer اتصال خودش را دارد:
+ *
+ * peerConnections[viewer_id] = {
+ *     pc: RTCPeerConnection,
+ *     remoteDescriptionReady: false,
+ *     pendingIceCandidates: []
+ * }
+ */
+
+const peerConnections = new Map();
+
+
 let currentMaxBitrate = 700000;
-
-let lastPacketsSent = 0;
-
-let lastPacketsLost = 0;
-
-let lastStatsTime = 0;
 
 const BITRATE_LEVELS = [
     250000,
@@ -1032,54 +923,16 @@ const BITRATE_LEVELS = [
 ];
 
 
-/*
- * =========================================================
- * LOGIN
- * =========================================================
- */
-
-if (
-    localStorage.getItem(
-        LOGIN_KEY
-    ) !== "true"
-) {
-
-    window.location.href =
-        "/login.html";
-}
-
-
-/*
- * =========================================================
- * HELPERS
- * =========================================================
- */
-
 function escapeHtml(value) {
 
     return String(
         value ?? ""
     )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 
@@ -1144,7 +997,7 @@ function setStatus(
     type = "loading"
 ) {
 
-    const dotClass =
+    const dot =
         type === "live"
             ? "live"
             : type === "error"
@@ -1154,19 +1007,12 @@ function setStatus(
     statusBox.innerHTML =
         `
             <span
-                class="status-dot ${dotClass}"
+                class="status-dot ${dot}"
             ></span>
-
             ${escapeHtml(text)}
         `;
 }
 
-
-/*
- * =========================================================
- * STREAM
- * =========================================================
- */
 
 function loadStoredStream() {
 
@@ -1181,24 +1027,15 @@ function loadStoredStream() {
             return false;
         }
 
-
         const parsed =
-            JSON.parse(
-                saved
-            );
-
+            JSON.parse(saved);
 
         if (!parsed) {
             return false;
         }
 
-
-        stream =
-            parsed;
-
-        streamId =
-            getId(parsed);
-
+        stream = parsed;
+        streamId = getId(parsed);
 
         return Boolean(
             streamId
@@ -1207,7 +1044,7 @@ function loadStoredStream() {
     } catch (error) {
 
         console.error(
-            "load stored stream error",
+            "load stream error",
             error
         );
 
@@ -1222,7 +1059,6 @@ function renderStream() {
         return;
     }
 
-
     const title =
         getTitle(stream);
 
@@ -1232,11 +1068,9 @@ function renderStream() {
     const category =
         getCategory(stream);
 
-
     document.title =
         title +
         " - LainoLive";
-
 
     headerTitle.textContent =
         title;
@@ -1244,7 +1078,6 @@ function renderStream() {
     headerUser.textContent =
         "👤 " +
         username;
-
 
     streamTitleElement.textContent =
         title;
@@ -1257,7 +1090,6 @@ function renderStream() {
         "🎮 " +
         category;
 
-
     viewerCountElement.textContent =
         "👁 " +
         getViewers(stream) +
@@ -1265,18 +1097,11 @@ function renderStream() {
 }
 
 
-/*
- * =========================================================
- * CAMERA
- * =========================================================
- */
-
 async function startCamera() {
 
     setStatus(
         "در حال روشن کردن دوربین..."
     );
-
 
     if (
         !navigator.mediaDevices
@@ -1294,7 +1119,6 @@ async function startCamera() {
         );
     }
 
-
     try {
 
         localStream =
@@ -1304,17 +1128,14 @@ async function startCamera() {
                         width: {
                             ideal: 1280
                         },
-
                         height: {
                             ideal: 720
                         },
-
                         frameRate: {
                             ideal: 30,
                             max: 30
                         }
                     },
-
                     audio: {
                         echoCancellation: true,
                         noiseSuppression: true,
@@ -1322,13 +1143,12 @@ async function startCamera() {
                     }
                 });
 
-    } catch (firstError) {
+    } catch (error) {
 
         console.warn(
             "high quality camera failed",
-            firstError
+            error
         );
-
 
         localStream =
             await navigator.mediaDevices
@@ -1337,38 +1157,24 @@ async function startCamera() {
                         width: {
                             ideal: 640
                         },
-
                         height: {
                             ideal: 480
                         },
-
                         frameRate: {
                             ideal: 24,
                             max: 24
                         }
                     },
-
                     audio: true
                 });
     }
 
-
     localVideo.srcObject =
         localStream;
 
-
     try {
-
         await localVideo.play();
-
-    } catch (error) {
-
-        console.warn(
-            "local video play failed",
-            error
-        );
-    }
-
+    } catch {}
 
     setStatus(
         "دوربین آماده است",
@@ -1377,34 +1183,15 @@ async function startCamera() {
 }
 
 
-/*
- * =========================================================
- * PEER CONNECTION
- * =========================================================
- */
+function createPeerConnection(
+    viewerId
+) {
 
-function createPeerConnection() {
+    closeViewerConnection(
+        viewerId
+    );
 
-    if (
-        peerConnection
-    ) {
-
-        try {
-            peerConnection.close();
-        } catch {}
-
-        peerConnection = null;
-    }
-
-
-    remoteDescriptionReady =
-        false;
-
-    pendingIceCandidates =
-        [];
-
-
-    peerConnection =
+    const pc =
         new RTCPeerConnection({
             bundlePolicy:
                 "max-bundle",
@@ -1425,10 +1212,6 @@ function createPeerConnection() {
         });
 
 
-    /*
-     * Camera / microphone tracks
-     */
-
     if (localStream) {
 
         localStream
@@ -1436,7 +1219,7 @@ function createPeerConnection() {
             .forEach(
                 track => {
 
-                    peerConnection.addTrack(
+                    pc.addTrack(
                         track,
                         localStream
                     );
@@ -1445,11 +1228,20 @@ function createPeerConnection() {
     }
 
 
-    /*
-     * ICE
-     */
+    const state = {
+        pc,
+        remoteDescriptionReady: false,
+        pendingIceCandidates: []
+    };
 
-    peerConnection.onicecandidate =
+
+    peerConnections.set(
+        viewerId,
+        state
+    );
+
+
+    pc.onicecandidate =
         event => {
 
             if (
@@ -1457,7 +1249,6 @@ function createPeerConnection() {
             ) {
                 return;
             }
-
 
             sendSignal({
                 type:
@@ -1468,153 +1259,687 @@ function createPeerConnection() {
                         streamId
                     ),
 
+                viewer_id:
+                    viewerId,
+
                 candidate:
                     event.candidate
             });
         };
 
 
-    /*
-     * Connection state
-     */
-
-    peerConnection.onconnectionstatechange =
+    pc.onconnectionstatechange =
         () => {
 
-            if (
-                !peerConnection
-            ) {
-                return;
-            }
-
-
-            const state =
-                peerConnection
-                    .connectionState;
-
-
             console.log(
-                "HOST connectionState:",
-                state
+                "viewer",
+                viewerId,
+                "connection:",
+                pc.connectionState
             );
 
-
             if (
-                state ===
+                pc.connectionState ===
                 "connected"
             ) {
 
                 setStatus(
-                    "لایو در حال پخش است",
+                    `${peerConnections.size} بیننده متصل`,
                     "live"
                 );
             }
 
-
             if (
-                state ===
-                "connecting"
-            ) {
-
-                setStatus(
-                    "در حال اتصال بیننده..."
-                );
-            }
-
-
-            if (
-                state ===
-                "disconnected"
-            ) {
-
-                setStatus(
-                    "ارتباط بیننده ناپایدار است"
-                );
-            }
-
-
-            if (
-                state ===
+                pc.connectionState ===
                 "failed"
             ) {
 
-                setStatus(
-                    "اتصال WebRTC ناموفق بود",
-                    "error"
+                console.warn(
+                    "Viewer connection failed:",
+                    viewerId
                 );
             }
         };
 
 
-    /*
-     * ICE connection state
-     */
-
-    peerConnection.oniceconnectionstatechange =
+    pc.oniceconnectionstatechange =
         () => {
 
-            if (
-                !peerConnection
-            ) {
-                return;
-            }
-
-
             console.log(
-                "HOST ICE:",
-                peerConnection
-                    .iceConnectionState
+                "viewer",
+                viewerId,
+                "ICE:",
+                pc.iceConnectionState
             );
         };
 
 
-    /*
-     * Signaling state
-     */
-
-    peerConnection.onsignalingstatechange =
-        () => {
-
-            if (
-                !peerConnection
-            ) {
-                return;
-            }
-
-
-            console.log(
-                "HOST SIGNALING:",
-                peerConnection
-                    .signalingState
-            );
-        };
+    return state;
 }
 
 
-/*
- * =========================================================
- * QUALITY CONTROL
- * =========================================================
- */
+function closeViewerConnection(
+    viewerId
+) {
 
-async function applyVideoQuality() {
+    const state =
+        peerConnections.get(
+            viewerId
+        );
+
+    if (!state) {
+        return;
+    }
+
+    try {
+        state.pc.close();
+    } catch {}
+
+    peerConnections.delete(
+        viewerId
+    );
+}
+
+
+function sendSignal(
+    payload
+) {
 
     if (
-        !peerConnection
+        !socket
+        ||
+        socket.readyState !==
+        WebSocket.OPEN
+    ) {
+
+        console.warn(
+            "socket not open",
+            payload
+        );
+
+        return false;
+    }
+
+    try {
+
+        socket.send(
+            JSON.stringify(
+                payload
+            )
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "signal send error",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+async function createOfferForViewer(
+    viewerId
+) {
+
+    if (
+        stopped
+        ||
+        !localStream
+        ||
+        !viewerId
     ) {
         return;
     }
 
 
+    const state =
+        createPeerConnection(
+            viewerId
+        );
+
+
+    try {
+
+        const offer =
+            await state.pc
+                .createOffer();
+
+
+        await state.pc
+            .setLocalDescription(
+                offer
+            );
+
+
+        sendSignal({
+            type:
+                "offer",
+
+            room_id:
+                String(
+                    streamId
+                ),
+
+            viewer_id:
+                viewerId,
+
+            offer:
+                state.pc.localDescription
+        });
+
+
+        await applyVideoQuality(
+            state.pc
+        );
+
+        setStatus(
+            `${peerConnections.size} بیننده`,
+            "live"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "offer error",
+            viewerId,
+            error
+        );
+
+        closeViewerConnection(
+            viewerId
+        );
+    }
+}
+
+
+async function handleViewerAnswer(
+    message
+) {
+
+    const viewerId =
+        String(
+            message.viewer_id || ""
+        );
+
+    if (!viewerId) {
+        return;
+    }
+
+
+    const state =
+        peerConnections.get(
+            viewerId
+        );
+
+    if (!state) {
+        return;
+    }
+
+
+    const answer =
+        message.answer ||
+        message.description;
+
+
+    if (!answer) {
+        return;
+    }
+
+
+    try {
+
+        await state.pc
+            .setRemoteDescription(
+                new RTCSessionDescription(
+                    answer
+                )
+            );
+
+
+        state.remoteDescriptionReady =
+            true;
+
+
+        await flushViewerIce(
+            viewerId
+        );
+
+
+        await applyVideoQuality(
+            state.pc
+        );
+
+
+        setStatus(
+            `${peerConnections.size} بیننده متصل`,
+            "live"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "answer error",
+            error
+        );
+    }
+}
+
+
+async function handleViewerIce(
+    message
+) {
+
+    const viewerId =
+        String(
+            message.viewer_id || ""
+        );
+
+    if (!viewerId) {
+        return;
+    }
+
+
+    const state =
+        peerConnections.get(
+            viewerId
+        );
+
+    if (!state) {
+        return;
+    }
+
+
+    const candidate =
+        message.candidate ||
+        message.ice;
+
+
+    if (!candidate) {
+        return;
+    }
+
+
+    if (
+        !state.remoteDescriptionReady
+    ) {
+
+        state.pendingIceCandidates.push(
+            candidate
+        );
+
+        return;
+    }
+
+
+    try {
+
+        await state.pc
+            .addIceCandidate(
+                new RTCIceCandidate(
+                    candidate
+                )
+            );
+
+    } catch (error) {
+
+        console.error(
+            "viewer ICE error",
+            viewerId,
+            error
+        );
+    }
+}
+
+
+async function flushViewerIce(
+    viewerId
+) {
+
+    const state =
+        peerConnections.get(
+            viewerId
+        );
+
+    if (!state) {
+        return;
+    }
+
+
+    while (
+        state.pendingIceCandidates.length
+    ) {
+
+        const candidate =
+            state.pendingIceCandidates.shift();
+
+        try {
+
+            await state.pc
+                .addIceCandidate(
+                    new RTCIceCandidate(
+                        candidate
+                    )
+                );
+
+        } catch (error) {
+
+            console.error(
+                "flush ICE error",
+                viewerId,
+                error
+            );
+        }
+    }
+}
+
+
+async function handleSignal(
+    message
+) {
+
+    const type =
+        message?.type;
+
+
+    console.log(
+        "HOST SIGNAL:",
+        message
+    );
+
+
+    if (
+        type ===
+        "viewer-joined"
+    ) {
+
+        const viewerId =
+            String(
+                message.viewer_id || ""
+            );
+
+
+        if (!viewerId) {
+            return;
+        }
+
+
+        setStatus(
+            "بیننده جدید وارد شد..."
+        );
+
+
+        await createOfferForViewer(
+            viewerId
+        );
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "answer"
+    ) {
+
+        await handleViewerAnswer(
+            message
+        );
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "ice-candidate"
+        ||
+        type ===
+        "candidate"
+        ||
+        type ===
+        "ice"
+    ) {
+
+        await handleViewerIce(
+            message
+        );
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "viewer-left"
+    ) {
+
+        const viewerId =
+            String(
+                message.viewer_id || ""
+            );
+
+
+        if (viewerId) {
+
+            closeViewerConnection(
+                viewerId
+            );
+        }
+
+
+        setStatus(
+            peerConnections.size > 0
+                ? `${peerConnections.size} بیننده متصل`
+                : "لایو در حال پخش است",
+            "live"
+        );
+
+        return;
+    }
+
+
+    if (
+        type ===
+        "host-replaced"
+    ) {
+
+        setStatus(
+            "این لایو از جای دیگری شروع شد",
+            "error"
+        );
+
+        return;
+    }
+}
+
+
+function connectSignaling() {
+
+    if (
+        stopped
+    ) {
+        return;
+    }
+
+
+    if (
+        socket
+        &&
+        (
+            socket.readyState ===
+                WebSocket.OPEN
+            ||
+            socket.readyState ===
+                WebSocket.CONNECTING
+        )
+    ) {
+        return;
+    }
+
+
+    setStatus(
+        "در حال اتصال به سرور ارتباطی..."
+    );
+
+
+    try {
+
+        socket =
+            new WebSocket(
+                SIGNALING_URL
+            );
+
+    } catch (error) {
+
+        console.error(
+            "websocket error",
+            error
+        );
+
+        setStatus(
+            "اتصال به سرور ناموفق بود",
+            "error"
+        );
+
+        scheduleReconnect();
+
+        return;
+    }
+
+
+    socket.onopen =
+        () => {
+
+            console.log(
+                "HOST SIGNALING CONNECTED"
+            );
+
+
+            sendSignal({
+                type:
+                    "join",
+
+                room_id:
+                    String(
+                        streamId
+                    ),
+
+                role:
+                    "host"
+            });
+
+
+            setStatus(
+                "لایو آماده است",
+                "live"
+            );
+        };
+
+
+    socket.onmessage =
+        async event => {
+
+            try {
+
+                const message =
+                    JSON.parse(
+                        event.data
+                    );
+
+                await handleSignal(
+                    message
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "signal message error",
+                    error
+                );
+            }
+        };
+
+
+    socket.onerror =
+        error => {
+
+            console.error(
+                "SIGNALING ERROR",
+                error
+            );
+
+            setStatus(
+                "خطای سرور ارتباطی",
+                "error"
+            );
+        };
+
+
+    socket.onclose =
+        () => {
+
+            if (stopped) {
+                return;
+            }
+
+            setStatus(
+                "اتصال سرور قطع شد",
+                "error"
+            );
+
+            scheduleReconnect();
+        };
+}
+
+
+function scheduleReconnect() {
+
+    if (
+        reconnectTimer
+        ||
+        stopped
+    ) {
+        return;
+    }
+
+
+    reconnectTimer =
+        setTimeout(
+            () => {
+
+                reconnectTimer =
+                    null;
+
+                connectSignaling();
+
+            },
+            3000
+        );
+}
+
+
+async function applyVideoQuality(
+    pc
+) {
+
+    if (!pc) {
+        return;
+    }
+
+
     const sender =
-        peerConnection
-            .getSenders()
+        pc.getSenders()
             .find(
                 item =>
                     item.track
                     &&
                     item.track.kind ===
-                        "video"
+                    "video"
             );
 
 
@@ -1632,11 +1957,12 @@ async function applyVideoQuality() {
         if (
             !parameters.encodings
             ||
-            !parameters.encodings.length
+            parameters.encodings.length === 0
         ) {
 
-            parameters.encodings =
-                [{}];
+            parameters.encodings = [
+                {}
+            ];
         }
 
 
@@ -1666,1103 +1992,157 @@ async function applyVideoQuality() {
             parameters
         );
 
-
-        console.log(
-            "Applied video quality:",
-            {
-                bitrate:
-                    currentMaxBitrate,
-
-                fps:
-                    encoding.maxFramerate,
-
-                scale:
-                    encoding.scaleResolutionDownBy
-            }
-        );
-
     } catch (error) {
 
         console.warn(
-            "apply quality error",
+            "quality error",
             error
         );
     }
-}
-
-
-function setBitrateLevel(
-    bitrate
-) {
-
-    const allowed =
-        BITRATE_LEVELS.includes(
-            bitrate
-        )
-            ? bitrate
-            : 700000;
-
-
-    if (
-        currentMaxBitrate ===
-        allowed
-    ) {
-
-        return false;
-    }
-
-
-    currentMaxBitrate =
-        allowed;
-
-
-    return true;
 }
 
 
 async function monitorConnectionQuality() {
 
     if (
-        !peerConnection
-        ||
-        peerConnection.connectionState !==
+        peerConnections.size === 0
+    ) {
+        return;
+    }
+
+
+    for (
+        const [
+            viewerId,
+            state
+        ]
+        of peerConnections
+    ) {
+
+        const pc =
+            state.pc;
+
+
+        if (
+            pc.connectionState !==
             "connected"
-    ) {
-
-        return;
-    }
-
-
-    try {
-
-        const stats =
-            await peerConnection.getStats();
+        ) {
+            continue;
+        }
 
 
-        let outbound =
-            null;
+        try {
 
-        let candidatePair =
-            null;
+            const stats =
+                await pc.getStats();
 
 
-        stats.forEach(
-            report => {
+            let outbound = null;
 
-                if (
-                    report.type ===
+
+            stats.forEach(
+                report => {
+
+                    if (
+                        report.type ===
                         "outbound-rtp"
-                    &&
-                    (
-                        report.kind ===
+                        &&
+                        (
+                            report.kind ===
                             "video"
-                        ||
-                        report.mediaType ===
+                            ||
+                            report.mediaType ===
                             "video"
-                    )
-                ) {
+                        )
+                    ) {
 
-                    outbound =
-                        report;
+                        outbound =
+                            report;
+                    }
                 }
+            );
 
+
+            if (!outbound) {
+                continue;
+            }
+
+
+            const lost =
+                Number(
+                    outbound.packetsLost ||
+                    0
+                );
+
+            const sent =
+                Number(
+                    outbound.packetsSent ||
+                    0
+                );
+
+            const total =
+                lost + sent;
+
+
+            if (
+                total === 0
+            ) {
+                continue;
+            }
+
+
+            const loss =
+                lost / total;
+
+
+            if (
+                loss > 0.08
+                &&
+                currentMaxBitrate > 250000
+            ) {
 
                 if (
-                    report.type ===
-                        "candidate-pair"
-                    &&
-                    (
-                        report.state ===
-                            "succeeded"
-                        ||
-                        report.nominated ===
-                            true
-                    )
+                    currentMaxBitrate ===
+                    700000
                 ) {
 
-                    candidatePair =
-                        report;
+                    currentMaxBitrate =
+                        450000;
+
+                } else {
+
+                    currentMaxBitrate =
+                        250000;
+                }
+
+
+                for (
+                    const item
+                    of peerConnections.values()
+                ) {
+
+                    await applyVideoQuality(
+                        item.pc
+                    );
                 }
             }
-        );
 
-
-        if (
-            !outbound
-        ) {
-            return;
-        }
-
-
-        const packetsSent =
-            Number(
-                outbound.packetsSent
-                ||
-                0
-            );
-
-
-        const packetsLost =
-            Number(
-                outbound.packetsLost
-                ||
-                0
-            );
-
-
-        const now =
-            Date.now();
-
-
-        let loss =
-            0;
-
-
-        if (
-            packetsSent +
-            packetsLost >
-                0
-        ) {
-
-            loss =
-                packetsLost /
-                (
-                    packetsSent +
-                    packetsLost
-                );
-        }
-
-
-        const rtt =
-            candidatePair
-            &&
-            candidatePair.currentRoundTripTime
-                ? candidatePair.currentRoundTripTime *
-                    1000
-                : 0;
-
-
-        console.log(
-            "WebRTC quality:",
-            {
-                loss:
-                    Math.round(
-                        loss * 100
-                    ) +
-                    "%",
-
-                rtt:
-                    Math.round(
-                        rtt
-                    ) +
-                    "ms",
-
-                packetsSent,
-
-                packetsLost
-            }
-        );
-
-
-        /*
-         * ---------------------------------
-         * وضعیت اولیه
-         * ---------------------------------
-         */
-
-        if (
-            !lastStatsTime
-        ) {
-
-            lastStatsTime =
-                now;
-
-            lastPacketsSent =
-                packetsSent;
-
-            lastPacketsLost =
-                packetsLost;
-
-            return;
-        }
-
-
-        /*
-         * فقط وقتی آمار جدید داریم.
-         */
-
-        const newPacketsSent =
-            Math.max(
-                0,
-                packetsSent -
-                lastPacketsSent
-            );
-
-
-        const newPacketsLost =
-            Math.max(
-                0,
-                packetsLost -
-                lastPacketsLost
-            );
-
-
-        const packetTotal =
-            newPacketsSent +
-            newPacketsLost;
-
-
-        const intervalLoss =
-            packetTotal > 0
-                ? newPacketsLost /
-                    packetTotal
-                : loss;
-
-
-        lastPacketsSent =
-            packetsSent;
-
-        lastPacketsLost =
-            packetsLost;
-
-        lastStatsTime =
-            now;
-
-
-        /*
-         * ---------------------------------
-         * اینترنت ضعیف
-         * ---------------------------------
-         */
-
-        if (
-            intervalLoss > 0.08
-            ||
-            loss > 0.08
-            ||
-            rtt > 500
-        ) {
-
-            let changed =
-                false;
-
-
-            if (
-                currentMaxBitrate ===
-                700000
-            ) {
-
-                changed =
-                    setBitrateLevel(
-                        450000
-                    );
-
-            } else if (
-                currentMaxBitrate ===
-                450000
-            ) {
-
-                changed =
-                    setBitrateLevel(
-                        250000
-                    );
-            }
-
-
-            if (
-                changed
-            ) {
-
-                await applyVideoQuality();
-
-
-                setStatus(
-                    "کیفیت کاهش یافت",
-                    "برای جلوگیری از قطع شدن لایو."
-                );
-            }
-
-
-            return;
-        }
-
-
-        /*
-         * ---------------------------------
-         * اینترنت متوسط
-         * ---------------------------------
-         */
-
-        if (
-            intervalLoss > 0.03
-            ||
-            loss > 0.03
-            ||
-            rtt > 300
-        ) {
-
-            if (
-                currentMaxBitrate ===
-                700000
-            ) {
-
-                setBitrateLevel(
-                    450000
-                );
-
-
-                await applyVideoQuality();
-
-
-                setStatus(
-                    "کیفیت پخش تنظیم شد",
-                    "اتصال کمی ناپایدار است."
-                );
-            }
-
-
-            return;
-        }
-
-
-        /*
-         * ---------------------------------
-         * اینترنت خوب
-         * ---------------------------------
-         */
-
-        if (
-            intervalLoss < 0.02
-            &&
-            loss < 0.02
-            &&
-            (
-                !rtt
-                ||
-                rtt < 180
-            )
-        ) {
-
-            let changed =
-                false;
-
-
-            if (
-                currentMaxBitrate ===
-                250000
-            ) {
-
-                changed =
-                    setBitrateLevel(
-                        450000
-                    );
-
-            } else if (
-                currentMaxBitrate ===
-                450000
-            ) {
-
-                changed =
-                    setBitrateLevel(
-                        700000
-                    );
-            }
-
-
-            if (
-                changed
-            ) {
-
-                await applyVideoQuality();
-
-
-                setStatus(
-                    "کیفیت پخش بهتر شد",
-                    "اتصال پایدار است.",
-                    "live"
-                );
-            }
-        }
-    } catch (error) {
-
-        console.warn(
-            "quality monitor error",
-            error
-        );
-    }
-}
-
-
-function startQualityMonitor() {
-
-    if (
-        qualityMonitorTimer
-    ) {
-
-        clearInterval(
-            qualityMonitorTimer
-        );
-    }
-
-
-    lastPacketsSent =
-        0;
-
-    lastPacketsLost =
-        0;
-
-    lastStatsTime =
-        0;
-
-
-    qualityMonitorTimer =
-        setInterval(
-            monitorConnectionQuality,
-            3000
-        );
-}
-
-
-/*
- * =========================================================
- * SIGNALING
- * =========================================================
- */
-
-function sendSignal(
-    payload
-) {
-
-    if (
-        !socket
-        ||
-        socket.readyState !==
-            WebSocket.OPEN
-    ) {
-
-        console.warn(
-            "signaling socket is not open",
-            payload
-        );
-
-        return false;
-    }
-
-
-    try {
-
-        socket.send(
-            JSON.stringify(
-                payload
-            )
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "signaling send error",
-            error
-        );
-
-        return false;
-    }
-}
-
-
-async function createOfferForViewer() {
-
-    if (
-        stopped
-    ) {
-        return;
-    }
-
-
-    if (
-        !localStream
-    ) {
-
-        console.warn(
-            "camera is not ready"
-        );
-
-        return;
-    }
-
-
-    setStatus(
-        "در حال ایجاد اتصال..."
-    );
-
-
-    createPeerConnection();
-
-
-    try {
-
-        const offer =
-            await peerConnection
-                .createOffer();
-
-
-        await peerConnection
-            .setLocalDescription(
-                offer
-            );
-
-
-        const sent =
-            sendSignal({
-                type:
-                    "offer",
-
-                room_id:
-                    String(
-                        streamId
-                    ),
-
-                offer:
-                    peerConnection
-                        .localDescription
-            });
-
-
-        if (
-            sent
-        ) {
-
-            await applyVideoQuality();
-
-
-            setStatus(
-                "در انتظار اتصال بیننده..."
-            );
-        }
-
-    } catch (error) {
-
-        console.error(
-            "create offer error",
-            error
-        );
-
-
-        setStatus(
-            "خطا در ایجاد اتصال",
-            "error"
-        );
-    }
-}
-
-
-async function handleIceCandidate(
-    candidate
-) {
-
-    if (
-        !candidate
-        ||
-        !peerConnection
-    ) {
-
-        return;
-    }
-
-
-    if (
-        !remoteDescriptionReady
-    ) {
-
-        pendingIceCandidates.push(
-            candidate
-        );
-
-        return;
-    }
-
-
-    try {
-
-        await peerConnection
-            .addIceCandidate(
-                new RTCIceCandidate(
-                    candidate
-                )
-            );
-
-    } catch (error) {
-
-        console.error(
-            "add host ICE error",
-            error
-        );
-    }
-}
-
-
-async function flushIceCandidates() {
-
-    if (
-        !peerConnection
-    ) {
-
-        return;
-    }
-
-
-    while (
-        pendingIceCandidates.length
-    ) {
-
-        const candidate =
-            pendingIceCandidates.shift();
-
-
-        try {
-
-            await peerConnection
-                .addIceCandidate(
-                    new RTCIceCandidate(
-                        candidate
-                    )
-                );
 
         } catch (error) {
 
-            console.error(
-                "flush host ICE error",
+            console.warn(
+                "quality monitor error",
+                viewerId,
                 error
             );
         }
     }
 }
 
-
-async function handleSignal(
-    message
-) {
-
-    const type =
-        message?.type;
-
-
-    console.log(
-        "HOST SIGNAL:",
-        message
-    );
-
-
-    /*
-     * Viewer joined.
-     */
-
-    if (
-        type ===
-        "viewer-joined"
-    ) {
-
-        remoteViewerWaiting =
-            true;
-
-
-        setStatus(
-            "بیننده وارد لایو شد..."
-        );
-
-
-        await createOfferForViewer();
-
-        return;
-    }
-
-
-    /*
-     * Viewer answer.
-     */
-
-    if (
-        type ===
-        "answer"
-    ) {
-
-        if (
-            !peerConnection
-        ) {
-
-            console.warn(
-                "answer received without peer"
-            );
-
-            return;
-        }
-
-
-        const answer =
-            message.answer
-            ||
-            message.description;
-
-
-        if (
-            !answer
-        ) {
-
-            console.warn(
-                "answer payload missing"
-            );
-
-            return;
-        }
-
-
-        try {
-
-            await peerConnection
-                .setRemoteDescription(
-                    new RTCSessionDescription(
-                        answer
-                    )
-                );
-
-
-            remoteDescriptionReady =
-                true;
-
-
-            await flushIceCandidates();
-
-            await applyVideoQuality();
-
-
-            setStatus(
-                "لایو در حال پخش است",
-                "live"
-            );
-
-        } catch (error) {
-
-            console.error(
-                "set remote answer error",
-                error
-            );
-
-
-            setStatus(
-                "خطا در اتصال WebRTC",
-                "error"
-            );
-        }
-
-
-        return;
-    }
-
-
-    /*
-     * Viewer ICE.
-     */
-
-    if (
-        type ===
-        "ice-candidate"
-        ||
-        type ===
-        "candidate"
-        ||
-        type ===
-        "ice"
-    ) {
-
-        const candidate =
-            message.candidate
-            ||
-            message.ice;
-
-
-        await handleIceCandidate(
-            candidate
-        );
-
-        return;
-    }
-
-
-    /*
-     * Viewer left.
-     */
-
-    if (
-        type ===
-        "viewer-left"
-    ) {
-
-        remoteViewerWaiting =
-            false;
-
-
-        remoteDescriptionReady =
-            false;
-
-
-        pendingIceCandidates =
-            [];
-
-
-        if (
-            peerConnection
-        ) {
-
-            try {
-                peerConnection.close();
-            } catch {}
-
-            peerConnection =
-                null;
-        }
-
-
-        setStatus(
-            "لایو در حال پخش است",
-            "live"
-        );
-
-
-        return;
-    }
-
-
-    /*
-     * Host info / ping.
-     */
-
-    if (
-        type ===
-        "room-info"
-    ) {
-
-        console.log(
-            "ROOM INFO:",
-            message
-        );
-
-        return;
-    }
-
-
-    if (
-        type ===
-        "pong"
-    ) {
-
-        return;
-    }
-}
-
-
-function scheduleSignalingReconnect() {
-
-    if (
-        stopped
-        ||
-        reconnectTimer
-    ) {
-
-        return;
-    }
-
-
-    reconnectTimer =
-        setTimeout(
-            () => {
-
-                reconnectTimer =
-                    null;
-
-
-                if (
-                    stopped
-                ) {
-                    return;
-                }
-
-
-                connectSignaling();
-            },
-            3000
-        );
-}
-
-
-function connectSignaling() {
-
-    if (
-        stopped
-    ) {
-        return;
-    }
-
-
-    if (
-        socket
-        &&
-        (
-            socket.readyState ===
-                WebSocket.OPEN
-            ||
-            socket.readyState ===
-                WebSocket.CONNECTING
-        )
-    ) {
-
-        return;
-    }
-
-
-    setStatus(
-        "در حال اتصال به سرور ارتباطی..."
-    );
-
-
-    try {
-
-        socket =
-            new WebSocket(
-                SIGNALING_URL
-            );
-
-    } catch (error) {
-
-        console.error(
-            "WebSocket create error",
-            error
-        );
-
-
-        setStatus(
-            "اتصال به سرور ناموفق بود",
-            "error"
-        );
-
-
-        scheduleSignalingReconnect();
-
-        return;
-    }
-
-
-    socket.onopen =
-        () => {
-
-            console.log(
-                "HOST SIGNALING CONNECTED"
-            );
-
-
-            setStatus(
-                "لایو آماده است",
-                "live"
-            );
-
-
-            sendSignal({
-                type:
-                    "join",
-
-                room_id:
-                    String(
-                        streamId
-                    ),
-
-                role:
-                    "host"
-            });
-        };
-
-
-    socket.onmessage =
-        async event => {
-
-            try {
-
-                const message =
-                    JSON.parse(
-                        event.data
-                    );
-
-
-                await handleSignal(
-                    message
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "signal message error",
-                    error
-                );
-            }
-        };
-
-
-    socket.onerror =
-        error => {
-
-            console.error(
-                "HOST SIGNALING ERROR",
-                error
-            );
-
-
-            setStatus(
-                "خطای سرور ارتباطی",
-                "error"
-            );
-        };
-
-
-    socket.onclose =
-        event => {
-
-            console.warn(
-                "HOST SIGNALING CLOSED",
-                event.code,
-                event.reason
-            );
-
-
-            if (
-                stopped
-            ) {
-
-                return;
-            }
-
-
-            setStatus(
-                "اتصال سرور قطع شد",
-                "error"
-            );
-
-
-            scheduleSignalingReconnect();
-        };
-}
-
-
-/*
- * =========================================================
- * VIEWER COUNT
- * =========================================================
- */
 
 async function updateViewerCount() {
 
-    if (
-        !streamId
-    ) {
-
+    if (!streamId) {
         return;
     }
 
@@ -2779,10 +2159,7 @@ async function updateViewerCount() {
             );
 
 
-        if (
-            !response.ok
-        ) {
-
+        if (!response.ok) {
             return;
         }
 
@@ -2806,21 +2183,17 @@ async function updateViewerCount() {
                 item =>
                     String(
                         getId(item)
-                    )
-                    ===
+                    ) ===
                     String(
                         streamId
                     )
             );
 
 
-        if (
-            current
-        ) {
+        if (current) {
 
             stream =
                 current;
-
 
             viewerCountElement.textContent =
                 "👁 " +
@@ -2828,28 +2201,13 @@ async function updateViewerCount() {
                 " بیننده";
         }
 
-    } catch (error) {
-
-        console.warn(
-            "viewer count error",
-            error
-        );
-    }
+    } catch {}
 }
 
 
-/*
- * =========================================================
- * CHAT
- * =========================================================
- */
-
 async function loadMessages() {
 
-    if (
-        !streamId
-    ) {
-
+    if (!streamId) {
         return;
     }
 
@@ -2858,8 +2216,7 @@ async function loadMessages() {
 
         const response =
             await fetch(
-                "/api/chat/messages?stream_id="
-                +
+                "/api/chat/messages?stream_id=" +
                 encodeURIComponent(
                     streamId
                 ),
@@ -2870,10 +2227,7 @@ async function loadMessages() {
             );
 
 
-        if (
-            !response.ok
-        ) {
-
+        if (!response.ok) {
             return;
         }
 
@@ -2933,13 +2287,7 @@ async function loadMessages() {
         messages.scrollTop =
             messages.scrollHeight;
 
-    } catch (error) {
-
-        console.warn(
-            "chat load error",
-            error
-        );
-    }
+    } catch {}
 }
 
 
@@ -2954,7 +2302,6 @@ async function sendChat() {
         ||
         !streamId
     ) {
-
         return;
     }
 
@@ -2994,9 +2341,7 @@ async function sendChat() {
             );
 
 
-        if (
-            response.ok
-        ) {
+        if (response.ok) {
 
             chatInput.value =
                 "";
@@ -3004,12 +2349,7 @@ async function sendChat() {
             await loadMessages();
         }
 
-    } catch (error) {
-
-        console.error(
-            "send chat error",
-            error
-        );
+    } catch {
 
     } finally {
 
@@ -3019,19 +2359,11 @@ async function sendChat() {
 }
 
 
-/*
- * =========================================================
- * SHARE
- * =========================================================
- */
-
 function getShareUrl() {
 
     return (
-        window.location.origin
-        +
-        "/viewer.html?id="
-        +
+        window.location.origin +
+        "/viewer.html?id=" +
         encodeURIComponent(
             streamId
         )
@@ -3114,10 +2446,7 @@ async function nativeShare() {
                 url
             });
 
-        } catch {
-
-            // لغو توسط کاربر
-        }
+        } catch {}
 
         return;
     }
@@ -3127,48 +2456,34 @@ async function nativeShare() {
 }
 
 
-/*
- * =========================================================
- * CAMERA SWITCH
- * =========================================================
- */
-
 async function switchCamera() {
 
-    if (
-        !localStream
-    ) {
-
+    if (!localStream) {
         return;
     }
 
 
-    const videoTrack =
+    const oldTrack =
         localStream
             .getVideoTracks()[0];
 
 
-    if (
-        !videoTrack
-    ) {
-
+    if (!oldTrack) {
         return;
     }
 
 
     const settings =
-        videoTrack.getSettings();
+        oldTrack.getSettings();
 
 
-    const currentFacing =
-        settings.facingMode
-        ||
+    const facing =
+        settings.facingMode ||
         "user";
 
 
     const nextFacing =
-        currentFacing ===
-            "environment"
+        facing === "environment"
             ? "user"
             : "environment";
 
@@ -3184,46 +2499,50 @@ async function switchCamera() {
                                 nextFacing
                         }
                     },
-
                     audio: false
                 });
 
 
         const newTrack =
-            newStream
-                .getVideoTracks()[0];
+            newStream.getVideoTracks()[0];
 
 
         if (!newTrack) {
-
             return;
         }
 
 
-        const sender =
-            peerConnection
-                ?.getSenders()
-                .find(
-                    item =>
-                        item.track
-                        &&
-                        item.track.kind ===
-                            "video"
-                );
-
-
-        if (
-            sender
+        for (
+            const state
+            of peerConnections.values()
         ) {
 
-            await sender.replaceTrack(
-                newTrack
-            );
+            const sender =
+                state.pc
+                    .getSenders()
+                    .find(
+                        item =>
+                            item.track
+                            &&
+                            item.track.kind ===
+                                "video"
+                    );
 
+
+            if (sender) {
+
+                await sender.replaceTrack(
+                    newTrack
+                );
+
+                await applyVideoQuality(
+                    state.pc
+                );
+            }
         }
 
 
-        videoTrack.stop();
+        oldTrack.stop();
 
 
         const audioTracks =
@@ -3241,14 +2560,6 @@ async function switchCamera() {
         localVideo.srcObject =
             localStream;
 
-
-        /*
-         * Apply current quality
-         * to the new video sender.
-         */
-
-        await applyVideoQuality();
-
     } catch (error) {
 
         console.warn(
@@ -3259,18 +2570,9 @@ async function switchCamera() {
 }
 
 
-/*
- * =========================================================
- * STOP STREAM
- * =========================================================
- */
-
 async function stopStream() {
 
-    if (
-        stopped
-    ) {
-
+    if (stopped) {
         return;
     }
 
@@ -3279,14 +2581,7 @@ async function stopStream() {
         true;
 
 
-    setStatus(
-        "در حال پایان لایو..."
-    );
-
-
-    if (
-        qualityMonitorTimer
-    ) {
+    if (qualityMonitorTimer) {
 
         clearInterval(
             qualityMonitorTimer
@@ -3297,9 +2592,7 @@ async function stopStream() {
     }
 
 
-    if (
-        reconnectTimer
-    ) {
+    if (reconnectTimer) {
 
         clearTimeout(
             reconnectTimer
@@ -3339,13 +2632,7 @@ async function stopStream() {
             }
         );
 
-    } catch (error) {
-
-        console.warn(
-            "stop stream error",
-            error
-        );
-    }
+    } catch {}
 
 
     if (
@@ -3376,19 +2663,21 @@ async function stopStream() {
     }
 
 
-    if (
-        peerConnection
+    for (
+        const state
+        of peerConnections.values()
     ) {
 
         try {
-            peerConnection.close();
+            state.pc.close();
         } catch {}
     }
 
 
-    if (
-        localStream
-    ) {
+    peerConnections.clear();
+
+
+    if (localStream) {
 
         localStream
             .getTracks()
@@ -3399,18 +2688,7 @@ async function stopStream() {
     }
 
 
-    if (
-        localVideo
-    ) {
-
-        localVideo.srcObject =
-            null;
-    }
-
-
-    if (
-        socket
-    ) {
+    if (socket) {
 
         try {
             socket.close();
@@ -3428,16 +2706,8 @@ async function stopStream() {
 }
 
 
-/*
- * =========================================================
- * BUTTONS
- * =========================================================
- */
-
 document
-    .getElementById(
-        "backButton"
-    )
+    .getElementById("backButton")
     .addEventListener(
         "click",
         () => {
@@ -3455,9 +2725,7 @@ document
 
 
 document
-    .getElementById(
-        "stopButton"
-    )
+    .getElementById("stopButton")
     .addEventListener(
         "click",
         () => {
@@ -3475,9 +2743,7 @@ document
 
 
 document
-    .getElementById(
-        "cameraButton"
-    )
+    .getElementById("cameraButton")
     .addEventListener(
         "click",
         switchCamera
@@ -3485,9 +2751,7 @@ document
 
 
 document
-    .getElementById(
-        "shareButton"
-    )
+    .getElementById("shareButton")
     .addEventListener(
         "click",
         openShare
@@ -3495,9 +2759,7 @@ document
 
 
 document
-    .getElementById(
-        "shareAction"
-    )
+    .getElementById("shareAction")
     .addEventListener(
         "click",
         openShare
@@ -3505,9 +2767,7 @@ document
 
 
 document
-    .getElementById(
-        "closeShareButton"
-    )
+    .getElementById("closeShareButton")
     .addEventListener(
         "click",
         closeShare
@@ -3515,9 +2775,7 @@ document
 
 
 document
-    .getElementById(
-        "copyShareButton"
-    )
+    .getElementById("copyShareButton")
     .addEventListener(
         "click",
         copyShare
@@ -3525,9 +2783,7 @@ document
 
 
 document
-    .getElementById(
-        "nativeShareButton"
-    )
+    .getElementById("nativeShareButton")
     .addEventListener(
         "click",
         nativeShare
@@ -3572,54 +2828,20 @@ chatInput.addEventListener(
 );
 
 
-/*
- * =========================================================
- * CLEANUP
- * =========================================================
- */
-
 window.addEventListener(
     "beforeunload",
     () => {
 
-        if (
-            stopped
-        ) {
-
+        if (stopped) {
             return;
         }
 
 
         if (
-            qualityMonitorTimer
-        ) {
-
-            clearInterval(
-                qualityMonitorTimer
-            );
-        }
-
-
-        if (
-            reconnectTimer
-        ) {
-
-            clearTimeout(
-                reconnectTimer
-            );
-        }
-
-
-        /*
-         * فقط signaling leave.
-         * refresh نباید لایو را از API متوقف کند.
-         */
-
-        if (
             socket
             &&
             socket.readyState ===
-                WebSocket.OPEN
+            WebSocket.OPEN
         ) {
 
             try {
@@ -3645,21 +2867,13 @@ window.addEventListener(
 );
 
 
-/*
- * =========================================================
- * START
- * =========================================================
- */
-
 async function start() {
 
     try {
 
-        const exists =
-            loadStoredStream();
-
-
-        if (!exists) {
+        if (
+            !loadStoredStream()
+        ) {
 
             setStatus(
                 "لایو پیدا نشد",
@@ -3673,23 +2887,11 @@ async function start() {
         renderStream();
 
 
-        /*
-         * Camera MUST be ready first.
-         */
-
         await startCamera();
 
 
-        /*
-         * Signaling after camera.
-         */
-
         connectSignaling();
 
-
-        /*
-         * Chat.
-         */
 
         await loadMessages();
 
@@ -3700,10 +2902,6 @@ async function start() {
         );
 
 
-        /*
-         * Viewer count.
-         */
-
         await updateViewerCount();
 
 
@@ -3712,13 +2910,19 @@ async function start() {
             3000
         );
 
+
+        qualityMonitorTimer =
+            setInterval(
+                monitorConnectionQuality,
+                4000
+            );
+
     } catch (error) {
 
         console.error(
             "LIVE START ERROR",
             error
         );
-
 
         setStatus(
             "اجرای لایو ناموفق بود",
