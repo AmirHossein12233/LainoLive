@@ -1,74 +1,84 @@
 "use strict";
 
+
 console.log(
     "LainoLive Tab Audio extension loaded."
 );
 
-window.addEventListener(
-    "message",
-    async (event) => {
+
+/*
+ * وقتی کاربر روی آیکن افزونه کلیک می‌کند،
+ * background.js این پیام را می‌فرستد.
+ */
+
+chrome.runtime.onMessage.addListener(
+    (
+        message
+    ) => {
 
         if (
-            event.source !== window
+            !message
         ) {
+
             return;
         }
 
-        const message =
-            event.data;
 
         if (
-            !message ||
-            message.type !==
-                "LAINOLIVE_REQUEST_TAB_CAPTURE"
+            message.type ===
+            "LAINOLIVE_TAB_CAPTURE_READY"
         ) {
+
+            console.log(
+                "LainoLive: tab capture ready."
+            );
+
+
+            window.postMessage(
+
+                {
+                    type:
+                        "LAINOLIVE_TAB_CAPTURE_READY",
+
+                    streamId:
+                        message.streamId
+                },
+
+                window.location.origin
+
+            );
+
+
             return;
         }
 
-        try {
 
-            const response =
-                await chrome.runtime.sendMessage({
-                    type:
-                        "LAINOLIVE_GET_TAB_CAPTURE"
-                });
+        if (
+            message.type ===
+            "LAINOLIVE_TAB_CAPTURE_ERROR"
+        ) {
 
-            window.postMessage(
-                {
-                    type:
-                        "LAINOLIVE_TAB_CAPTURE_RESULT",
-
-                    requestId:
-                        message.requestId,
-
-                    response:
-                        response
-                },
-
-                window.location.origin
+            console.error(
+                "LainoLive capture error:",
+                message.error
             );
 
-        } catch (error) {
 
             window.postMessage(
+
                 {
                     type:
-                        "LAINOLIVE_TAB_CAPTURE_RESULT",
+                        "LAINOLIVE_TAB_CAPTURE_ERROR",
 
-                    requestId:
-                        message.requestId,
-
-                    response: {
-                        ok: false,
-
-                        error:
-                            error?.message ||
-                            String(error)
-                    }
+                    error:
+                        message.error ||
+                        "خطای Capture تب"
                 },
 
                 window.location.origin
+
             );
         }
+
     }
 );

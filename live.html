@@ -19,14 +19,12 @@
         LainoLive - پخش زنده
     </title>
 
-
     <style>
 
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-
 
         html,
         body {
@@ -43,12 +41,12 @@
             background:
                 radial-gradient(
                     circle at top right,
-                    rgba(90, 58, 180, 0.16),
+                    rgba(90, 58, 180, .16),
                     transparent 30%
                 ),
                 radial-gradient(
                     circle at bottom left,
-                    rgba(0, 150, 255, 0.07),
+                    rgba(0, 150, 255, .07),
                     transparent 35%
                 ),
                 #090b12;
@@ -56,23 +54,20 @@
             color: #ffffff;
         }
 
-
         body {
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-
         button,
-        input {
+        input,
+        select {
             font-family: inherit;
         }
-
 
         button {
             cursor: pointer;
         }
-
 
         .app {
             min-height: 100vh;
@@ -470,6 +465,216 @@
                 brightness(
                     1.08
                 );
+        }
+
+
+        /* =================================================
+           QUALITY
+        ================================================= */
+
+        .quality-box {
+
+            padding:
+                14px;
+        }
+
+
+        .quality-head {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            margin-bottom:
+                9px;
+
+            color:
+                #d2d5df;
+
+            font-size:
+                12px;
+        }
+
+
+        .quality-current {
+
+            color:
+                #9d91ff;
+
+            font-weight:
+                800;
+        }
+
+
+        .quality-select {
+
+            width:
+                100%;
+
+            min-height:
+                46px;
+
+            padding:
+                0
+                12px;
+
+            border:
+                1px solid
+                #2a3043;
+
+            border-radius:
+                12px;
+
+            background:
+                #0d1018;
+
+            color:
+                #ffffff;
+
+            outline:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+        }
+
+
+        .quality-select option {
+
+            background:
+                #10131c;
+
+            color:
+                #ffffff;
+        }
+
+
+        .quality-hint {
+
+            margin-top:
+                8px;
+
+            color:
+                #747d91;
+
+            font-size:
+                10px;
+
+            line-height:
+                1.8;
+        }
+
+
+        /* =================================================
+           AUDIO QUALITY
+        ================================================= */
+
+        .audio-quality-box {
+
+            padding:
+                14px;
+        }
+
+
+        .audio-quality-head {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            margin-bottom:
+                9px;
+
+            color:
+                #d2d5df;
+
+            font-size:
+                12px;
+        }
+
+
+        .audio-quality-current {
+
+            color:
+                #9d91ff;
+
+            font-weight:
+                800;
+        }
+
+
+        .audio-quality-select {
+
+            width:
+                100%;
+
+            min-height:
+                46px;
+
+            padding:
+                0
+                12px;
+
+            border:
+                1px solid
+                #2a3043;
+
+            border-radius:
+                12px;
+
+            background:
+                #0d1018;
+
+            color:
+                #ffffff;
+
+            outline:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+        }
+
+
+        .audio-quality-select option {
+
+            background:
+                #10131c;
+
+            color:
+                #ffffff;
+        }
+
+
+        .audio-quality-hint {
+
+            margin-top:
+                8px;
+
+            color:
+                #747d91;
+
+            font-size:
+                10px;
+
+            line-height:
+                1.8;
         }
 
 
@@ -988,10 +1193,6 @@
         }
 
 
-        /* =================================================
-           RESPONSIVE
-        ================================================= */
-
         @media (max-width: 980px) {
 
             .layout {
@@ -999,6 +1200,7 @@
                 grid-template-columns:
                     1fr;
             }
+
         }
 
 
@@ -1058,6 +1260,7 @@
                         9px
                     );
             }
+
         }
 
     </style>
@@ -1073,9 +1276,7 @@
 
     <header class="topbar">
 
-
         <div class="top-left">
-
 
             <button
                 id="backBtn"
@@ -1090,7 +1291,6 @@
                 پخش زنده
             </div>
 
-
         </div>
 
 
@@ -1102,9 +1302,7 @@
 
         </div>
 
-
     </header>
-
 
 
     <main class="main">
@@ -1156,7 +1354,6 @@
 
 
                     </div>
-
 
 
                     <div class="controls">
@@ -1231,12 +1428,10 @@
                 </div>
 
 
-
                 <div
                     id="notice"
                     class="notice"
                 ></div>
-
 
 
                 <div
@@ -1245,7 +1440,6 @@
                 >
                     در حال بررسی منابع صوتی...
                 </div>
-
 
 
                 <div class="info-card">
@@ -1287,15 +1481,176 @@
             </section>
 
 
-
             <aside>
 
+
+                <!-- VIDEO QUALITY -->
+
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+                            🎥 کیفیت تصویر
+                        </div>
+
+                        <div
+                            id="qualityCurrent"
+                            class="panel-sub"
+                        >
+                            720p
+                        </div>
+
+                    </div>
+
+
+                    <div class="quality-box">
+
+
+                        <div class="quality-head">
+
+                            <span>
+                                کیفیت ویدیو
+                            </span>
+
+
+                            <span
+                                id="qualityDetails"
+                                class="quality-current"
+                            >
+                                1280×720 / 30fps
+                            </span>
+
+
+                        </div>
+
+
+                        <select
+                            id="qualitySelect"
+                            class="quality-select"
+                        >
+
+                            <option value="480p">
+                                480p — مصرف کمتر
+                            </option>
+
+
+                            <option
+                                value="720p"
+                                selected
+                            >
+                                720p — پیشنهاد
+                            </option>
+
+
+                            <option value="1080p">
+                                1080p — کیفیت بالا
+                            </option>
+
+
+                        </select>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- AUDIO QUALITY -->
+
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+                            🎵 کیفیت صدا
+                        </div>
+
+
+                        <div
+                            id="audioQualityCurrent"
+                            class="panel-sub"
+                        >
+                            128 kbps
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="audio-quality-box"
+                    >
+
+
+                        <div
+                            class="audio-quality-head"
+                        >
+
+                            <span>
+                                کیفیت ارسال صدا
+                            </span>
+
+
+                            <span
+                                id="audioQualityDetails"
+                                class="audio-quality-current"
+                            >
+                                128 kbps
+                            </span>
+
+                        </div>
+
+
+                        <select
+                            id="audioQualitySelect"
+                            class="audio-quality-select"
+                        >
+
+                            <option value="64000">
+                                64 kbps — کم‌مصرف
+                            </option>
+
+
+                            <option value="96000">
+                                96 kbps — خوب
+                            </option>
+
+
+                            <option
+                                value="128000"
+                                selected
+                            >
+                                128 kbps — پیشنهاد
+                            </option>
+
+
+                            <option value="160000">
+                                160 kbps — کیفیت بالا
+                            </option>
+
+                        </select>
+
+
+                        <div
+                            class="audio-quality-hint"
+                        >
+                            صدای تب و موسیقی از bitrate
+                            بالاتری استفاده می‌کنند و
+                            میکروفن جداگانه تنظیم می‌شود.
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- AUDIO CONTROLS -->
 
                 <section class="panel">
 
 
                     <div class="panel-header">
-
 
                         <div class="panel-title">
                             🎚️ کنترل صدا
@@ -1305,7 +1660,6 @@
                         <div class="panel-sub">
                             جداگانه
                         </div>
-
 
                     </div>
 
@@ -1318,7 +1672,6 @@
 
                             <div class="audio-head">
 
-
                                 <span>
                                     🔊 صدای سیستم / تب
                                 </span>
@@ -1330,7 +1683,6 @@
                                 >
                                     خاموش
                                 </span>
-
 
                             </div>
 
@@ -1347,12 +1699,10 @@
                         </div>
 
 
-
                         <div class="audio-row">
 
 
                             <div class="audio-head">
-
 
                                 <span>
                                     🎤 میکروفن / صحبت
@@ -1365,7 +1715,6 @@
                                 >
                                     روشن
                                 </span>
-
 
                             </div>
 
@@ -1384,10 +1733,10 @@
 
                     </div>
 
-
                 </section>
 
 
+                <!-- CHAT -->
 
                 <section
                     class="panel chat-panel"
@@ -1395,7 +1744,6 @@
 
 
                     <div class="panel-header">
-
 
                         <div class="panel-title">
                             💬 چت زنده
@@ -1406,9 +1754,7 @@
                             آنلاین
                         </div>
 
-
                     </div>
-
 
 
                     <div id="messages">
@@ -1423,7 +1769,6 @@
 
 
                     </div>
-
 
 
                     <form
@@ -1466,7 +1811,6 @@
 
 
 </div>
-
 
 
 <script>
@@ -1519,6 +1863,140 @@ const USERNAME_KEYS = [
     "username"
 
 ];
+
+
+/* =====================================================
+   VIDEO QUALITY
+===================================================== */
+
+const QUALITY_PRESETS = {
+
+    "480p": {
+
+        width:
+            854,
+
+        height:
+            480,
+
+        fps:
+            30,
+
+        bitrate:
+            900000
+
+    },
+
+    "720p": {
+
+        width:
+            1280,
+
+        height:
+            720,
+
+        fps:
+            30,
+
+        bitrate:
+            1800000
+
+    },
+
+    "1080p": {
+
+        width:
+            1920,
+
+        height:
+            1080,
+
+        fps:
+            30,
+
+        bitrate:
+            3500000
+
+    }
+
+};
+
+
+let selectedQuality =
+    localStorage.getItem(
+        "lainolive_quality"
+    ) ||
+    "720p";
+
+
+if (
+    !QUALITY_PRESETS[
+        selectedQuality
+    ]
+) {
+
+    selectedQuality =
+        "720p";
+
+}
+
+
+/* =====================================================
+   AUDIO QUALITY
+===================================================== */
+
+const AUDIO_BITRATES = {
+
+    "64000":
+        64000,
+
+    "96000":
+        96000,
+
+    "128000":
+        128000,
+
+    "160000":
+        160000
+
+};
+
+
+let selectedAudioBitrate =
+    Number(
+        localStorage.getItem(
+            "lainolive_audio_bitrate"
+        ) ||
+        "128000"
+    );
+
+
+if (
+    !AUDIO_BITRATES[
+        String(
+            selectedAudioBitrate
+        )
+    ]
+) {
+
+    selectedAudioBitrate =
+        128000;
+
+}
+
+
+/*
+ * نسبت bitrate:
+ *
+ * صدای منبع / موسیقی:
+ * همان bitrate انتخابی
+ *
+ * میکروفن:
+ * حداکثر 64kbps
+ */
+
+const MICROPHONE_MAX_BITRATE =
+    64000;
 
 
 /* =====================================================
@@ -1708,6 +2186,42 @@ const chatInput =
     );
 
 
+const qualitySelect =
+    document.getElementById(
+        "qualitySelect"
+    );
+
+
+const qualityCurrent =
+    document.getElementById(
+        "qualityCurrent"
+    );
+
+
+const qualityDetails =
+    document.getElementById(
+        "qualityDetails"
+    );
+
+
+const audioQualitySelect =
+    document.getElementById(
+        "audioQualitySelect"
+    );
+
+
+const audioQualityCurrent =
+    document.getElementById(
+        "audioQualityCurrent"
+    );
+
+
+const audioQualityDetails =
+    document.getElementById(
+        "audioQualityDetails"
+    );
+
+
 /* =====================================================
    UI
 ===================================================== */
@@ -1754,7 +2268,9 @@ function setDiagnostic(
         "diagnostic";
 
 
-    if (type) {
+    if (
+        type
+    ) {
 
         diagnostic.classList.add(
             type
@@ -1770,7 +2286,7 @@ function setDiagnostic(
 
 
 /* =====================================================
-   ESCAPE
+   ESCAPE HTML
 ===================================================== */
 
 function escapeHtml(
@@ -1805,6 +2321,711 @@ function escapeHtml(
 
 
 /* =====================================================
+   QUALITY UI
+===================================================== */
+
+function updateQualityUI() {
+
+    const preset =
+        QUALITY_PRESETS[
+            selectedQuality
+        ];
+
+
+    if (
+        !preset
+    ) {
+
+        return;
+
+    }
+
+
+    qualitySelect.value =
+        selectedQuality;
+
+
+    qualityCurrent.textContent =
+        selectedQuality;
+
+
+    qualityDetails.textContent =
+        preset.width +
+        "×" +
+        preset.height +
+        " / " +
+        preset.fps +
+        "fps";
+
+}
+
+
+function getAudioQualityLabel() {
+
+    return Math.round(
+        selectedAudioBitrate /
+        1000
+    ) + " kbps";
+
+}
+
+
+function updateAudioQualityUI() {
+
+    const label =
+        getAudioQualityLabel();
+
+
+    audioQualitySelect.value =
+        String(
+            selectedAudioBitrate
+        );
+
+
+    audioQualityCurrent.textContent =
+        label;
+
+
+    audioQualityDetails.textContent =
+        label;
+
+}
+
+
+updateQualityUI();
+
+updateAudioQualityUI();
+
+
+/* =====================================================
+   AUDIO QUALITY CONSTRAINTS
+===================================================== */
+
+async function applyMicrophoneConstraints(
+    track
+) {
+
+    if (
+        !track
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        await track.applyConstraints({
+
+            sampleRate: {
+                ideal:
+                    48000
+            },
+
+            channelCount: {
+                ideal:
+                    1
+            },
+
+            echoCancellation: true,
+
+            noiseSuppression: true,
+
+            autoGainControl: true
+
+        });
+
+    }
+    catch (
+        error
+    ) {
+
+        console.warn(
+            "Microphone constraints failed:",
+            error
+        );
+
+    }
+
+}
+
+
+async function applySourceAudioConstraints(
+    track
+) {
+
+    if (
+        !track
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        await track.applyConstraints({
+
+            sampleRate: {
+                ideal:
+                    48000
+            },
+
+            channelCount: {
+                ideal:
+                    2
+            },
+
+            echoCancellation:
+                false,
+
+            noiseSuppression:
+                false,
+
+            autoGainControl:
+                false
+
+        });
+
+    }
+    catch (
+        error
+    ) {
+
+        console.warn(
+            "Source audio constraints failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   VIDEO QUALITY
+===================================================== */
+
+async function applyTrackQuality(
+    track
+) {
+
+    if (
+        !track ||
+        track.kind !==
+            "video"
+    ) {
+
+        return;
+
+    }
+
+
+    const preset =
+        QUALITY_PRESETS[
+            selectedQuality
+        ];
+
+
+    if (
+        !preset
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        await track.applyConstraints({
+
+            width: {
+
+                ideal:
+                    preset.width,
+
+                max:
+                    preset.width
+
+            },
+
+            height: {
+
+                ideal:
+                    preset.height,
+
+                max:
+                    preset.height
+
+            },
+
+            frameRate: {
+
+                ideal:
+                    preset.fps,
+
+                max:
+                    preset.fps
+
+            }
+
+        });
+
+    }
+    catch (
+        error
+    ) {
+
+        console.warn(
+            "Video constraints failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SENDER VIDEO QUALITY
+===================================================== */
+
+async function applySenderVideoQuality(
+    sender
+) {
+
+    if (
+        !sender ||
+        !sender.track ||
+        sender.track.kind !==
+            "video"
+    ) {
+
+        return;
+
+    }
+
+
+    const preset =
+        QUALITY_PRESETS[
+            selectedQuality
+        ];
+
+
+    if (
+        !preset
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const parameters =
+            sender.getParameters();
+
+
+        if (
+            !parameters.encodings ||
+            !parameters.encodings.length
+        ) {
+
+            parameters.encodings =
+                [{}];
+
+        }
+
+
+        parameters.encodings[0]
+            .maxBitrate =
+                preset.bitrate;
+
+
+        parameters.encodings[0]
+            .maxFramerate =
+                preset.fps;
+
+
+        await sender.setParameters(
+            parameters
+        );
+
+    }
+    catch (
+        error
+    ) {
+
+        console.warn(
+            "Video sender quality failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SENDER AUDIO QUALITY
+===================================================== */
+
+async function applySenderAudioQuality(
+    sender
+) {
+
+    if (
+        !sender ||
+        !sender.track ||
+        sender.track.kind !==
+            "audio"
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const parameters =
+            sender.getParameters();
+
+
+        if (
+            !parameters.encodings ||
+            !parameters.encodings.length
+        ) {
+
+            parameters.encodings =
+                [{}];
+
+        }
+
+
+        let bitrate =
+            selectedAudioBitrate;
+
+
+        /*
+         * میکروفن برای گفتار:
+         * حداکثر 64kbps
+         *
+         * صدای تب:
+         * bitrate انتخاب‌شده
+         */
+
+        if (
+            sender.track ===
+            microphoneTrack
+        ) {
+
+            bitrate =
+                Math.min(
+                    selectedAudioBitrate,
+                    MICROPHONE_MAX_BITRATE
+                );
+
+        }
+
+
+        parameters.encodings[0]
+            .maxBitrate =
+                bitrate;
+
+
+        await sender.setParameters(
+            parameters
+        );
+
+
+        console.log(
+            "AUDIO SENDER:",
+            {
+                bitrate,
+                trackKind:
+                    sender.track.kind,
+                label:
+                    sender.track.label
+            }
+        );
+
+    }
+    catch (
+        error
+    ) {
+
+        console.warn(
+            "Audio sender quality failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   APPLY QUALITY TO PEER
+===================================================== */
+
+async function applyPeerQuality(
+    peer
+) {
+
+    if (
+        !peer
+    ) {
+
+        return;
+
+    }
+
+
+    const senders =
+        peer.getSenders();
+
+
+    for (
+        const sender
+        of senders
+    ) {
+
+        if (
+            !sender.track
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            sender.track.kind ===
+            "video"
+        ) {
+
+            await applySenderVideoQuality(
+                sender
+            );
+
+        }
+
+
+        if (
+            sender.track.kind ===
+            "audio"
+        ) {
+
+            await applySenderAudioQuality(
+                sender
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   APPLY QUALITY TO CURRENT SOURCES
+===================================================== */
+
+async function applyCurrentQuality() {
+
+    const videoTrack =
+        cameraTrack ||
+        screenTrack;
+
+
+    if (
+        videoTrack
+    ) {
+
+        await applyTrackQuality(
+            videoTrack
+        );
+
+    }
+
+
+    for (
+        const peer
+        of peers.values()
+    ) {
+
+        await applyPeerQuality(
+            peer
+        );
+
+    }
+
+
+    updateQualityUI();
+
+    updateAudioQualityUI();
+
+
+    setDiagnostic(
+
+        "🎥 <strong>تصویر:</strong> " +
+        selectedQuality +
+
+        "<br>" +
+
+        "🎵 <strong>صدای منبع:</strong> " +
+        getAudioQualityLabel() +
+
+        "<br>" +
+
+        "🎤 <strong>میکروفن:</strong> حداکثر 64 kbps",
+
+        "ok"
+
+    );
+
+}
+
+
+/* =====================================================
+   VIDEO QUALITY SELECT
+===================================================== */
+
+qualitySelect.addEventListener(
+    "change",
+    async () => {
+
+        selectedQuality =
+            qualitySelect.value;
+
+
+        localStorage.setItem(
+            "lainolive_quality",
+            selectedQuality
+        );
+
+
+        updateQualityUI();
+
+
+        try {
+
+            await applyCurrentQuality();
+
+            await renegotiateAllViewers();
+
+        }
+        catch (
+            error
+        ) {
+
+            console.error(
+                "video quality change:",
+                error
+            );
+
+        }
+
+
+        setStatus(
+            "کیفیت تصویر " +
+            selectedQuality +
+            " فعال شد"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   AUDIO QUALITY SELECT
+===================================================== */
+
+audioQualitySelect.addEventListener(
+    "change",
+    async () => {
+
+        selectedAudioBitrate =
+            Number(
+                audioQualitySelect.value
+            );
+
+
+        if (
+            !AUDIO_BITRATES[
+                String(
+                    selectedAudioBitrate
+                )
+            ]
+        ) {
+
+            selectedAudioBitrate =
+                128000;
+
+        }
+
+
+        localStorage.setItem(
+            "lainolive_audio_bitrate",
+            String(
+                selectedAudioBitrate
+            )
+        );
+
+
+        updateAudioQualityUI();
+
+
+        setStatus(
+            "در حال اعمال کیفیت صدا..."
+        );
+
+
+        for (
+            const peer
+            of peers.values()
+        ) {
+
+            await applyPeerQuality(
+                peer
+            );
+
+        }
+
+
+        await renegotiateAllViewers();
+
+
+        setDiagnostic(
+
+            "✅ <strong>کیفیت صدای منبع:</strong> " +
+            getAudioQualityLabel() +
+
+            "<br>" +
+
+            "🎤 <strong>میکروفن:</strong> حداکثر 64 kbps",
+
+            "ok"
+
+        );
+
+
+        setStatus(
+            "کیفیت صدا " +
+            getAudioQualityLabel() +
+            " فعال شد"
+        );
+
+    }
+);
+
+
+/* =====================================================
    STORAGE
 ===================================================== */
 
@@ -1825,13 +3046,16 @@ function readStorage(
                 );
 
 
-            if (sessionValue) {
+            if (
+                sessionValue
+            ) {
 
                 return sessionValue;
 
             }
 
-        } catch {}
+        }
+        catch {}
 
 
         try {
@@ -1842,13 +3066,16 @@ function readStorage(
                 );
 
 
-            if (localValue) {
+            if (
+                localValue
+            ) {
 
                 return localValue;
 
             }
 
-        } catch {}
+        }
+        catch {}
 
     }
 
@@ -1899,9 +3126,7 @@ function getQueryId() {
 
     return (
 
-        params.get(
-            "id"
-        ) ||
+        params.get("id") ||
 
         params.get(
             "stream_id"
@@ -1970,7 +3195,9 @@ function stopTrack(
     track
 ) {
 
-    if (!track) {
+    if (
+        !track
+    ) {
 
         return;
 
@@ -1991,13 +3218,7 @@ function stopExtensionAudio() {
 
     try {
 
-        if (
-            extensionAudioSource
-        ) {
-
-            extensionAudioSource.disconnect();
-
-        }
+        extensionAudioSource?.disconnect();
 
     }
     catch {}
@@ -2005,13 +3226,7 @@ function stopExtensionAudio() {
 
     try {
 
-        if (
-            extensionAudioContext
-        ) {
-
-            extensionAudioContext.close();
-
-        }
+        extensionAudioContext?.close();
 
     }
     catch {}
@@ -2035,16 +3250,13 @@ function stopAllMedia() {
         cameraTrack
     );
 
-
     stopTrack(
         screenTrack
     );
 
-
     stopTrack(
         systemAudioTrack
     );
-
 
     stopTrack(
         microphoneTrack
@@ -2140,6 +3352,7 @@ function updateAudioDiagnostic() {
     const hasSystem =
         !!systemAudioTrack;
 
+
     const hasMic =
         !!microphoneTrack;
 
@@ -2160,7 +3373,12 @@ function updateAudioDiagnostic() {
 
             "✅ <strong>میکروفن:</strong> فعال<br>" +
 
-            "🎵 صدای منبع و 🎤 میکروفن به‌صورت جداگانه آماده ارسال هستند.",
+            "🎵 <strong>Bitrate منبع:</strong> " +
+            getAudioQualityLabel() +
+
+            "<br>" +
+
+            "🎤 <strong>Bitrate میکروفن:</strong> حداکثر 64 kbps",
 
             "ok"
 
@@ -2188,7 +3406,7 @@ function updateAudioDiagnostic() {
 
             "✅ <strong>میکروفن:</strong> فعال<br>" +
 
-            "Capture مرورگر هیچ Audio Track برای منبع انتخاب‌شده برنگردانده است.",
+            "🎤 <strong>Bitrate میکروفن:</strong> حداکثر 64 kbps",
 
             "warning"
 
@@ -2209,7 +3427,7 @@ function updateAudioDiagnostic() {
 
             "✅ <strong>صدای منبع:</strong> دریافت شد<br>" +
 
-            "⚠️ <strong>میکروفن:</strong> دریافت نشد.",
+            "⚠️ <strong>میکروفن:</strong> دریافت نشد",
 
             "warning"
 
@@ -2222,26 +3440,21 @@ function updateAudioDiagnostic() {
 
 
     setDiagnostic(
-
         "⚠️ منبع صوتی کامل نیست.",
-
         "warning"
-
     );
 
 }
 
 
 /* =====================================================
-   EXTENSION
+   EXTENSION TAB CAPTURE
 ===================================================== */
 
 function waitForExtensionTabCapture() {
 
     return new Promise(
-        (
-            resolve
-        ) => {
+        resolve => {
 
             let finished =
                 false;
@@ -2421,7 +3634,6 @@ async function startCamera() {
 
     hideNotice();
 
-
     setStatus(
         "در حال فعال‌سازی دوربین..."
     );
@@ -2434,6 +3646,12 @@ async function startCamera() {
 
     try {
 
+        const preset =
+            QUALITY_PRESETS[
+                selectedQuality
+            ];
+
+
         const stream =
             await navigator
                 .mediaDevices
@@ -2442,13 +3660,33 @@ async function startCamera() {
                     video: {
 
                         width: {
+
                             ideal:
-                                1280
+                                preset.width,
+
+                            max:
+                                preset.width
+
                         },
 
                         height: {
+
                             ideal:
-                                720
+                                preset.height,
+
+                            max:
+                                preset.height
+
+                        },
+
+                        frameRate: {
+
+                            ideal:
+                                preset.fps,
+
+                            max:
+                                preset.fps
+
                         },
 
                         facingMode:
@@ -2456,8 +3694,33 @@ async function startCamera() {
 
                     },
 
-                    audio:
-                        true
+                    audio: {
+
+                        sampleRate: {
+                            ideal:
+                                48000
+                        },
+
+                        sampleSize: {
+                            ideal:
+                                16
+                        },
+
+                        channelCount: {
+                            ideal:
+                                1
+                        },
+
+                        echoCancellation:
+                            true,
+
+                        noiseSuppression:
+                            true,
+
+                        autoGainControl:
+                            true
+
+                    }
 
                 });
 
@@ -2495,8 +3758,23 @@ async function startCamera() {
 
 
         if (
+            cameraTrack
+        ) {
+
+            await applyTrackQuality(
+                cameraTrack
+            );
+
+        }
+
+
+        if (
             microphoneTrack
         ) {
+
+            await applyMicrophoneConstraints(
+                microphoneTrack
+            );
 
             microphoneTrack.enabled =
                 true;
@@ -2508,17 +3786,21 @@ async function startCamera() {
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
 
         tabBtn.classList.remove(
             "active"
         );
 
+
         micBtn.classList.add(
             "active"
         );
+
 
         systemAudioBtn.classList.remove(
             "active"
@@ -2598,8 +3880,14 @@ async function startScreen() {
 
                     video: {
 
-                        displaySurface:
-                            "monitor"
+                        frameRate: {
+
+                            ideal:
+                                QUALITY_PRESETS[
+                                    selectedQuality
+                                ].fps
+
+                        }
 
                     },
 
@@ -2638,18 +3926,6 @@ async function startScreen() {
                 .getAudioTracks();
 
 
-        console.log(
-            "SCREEN VIDEO TRACKS:",
-            videoTracks.length
-        );
-
-
-        console.log(
-            "SCREEN AUDIO TRACKS:",
-            audioTracks.length
-        );
-
-
         screenTrack =
             videoTracks[0] ||
             null;
@@ -2665,8 +3941,33 @@ async function startScreen() {
                 .mediaDevices
                 .getUserMedia({
 
-                    audio:
-                        true
+                    audio: {
+
+                        sampleRate: {
+                            ideal:
+                                48000
+                        },
+
+                        sampleSize: {
+                            ideal:
+                                16
+                        },
+
+                        channelCount: {
+                            ideal:
+                                1
+                        },
+
+                        echoCancellation:
+                            true,
+
+                        noiseSuppression:
+                            true,
+
+                        autoGainControl:
+                            true
+
+                    }
 
                 });
 
@@ -2694,31 +3995,18 @@ async function startScreen() {
 
 
         if (
-            systemAudioTrack
-        ) {
-
-            systemAudioTrack.enabled =
-                true;
-
-        }
-
-
-        if (
-            microphoneTrack
-        ) {
-
-            microphoneTrack.enabled =
-                true;
-
-        }
-
-
-        if (
             screenTrack
         ) {
 
+            await applyTrackQuality(
+                screenTrack
+            );
+
+
             screenTrack.addEventListener(
+
                 "ended",
+
                 () => {
 
                     if (
@@ -2730,7 +4018,38 @@ async function startScreen() {
                     }
 
                 }
+
             );
+
+        }
+
+
+        if (
+            systemAudioTrack
+        ) {
+
+            await applySourceAudioConstraints(
+                systemAudioTrack
+            );
+
+
+            systemAudioTrack.enabled =
+                true;
+
+        }
+
+
+        if (
+            microphoneTrack
+        ) {
+
+            await applyMicrophoneConstraints(
+                microphoneTrack
+            );
+
+
+            microphoneTrack.enabled =
+                true;
 
         }
 
@@ -2814,9 +4133,9 @@ async function startScreen() {
 
                 "<br>" +
 
-                "🎵 <strong>Audio Track:</strong> " +
+                "🎵 <strong>کیفیت صدا:</strong> " +
 
-                audioTracks.length,
+                getAudioQualityLabel(),
 
                 "ok"
 
@@ -2831,7 +4150,7 @@ async function startScreen() {
 
 
             showNotice(
-                "صفحه دریافت شد، اما مرورگر Audio Track برای صدای سیستم برنگرداند."
+                "صفحه دریافت شد، اما Audio Track صدای سیستم برنگشت."
             );
 
 
@@ -2841,23 +4160,15 @@ async function startScreen() {
 
                 "✅ <strong>میکروفن:</strong> فعال<br>" +
 
-                "🖥️ <strong>نوع منبع:</strong> " +
-
-                escapeHtml(
-                    selectedSurface
-                ) +
-
-                "<br>" +
-
-                "🎵 <strong>تعداد Audio Track:</strong> " +
+                "🎵 <strong>Audio Track:</strong> " +
 
                 audioTracks.length +
 
                 "<br>" +
 
-                "🎬 <strong>تعداد Video Track:</strong> " +
+                "🎵 <strong>کیفیت صوت انتخابی:</strong> " +
 
-                videoTracks.length,
+                getAudioQualityLabel(),
 
                 "warning"
 
@@ -2882,30 +4193,16 @@ async function startScreen() {
         stopAllMedia();
 
 
-        if (
-            error?.name ===
-            "NotAllowedError"
-        ) {
+        showNotice(
 
-            showNotice(
-                "اشتراک‌گذاری صفحه لغو شد."
-            );
+            "گرفتن صفحه انجام نشد: " +
 
-        }
-        else {
+            (
+                error?.message ||
+                "خطای نامشخص"
+            )
 
-            showNotice(
-
-                "گرفتن صفحه انجام نشد: " +
-
-                (
-                    error?.message ||
-                    "خطای نامشخص"
-                )
-
-            );
-
-        }
+        );
 
 
         setStatus(
@@ -2921,7 +4218,7 @@ async function startScreen() {
 
 
 /* =====================================================
-   TAB SHARE - CHROME EXTENSION
+   TAB SHARE
 ===================================================== */
 
 async function startTabShare() {
@@ -2936,7 +4233,6 @@ async function startTabShare() {
 
     closeAllPeers();
 
-
     stopAllMedia();
 
 
@@ -2944,12 +4240,6 @@ async function startTabShare() {
 
         const extensionResult =
             await waitForExtensionTabCapture();
-
-
-        console.log(
-            "EXTENSION RESULT:",
-            extensionResult
-        );
 
 
         if (
@@ -2972,17 +4262,6 @@ async function startTabShare() {
         const captureStreamId =
             extensionResult.streamId;
 
-
-        console.log(
-            "CAPTURE STREAM ID:",
-            captureStreamId
-        );
-
-
-        /*
-         * تبدیل Stream ID
-         * افزونه به MediaStream
-         */
 
         const tabStream =
             await navigator
@@ -3030,32 +4309,6 @@ async function startTabShare() {
                 .getAudioTracks();
 
 
-        console.log(
-            "TAB VIDEO TRACKS:",
-            videoTracks.length
-        );
-
-
-        console.log(
-            "TAB AUDIO TRACKS:",
-            audioTracks.length
-        );
-
-
-        console.log(
-            "TAB VIDEO TRACK:",
-            videoTracks[0] ||
-            null
-        );
-
-
-        console.log(
-            "TAB AUDIO TRACK:",
-            audioTracks[0] ||
-            null
-        );
-
-
         screenTrack =
             videoTracks[0] ||
             null;
@@ -3066,17 +4319,38 @@ async function startTabShare() {
             null;
 
 
-        /*
-         * میکروفن کاملاً جدا
-         */
-
         const microphoneStream =
             await navigator
                 .mediaDevices
                 .getUserMedia({
 
-                    audio:
-                        true
+                    audio: {
+
+                        sampleRate: {
+                            ideal:
+                                48000
+                        },
+
+                        sampleSize: {
+                            ideal:
+                                16
+                        },
+
+                        channelCount: {
+                            ideal:
+                                1
+                        },
+
+                        echoCancellation:
+                            true,
+
+                        noiseSuppression:
+                            true,
+
+                        autoGainControl:
+                            true
+
+                    }
 
                 });
 
@@ -3104,87 +4378,13 @@ async function startTabShare() {
 
 
         if (
-            systemAudioTrack
-        ) {
-
-            systemAudioTrack.enabled =
-                true;
-
-        }
-
-
-        if (
-            microphoneTrack
-        ) {
-
-            microphoneTrack.enabled =
-                true;
-
-        }
-
-
-        /*
-         * برگرداندن صدای تب
-         * به خروجی خود سیستم
-         */
-
-        if (
-            systemAudioTrack
-        ) {
-
-            try {
-
-                stopExtensionAudio();
-
-
-                extensionAudioContext =
-                    new AudioContext();
-
-
-                await extensionAudioContext.resume();
-
-
-                const audioStream =
-                    new MediaStream(
-                        [
-                            systemAudioTrack
-                        ]
-                    );
-
-
-                extensionAudioSource =
-                    extensionAudioContext
-                        .createMediaStreamSource(
-                            audioStream
-                        );
-
-
-                extensionAudioSource.connect(
-                    extensionAudioContext.destination
-                );
-
-            }
-            catch (
-                audioError
-            ) {
-
-                console.warn(
-                    "Local tab audio restore failed:",
-                    audioError
-                );
-
-            }
-
-        }
-
-
-        /*
-         * Capture ended
-         */
-
-        if (
             screenTrack
         ) {
+
+            await applyTrackQuality(
+                screenTrack
+            );
+
 
             screenTrack.addEventListener(
 
@@ -3207,9 +4407,87 @@ async function startTabShare() {
         }
 
 
+        if (
+            systemAudioTrack
+        ) {
+
+            await applySourceAudioConstraints(
+                systemAudioTrack
+            );
+
+
+            systemAudioTrack.enabled =
+                true;
+
+        }
+
+
+        if (
+            microphoneTrack
+        ) {
+
+            await applyMicrophoneConstraints(
+                microphoneTrack
+            );
+
+
+            microphoneTrack.enabled =
+                true;
+
+        }
+
+
         /*
-         * UI
+         * Local tab audio restore
          */
+
+        if (
+            systemAudioTrack
+        ) {
+
+            try {
+
+                stopExtensionAudio();
+
+
+                extensionAudioContext =
+                    new AudioContext();
+
+
+                await
+                    extensionAudioContext
+                    .resume();
+
+
+                extensionAudioSource =
+                    extensionAudioContext
+                        .createMediaStreamSource(
+
+                            new MediaStream([
+                                systemAudioTrack
+                            ])
+
+                        );
+
+
+                extensionAudioSource.connect(
+                    extensionAudioContext.destination
+                );
+
+            }
+            catch (
+                audioError
+            ) {
+
+                console.warn(
+                    "Local tab audio restore failed:",
+                    audioError
+                );
+
+            }
+
+        }
+
 
         cameraBtn.classList.remove(
             "active"
@@ -3255,10 +4533,6 @@ async function startTabShare() {
         updateAudioDiagnostic();
 
 
-        /*
-         * موفق
-         */
-
         if (
             systemAudioTrack &&
             microphoneTrack
@@ -3277,15 +4551,13 @@ async function startTabShare() {
 
                 "🧩 <strong>Capture:</strong> افزونه Chrome<br>" +
 
-                "🎵 <strong>Audio Track:</strong> " +
+                "🎵 <strong>کیفیت صدای منبع:</strong> " +
 
-                audioTracks.length +
+                getAudioQualityLabel() +
 
                 "<br>" +
 
-                "🎬 <strong>Video Track:</strong> " +
-
-                videoTracks.length,
+                "🎤 <strong>کیفیت میکروفن:</strong> حداکثر 64 kbps",
 
                 "ok"
 
@@ -3300,7 +4572,7 @@ async function startTabShare() {
 
 
             showNotice(
-                "افزونه تب را گرفت، اما Audio Track دریافت نشد."
+                "تب گرفته شد ولی Audio Track دریافت نشد."
             );
 
 
@@ -3318,17 +4590,9 @@ async function startTabShare() {
 
                 "<br>" +
 
-                "🧩 <strong>Capture:</strong> افزونه Chrome<br>" +
-
                 "🎵 <strong>Audio Track:</strong> " +
 
-                audioTracks.length +
-
-                "<br>" +
-
-                "🎬 <strong>Video Track:</strong> " +
-
-                videoTracks.length,
+                audioTracks.length,
 
                 "warning"
 
@@ -3424,7 +4688,6 @@ function toggleMicrophone() {
 
 
     micValue.textContent =
-
         microphoneEnabled
             ? "روشن"
             : "خاموش";
@@ -3462,7 +4725,6 @@ function toggleSystemAudio() {
 
 
     systemValue.textContent =
-
         systemAudioEnabled
             ? "روشن"
             : "خاموش";
@@ -3471,7 +4733,7 @@ function toggleSystemAudio() {
 
 
 /* =====================================================
-   PEERS
+   PEER
 ===================================================== */
 
 function closePeer(
@@ -3535,11 +4797,7 @@ function closeAllPeers() {
 }
 
 
-/* =====================================================
-   CREATE PEER
-===================================================== */
-
-function createPeer(
+async function createPeer(
     viewerId
 ) {
 
@@ -3560,18 +4818,23 @@ function createPeer(
     );
 
 
-    /*
-     * VIDEO
-     */
-
     const videoTrack =
         cameraTrack ||
         screenTrack;
 
 
+    /*
+     * VIDEO
+     */
+
     if (
         videoTrack
     ) {
+
+        await applyTrackQuality(
+            videoTrack
+        );
+
 
         peer.addTrack(
 
@@ -3587,8 +4850,7 @@ function createPeer(
 
 
     /*
-     * AUDIO 1
-     * SYSTEM / TAB
+     * SOURCE AUDIO
      */
 
     if (
@@ -3609,7 +4871,6 @@ function createPeer(
 
 
     /*
-     * AUDIO 2
      * MICROPHONE
      */
 
@@ -3628,6 +4889,16 @@ function createPeer(
         );
 
     }
+
+
+    /*
+     * Apply audio/video
+     * sender quality.
+     */
+
+    await applyPeerQuality(
+        peer
+    );
 
 
     peer.onicecandidate =
@@ -3688,7 +4959,7 @@ function createPeer(
 
 
 /* =====================================================
-   CREATE OFFER
+   OFFER
 ===================================================== */
 
 async function createOffer(
@@ -3706,7 +4977,7 @@ async function createOffer(
 
 
     const peer =
-        createPeer(
+        await createPeer(
             viewerId
         );
 
@@ -3836,10 +5107,6 @@ function sendSignal(
 
 }
 
-
-/* =====================================================
-   CONNECT SIGNALING
-===================================================== */
 
 function connectSignaling() {
 
@@ -4009,7 +5276,7 @@ async function handleSignal(
             if (
                 typeof
                     message.viewer_count ===
-                        "number"
+                    "number"
             ) {
 
                 viewerCount.textContent =
@@ -4033,7 +5300,7 @@ async function handleSignal(
             if (
                 typeof
                     message.viewer_count ===
-                        "number"
+                    "number"
             ) {
 
                 viewerCount.textContent =
@@ -4051,10 +5318,8 @@ async function handleSignal(
 
             const viewerId =
                 String(
-
                     message.viewer_id ||
                     ""
-
                 );
 
 
@@ -4075,7 +5340,6 @@ async function handleSignal(
 
 
             break;
-
         }
 
 
@@ -4083,10 +5347,8 @@ async function handleSignal(
 
             const viewerId =
                 String(
-
                     message.viewer_id ||
                     ""
-
                 );
 
 
@@ -4130,7 +5392,6 @@ async function handleSignal(
 
 
             break;
-
         }
 
 
@@ -4138,10 +5399,8 @@ async function handleSignal(
 
             const viewerId =
                 String(
-
                     message.viewer_id ||
                     ""
-
                 );
 
 
@@ -4185,7 +5444,6 @@ async function handleSignal(
 
 
             break;
-
         }
 
 
@@ -4193,10 +5451,8 @@ async function handleSignal(
 
             const viewerId =
                 String(
-
                     message.viewer_id ||
                     ""
-
                 );
 
 
@@ -4211,7 +5467,6 @@ async function handleSignal(
 
 
             break;
-
         }
 
 
@@ -4220,11 +5475,11 @@ async function handleSignal(
             addChatMessage(
 
                 message.username ||
-                    message.user ||
-                    "کاربر",
+                message.user ||
+                "کاربر",
 
                 message.message ||
-                    ""
+                ""
 
             );
 
@@ -4343,7 +5598,6 @@ async function sendChat(
 
 
     if (
-
         sendSignal({
 
             type:
@@ -4356,7 +5610,6 @@ async function sendChat(
                 text
 
         })
-
     ) {
 
         return;
@@ -4550,21 +5803,17 @@ stopBtn.addEventListener(
             "active"
         );
 
-
         screenBtn.classList.remove(
             "active"
         );
-
 
         tabBtn.classList.remove(
             "active"
         );
 
-
         micBtn.classList.remove(
             "active"
         );
-
 
         systemAudioBtn.classList.remove(
             "active"
@@ -4857,13 +6106,16 @@ async function initialize() {
 
 
     streamIdElement.textContent =
-
         "Stream: " +
-
         (
             streamId ||
             "-"
         );
+
+
+    updateQualityUI();
+
+    updateAudioQualityUI();
 
 
     if (
@@ -4943,9 +6195,7 @@ window.addEventListener(
 
         closeAllPeers();
 
-
         stopAllMedia();
-
 
         viewerIds.clear();
 

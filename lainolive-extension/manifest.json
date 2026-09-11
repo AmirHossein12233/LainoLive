@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LainoLive Tab Audio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "گرفتن صدای تب برای LainoLive",
   "permissions": [
     "tabCapture",
@@ -15,7 +15,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "LainoLive Tab Audio"
+    "default_title": "شروع Capture تب LainoLive"
   },
   "content_scripts": [
     {

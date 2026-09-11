@@ -1,66 +1,90 @@
 "use strict";
 
-chrome.runtime.onMessage.addListener(
-    async (
-        message,
-        sender,
-        sendResponse
-    ) => {
 
-        if (
-            message?.type !==
-            "LAINOLIVE_GET_TAB_CAPTURE"
-        ) {
-            return;
-        }
+chrome.action.onClicked.addListener(
+    async (tab) => {
 
         try {
 
-            const tabId =
-                sender?.tab?.id;
-
             if (
-                typeof tabId !==
-                "number"
+                !tab ||
+                typeof tab.id !== "number"
             ) {
 
-                sendResponse({
-                    ok: false,
-                    error:
-                        "شناسه تب پیدا نشد."
-                });
+                console.error(
+                    "LainoLive: active tab id not found."
+                );
 
                 return;
             }
 
+
+            console.log(
+                "LainoLive: extension invoked on tab:",
+                tab.id
+            );
+
+
             const streamId =
-                await chrome.tabCapture.getMediaStreamId({
-                    targetTabId:
-                        tabId,
+                await chrome.tabCapture.getMediaStreamId(
+                    {
+                        targetTabId:
+                            tab.id,
 
-                    consumerTabId:
-                        tabId
-                });
+                        consumerTabId:
+                            tab.id
+                    }
+                );
 
-            sendResponse({
-                ok: true,
-                streamId:
-                    streamId
-            });
+
+            console.log(
+                "LainoLive: stream id created."
+            );
+
+
+            await chrome.tabs.sendMessage(
+                tab.id,
+                {
+                    type:
+                        "LAINOLIVE_TAB_CAPTURE_READY",
+
+                    streamId:
+                        streamId
+                }
+            );
+
 
         } catch (error) {
 
             console.error(
-                "LainoLive tabCapture error:",
+                "LainoLive tab capture error:",
                 error
             );
 
-            sendResponse({
-                ok: false,
-                error:
-                    error?.message ||
-                    String(error)
-            });
+
+            try {
+
+                await chrome.tabs.sendMessage(
+                    tab.id,
+                    {
+                        type:
+                            "LAINOLIVE_TAB_CAPTURE_ERROR",
+
+                        error:
+                            error?.message ||
+                            String(error)
+                    }
+                );
+
+            } catch (
+                sendError
+            ) {
+
+                console.error(
+                    "LainoLive send error:",
+                    sendError
+                );
+            }
         }
     }
 );
