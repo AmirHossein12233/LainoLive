@@ -1,810 +1,592 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-    <title>پروفایل | LainoLive</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+
+<title>
+پروفایل - LainoLive
+</title>
+
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+
+body{
+
+margin:0;
+
+min-height:100vh;
+
+font-family:
+Tahoma,Arial;
+
+background:
+radial-gradient(
+circle at top,
+#24163a,
+#050508
+);
+
+color:white;
+
+padding:20px;
+
+}
+
+
+
+.card{
+
+max-width:450px;
+
+margin:auto;
+
+background:
+rgba(255,255,255,.07);
+
+border:
+1px solid
+rgba(255,255,255,.1);
+
+border-radius:25px;
+
+padding:25px;
+
+}
+
+
+
+.logo{
+
+text-align:center;
+
+font-size:25px;
+
+font-weight:900;
+
+}
+
+
+
+.avatar{
+
+width:100px;
+
+height:100px;
+
+margin:25px auto;
+
+border-radius:50%;
+
+background:
+linear-gradient(
+135deg,
+#ff2757,
+#8b35ff
+);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:45px;
+
+overflow:hidden;
+
+}
+
+
+
+.avatar img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+
+
+label{
+
+display:block;
+
+font-size:12px;
+
+color:#aaa;
+
+margin-bottom:7px;
+
+}
+
+
+
+input{
+
+width:100%;
+
+height:48px;
+
+border:none;
+
+outline:none;
+
+border-radius:14px;
+
+background:
+rgba(255,255,255,.1);
+
+color:white;
+
+padding:0 15px;
+
+margin-bottom:15px;
+
+}
+
+
+
+button{
+
+width:100%;
+
+height:48px;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:900;
+
+margin-top:10px;
+
+}
+
+
+
+.save{
+
+background:
+linear-gradient(
+135deg,
+#ff2757,
+#8b35ff
+);
+
+color:white;
+
+}
+
+
+
+.logout{
+
+background:
+rgba(255,50,80,.15);
+
+color:#ff9aaa;
+
+}
+
+
+
+.back{
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+}
+
+
+
+.info{
+
+text-align:center;
+
+color:#aaa;
+
+font-size:12px;
+
+margin-top:15px;
+
+}
+
+
+</style>
+
+
 </head>
+
+
 
 <body>
 
-<div class="page">
 
-    <header class="topbar">
-
-        <div>
-            <h1>LainoLive</h1>
-            <div class="subtitle">
-                پروفایل کاربری
-            </div>
-        </div>
-
-        <div class="top-actions">
-
-            <button
-                class="secondary-btn"
-                onclick="goHome()"
-            >
-                صفحه اصلی
-            </button>
-
-            <button
-                class="danger-btn"
-                onclick="logout()"
-            >
-                خروج
-            </button>
-
-        </div>
-
-    </header>
+<div class="card">
 
 
-    <main class="profile-container">
+<div class="logo">
 
-        <!-- PROFILE -->
-        <section class="profile-card">
-
-            <div class="profile-avatar">
-                👤
-            </div>
-
-            <div class="profile-info">
-
-                <h2 id="username">
-                    کاربر
-                </h2>
-
-                <div class="profile-status">
-                    حساب کاربری فعال
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- STATS -->
-        <section class="stats-grid">
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    🔴
-                </div>
-
-                <div class="stat-value" id="activeLives">
-                    0
-                </div>
-
-                <div class="stat-label">
-                    لایو فعال
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    👁️
-                </div>
-
-                <div class="stat-value" id="totalViewers">
-                    0
-                </div>
-
-                <div class="stat-label">
-                    بیننده فعلی
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    📚
-                </div>
-
-                <div class="stat-value" id="historyCount">
-                    0
-                </div>
-
-                <div class="stat-label">
-                    لایوهای قبلی
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ACTIVE LIVE -->
-        <section class="profile-section">
-
-            <div class="section-header">
-
-                <h2>
-                    لایو فعال من
-                </h2>
-
-            </div>
-
-            <div id="activeLiveArea">
-
-                <div class="empty-card">
-                    در حال بررسی لایو فعال...
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- HISTORY -->
-        <section class="profile-section">
-
-            <div class="section-header">
-
-                <h2>
-                    لایوهای قبلی
-                </h2>
-
-            </div>
-
-            <div id="historyArea">
-
-                <div class="empty-card">
-                    در حال دریافت تاریخچه...
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+👤 پروفایل LainoLive
 
 </div>
 
 
+<div
+id="avatar"
+class="avatar"
+>
+
+👤
+
+</div>
+
+
+
+<input
+id="avatarInput"
+type="file"
+accept="image/*"
+>
+
+
+
+<label>
+نام نمایشی
+</label>
+
+
+<input
+id="displayName"
+placeholder="نام شما"
+>
+
+
+
+<label>
+نام کاربری
+</label>
+
+
+<input
+id="username"
+readonly
+>
+
+
+
+<button
+class="save"
+id="saveBtn"
+>
+
+ذخیره تغییرات
+
+</button>
+
+
+
+<button
+class="back"
+id="backBtn"
+>
+
+بازگشت
+
+</button>
+
+
+
+<button
+class="logout"
+id="logoutBtn"
+>
+
+خروج از حساب
+
+</button>
+
+
+
+<div
+class="info"
+id="message"
+>
+
+</div>
+
+
+
+</div>
 <script>
 
-const API_BASE = "";
 
-let currentUsername = "";
+const usernameInput =
+document.getElementById(
+"username"
+);
 
 
-// ======================================================
-// AUTH
-// ======================================================
+const nameInput =
+document.getElementById(
+"displayName"
+);
 
-function checkLogin() {
 
-    const loggedIn =
-        localStorage.getItem(
-            "lainolive_logged_in"
-        );
+const avatar =
+document.getElementById(
+"avatar"
+);
 
-    const username =
-        localStorage.getItem(
-            "lainolive_username"
-        );
 
-    if (
-        loggedIn !== "true"
-        || !username
-    ) {
+const message =
+document.getElementById(
+"message"
+);
 
-        window.location.href =
-            "/login.html";
 
-        return false;
-    }
 
-    currentUsername = username;
+function getUser(){
 
-    return true;
+
+return {
+
+username:
+localStorage.getItem(
+"lainolive_username"
+)
+||"",
+
+name:
+localStorage.getItem(
+"lainolive_name"
+)
+||"",
+
+avatar:
+localStorage.getItem(
+"lainolive_avatar"
+)
+||""
+
+};
+
+
 }
 
 
-// ======================================================
-// HOME
-// ======================================================
 
-function goHome() {
 
-    window.location.href =
-        "/index.html";
+
+function loadProfile(){
+
+
+const user =
+getUser();
+
+
+
+usernameInput.value =
+user.username;
+
+
+
+nameInput.value =
+user.name ||
+user.username;
+
+
+
+if(user.avatar){
+
+
+avatar.innerHTML =
+`
+<img src="${user.avatar}">
+`;
+
+
+
 }
 
 
-// ======================================================
-// LOGOUT
-// ======================================================
 
-function logout() {
-
-    localStorage.removeItem(
-        "lainolive_logged_in"
-    );
-
-    localStorage.removeItem(
-        "lainolive_username"
-    );
-
-    sessionStorage.removeItem(
-        "lainolive_current_stream"
-    );
-
-    sessionStorage.removeItem(
-        "lainolive_view_stream"
-    );
-
-    window.location.href =
-        "/login.html";
 }
 
 
-// ======================================================
-// FORMAT NUMBER
-// ======================================================
 
-function formatNumber(value) {
 
-    const number =
-        Number(value || 0);
 
-    return number.toLocaleString(
-        "fa-IR"
-    );
-}
-
-
-// ======================================================
-// FORMAT DATE
-// ======================================================
-
-function formatDate(timestamp) {
-
-    if (!timestamp) {
-        return "نامشخص";
-    }
-
-    const date =
-        new Date(
-            Number(timestamp) * 1000
-        );
-
-    return date.toLocaleString(
-        "fa-IR",
-        {
-            dateStyle: "medium",
-            timeStyle: "short"
-        }
-    );
-}
-
-
-// ======================================================
-// FORMAT DURATION
-// ======================================================
-
-function formatDuration(seconds) {
-
-    seconds =
-        Math.max(
-            0,
-            Number(seconds || 0)
-        );
-
-    const hours =
-        Math.floor(
-            seconds / 3600
-        );
-
-    const minutes =
-        Math.floor(
-            (seconds % 3600) / 60
-        );
-
-    const secs =
-        seconds % 60;
-
-    if (hours > 0) {
-
-        return (
-            hours.toLocaleString("fa-IR")
-            + " ساعت "
-            + minutes.toLocaleString("fa-IR")
-            + " دقیقه"
-        );
-    }
-
-    if (minutes > 0) {
-
-        return (
-            minutes.toLocaleString("fa-IR")
-            + " دقیقه "
-            + secs.toLocaleString("fa-IR")
-            + " ثانیه"
-        );
-    }
-
-    return (
-        secs.toLocaleString("fa-IR")
-        + " ثانیه"
-    );
-}
-
+document
+.getElementById(
+"saveBtn"
+)
+.onclick = ()=>{
 
-// ======================================================
-// LOAD ACTIVE STREAM
-// ======================================================
 
-async function loadActiveLive() {
+const name =
+nameInput.value.trim();
 
-    const area =
-        document.getElementById(
-            "activeLiveArea"
-        );
-
-    try {
 
-        const response =
-            await fetch(
-                API_BASE + "/api/streams",
-                {
-                    cache: "no-store"
-                }
-            );
 
-        if (!response.ok) {
-            throw new Error(
-                "streams request failed"
-            );
-        }
+localStorage.setItem(
+"lainolive_name",
+name
+);
 
-        const data =
-            await response.json();
 
-        const streams =
-            Array.isArray(
-                data.streams
-            )
-                ? data.streams
-                : [];
 
-        const mine =
-            streams.filter(
-                stream =>
-                    stream.username ===
-                    currentUsername
-            );
+message.textContent =
+"ذخیره شد ✅";
 
-        document.getElementById(
-            "activeLives"
-        ).textContent =
-            formatNumber(
-                mine.length
-            );
-
-        let viewers = 0;
-
-        mine.forEach(
-            stream => {
-
-                viewers +=
-                    Number(
-                        stream.viewer_count || 0
-                    );
 
-            }
-        );
 
-        document.getElementById(
-            "totalViewers"
-        ).textContent =
-            formatNumber(
-                viewers
-            );
-
+};
 
-        if (mine.length === 0) {
-
-            area.innerHTML = `
-                <div class="empty-card">
-                    در حال حاضر لایو فعالی ندارید.
-                </div>
-            `;
 
-            return;
-        }
 
 
-        const stream =
-            mine[0];
 
-        sessionStorage.setItem(
-            "lainolive_current_stream",
-            JSON.stringify(
-                stream
-            )
-        );
-
-
-        area.innerHTML = `
-
-            <div class="live-card">
-
-                <div class="live-card-top">
-
-                    <div class="live-badge">
-                        🔴 در حال پخش
-                    </div>
-
-                    <div class="viewer-badge">
-                        👁️
-                        ${formatNumber(
-                            stream.viewer_count
-                        )}
-                    </div>
-
-                </div>
-
-
-                <h3>
-                    ${escapeHtml(
-                        stream.title
-                    )}
-                </h3>
-
-
-                <div class="live-card-info">
-
-                    <div>
-                        👤
-                        ${escapeHtml(
-                            stream.username
-                        )}
-                    </div>
-
-                    <div>
-                        🕒
-                        شروع:
-                        ${formatDate(
-                            stream.created_at
-                        )}
-                    </div>
-
-                </div>
 
-
-                <button
-                    class="primary-btn"
-                    onclick="continueLive(
-                        '${escapeAttribute(
-                            stream.id
-                        )}'
-                    )"
-                >
-                    ادامه لایو
-                </button>
 
-            </div>
-        `;
 
-    } catch (error) {
 
-        console.error(
-            error
-        );
+document
+.getElementById(
+"avatarInput"
+)
+.onchange = e =>{
 
-        area.innerHTML = `
-            <div class="empty-card error-card">
-                دریافت لایو فعال ناموفق بود.
-            </div>
-        `;
-    }
-}
 
+const file =
+e.target.files[0];
 
-// ======================================================
-// LOAD HISTORY
-// ======================================================
 
-async function loadHistory() {
 
-    const area =
-        document.getElementById(
-            "historyArea"
-        );
+if(!file)
+return;
 
-    try {
 
-        const url =
-            API_BASE
-            + "/api/streams/history?username="
-            + encodeURIComponent(
-                currentUsername
-            )
-            + "&limit=100";
 
-        const response =
-            await fetch(
-                url,
-                {
-                    cache: "no-store"
-                }
-            );
+const reader =
+new FileReader();
 
-        if (!response.ok) {
 
-            throw new Error(
-                "history request failed"
-            );
-        }
 
-        const data =
-            await response.json();
+reader.onload = ()=>{
 
-        const history =
-            Array.isArray(
-                data.history
-            )
-                ? data.history
-                : [];
 
-        document.getElementById(
-            "historyCount"
-        ).textContent =
-            formatNumber(
-                history.length
-            );
+localStorage.setItem(
+"lainolive_avatar",
+reader.result
+);
 
 
-        if (history.length === 0) {
 
-            area.innerHTML = `
-                <div class="empty-card">
+avatar.innerHTML =
+`
+<img src="${reader.result}">
+`;
 
-                    <div class="empty-icon">
-                        📺
-                    </div>
 
-                    هنوز لایوی به پایان نرسیده است.
 
-                </div>
-            `;
+};
 
-            return;
-        }
 
 
-        area.innerHTML =
-            history.map(
-                stream => {
+reader.readAsDataURL(
+file
+);
 
-                    return `
 
-                        <div class="history-card">
 
-                            <div class="history-card-header">
+};
 
-                                <div>
 
-                                    <h3>
-                                        ${escapeHtml(
-                                            stream.title
-                                        )}
-                                    </h3>
 
-                                    <div class="history-date">
-                                        پایان:
-                                        ${formatDate(
-                                            stream.ended_at
-                                        )}
-                                    </div>
 
-                                </div>
 
-                                <div class="history-icon">
-                                    📺
-                                </div>
 
-                            </div>
 
 
-                            <div class="history-grid">
 
-                                <div class="history-item">
+document
+.getElementById(
+"logoutBtn"
+)
+.onclick = ()=>{
 
-                                    <span>
-                                        مدت لایو
-                                    </span>
 
-                                    <strong>
-                                        ${formatDuration(
-                                            stream.duration_seconds
-                                        )}
-                                    </strong>
+localStorage.removeItem(
+"lainolive_logged_in"
+);
 
-                                </div>
 
 
-                                <div class="history-item">
+localStorage.removeItem(
+"lainolive_username"
+);
 
-                                    <span>
-                                        بیشترین بیننده
-                                    </span>
 
-                                    <strong>
-                                        👁️
-                                        ${formatNumber(
-                                            stream.viewer_peak
-                                        )}
-                                    </strong>
 
-                                </div>
+location.href =
+"/login.html";
 
 
-                                <div class="history-item">
 
-                                    <span>
-                                        شروع
-                                    </span>
+};
 
-                                    <strong>
-                                        ${formatDate(
-                                            stream.started_at
-                                        )}
-                                    </strong>
 
-                                </div>
 
 
-                                <div class="history-item">
 
-                                    <span>
-                                        پایان
-                                    </span>
 
-                                    <strong>
-                                        ${formatDate(
-                                            stream.ended_at
-                                        )}
-                                    </strong>
 
-                                </div>
 
-                            </div>
 
-                        </div>
+document
+.getElementById(
+"backBtn"
+)
+.onclick = ()=>{
 
-                    `;
-                }
-            ).join("");
 
-    } catch (error) {
+location.href =
+"/";
 
-        console.error(
-            error
-        );
 
-        area.innerHTML = `
-            <div class="empty-card error-card">
-                دریافت تاریخچه ناموفق بود.
-            </div>
-        `;
-    }
-}
 
+};
 
-// ======================================================
-// CONTINUE LIVE
-// ======================================================
 
-function continueLive(streamId) {
 
-    sessionStorage.setItem(
-        "lainolive_current_stream",
-        JSON.stringify({
-            id: String(streamId),
-            username:
-                currentUsername
-        })
-    );
 
-    window.location.href =
-        "/live.html";
-}
 
 
-// ======================================================
-// ESCAPE HTML
-// ======================================================
 
-function escapeHtml(value) {
+loadProfile();
 
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-}
 
-
-// ======================================================
-// ESCAPE ATTRIBUTE
-// ======================================================
-
-function escapeAttribute(value) {
-
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        );
-}
-
-
-// ======================================================
-// START
-// ======================================================
-
-async function initProfile() {
-
-    if (!checkLogin()) {
-        return;
-    }
-
-    document.getElementById(
-        "username"
-    ).textContent =
-        currentUsername;
-
-    await Promise.all([
-        loadActiveLive(),
-        loadHistory()
-    ]);
-}
-
-
-initProfile();
 
 </script>
 
+
 </body>
+
 </html>

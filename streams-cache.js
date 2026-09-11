@@ -1,339 +1,632 @@
-(function () {
-    "use strict";
+"use strict";
+
+
+const LainoLiveStreams = (() => {
+
 
     const CACHE_KEY =
         "lainolive_streams_cache";
 
+
     const CACHE_TIME_KEY =
         "lainolive_streams_cache_time";
 
-    const DEFAULT_TTL =
-        1000;
 
-    let activeRequest = null;
 
-    async function fetchStreams(
-        options = {}
-    ) {
+    let memoryCache = [];
+
+    let lastFetch = 0;
+
+    let loading = false;
+
+
+
+    /*
+        دریافت لیست لایوها
+    */
+
+    async function fetchStreams(options = {}) {
+
 
         const force =
             options.force === true;
 
+
         const ttl =
-            Number(
-                options.ttl ??
-                DEFAULT_TTL
-            );
+            options.ttl || 3000;
+
+
+
 
         const now =
             Date.now();
 
-        /*
-         * -----------------------------------------
-         * استفاده از کش موجود
-         * -----------------------------------------
-         */
 
-        if (!force) {
 
-            try {
 
-                const cached =
-                    sessionStorage.getItem(
-                        CACHE_KEY
-                    );
+        if(
+            !force &&
+            memoryCache.length > 0 &&
+            (now - lastFetch) < ttl
+        ){
 
-                const cachedTime =
-                    Number(
-                        sessionStorage.getItem(
-                            CACHE_TIME_KEY
-                        ) || 0
-                    );
+            return memoryCache;
 
-                if (
-                    cached &&
-                    now - cachedTime < ttl
-                ) {
-
-                    const parsed =
-                        JSON.parse(
-                            cached
-                        );
-
-                    return normalizeStreams(
-                        parsed
-                    );
-                }
-
-            } catch (error) {
-
-                console.warn(
-                    "streams cache read error:",
-                    error
-                );
-            }
         }
 
 
-        /*
-         * -----------------------------------------
-         * جلوگیری از درخواست هم‌زمان
-         * -----------------------------------------
-         */
 
-        if (
-            activeRequest
-        ) {
 
-            return activeRequest;
+        if(loading){
+
+
+            return memoryCache;
+
+
         }
 
 
-        /*
-         * -----------------------------------------
-         * درخواست جدید
-         * -----------------------------------------
-         */
 
-        activeRequest =
-            fetch(
-                "/api/streams",
-                {
-                    method:
-                        "GET",
+        loading = true;
 
-                    cache:
-                        "no-store",
 
-                    headers: {
-                        "Accept":
+
+
+        try{
+
+
+            const response =
+
+                await fetch(
+
+                    "/api/streams",
+
+                    {
+
+                        method:
+                            "GET",
+
+
+                        headers:
+                        {
+
+                            "Accept":
                             "application/json"
+
+                        },
+
+
+                        cache:
+                            "no-store"
+
                     }
-                }
-            )
-                .then(
-                    async response => {
 
-                        if (
-                            !response.ok
-                        ) {
-
-                            throw new Error(
-                                "streams request failed: " +
-                                response.status
-                            );
-                        }
-
-
-                        const data =
-                            await response.json();
-
-
-                        /*
-                         * ذخیره در کش
-                         */
-
-                        try {
-
-                            sessionStorage.setItem(
-                                CACHE_KEY,
-                                JSON.stringify(
-                                    data
-                                )
-                            );
-
-                            sessionStorage.setItem(
-                                CACHE_TIME_KEY,
-                                String(
-                                    Date.now()
-                                )
-                            );
-
-                        } catch (error) {
-
-                            console.warn(
-                                "streams cache write error:",
-                                error
-                            );
-                        }
-
-
-                        return normalizeStreams(
-                            data
-                        );
-                    }
-                )
-                .catch(
-                    error => {
-
-                        console.error(
-                            "fetch streams error:",
-                            error
-                        );
-
-                        /*
-                         * اگر درخواست شکست خورد،
-                         * در صورت وجود کش قبلی از آن
-                         * استفاده کن.
-                         */
-
-                        try {
-
-                            const cached =
-                                sessionStorage.getItem(
-                                    CACHE_KEY
-                                );
-
-                            if (cached) {
-
-                                return normalizeStreams(
-                                    JSON.parse(
-                                        cached
-                                    )
-                                );
-                            }
-
-                        } catch (cacheError) {
-
-                            console.warn(
-                                "fallback cache error:",
-                                cacheError
-                            );
-                        }
-
-
-                        throw error;
-                    }
-                )
-                .finally(
-                    () => {
-
-                        activeRequest =
-                            null;
-                    }
                 );
 
 
-        return activeRequest;
-    }
 
 
-    function normalizeStreams(
-        data
-    ) {
 
-        if (
-            Array.isArray(
-                data?.streams
-            )
-        ) {
-
-            return data.streams;
-        }
+            if(!response.ok){
 
 
-        if (
-            Array.isArray(data)
-        ) {
-
-            return data;
-        }
+                throw new Error(
+                    "Streams API error"
+                );
 
 
-        return [];
-    }
+            }
 
 
-    function clearStreamsCache() {
 
-        try {
 
-            sessionStorage.removeItem(
-                CACHE_KEY
+
+            const data =
+
+                await response.json();
+
+
+
+
+
+            let streams = [];
+
+
+
+
+            if(
+                Array.isArray(data)
+            ){
+
+                streams =
+                    data;
+
+
+            }
+
+            else if(
+                Array.isArray(
+                    data.streams
+                )
+            ){
+
+                streams =
+                    data.streams;
+
+
+            }
+
+
+
+
+
+
+            memoryCache =
+                streams;
+
+
+
+            lastFetch =
+                Date.now();
+
+
+
+
+
+            localStorage.setItem(
+
+                CACHE_KEY,
+
+                JSON.stringify(
+                    streams
+                )
+
             );
 
-            sessionStorage.removeItem(
-                CACHE_TIME_KEY
+
+
+
+
+            localStorage.setItem(
+
+                CACHE_TIME_KEY,
+
+                String(
+                    lastFetch
+                )
+
             );
 
-        } catch (error) {
 
-            console.warn(
-                "clear streams cache error:",
+
+
+
+
+            return streams;
+
+
+
+        }
+
+        catch(error){
+
+
+
+            console.log(
+                "streams cache:",
                 error
             );
+
+
+
+
+            return loadLocalCache();
+
+
+
         }
+
+        finally{
+
+
+            loading =
+                false;
+
+
+        }
+
+
+
     }
 
 
-    function getCachedStreams() {
-
-        try {
-
-            const cached =
-                sessionStorage.getItem(
-                    CACHE_KEY
-                );
-
-            if (!cached) {
-                return [];
-            }
-
-            return normalizeStreams(
-                JSON.parse(
-                    cached
-                )
-            );
-
-        } catch {
-
-            return [];
-        }
-    }
 
 
-    function getCacheAge() {
 
-        try {
 
-            const time =
-                Number(
-                    sessionStorage.getItem(
-                        CACHE_TIME_KEY
-                    ) || 0
-                );
-
-            if (!time) {
-                return Infinity;
-            }
-
-            return Date.now() - time;
-
-        } catch {
-
-            return Infinity;
-        }
-    }
 
 
     /*
-     * -----------------------------------------
-     * عمومی کردن API
-     * -----------------------------------------
-     */
+        دریافت کش ذخیره شده
+    */
 
-    window.LainoLiveStreams = {
+    function loadLocalCache(){
+
+
+
+        try{
+
+
+            const saved =
+
+                localStorage.getItem(
+                    CACHE_KEY
+                );
+
+
+
+
+            if(saved){
+
+
+
+                memoryCache =
+
+                    JSON.parse(
+                        saved
+                    );
+
+
+
+                return memoryCache;
+
+
+            }
+
+
+
+        }
+
+        catch(error){
+
+
+            console.log(error);
+
+
+        }
+
+
+
+
+        return [];
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+    /*
+        گرفتن یک لایو با ID
+    */
+
+    function getStream(id){
+
+
+
+        return memoryCache.find(
+
+            stream =>
+
+
+                String(
+
+                    stream.id ||
+
+                    stream.stream_id
+
+                )
+
+                ===
+
+                String(id)
+
+
+        )
+
+        ||
+
+        null;
+
+
+    }
+
+
+
+
+
+
+
+
+    /*
+        ذخیره یا بروزرسانی لایو
+    */
+
+    function save(stream){
+
+
+
+        if(!stream){
+
+            return;
+
+        }
+
+
+
+
+        const id =
+
+            stream.id ||
+
+            stream.stream_id;
+
+
+
+
+
+        memoryCache =
+
+            memoryCache.filter(
+
+                item =>
+
+
+                    String(
+
+                        item.id ||
+
+                        item.stream_id
+
+                    )
+
+                    !==
+
+                    String(id)
+
+
+            );
+
+
+
+
+
+
+        memoryCache.unshift(
+            stream
+        );
+
+
+
+
+
+        saveLocal();
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+    /*
+        حذف لایو
+    */
+
+    function remove(id){
+
+
+
+        memoryCache =
+
+            memoryCache.filter(
+
+                item =>
+
+
+                    String(
+
+                        item.id ||
+
+                        item.stream_id
+
+                    )
+
+                    !==
+
+                    String(id)
+
+
+            );
+
+
+
+
+
+        saveLocal();
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+    /*
+        ذخیره دستی کش
+    */
+
+    function saveLocal(){
+
+
+
+        localStorage.setItem(
+
+            CACHE_KEY,
+
+            JSON.stringify(
+                memoryCache
+            )
+
+        );
+
+
+
+        localStorage.setItem(
+
+            CACHE_TIME_KEY,
+
+            String(
+                Date.now()
+            )
+
+        );
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+    /*
+        پاک کردن کامل کش
+    */
+
+    function clear(){
+
+
+
+        memoryCache = [];
+
+
+        lastFetch = 0;
+
+
+
+        localStorage.removeItem(
+            CACHE_KEY
+        );
+
+
+        localStorage.removeItem(
+            CACHE_TIME_KEY
+        );
+
+
+    }
+
+
+
+
+
+
+
+
+
+    /*
+        تعداد لایوها
+    */
+
+    function count(){
+
+
+        return memoryCache.length;
+
+
+    }
+
+
+
+
+
+
+
+
+
+    /*
+        آخرین زمان بروزرسانی
+    */
+
+    function updatedAt(){
+
+
+        return lastFetch;
+
+
+    }
+
+
+
+
+
+
+
+
+    return {
+
+
         fetch:
             fetchStreams,
 
+
+        get:
+            getStream,
+
+
+        save:
+            save,
+
+
+        remove:
+            remove,
+
+
         clear:
-            clearStreamsCache,
+            clear,
 
-        getCached:
-            getCachedStreams,
 
-        getAge:
-            getCacheAge
+        count:
+            count,
+
+
+        updatedAt:
+            updatedAt
+
+
     };
+
+
 
 })();

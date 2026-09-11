@@ -1,31 +1,67 @@
 {
-  "manifest_version": 3,
-  "name": "LainoLive Tab Audio",
-  "version": "1.1.0",
-  "description": "گرفتن صدای تب برای LainoLive",
-  "permissions": [
-    "tabCapture",
-    "activeTab",
-    "tabs"
-  ],
-  "host_permissions": [
-    "https://mygapino.shop/*"
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_title": "شروع Capture تب LainoLive"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://mygapino.shop/*"
-      ],
-      "js": [
-        "content.js"
-      ],
-      "run_at": "document_idle"
-    }
-  ]
+    "name": "LainoLive",
+    "short_name": "LainoLive",
+
+    "description": "پخش زنده و تماشای لایو",
+
+    "lang": "fa",
+
+    "dir": "rtl",
+
+
+    "start_url": "/",
+
+
+    "scope": "/",
+
+
+    "display": "standalone",
+
+
+    "orientation": "portrait",
+
+
+    "background_color": "#050508",
+
+
+    "theme_color": "#ff2757",
+
+
+
+    "icons": [
+
+        {
+            "src": "/icons/icon-72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+
+        {
+            "src": "/icons/icon-96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+
+        {
+            "src": "/icons/icon-128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+
+        {
+            "src": "/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+
+        {
+            "src": "/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+
+    ]
+
 }

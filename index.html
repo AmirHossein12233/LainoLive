@@ -1,3279 +1,873 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#09090f"
-    >
-
-    <title>
-        LainoLive
-    </title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-
-            min-height: 100%;
-
-            font-family:
-                Tahoma,
-                Arial,
-                sans-serif;
-
-            background:
-                radial-gradient(
-                    circle at top,
-                    #19192b 0%,
-                    #0b0b12 48%,
-                    #050508 100%
-                );
-
-            color: white;
-        }
-
-        body {
-            min-height: 100vh;
-        }
-
-        button,
-        input,
-        select {
-            font-family: inherit;
-        }
+<meta charset="UTF-8">
 
-        button {
-            cursor: pointer;
-        }
-
-        .page {
-            min-height: 100vh;
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-            padding-bottom:
-                calc(
-                    90px +
-                    env(safe-area-inset-bottom)
-                );
-        }
 
-        .header {
-            position: sticky;
+<meta name="theme-color"
+content="#ff2757">
 
-            top: 0;
 
-            z-index: 100;
+<meta name="mobile-web-app-capable"
+content="yes">
 
-            padding:
-                calc(
-                    14px +
-                    env(safe-area-inset-top)
-                )
-                16px
-                14px;
 
-            background:
-                rgba(
-                    8,
-                    8,
-                    15,
-                    .92
-                );
+<meta name="apple-mobile-web-app-capable"
+content="yes">
 
-            backdrop-filter:
-                blur(18px);
 
-            -webkit-backdrop-filter:
-                blur(18px);
+<link rel="manifest"
+href="/manifest.json">
 
-            border-bottom:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-        }
 
-        .header-row {
-            display: flex;
+<link rel="apple-touch-icon"
+href="/icons/icon-192.png">
 
-            align-items: center;
 
-            justify-content:
-                space-between;
+<title>
+LainoLive
+</title>
 
-            gap: 12px;
-        }
 
-        .brand {
-            min-width: 0;
-        }
 
-        .brand-title {
-            font-size: 23px;
+<style>
 
-            font-weight: 900;
-        }
 
-        .brand-subtitle {
-            margin-top: 4px;
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
 
-            color: #92929f;
 
-            font-size: 10px;
-        }
+body{
 
-        .header-actions {
-            display: flex;
+margin:0;
 
-            gap: 8px;
-        }
+min-height:100vh;
 
-        .icon-btn {
-            width: 42px;
-            height: 42px;
+font-family:
+Tahoma,
+Arial,
+sans-serif;
 
-            border: none;
+background:
+radial-gradient(
+circle at top,
+#19192b,
+#050508
+);
 
-            border-radius: 13px;
+color:white;
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
+}
 
-            color: white;
 
-            font-size: 18px;
-        }
 
-        .search-box {
-            margin-top: 13px;
+button,
+input{
 
-            display: flex;
+font-family:inherit;
 
-            align-items: center;
+}
 
-            gap: 8px;
 
-            padding:
-                11px
-                13px;
 
-            border-radius: 15px;
+.page{
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .06
-                );
-        }
+padding-bottom:90px;
 
-        .search-box input {
-            width: 100%;
+}
 
-            border: none;
 
-            outline: none;
 
-            background: transparent;
+.header{
 
-            color: white;
+position:sticky;
 
-            font-size: 12px;
-        }
+top:0;
 
-        .search-box input::placeholder {
-            color: #777784;
-        }
+z-index:10;
 
-        .hero {
-            margin: 16px;
+padding:16px;
 
-            padding: 20px;
+background:
+rgba(5,5,10,.9);
 
-            border-radius: 22px;
+backdrop-filter:
+blur(15px);
 
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(
-                        255,
-                        39,
-                        87,
-                        .16
-                    ),
-                    rgba(
-                        139,
-                        53,
-                        255,
-                        .17
-                    )
-                );
+}
 
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-        }
 
-        .hero-title {
-            font-size: 20px;
 
-            font-weight: 900;
-        }
+.header-row{
 
-        .hero-text {
-            margin-top: 7px;
+display:flex;
 
-            color: #a7a7b4;
+align-items:center;
 
-            font-size: 12px;
+justify-content:space-between;
 
-            line-height: 1.9;
-        }
+}
 
-        .hero-button {
-            margin-top: 13px;
 
-            min-height: 44px;
 
-            border: none;
+.logo{
 
-            border-radius: 13px;
+font-size:23px;
 
-            padding:
-                0
-                16px;
+font-weight:900;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff2757,
-                    #8b35ff
-                );
+}
 
-            color: white;
 
-            font-size: 11px;
 
-            font-weight: 900;
-        }
+.subtitle{
 
-        .section-head {
-            padding:
-                0
-                16px
-                10px;
+color:#aaa;
 
-            display: flex;
+font-size:11px;
 
-            align-items: center;
+margin-top:5px;
 
-            justify-content:
-                space-between;
+}
 
-            gap: 10px;
-        }
 
-        .section-title {
-            font-size: 16px;
 
-            font-weight: 900;
-        }
+.actions{
 
-        .section-link {
-            border: none;
+display:flex;
 
-            background: transparent;
+gap:8px;
 
-            color: #bd9bff;
+}
 
-            font-size: 10px;
 
-            font-weight: 800;
-        }
 
-        .status-text {
-            padding:
-                0
-                16px
-                10px;
+.icon{
 
-            color: #858592;
+width:42px;
 
-            font-size: 10px;
-        }
+height:42px;
 
-        .list {
-            padding:
-                0
-                16px;
+border:none;
 
-            display: grid;
+border-radius:14px;
 
-            grid-template-columns:
-                repeat(
-                    2,
-                    minmax(
-                        0,
-                        1fr
-                    )
-                );
+background:
+rgba(255,255,255,.08);
 
-            gap: 12px;
-        }
+color:white;
 
-        .card {
-            overflow: hidden;
+font-size:18px;
 
-            border-radius: 18px;
+}
 
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .055
-                    ),
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .025
-                    )
-                );
 
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
 
-            transition:
-                transform .18s ease;
-        }
+.search{
 
-        .card:active {
-            transform:
-                scale(.98);
-        }
+margin-top:15px;
 
-        .cover {
-            position: relative;
+display:flex;
 
-            aspect-ratio:
-                16 / 10;
+gap:8px;
 
-            overflow: hidden;
+align-items:center;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #161622,
-                    #29213d
-                );
-        }
+background:
+rgba(255,255,255,.07);
 
-        .cover img {
-            width: 100%;
-            height: 100%;
+border-radius:15px;
 
-            display: block;
+padding:12px;
 
-            object-fit: cover;
-        }
+}
 
-        .cover-placeholder {
-            width: 100%;
-            height: 100%;
 
-            display: flex;
 
-            align-items: center;
-            justify-content: center;
+.search input{
 
-            font-size: 34px;
+width:100%;
 
-            opacity: .48;
-        }
+background:none;
 
-        .live-badge {
-            position: absolute;
+border:none;
 
-            top: 8px;
-            right: 8px;
+outline:none;
 
-            padding:
-                5px
-                8px;
+color:white;
 
-            border-radius: 999px;
+}
 
-            background:
-                #ff1d4d;
 
-            font-size: 9px;
 
-            font-weight: 900;
-        }
+.hero{
 
-        .viewer-count {
-            position: absolute;
+margin:16px;
 
-            left: 8px;
-            bottom: 8px;
+padding:22px;
 
-            padding:
-                5px
-                8px;
+border-radius:22px;
 
-            border-radius: 999px;
+background:
+linear-gradient(
+135deg,
+rgba(255,39,87,.25),
+rgba(139,53,255,.25)
+);
 
-            background:
-                rgba(
-                    0,
-                    0,
-                    0,
-                    .72
-                );
+}
 
-            font-size: 10px;
-        }
 
-        .card-body {
-            padding: 12px;
-        }
 
-        .card-title {
-            font-size: 14px;
+.hero h2{
 
-            font-weight: 900;
+margin:0;
 
-            white-space: nowrap;
+font-size:20px;
 
-            overflow: hidden;
+}
 
-            text-overflow: ellipsis;
-        }
 
-        .card-user {
-            margin-top: 7px;
 
-            color: #a8a8b5;
+.hero p{
 
-            font-size: 11px;
-        }
+color:#ccc;
 
-        .card-bottom {
-            margin-top: 9px;
+font-size:12px;
 
-            display: flex;
+line-height:2;
 
-            align-items: center;
+}
 
-            justify-content:
-                space-between;
 
-            gap: 8px;
-        }
 
-        .category {
-            max-width: 55%;
+.start{
 
-            padding:
-                4px
-                8px;
+border:none;
 
-            border-radius: 999px;
+padding:13px 20px;
 
-            background:
-                rgba(
-                    139,
-                    53,
-                    255,
-                    .12
-                );
+border-radius:14px;
 
-            color: #ceb5ff;
+background:
+linear-gradient(
+135deg,
+#ff2757,
+#8b35ff
+);
 
-            font-size: 9px;
+color:white;
 
-            white-space: nowrap;
+font-weight:900;
 
-            overflow: hidden;
+}
 
-            text-overflow: ellipsis;
-        }
 
-        .views {
-            color: #ffb7c5;
 
-            font-size: 9px;
+.section{
 
-            white-space: nowrap;
-        }
+padding:0 16px;
 
-        /* =================================================
-           LIVE INFO
-        ================================================= */
+}
 
-        .live-info {
-            display: grid;
 
-            grid-template-columns:
-                repeat(
-                    2,
-                    minmax(
-                        0,
-                        1fr
-                    )
-                );
 
-            gap: 6px;
+.section-title{
 
-            margin-top: 10px;
-        }
+font-size:17px;
 
-        .live-info-item {
-            min-width: 0;
+font-weight:900;
 
-            padding:
-                7px
-                8px;
+margin-bottom:12px;
 
-            border-radius: 10px;
+}
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .045
-                );
 
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .055
-                );
 
-            color: #b7b7c3;
+#streamsList{
 
-            font-size: 9px;
+display:grid;
 
-            white-space: nowrap;
+grid-template-columns:
+repeat(2,1fr);
 
-            overflow: hidden;
+gap:12px;
 
-            text-overflow: ellipsis;
-        }
+}
 
-        .live-info-item strong {
-            color: #ffffff;
 
-            font-weight: 900;
-        }
+.card{
 
-        .live-quality-row {
-            display: flex;
+overflow:hidden;
 
-            flex-wrap: wrap;
+border-radius:18px;
 
-            gap: 6px;
+background:
+rgba(255,255,255,.06);
 
-            margin-top: 8px;
-        }
+}
 
-        .quality-tag {
-            padding:
-                5px
-                7px;
 
-            border-radius: 8px;
 
-            background:
-                rgba(
-                    106,
-                    76,
-                    255,
-                    .10
-                );
+.cover{
 
-            color: #cfc4ff;
+height:120px;
 
-            font-size: 9px;
+display:flex;
 
-            font-weight: 800;
-        }
+align-items:center;
 
-        .quality-tag.audio {
-            background:
-                rgba(
-                    30,
-                    180,
-                    120,
-                    .09
-                );
+justify-content:center;
 
-            color: #a8efca;
-        }
+font-size:40px;
 
-        .users-tag {
-            background:
-                rgba(
-                    255,
-                    65,
-                    110,
-                    .10
-                );
+background:
+linear-gradient(
+135deg,
+#222,
+#39205c
+);
 
-            color: #ffafbf;
-        }
+}
 
-        .empty {
-            grid-column:
-                1 / -1;
 
-            padding:
-                45px
-                20px;
 
-            text-align: center;
+.body{
 
-            border-radius: 18px;
+padding:12px;
 
-            color: #9292a0;
+}
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .025
-                );
 
-            border:
-                1px dashed
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .09
-                );
 
-            font-size: 13px;
+.title{
 
-            line-height: 1.9;
-        }
+font-weight:900;
 
-        /* =================================================
-           MODAL
-        ================================================= */
+}
 
-        .start-modal {
-            position: fixed;
 
-            inset: 0;
 
-            z-index: 500;
+.user{
 
-            display: none;
+margin-top:6px;
 
-            align-items:
-                flex-end;
+font-size:11px;
 
-            justify-content:
-                center;
+color:#aaa;
 
-            background:
-                rgba(
-                    0,
-                    0,
-                    0,
-                    .68
-                );
-        }
+}
 
-        .start-modal.show {
-            display: flex;
-        }
 
-        .start-card {
-            width: 100%;
 
-            max-width: 560px;
+.empty{
 
-            padding:
-                20px
-                18px
-                calc(
-                    20px +
-                    env(safe-area-inset-bottom)
-                );
+padding:40px;
 
-            border-radius:
-                24px
-                24px
-                0
-                0;
+text-align:center;
 
-            background:
-                #111119;
+color:#aaa;
 
-            border-top:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
-        }
+}
 
-        .modal-title {
-            font-size: 18px;
-
-            font-weight: 900;
-        }
-
-        .form-label {
-            display: block;
-
-            margin-top: 14px;
-
-            margin-bottom: 6px;
-
-            color: #9e9eaa;
-
-            font-size: 10px;
-        }
-
-        .form-input,
-        .form-select {
-            width: 100%;
-
-            min-height: 45px;
-
-            border: none;
-
-            outline: none;
-
-            border-radius: 13px;
-
-            padding:
-                0
-                13px;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-
-            color: white;
-
-            font-size: 12px;
-        }
-
-        .form-select option {
-            color: black;
-        }
-
-        .file-input {
-            width: 100%;
-
-            padding: 12px;
-
-            border-radius: 13px;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .05
-                );
-
-            color: #bdbdc7;
-
-            font-size: 11px;
-        }
-
-        .cover-preview {
-            display: none;
-
-            margin-top: 10px;
-
-            width: 100%;
-
-            aspect-ratio:
-                16 / 9;
-
-            overflow: hidden;
-
-            border-radius: 14px;
-        }
-
-        .cover-preview.show {
-            display: block;
-        }
-
-        .cover-preview img {
-            width: 100%;
-            height: 100%;
-
-            object-fit: cover;
-        }
-
-        .upload-status {
-            margin-top: 8px;
-
-            color: #8c8c99;
-
-            font-size: 10px;
-        }
-
-        .modal-buttons {
-            margin-top: 16px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    2,
-                    minmax(
-                        0,
-                        1fr
-                    )
-                );
-
-            gap: 9px;
-        }
-
-        .modal-btn {
-            min-height: 46px;
-
-            border: none;
-
-            border-radius: 13px;
-
-            font-weight: 900;
-        }
-
-        .modal-btn.primary {
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff2757,
-                    #8b35ff
-                );
-
-            color: white;
-        }
-
-        .modal-btn.secondary {
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .06
-                );
-
-            color: #c4c4ce;
-        }
-
-        /* =================================================
-           NAV
-        ================================================= */
-
-        .bottom-nav {
-            position: fixed;
-
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            z-index: 300;
-
-            padding:
-                10px
-                10px
-                calc(
-                    10px +
-                    env(safe-area-inset-bottom)
-                );
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    3,
-                    1fr
-                );
-
-            gap: 8px;
-
-            background:
-                rgba(
-                    7,
-                    7,
-                    12,
-                    .93
-                );
-
-            border-top:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-
-            backdrop-filter:
-                blur(18px);
-
-            -webkit-backdrop-filter:
-                blur(18px);
-        }
-
-        .nav-btn {
-            min-height: 52px;
-
-            border: none;
-
-            border-radius: 15px;
-
-            color: #8f8f9d;
-
-            background: transparent;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 4px;
-
-            font-size: 10px;
-
-            font-weight: 700;
-        }
-
-        .nav-btn span:first-child {
-            font-size: 20px;
-        }
-
-        .nav-btn.active {
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(
-                        255,
-                        39,
-                        87,
-                        .14
-                    ),
-                    rgba(
-                        139,
-                        53,
-                        255,
-                        .16
-                    )
-                );
-        }
-
-        @media (min-width: 700px) {
-
-            .page {
-                max-width: 1100px;
-
-                margin:
-                    0
-                    auto;
-            }
-
-            .list {
-                grid-template-columns:
-                    repeat(
-                        3,
-                        minmax(
-                            0,
-                            1fr
-                        )
-                    );
-            }
-
-            .bottom-nav {
-                left: 50%;
-                right: auto;
-
-                width:
-                    min(
-                        650px,
-                        calc(100% - 30px)
-                    );
-
-                transform:
-                    translateX(-50%);
-
-                bottom: 14px;
-
-                border:
-                    1px solid
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .07
-                    );
-
-                border-radius: 22px;
-
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 390px) {
-
-            .list {
-                grid-template-columns:
-                    1fr;
-            }
-
-            .live-info {
-                grid-template-columns:
-                    1fr;
-            }
-        }
-
-    </style>
+</style>
 
 </head>
 
 
 <body>
 
+
 <div class="page">
 
 
-    <header class="header">
-
-        <div class="header-row">
-
-            <div class="brand">
-
-                <div class="brand-title">
-                    🎥 LainoLive
-                </div>
-
-                <div class="brand-subtitle">
-                    پخش زنده و تماشای لایو
-                </div>
-
-            </div>
+<header class="header">
 
 
-            <div class="header-actions">
-
-                <button
-                    id="refreshButton"
-                    class="icon-btn"
-                    type="button"
-                >
-                    🔄
-                </button>
+<div class="header-row">
 
 
-                <button
-                    id="profileButtonTop"
-                    class="icon-btn"
-                    type="button"
-                >
-                    👤
-                </button>
+<div>
 
-            </div>
-
-        </div>
+<div class="logo">
+🎥 LainoLive
+</div>
 
 
-        <div class="search-box">
+<div class="subtitle">
+پخش زنده و تماشای لایو
+</div>
 
-            <span>
-                🔎
-            </span>
-
-            <input
-                id="searchInput"
-                type="search"
-                placeholder="جستجوی لایو..."
-                autocomplete="off"
-            >
-
-        </div>
-
-    </header>
-
-
-    <section class="hero">
-
-        <div class="hero-title">
-            🔴 همین حالا لایو شو
-        </div>
-
-
-        <div class="hero-text">
-            لایو خودت را شروع کن و تصویر و
-            صدایت را برای بیننده‌ها پخش کن.
-        </div>
-
-
-        <button
-            id="startLiveButton"
-            class="hero-button"
-            type="button"
-        >
-            شروع لایو
-        </button>
-
-    </section>
-
-
-    <div class="section-head">
-
-        <div class="section-title">
-            🔴 لایوهای در حال پخش
-        </div>
-
-
-        <button
-            id="popularButton"
-            class="section-link"
-            type="button"
-        >
-            دیدن محبوب‌ها →
-        </button>
-
-    </div>
-
-
-    <div
-        id="statusText"
-        class="status-text"
-    >
-        در حال دریافت لایوها...
-    </div>
-
-
-    <main
-        id="streamsList"
-        class="list"
-    >
-
-        <div class="empty">
-            در حال دریافت لایوها...
-        </div>
-
-    </main>
 
 </div>
 
 
-<nav class="bottom-nav">
 
-    <button
-        class="nav-btn active"
-        type="button"
-    >
-        <span>🏠</span>
-        <span>خانه</span>
-    </button>
+<div class="actions">
 
 
-    <button
-        id="popularNavButton"
-        class="nav-btn"
-        type="button"
-    >
-        <span>🔥</span>
-        <span>محبوب</span>
-    </button>
+<button
+class="icon"
+id="refreshButton"
+>
+🔄
+</button>
 
 
-    <button
-        id="profileButton"
-        class="nav-btn"
-        type="button"
-    >
-        <span>👤</span>
-        <span>پروفایل</span>
-    </button>
+<button
+class="icon"
+id="profileButton"
+>
+👤
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="search">
+
+<span>
+🔎
+</span>
+
+
+<input
+id="searchInput"
+placeholder="جستجوی لایو..."
+>
+
+
+</div>
+
+
+
+</header>
+
+
+
+
+
+<section class="hero">
+
+
+<h2>
+🔴 همین حالا لایو شو
+</h2>
+
+
+
+<p>
+
+لایو خودت را شروع کن و تصویر و صدایت را برای بیننده‌ها پخش کن.
+
+</p>
+
+
+
+<button
+class="start"
+id="startLiveButton"
+>
+
+شروع لایو
+
+</button>
+
+
+</section>
+
+
+
+
+
+
+<section class="section">
+
+
+<div class="section-title">
+
+🔴 لایوهای در حال پخش
+
+</div>
+
+
+
+<div
+id="statusText"
+style="
+color:#999;
+font-size:12px;
+margin-bottom:12px;
+"
+>
+
+در حال دریافت لایوها...
+
+</div>
+
+
+
+<div
+id="streamsList"
+>
+
+
+<div class="empty">
+
+در حال دریافت لایوها...
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+</div>
+
+
+
+
+
+
+
+
+<nav
+style="
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:75px;
+background:rgba(5,5,10,.95);
+display:grid;
+grid-template-columns:repeat(3,1fr);
+padding:10px;
+border-top:1px solid rgba(255,255,255,.08);
+"
+>
+
+
+<button
+style="
+background:none;
+border:none;
+color:white;
+font-size:12px;
+"
+>
+
+🏠
+<br>
+خانه
+
+</button>
+
+
+
+<button
+id="popularButton"
+style="
+background:none;
+border:none;
+color:#aaa;
+font-size:12px;
+"
+>
+
+🔥
+<br>
+محبوب
+
+</button>
+
+
+
+
+<button
+id="profileButton2"
+style="
+background:none;
+border:none;
+color:#aaa;
+font-size:12px;
+"
+>
+
+👤
+<br>
+پروفایل
+
+</button>
+
+
 
 </nav>
 
 
-<div
-    id="startModal"
-    class="start-modal"
->
-
-    <div class="start-card">
-
-        <div class="modal-title">
-            شروع لایو
-        </div>
 
 
-        <label
-            class="form-label"
-            for="liveTitle"
-        >
-            عنوان لایو
-        </label>
 
 
-        <input
-            id="liveTitle"
-            class="form-input"
-            type="text"
-            maxlength="120"
-            placeholder="مثلاً اولین لایو من"
-        >
 
-
-        <label
-            class="form-label"
-            for="liveCategory"
-        >
-            دسته‌بندی
-        </label>
-
-
-        <select
-            id="liveCategory"
-            class="form-select"
-        >
-
-            <option value="عمومی">
-                عمومی
-            </option>
-
-            <option value="گیم">
-                گیم
-            </option>
-
-            <option value="موسیقی">
-                موسیقی
-            </option>
-
-            <option value="گفتگو">
-                گفتگو
-            </option>
-
-            <option value="آموزشی">
-                آموزشی
-            </option>
-
-            <option value="سرگرمی">
-                سرگرمی
-            </option>
-
-            <option value="ورزشی">
-                ورزشی
-            </option>
-
-        </select>
-
-
-        <label
-            class="form-label"
-            for="liveCover"
-        >
-            تصویر کاور
-        </label>
-
-
-        <input
-            id="liveCover"
-            class="file-input"
-            type="file"
-            accept="
-                image/jpeg,
-                image/png,
-                image/webp,
-                image/gif
-            "
-            capture="environment"
-        >
-
-
-        <div
-            id="coverPreview"
-            class="cover-preview"
-        >
-
-            <img
-                id="coverPreviewImage"
-                alt="پیش‌نمایش کاور"
-            >
-
-        </div>
-
-
-        <div
-            id="uploadStatus"
-            class="upload-status"
-        ></div>
-
-
-        <div class="modal-buttons">
-
-            <button
-                id="cancelStartButton"
-                class="modal-btn secondary"
-                type="button"
-            >
-                لغو
-            </button>
-
-
-            <button
-                id="confirmStartButton"
-                class="modal-btn primary"
-                type="button"
-            >
-                شروع لایو
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
 
 
 <script src="/streams-cache.js"></script>
 
+<script src="/app.js"></script>
+
 
 <script>
 
-"use strict";
 
+if(
+"serviceWorker" in navigator
+){
 
-/* =====================================================
-   CONFIG
-===================================================== */
-
-const LOGIN_KEY =
-    "lainolive_logged_in";
-
-const USERNAME_KEY =
-    "lainolive_username";
-
-const VIEW_STREAM_KEY =
-    "lainolive_view_stream";
-
-const CURRENT_STREAM_KEY =
-    "lainolive_current_stream";
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-if (
-    localStorage.getItem(
-        LOGIN_KEY
-    ) !== "true"
-) {
-
-    window.location.href =
-        "/login.html";
-
-}
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const streamsList =
-    document.getElementById(
-        "streamsList"
-    );
-
-
-const statusText =
-    document.getElementById(
-        "statusText"
-    );
-
-
-const refreshButton =
-    document.getElementById(
-        "refreshButton"
-    );
-
-
-const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
-
-
-const startModal =
-    document.getElementById(
-        "startModal"
-    );
-
-
-const liveTitle =
-    document.getElementById(
-        "liveTitle"
-    );
-
-
-const liveCategory =
-    document.getElementById(
-        "liveCategory"
-    );
-
-
-const liveCover =
-    document.getElementById(
-        "liveCover"
-    );
-
-
-const coverPreview =
-    document.getElementById(
-        "coverPreview"
-    );
-
-
-const coverPreviewImage =
-    document.getElementById(
-        "coverPreviewImage"
-    );
-
-
-const uploadStatus =
-    document.getElementById(
-        "uploadStatus"
-    );
-
-
-const currentUsername =
-    localStorage.getItem(
-        USERNAME_KEY
-    ) || "";
-
-
-let allStreams = [];
-
-let selectedCoverFile =
-    null;
-
-let streamsLoading =
-    false;
-
-
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
-
-
-function getId(
-    stream
-) {
-
-    return (
-        stream?.id
-        ??
-        stream?.stream_id
-    );
-
-}
-
-
-function getTitle(
-    stream
-) {
-
-    return (
-        stream?.title
-        ||
-        "لایو بدون عنوان"
-    );
-
-}
-
-
-function getUsername(
-    stream
-) {
-
-    return (
-        stream?.username
-        ||
-        stream?.user
-        ||
-        stream?.owner
-        ||
-        "کاربر"
-    );
-
-}
-
-
-function getCategory(
-    stream
-) {
-
-    return (
-        stream?.category
-        ||
-        "عمومی"
-    );
-
-}
-
-
-function getViewers(
-    stream
-) {
-
-    return Number(
-        stream?.viewer_count
-        ??
-        stream?.viewers
-        ??
-        stream?.viewer_count_now
-        ??
-        0
-    );
-
-}
-
-
-function getUsers(
-    stream
-) {
-
-    return Number(
-        stream?.users_count
-        ??
-        stream?.user_count
-        ??
-        stream?.online_users
-        ??
-        stream?.online_count
-        ??
-        stream?.viewer_count
-        ??
-        stream?.viewers
-        ??
-        0
-    );
-
-}
-
-
-function getCover(
-    stream
-) {
-
-    return (
-        stream?.cover_url
-        ||
-        stream?.cover
-        ||
-        stream?.thumbnail
-        ||
-        ""
-    );
-
-}
-
-
-/* =====================================================
-   VIDEO QUALITY
-===================================================== */
-
-function getVideoQuality(
-    stream
-) {
-
-    const value =
-        stream?.video_quality
-        ??
-        stream?.quality
-        ??
-        stream?.resolution
-        ??
-        stream?.video_resolution
-        ??
-        "";
-
-
-    if (
-        value
-    ) {
-
-        const text =
-            String(
-                value
-            ).trim();
-
-
-        if (
-            text
-                .toLowerCase()
-                .includes("1080")
-        ) {
-
-            return "1080p";
-
-        }
-
-
-        if (
-            text
-                .toLowerCase()
-                .includes("720")
-        ) {
-
-            return "720p";
-
-        }
-
-
-        if (
-            text
-                .toLowerCase()
-                .includes("480")
-        ) {
-
-            return "480p";
-
-        }
-
-
-        return text;
-
-    }
-
-
-    if (
-        stream?.video_width &&
-        stream?.video_height
-    ) {
-
-        return (
-            String(
-                stream.video_width
-            ) +
-            "×" +
-            String(
-                stream.video_height
-            )
-        );
-
-    }
-
-
-    if (
-        stream?.width &&
-        stream?.height
-    ) {
-
-        return (
-            String(
-                stream.width
-            ) +
-            "×" +
-            String(
-                stream.height
-            )
-        );
-
-    }
-
-
-    return "نامشخص";
-
-}
-
-
-/* =====================================================
-   AUDIO QUALITY
-===================================================== */
-
-function getAudioQuality(
-    stream
-) {
-
-    const raw =
-        stream?.audio_bitrate
-        ??
-        stream?.audio_quality
-        ??
-        stream?.bitrate_audio
-        ??
-        stream?.audio_kbps
-        ??
-        "";
-
-
-    if (
-        raw === ""
-        ||
-        raw === null
-        ||
-        typeof raw ===
-            "undefined"
-    ) {
-
-        return "نامشخص";
-
-    }
-
-
-    const numberValue =
-        Number(
-            raw
-        );
-
-
-    if (
-        Number.isFinite(
-            numberValue
-        )
-    ) {
-
-        if (
-            numberValue >= 1000
-        ) {
-
-            return (
-                Math.round(
-                    numberValue /
-                    1000
-                ) +
-                " kbps"
-            );
-
-        }
-
-
-        return (
-            Math.round(
-                numberValue
-            ) +
-            " kbps"
-        );
-
-    }
-
-
-    const text =
-        String(
-            raw
-        ).trim();
-
-
-    if (
-        text
-            .toLowerCase()
-            .includes("kbps")
-    ) {
-
-        return text;
-
-    }
-
-
-    return text;
-
-}
-
-
-/* =====================================================
-   USERS LIST
-===================================================== */
-
-function getUsersList(
-    stream
-) {
-
-    const users =
-        stream?.users
-        ||
-        stream?.viewers_list
-        ||
-        stream?.viewer_users
-        ||
-        stream?.online_users_list
-        ||
-        [];
-
-
-    if (
-        !Array.isArray(
-            users
-        )
-    ) {
-
-        return [];
-
-    }
-
-
-    return users
-        .map(
-            item => {
-
-                if (
-                    typeof item ===
-                    "string"
-                ) {
-
-                    return item;
-
-                }
-
-
-                return (
-                    item?.username
-                    ||
-                    item?.user
-                    ||
-                    item?.name
-                    ||
-                    ""
-                );
-
-            }
-        )
-        .filter(
-            Boolean
-        );
-
-}
-
-
-/* =====================================================
-   OWN STREAM FALLBACK
-===================================================== */
-
-function getOwnStreamSettings(
-    stream
-) {
-
-    const owner =
-        getUsername(
-            stream
-        );
-
-
-    if (
-        String(owner)
-        !==
-        String(
-            currentUsername
-        )
-    ) {
-
-        return {};
-
-    }
-
-
-    let stored =
-        null;
-
-
-    try {
-
-        const raw =
-            sessionStorage.getItem(
-                CURRENT_STREAM_KEY
-            );
-
-
-        if (
-            raw
-        ) {
-
-            stored =
-                JSON.parse(
-                    raw
-                );
-
-            if (
-                String(
-                    getId(
-                        stored
-                    )
-                )
-                !==
-                String(
-                    getId(
-                        stream
-                    )
-                )
-            ) {
-
-                stored =
-                    null;
-
-            }
-
-        }
-
-    }
-    catch {}
-
-
-    if (
-        !stored
-    ) {
-
-        try {
-
-            const raw =
-                localStorage.getItem(
-                    CURRENT_STREAM_KEY
-                );
-
-
-            if (
-                raw
-            ) {
-
-                stored =
-                    JSON.parse(
-                        raw
-                    );
-
-            }
-
-        }
-        catch {}
-
-    }
-
-
-    if (
-        !stored
-    ) {
-
-        return {};
-
-    }
-
-
-    return {
-
-        videoQuality:
-            stored.video_quality
-            ||
-            stored.quality
-            ||
-            "",
-
-        audioQuality:
-            stored.audio_bitrate
-            ||
-            stored.audio_quality
-            ||
-            "",
-
-        users:
-            stored.users
-            ||
-            stored.viewers_list
-            ||
-            []
-
-    };
-
-}
-
-
-/* =====================================================
-   QUALITY MERGE
-===================================================== */
-
-function getEffectiveVideoQuality(
-    stream
-) {
-
-    const own =
-        getOwnStreamSettings(
-            stream
-        );
-
-
-    if (
-        own.videoQuality
-    ) {
-
-        const fakeStream =
-            {
-                video_quality:
-                    own.videoQuality
-            };
-
-
-        return getVideoQuality(
-            fakeStream
-        );
-
-    }
-
-
-    return getVideoQuality(
-        stream
-    );
-
-}
-
-
-function getEffectiveAudioQuality(
-    stream
-) {
-
-    const own =
-        getOwnStreamSettings(
-            stream
-        );
-
-
-    if (
-        own.audioQuality
-    ) {
-
-        const fakeStream =
-            {
-                audio_bitrate:
-                    own.audioQuality
-            };
-
-
-        return getAudioQuality(
-            fakeStream
-        );
-
-    }
-
-
-    return getAudioQuality(
-        stream
-    );
-
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function renderStreams(
-    streams
-) {
-
-    if (
-        !streams.length
-    ) {
-
-        streamsList.innerHTML =
-            `
-                <div class="empty">
-                    فعلاً هیچ لایوی
-                    در حال پخش نیست. 🎥
-                </div>
-            `;
-
-        return;
-    }
-
-
-    streamsList.innerHTML =
-        streams
-            .map(
-                stream => {
-
-                    const id =
-                        getId(
-                            stream
-                        );
-
-
-                    const title =
-                        escapeHtml(
-                            getTitle(
-                                stream
-                            )
-                        );
-
-
-                    const username =
-                        escapeHtml(
-                            getUsername(
-                                stream
-                            )
-                        );
-
-
-                    const category =
-                        escapeHtml(
-                            getCategory(
-                                stream
-                            )
-                        );
-
-
-                    const viewers =
-                        getViewers(
-                            stream
-                        );
-
-
-                    const users =
-                        getUsers(
-                            stream
-                        );
-
-
-                    const cover =
-                        getCover(
-                            stream
-                        );
-
-
-                    const videoQuality =
-                        escapeHtml(
-                            getEffectiveVideoQuality(
-                                stream
-                            )
-                        );
-
-
-                    const audioQuality =
-                        escapeHtml(
-                            getEffectiveAudioQuality(
-                                stream
-                            )
-                        );
-
-
-                    const usersList =
-                        getUsersList(
-                            stream
-                        );
-
-
-                    const usersText =
-                        usersList.length
-                            ? usersList
-                                .slice(
-                                    0,
-                                    5
-                                )
-                                .join(
-                                    "، "
-                                )
-                            : "";
-
-
-                    return `
-                        <article
-                            class="card"
-                            data-id="${escapeHtml(id)}"
-                        >
-
-                            <div class="cover">
-
-                                ${
-                                    cover
-                                        ? `
-                                            <img
-                                                src="${escapeHtml(
-                                                    cover
-                                                )}"
-                                                alt="${title}"
-                                                loading="lazy"
-                                                onerror="
-                                                    this.style.display='none';
-                                                    this.parentElement
-                                                        .querySelector(
-                                                            '.cover-placeholder'
-                                                        )
-                                                        .style.display='flex';
-                                                "
-                                            >
-
-                                            <div
-                                                class="cover-placeholder"
-                                                style="
-                                                    display:none;
-                                                    position:absolute;
-                                                    inset:0;
-                                                "
-                                            >
-                                                📺
-                                            </div>
-                                        `
-                                        : `
-                                            <div class="cover-placeholder">
-                                                📺
-                                            </div>
-                                        `
-                                }
-
-                                <div class="live-badge">
-                                    ● LIVE
-                                </div>
-
-                                <div class="viewer-count">
-                                    👁 ${viewers}
-                                    &nbsp;
-                                    👤 ${users}
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-body">
-
-                                <div class="card-title">
-                                    ${title}
-                                </div>
-
-
-                                <div class="card-user">
-                                    👤 ${username}
-                                </div>
-
-
-                                <div class="card-bottom">
-
-                                    <div class="category">
-                                        ${category}
-                                    </div>
-
-
-                                    <div class="views">
-                                        ${viewers}
-                                        بیننده
-                                    </div>
-
-                                </div>
-
-
-                                <div class="live-quality-row">
-
-                                    <div class="quality-tag">
-                                        🎥
-                                        ${videoQuality}
-                                    </div>
-
-
-                                    <div class="quality-tag audio">
-                                        🎵
-                                        ${audioQuality}
-                                    </div>
-
-
-                                    <div class="quality-tag users-tag">
-                                        👤
-                                        ${users}
-                                    </div>
-
-                                </div>
-
-
-                                ${
-                                    usersText
-                                        ? `
-                                            <div
-                                                class="live-info-item"
-                                                style="
-                                                    margin-top:7px;
-                                                    white-space:nowrap;
-                                                    overflow:hidden;
-                                                    text-overflow:ellipsis;
-                                                    width:100%;
-                                                "
-                                                title="${escapeHtml(
-                                                    usersText
-                                                )}"
-                                            >
-                                                👤
-                                                ${escapeHtml(
-                                                    usersText
-                                                )}
-                                            </div>
-                                        `
-                                        : ""
-                                }
-
-                            </div>
-
-                        </article>
-                    `;
-
-                }
-            )
-            .join("");
-
-
-    streamsList
-        .querySelectorAll(
-            "[data-id]"
-        )
-        .forEach(
-            card => {
-
-                card.addEventListener(
-                    "click",
-                    () => {
-
-                        const id =
-                            card.dataset.id;
-
-
-                        const stream =
-                            allStreams.find(
-                                item =>
-                                    String(
-                                        getId(
-                                            item
-                                        )
-                                    )
-                                    ===
-                                    String(
-                                        id
-                                    )
-                            );
-
-
-                        if (
-                            !stream
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        sessionStorage.setItem(
-                            VIEW_STREAM_KEY,
-                            JSON.stringify(
-                                stream
-                            )
-                        );
-
-
-                        const owner =
-                            getUsername(
-                                stream
-                            );
-
-
-                        if (
-                            String(owner)
-                            ===
-                            String(
-                                currentUsername
-                            )
-                        ) {
-
-                            sessionStorage.setItem(
-                                CURRENT_STREAM_KEY,
-                                JSON.stringify(
-                                    stream
-                                )
-                            );
-
-
-                            window.location.href =
-                                "/live.html";
-
-
-                            return;
-
-                        }
-
-
-                        window.location.href =
-                            "/viewer.html?id=" +
-                            encodeURIComponent(
-                                id
-                            );
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-function normalizeText(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .trim()
-        .toLowerCase();
-
-}
-
-
-function applySearch() {
-
-    const query =
-        normalizeText(
-            searchInput.value
-        );
-
-
-    if (
-        !query
-    ) {
-
-        renderStreams(
-            allStreams
-        );
-
-        return;
-
-    }
-
-
-    const filtered =
-        allStreams.filter(
-            stream => {
-
-                const title =
-                    normalizeText(
-                        getTitle(
-                            stream
-                        )
-                    );
-
-
-                const username =
-                    normalizeText(
-                        getUsername(
-                            stream
-                        )
-                    );
-
-
-                const category =
-                    normalizeText(
-                        getCategory(
-                            stream
-                        )
-                    );
-
-
-                const video =
-                    normalizeText(
-                        getEffectiveVideoQuality(
-                            stream
-                        )
-                    );
-
-
-                const audio =
-                    normalizeText(
-                        getEffectiveAudioQuality(
-                            stream
-                        )
-                    );
-
-
-                return (
-
-                    title.includes(
-                        query
-                    )
-
-                    ||
-
-                    username.includes(
-                        query
-                    )
-
-                    ||
-
-                    category.includes(
-                        query
-                    )
-
-                    ||
-
-                    video.includes(
-                        query
-                    )
-
-                    ||
-
-                    audio.includes(
-                        query
-                    )
-
-                );
-
-            }
-        );
-
-
-    renderStreams(
-        filtered
-    );
-
-}
-
-
-/* =====================================================
-   LOAD STREAMS
-===================================================== */
-
-async function loadStreams(
-    force = false
-) {
-
-    if (
-        streamsLoading
-    ) {
-
-        return;
-
-    }
-
-
-    streamsLoading =
-        true;
-
-
-    refreshButton.disabled =
-        true;
-
-
-    try {
-
-        const streams =
-            await LainoLiveStreams.fetch({
-
-                force:
-                    force,
-
-                ttl:
-                    1000
-
-            });
-
-
-        allStreams =
-            Array.isArray(
-                streams
-            )
-                ? streams
-                : [];
-
-
-        statusText.textContent =
-            allStreams.length
-
-                ? allStreams.length +
-                    " لایو در حال پخش"
-
-                : "فعلاً لایوی فعال نیست";
-
-
-        applySearch();
-
-    }
-    catch (
-        error
-    ) {
-
-        console.error(
-            "load streams error:",
-            error
-        );
-
-
-        if (
-            !allStreams.length
-        ) {
-
-            streamsList.innerHTML =
-                `
-                    <div class="empty">
-                        دریافت لایوها انجام نشد.
-                        <br>
-                        اتصال سرور را بررسی کنید.
-                    </div>
-                `;
-
-        }
-
-
-        statusText.textContent =
-            "خطا در دریافت لایوها";
-
-    }
-    finally {
-
-        streamsLoading =
-            false;
-
-
-        refreshButton.disabled =
-            false;
-
-    }
-
-}
-
-
-/* =====================================================
-   START MODAL
-===================================================== */
-
-function openStartModal() {
-
-    uploadStatus.textContent =
-        "";
-
-
-    startModal.classList.add(
-        "show"
-    );
-
-}
-
-
-function closeStartModal() {
-
-    startModal.classList.remove(
-        "show"
-    );
-
-}
-
-
-liveCover.addEventListener(
-    "change",
-    () => {
-
-        const file =
-            liveCover.files?.[0];
-
-
-        selectedCoverFile =
-            file || null;
-
-
-        if (
-            !file
-        ) {
-
-            coverPreview.classList.remove(
-                "show"
-            );
-
-
-            coverPreviewImage.removeAttribute(
-                "src"
-            );
-
-
-            return;
-
-        }
-
-
-        const url =
-            URL.createObjectURL(
-                file
-            );
-
-
-        coverPreviewImage.src =
-            url;
-
-
-        coverPreview.classList.add(
-            "show"
-        );
-
-
-        uploadStatus.textContent =
-            "کاور انتخاب شد.";
-
-    }
+navigator.serviceWorker.register(
+"/service-worker.js"
 );
 
 
-/* =====================================================
-   UPLOAD COVER
-===================================================== */
-
-async function uploadCover(
-    streamId
-) {
-
-    if (
-        !selectedCoverFile
-    ) {
-
-        return null;
-
-    }
+}
 
 
-    uploadStatus.textContent =
-        "در حال آپلود کاور...";
 
 
-    const formData =
-        new FormData();
+
+const list =
+document.getElementById(
+"streamsList"
+);
 
 
-    formData.append(
-        "stream_id",
-        String(
-            streamId
-        )
-    );
+
+const status =
+document.getElementById(
+"statusText"
+);
 
 
-    formData.append(
-        "username",
-        currentUsername
-    );
 
 
-    formData.append(
-        "cover",
-        selectedCoverFile,
-        selectedCoverFile.name
-    );
+async function loadStreams(){
 
 
-    const response =
-        await fetch(
-            "/api/streams/cover",
-            {
-                method:
-                    "POST",
+const streams =
 
-                body:
-                    formData
-            }
-        );
+await LainoLiveStreams.fetch({
+force:false,
+ttl:3000
+});
 
 
-    if (
-        !response.ok
-    ) {
 
-        throw new Error(
-            "cover upload failed"
-        );
+if(
+!streams.length
+){
 
-    }
+list.innerHTML =
+`
+<div class="empty">
+فعلاً هیچ لایوی فعال نیست 🎥
+</div>
+`;
 
+status.textContent =
+"بدون لایو";
 
-    const data =
-        await response.json();
-
-
-    uploadStatus.textContent =
-        "کاور با موفقیت آپلود شد.";
-
-
-    return data;
+return;
 
 }
 
 
-/* =====================================================
-   START LIVE
-===================================================== */
 
-async function startLive() {
 
-    const title =
-        liveTitle.value.trim()
-        ||
-        "لایو بدون عنوان";
+status.textContent =
 
+streams.length +
+" لایو فعال";
 
-    const category =
-        liveCategory.value
-        ||
-        "عمومی";
 
 
-    const button =
-        document.getElementById(
-            "confirmStartButton"
-        );
 
 
-    button.disabled =
-        true;
+list.innerHTML =
 
+streams.map(
 
-    button.textContent =
-        "در حال شروع...";
+stream => `
 
+<div
+class="card"
+onclick="
+openStream('${stream.id || stream.stream_id}')
+"
+>
 
-    try {
 
-        const response =
-            await fetch(
-                "/api/streams/create",
-                {
-                    method:
-                        "POST",
+<div class="cover">
 
-                    headers: {
+📺
 
-                        "Content-Type":
-                            "application/json"
+</div>
 
-                    },
 
-                    body:
-                        JSON.stringify({
+<div class="body">
 
-                            username:
-                                currentUsername,
 
-                            title:
-                                title,
+<div class="title">
 
-                            category:
-                                category
+${stream.title || "لایو بدون عنوان"}
 
-                        })
+</div>
 
-                }
-            );
 
 
-        if (
-            !response.ok
-        ) {
+<div class="user">
 
-            throw new Error(
-                "stream create failed"
-            );
+👤
+${stream.username || "کاربر"}
 
-        }
+</div>
 
 
-        const data =
-            await response.json();
+</div>
 
 
-        const createdStream =
-            data.stream
-            ||
-            data;
+</div>
 
+`
 
-        const streamId =
-            getId(
-                createdStream
-            );
+).join("");
 
 
-        if (
-
-            streamId === null
-            ||
-
-            typeof streamId ===
-                "undefined"
-
-        ) {
-
-            throw new Error(
-                "stream id missing"
-            );
-
-        }
-
-
-        if (
-            selectedCoverFile
-        ) {
-
-            await uploadCover(
-                streamId
-            );
-
-        }
-
-
-        if (
-            window.LainoLiveStreams
-            &&
-            typeof
-                window.LainoLiveStreams.clear ===
-                    "function"
-        ) {
-
-            window.LainoLiveStreams.clear();
-
-        }
-
-
-        const streamForSession = {
-
-            ...createdStream,
-
-            id:
-                streamId,
-
-            stream_id:
-                streamId,
-
-            username:
-                currentUsername,
-
-            title:
-                title,
-
-            category:
-                category,
-
-            viewer_count:
-                0,
-
-            users_count:
-                0,
-
-            video_quality:
-                "720p",
-
-            audio_bitrate:
-                128000,
-
-            users:
-                []
-
-        };
-
-
-        sessionStorage.setItem(
-            CURRENT_STREAM_KEY,
-            JSON.stringify(
-                streamForSession
-            )
-        );
-
-
-        sessionStorage.setItem(
-            VIEW_STREAM_KEY,
-            JSON.stringify(
-                streamForSession
-            )
-        );
-
-
-        window.location.href =
-            "/live.html";
-
-    }
-    catch (
-        error
-    ) {
-
-        console.error(
-            "start live error:",
-            error
-        );
-
-
-        uploadStatus.textContent =
-            "شروع لایو انجام نشد.";
-
-
-        button.disabled =
-            false;
-
-
-        button.textContent =
-            "شروع لایو";
-
-    }
 
 }
 
 
-/* =====================================================
-   EVENTS
-===================================================== */
-
-document
-    .getElementById(
-        "startLiveButton"
-    )
-    .addEventListener(
-        "click",
-        openStartModal
-    );
 
 
-document
-    .getElementById(
-        "cancelStartButton"
-    )
-    .addEventListener(
-        "click",
-        closeStartModal
-    );
 
 
-document
-    .getElementById(
-        "confirmStartButton"
-    )
-    .addEventListener(
-        "click",
-        startLive
-    );
+
+
+function openStream(id){
+
+
+location.href =
+
+"/viewer.html?id="
++
+encodeURIComponent(id);
+
+
+
+}
+
+
+
+
+
+
 
 
 document
-    .getElementById(
-        "popularButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
+.getElementById(
+"refreshButton"
+)
+.onclick = loadStreams;
 
-            window.location.href =
-                "/popular.html";
 
-        }
-    );
 
 
 document
-    .getElementById(
-        "popularNavButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
+.getElementById(
+"profileButton"
+)
+.onclick = () => {
 
-            window.location.href =
-                "/popular.html";
+location.href =
+"/profile.html";
 
-        }
-    );
+};
 
 
-document
-    .getElementById(
-        "profileButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
 
-            window.location.href =
-                "/profile.html";
-
-        }
-    );
 
 
 document
-    .getElementById(
-        "profileButtonTop"
-    )
-    .addEventListener(
-        "click",
-        () => {
+.getElementById(
+"profileButton2"
+)
+.onclick = () => {
 
-            window.location.href =
-                "/profile.html";
+location.href =
+"/profile.html";
 
-        }
-    );
+};
 
 
-refreshButton.addEventListener(
-    "click",
-    () => {
-
-        loadStreams(
-            true
-        );
-
-    }
-);
 
 
-searchInput.addEventListener(
-    "input",
-    applySearch
-);
+
+document
+.getElementById(
+"popularButton"
+)
+.onclick = () => {
+
+location.href =
+"/popular.html";
+
+};
 
 
-searchInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key ===
-            "Enter"
-        ) {
-
-            window.location.href =
-                "/search.html?q=" +
-                encodeURIComponent(
-                    searchInput.value
-                );
-
-        }
-
-    }
-);
 
 
-startModal.addEventListener(
-    "click",
-    event => {
 
-        if (
-            event.target ===
-            startModal
-        ) {
+document
+.getElementById(
+"startLiveButton"
+)
+.onclick = () => {
 
-            closeStartModal();
+location.href =
+"/live.html";
 
-        }
-
-    }
-);
+};
 
 
-/* =====================================================
-   START
-===================================================== */
+
+
 
 loadStreams();
 
 
 setInterval(
-    () => {
-
-        loadStreams(
-            false
-        );
-
-    },
-    2000
+loadStreams,
+5000
 );
+
+
 
 </script>
 
+
 </body>
+
 </html>
-```

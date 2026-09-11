@@ -3,1439 +3,927 @@
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#09090f"
-    >
-
-    <title>
-        لایوهای محبوب - LainoLive
-    </title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100%;
-
-            font-family:
-                Tahoma,
-                Arial,
-                sans-serif;
-
-            background:
-                radial-gradient(
-                    circle at top,
-                    #19192b 0%,
-                    #0b0b12 48%,
-                    #050508 100%
-                );
-
-            color: white;
-        }
-
-        body {
-            min-height: 100vh;
-        }
-
-        button {
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        .page {
-            min-height: 100vh;
-
-            padding-bottom:
-                calc(
-                    90px +
-                    env(safe-area-inset-bottom)
-                );
-        }
-
-        /* =========================
-           HEADER
-           ========================= */
-
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding:
-                calc(
-                    14px +
-                    env(safe-area-inset-top)
-                )
-                16px
-                14px;
-
-            background:
-                rgba(
-                    8,
-                    8,
-                    15,
-                    .90
-                );
-
-            backdrop-filter:
-                blur(18px);
-
-            -webkit-backdrop-filter:
-                blur(18px);
-
-            border-bottom:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-        }
-
-        .header-title {
-            font-size: 20px;
-            font-weight: 900;
-        }
-
-        .header-subtitle {
-            margin-top: 4px;
-            color: #9898a5;
-            font-size: 10px;
-        }
-
-        .refresh-btn {
-            width: 42px;
-            height: 42px;
-
-            border: none;
-            border-radius: 13px;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-
-            color: white;
-            font-size: 18px;
-
-            transition:
-                opacity .2s ease;
-        }
-
-        .refresh-btn:disabled {
-            opacity: .5;
-            cursor: default;
-        }
-
-        /* =========================
-           HERO
-           ========================= */
-
-        .hero {
-            margin: 16px;
-            padding: 20px;
-
-            border-radius: 22px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(
-                        255,
-                        39,
-                        87,
-                        .17
-                    ),
-                    rgba(
-                        139,
-                        53,
-                        255,
-                        .18
-                    )
-                );
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-        }
-
-        .hero-title {
-            font-size: 21px;
-            font-weight: 900;
-        }
-
-        .hero-text {
-            margin-top: 7px;
-
-            color: #a8a8b6;
-
-            font-size: 12px;
-            line-height: 1.8;
-        }
-
-        /* =========================
-           LIST
-           ========================= */
-
-        .list {
-            padding:
-                0
-                16px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    2,
-                    minmax(
-                        0,
-                        1fr
-                    )
-                );
-
-            gap: 12px;
-        }
-
-        /* =========================
-           CARD
-           ========================= */
-
-        .card {
-            position: relative;
-
-            overflow: hidden;
-
-            border-radius: 18px;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .055
-                    ),
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .025
-                    )
-                );
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-
-            transition:
-                transform .18s ease;
-        }
-
-        .card:active {
-            transform:
-                scale(.98);
-        }
-
-        /* =========================
-           COVER
-           ========================= */
-
-        .cover {
-            position: relative;
-
-            aspect-ratio:
-                16 / 10;
-
-            overflow: hidden;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #161622,
-                    #29213d
-                );
-        }
-
-        .cover img {
-            display: block;
-
-            width: 100%;
-            height: 100%;
-
-            object-fit: cover;
-        }
-
-        .cover-placeholder {
-            width: 100%;
-            height: 100%;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            font-size: 36px;
-
-            opacity: .48;
-        }
-
-        /* =========================
-           BADGES
-           ========================= */
-
-        .live-badge {
-            position: absolute;
-
-            top: 8px;
-            right: 8px;
-
-            padding:
-                5px
-                8px;
-
-            border-radius: 999px;
-
-            background:
-                #ff1d4d;
-
-            font-size: 9px;
-            font-weight: 900;
-        }
-
-        .rank {
-            position: absolute;
-
-            left: 8px;
-            top: 8px;
-
-            width: 31px;
-            height: 31px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background:
-                rgba(
-                    0,
-                    0,
-                    0,
-                    .68
-                );
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .12
-                );
-
-            font-size: 13px;
-            font-weight: 900;
-        }
-
-        .viewer-count {
-            position: absolute;
-
-            left: 8px;
-            bottom: 8px;
-
-            padding:
-                5px
-                8px;
-
-            border-radius: 999px;
-
-            background:
-                rgba(
-                    0,
-                    0,
-                    0,
-                    .67
-                );
-
-            font-size: 10px;
-        }
-
-        /* =========================
-           CARD BODY
-           ========================= */
-
-        .card-body {
-            padding: 12px;
-        }
-
-        .card-title {
-            font-size: 14px;
-            font-weight: 900;
-
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .card-user {
-            margin-top: 7px;
-
-            color: #a8a8b5;
-            font-size: 11px;
-        }
-
-        .card-bottom {
-            margin-top: 9px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content:
-                space-between;
-
-            gap: 8px;
-        }
-
-        .category {
-            max-width: 55%;
-
-            padding:
-                4px
-                8px;
-
-            border-radius: 999px;
-
-            background:
-                rgba(
-                    139,
-                    53,
-                    255,
-                    .12
-                );
-
-            color: #ceb5ff;
-
-            font-size: 9px;
-
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .views {
-            color: #ffb7c5;
-
-            font-size: 9px;
-            font-weight: 700;
-
-            white-space: nowrap;
-        }
-
-        /* =========================
-           EMPTY
-           ========================= */
-
-        .empty {
-            grid-column: 1 / -1;
-
-            padding:
-                45px
-                20px;
-
-            text-align: center;
-
-            border-radius: 18px;
-
-            color: #9292a0;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .025
-                );
-
-            border:
-                1px dashed
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .09
-                );
-
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        /* =========================
-           NAV
-           ========================= */
-
-        .bottom-nav {
-            position: fixed;
-
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            z-index: 200;
-
-            padding:
-                10px
-                10px
-                calc(
-                    10px +
-                    env(safe-area-inset-bottom)
-                );
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    3,
-                    1fr
-                );
-
-            gap: 8px;
-
-            background:
-                rgba(
-                    7,
-                    7,
-                    12,
-                    .93
-                );
-
-            border-top:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-
-            backdrop-filter:
-                blur(18px);
-
-            -webkit-backdrop-filter:
-                blur(18px);
-        }
-
-        .nav-btn {
-            min-height: 52px;
-
-            border: none;
-            border-radius: 15px;
-
-            color: #8f8f9d;
-            background: transparent;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-            justify-content: center;
-
-            gap: 4px;
-
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .nav-btn span:first-child {
-            font-size: 20px;
-        }
-
-        .nav-btn.active {
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(
-                        255,
-                        39,
-                        87,
-                        .14
-                    ),
-                    rgba(
-                        139,
-                        53,
-                        255,
-                        .16
-                    )
-                );
-        }
-
-        /* =========================
-           RESPONSIVE
-           ========================= */
-
-        @media (min-width: 700px) {
-
-            .page {
-                max-width: 1100px;
-                margin: 0 auto;
-            }
-
-            .list {
-                grid-template-columns:
-                    repeat(
-                        3,
-                        minmax(
-                            0,
-                            1fr
-                        )
-                    );
-            }
-
-            .bottom-nav {
-                left: 50%;
-                right: auto;
-
-                width:
-                    min(
-                        650px,
-                        calc(100% - 30px)
-                    );
-
-                transform:
-                    translateX(-50%);
-
-                bottom: 14px;
-
-                border:
-                    1px solid
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .07
-                    );
-
-                border-radius: 22px;
-
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 390px) {
-
-            .list {
-                grid-template-columns:
-                    1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta name="theme-color" content="#09090f">
+
+<title>
+LainoLive محبوب‌ها
+</title>
+
+
+<style>
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+
+body{
+
+margin:0;
+
+min-height:100vh;
+
+font-family:
+Tahoma,
+Arial;
+
+background:
+radial-gradient(
+circle at top,
+#19192b,
+#050508
+);
+
+color:white;
+
+}
+
+
+
+.header{
+
+height:65px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 16px;
+
+background:
+rgba(8,8,15,.9);
+
+}
+
+
+
+.logo{
+
+font-size:22px;
+
+font-weight:900;
+
+}
+
+
+
+.back{
+
+width:42px;
+
+height:42px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+font-size:18px;
+
+}
+
+
+
+.container{
+
+padding:15px;
+
+}
+
+
+
+.title{
+
+font-size:20px;
+
+font-weight:900;
+
+margin-bottom:15px;
+
+}
+
+
+
+.list{
+
+display:grid;
+
+grid-template-columns:
+repeat(2,1fr);
+
+gap:12px;
+
+}
+
+
+
+.card{
+
+overflow:hidden;
+
+border-radius:18px;
+
+background:
+rgba(255,255,255,.06);
+
+border:
+1px solid
+rgba(255,255,255,.08);
+
+}
+
+
+
+.cover{
+
+height:130px;
+
+background:
+linear-gradient(
+135deg,
+#ff2757,
+#8b35ff
+);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:40px;
+
+position:relative;
+
+}
+
+
+
+.live{
+
+position:absolute;
+
+top:8px;
+
+right:8px;
+
+background:#ff174f;
+
+padding:
+5px 10px;
+
+border-radius:20px;
+
+font-size:10px;
+
+}
+
+
+
+.viewer{
+
+position:absolute;
+
+bottom:8px;
+
+left:8px;
+
+background:
+rgba(0,0,0,.7);
+
+padding:
+5px 10px;
+
+border-radius:20px;
+
+font-size:11px;
+
+}
+
+
+
+.body{
+
+padding:12px;
+
+}
+
+
+
+.name{
+
+font-weight:900;
+
+font-size:14px;
+
+}
+
+
+
+.user{
+
+color:#aaa;
+
+font-size:11px;
+
+margin-top:5px;
+
+}
+
+
+
+.info{
+
+margin-top:8px;
+
+font-size:10px;
+
+color:#c9b8ff;
+
+}
+
+
+
+.empty{
+
+padding:40px;
+
+text-align:center;
+
+color:#aaa;
+
+background:
+rgba(255,255,255,.05);
+
+border-radius:20px;
+
+}
+
+
+
+</style>
+
+
 </head>
+
 
 <body>
 
-<div class="page">
 
-    <header class="header">
-
-        <div>
-
-            <div class="header-title">
-                🔥 لایوهای محبوب
-            </div>
-
-            <div class="header-subtitle">
-                بر اساس تعداد بیننده فعلی
-            </div>
-
-        </div>
-
-        <button
-            id="refreshButton"
-            class="refresh-btn"
-            type="button"
-            aria-label="تازه‌سازی"
-        >
-            🔄
-        </button>
-
-    </header>
+<header class="header">
 
 
-    <section class="hero">
+<div class="logo">
 
-        <div class="hero-title">
-            🔥 محبوب‌ترین لایوها
-        </div>
-
-        <div class="hero-text">
-            لایوهایی که همین حالا بیشترین
-            بیننده را دارند اینجا نمایش
-            داده می‌شوند.
-        </div>
-
-    </section>
-
-
-    <main
-        id="popularList"
-        class="list"
-    >
-
-        <div class="empty">
-            در حال دریافت لایوهای محبوب...
-        </div>
-
-    </main>
+🔥 محبوب‌ترین لایوها
 
 </div>
 
 
-<nav class="bottom-nav">
+<button
+class="back"
+onclick="history.back()"
+>
 
-    <button
-        id="homeButton"
-        class="nav-btn"
-        type="button"
-    >
-        <span>🏠</span>
-        <span>خانه</span>
-    </button>
+←
 
-    <button
-        class="nav-btn active"
-        type="button"
-    >
-        <span>🔥</span>
-        <span>محبوب</span>
-    </button>
-
-    <button
-        id="profileButton"
-        class="nav-btn"
-        type="button"
-    >
-        <span>👤</span>
-        <span>پروفایل</span>
-    </button>
-
-</nav>
+</button>
 
 
-<script src="/streams-cache.js"></script>
+</header>
+
+
+<div class="container">
+
+
+<div class="title">
+
+🔴 لایوهای محبوب
+
+</div>
+
+
+<div
+id="list"
+class="list"
+>
+
+
+<div class="empty">
+
+در حال دریافت لایوها...
+
+</div>
+
+
+</div>
+
+
+</div>
 
 
 <script>
 
+
 "use strict";
 
 
-/* =========================
-   STORAGE KEYS
-   ========================= */
 
-const LOGIN_KEY =
-    "lainolive_logged_in";
-
-const USERNAME_KEY =
-    "lainolive_username";
-
-const VIEW_STREAM_KEY =
-    "lainolive_view_stream";
-
-const CURRENT_STREAM_KEY =
-    "lainolive_current_stream";
-
-
-/* =========================
-   LOGIN
-   ========================= */
-
-if (
-    localStorage.getItem(
-        LOGIN_KEY
-    ) !== "true"
-) {
-
-    window.location.href =
-        "/login.html";
-}
-
-
-/* =========================
-   ELEMENTS
-   ========================= */
-
-const popularList =
-    document.getElementById(
-        "popularList"
-    );
-
-const refreshButton =
-    document.getElementById(
-        "refreshButton"
-    );
-
-const homeButton =
-    document.getElementById(
-        "homeButton"
-    );
-
-const profileButton =
-    document.getElementById(
-        "profileButton"
-    );
-
-
-/* =========================
-   STATE
-   ========================= */
-
-let allStreams = [];
-
-let loading = false;
-
-
-/* =========================
-   HELPERS
-   ========================= */
-
-function escapeHtml(value) {
-
-    return String(
-        value ?? ""
-    )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-}
-
-
-function getId(stream) {
-
-    return (
-        stream?.id ??
-        stream?.stream_id
-    );
-}
-
-
-function getTitle(stream) {
-
-    return (
-        stream?.title ||
-        "لایو بدون عنوان"
-    );
-}
-
-
-function getUsername(stream) {
-
-    return (
-        stream?.username ||
-        stream?.user ||
-        "کاربر"
-    );
-}
-
-
-function getCategory(stream) {
-
-    return (
-        stream?.category ||
-        "عمومی"
-    );
-}
-
-
-function getViewers(stream) {
-
-    const value =
-        Number(
-            stream?.viewer_count ??
-            stream?.viewers ??
-            0
-        );
-
-    return Number.isFinite(value)
-        ? Math.max(0, value)
-        : 0;
-}
-
-
-function getCover(stream) {
-
-    return (
-        stream?.cover_url ||
-        stream?.cover ||
-        stream?.thumbnail ||
-        ""
-    );
-}
-
-
-function getRankIcon(index) {
-
-    if (index === 0) {
-        return "🥇";
-    }
-
-    if (index === 1) {
-        return "🥈";
-    }
-
-    if (index === 2) {
-        return "🥉";
-    }
-
-    return String(
-        index + 1
-    );
-}
-
-
-/* =========================
-   LOAD
-   ========================= */
-
-async function loadPopular(
-    force = false
-) {
-
-    if (loading) {
-        return;
-    }
-
-    if (
-        !window.LainoLiveStreams ||
-        typeof
-            window.LainoLiveStreams.fetch !==
-            "function"
-    ) {
-
-        console.error(
-            "streams-cache.js not loaded"
-        );
-
-        popularList.innerHTML =
-            `
-                <div class="empty">
-                    فایل streams-cache.js پیدا نشد.
-                </div>
-            `;
-
-        return;
-    }
-
-
-    loading = true;
-
-    refreshButton.disabled = true;
-
-
-    try {
-
-        const streams =
-            await window.LainoLiveStreams.fetch(
-                {
-                    force:
-                        force,
-
-                    ttl:
-                        1000
-                }
-            );
-
-
-        allStreams =
-            Array.isArray(
-                streams
-            )
-                ? [...streams]
-                : [];
-
-
-        allStreams.sort(
-            (
-                a,
-                b
-            ) =>
-                getViewers(b) -
-                getViewers(a)
-        );
-
-
-        renderPopular(
-            allStreams
-        );
-
-    } catch (error) {
-
-        console.error(
-            "load popular error:",
-            error
-        );
-
-
-        if (
-            !allStreams.length
-        ) {
-
-            popularList.innerHTML =
-                `
-                    <div class="empty">
-                        دریافت لایوهای محبوب انجام نشد.
-                        <br>
-                        اتصال سرور را بررسی کنید.
-                    </div>
-                `;
-        }
-
-    } finally {
-
-        loading = false;
-
-        refreshButton.disabled = false;
-    }
-}
-
-
-/* =========================
-   RENDER
-   ========================= */
-
-function renderPopular(
-    streams
-) {
-
-    if (!streams.length) {
-
-        popularList.innerHTML =
-            `
-                <div class="empty">
-                    فعلاً هیچ لایوی
-                    در حال پخش نیست. 🎥
-                </div>
-            `;
-
-        return;
-    }
-
-
-    popularList.innerHTML =
-        streams
-            .map(
-                (
-                    stream,
-                    index
-                ) => {
-
-                    const id =
-                        getId(stream);
-
-                    const title =
-                        escapeHtml(
-                            getTitle(
-                                stream
-                            )
-                        );
-
-                    const username =
-                        escapeHtml(
-                            getUsername(
-                                stream
-                            )
-                        );
-
-                    const category =
-                        escapeHtml(
-                            getCategory(
-                                stream
-                            )
-                        );
-
-                    const viewers =
-                        getViewers(
-                            stream
-                        );
-
-                    const cover =
-                        getCover(
-                            stream
-                        );
-
-                    const safeId =
-                        escapeHtml(
-                            String(
-                                id ?? ""
-                            )
-                        );
-
-
-                    let coverHtml;
-
-
-                    if (cover) {
-
-                        coverHtml =
-                            `
-                                <img
-                                    src="${escapeHtml(
-                                        cover
-                                    )}"
-                                    alt="${title}"
-                                    loading="lazy"
-                                    onerror="
-                                        this.style.display='none';
-                                        const fallback =
-                                            this.parentElement
-                                                .querySelector(
-                                                    '.cover-placeholder'
-                                                );
-
-                                        if (fallback) {
-                                            fallback.style.display='flex';
-                                        }
-                                    "
-                                >
-
-                                <div
-                                    class="cover-placeholder"
-                                    style="
-                                        display:none;
-                                        position:absolute;
-                                        inset:0;
-                                    "
-                                >
-                                    📺
-                                </div>
-                            `;
-
-                    } else {
-
-                        coverHtml =
-                            `
-                                <div
-                                    class="cover-placeholder"
-                                >
-                                    📺
-                                </div>
-                            `;
-                    }
-
-
-                    return `
-                        <article
-                            class="card"
-                            data-id="${safeId}"
-                        >
-
-                            <div class="cover">
-
-                                ${coverHtml}
-
-                                <div class="rank">
-                                    ${getRankIcon(index)}
-                                </div>
-
-                                <div class="live-badge">
-                                    ● LIVE
-                                </div>
-
-                                <div class="viewer-count">
-                                    👁 ${viewers}
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-body">
-
-                                <div class="card-title">
-                                    ${title}
-                                </div>
-
-
-                                <div class="card-user">
-                                    👤 ${username}
-                                </div>
-
-
-                                <div class="card-bottom">
-
-                                    <div class="category">
-                                        ${category}
-                                    </div>
-
-                                    <div class="views">
-                                        ${viewers}
-                                        بیننده
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </article>
-                    `;
-                }
-            )
-            .join("");
-
-
-    bindCards();
-}
-
-
-/* =========================
-   CARD EVENTS
-   ========================= */
-
-function bindCards() {
-
-    const cards =
-        popularList.querySelectorAll(
-            "[data-id]"
-        );
-
-
-    cards.forEach(
-        card => {
-
-            card.addEventListener(
-                "click",
-                () => {
-
-                    const id =
-                        card.dataset.id;
-
-
-                    const stream =
-                        allStreams.find(
-                            item =>
-                                String(
-                                    getId(
-                                        item
-                                    )
-                                )
-                                ===
-                                String(
-                                    id
-                                )
-                        );
-
-
-                    if (!stream) {
-                        return;
-                    }
-
-
-                    const username =
-                        localStorage.getItem(
-                            USERNAME_KEY
-                        ) || "";
-
-
-                    sessionStorage.setItem(
-                        VIEW_STREAM_KEY,
-                        JSON.stringify(
-                            stream
-                        )
-                    );
-
-
-                    const owner =
-                        getUsername(
-                            stream
-                        );
-
-
-                    /*
-                     * FIX:
-                     * پرانتز کامل و شرط صحیح.
-                     */
-
-                    if (
-                        String(
-                            owner
-                        ) ===
-                        String(
-                            username
-                        )
-                    ) {
-
-                        sessionStorage.setItem(
-                            CURRENT_STREAM_KEY,
-                            JSON.stringify(
-                                stream
-                            )
-                        );
-
-
-                        window.location.href =
-                            "/live.html";
-
-                        return;
-                    }
-
-
-                    window.location.href =
-                        "/viewer.html?id=" +
-                        encodeURIComponent(
-                            String(id)
-                        );
-                }
-            );
-        }
-    );
-}
-
-
-/* =========================
-   REFRESH
-   ========================= */
-
-refreshButton.addEventListener(
-    "click",
-    async () => {
-
-        if (loading) {
-            return;
-        }
-
-
-        try {
-
-            refreshButton.animate(
-                [
-                    {
-                        transform:
-                            "rotate(0deg)"
-                    },
-                    {
-                        transform:
-                            "rotate(360deg)"
-                    }
-                ],
-                {
-                    duration: 450
-                }
-            );
-
-        } catch {}
-
-
-        await loadPopular(
-            true
-        );
-    }
+const list =
+document.getElementById(
+"list"
 );
 
 
-/* =========================
-   NAVIGATION
-   ========================= */
 
-homeButton.addEventListener(
-    "click",
-    () => {
+let streams = [];
 
-        window.location.href =
-            "/index.html";
-    }
+
+
+
+
+function escapeHtml(
+value
+){
+
+return String(value ?? "")
+
+.replaceAll("&","&amp;")
+
+.replaceAll("<","&lt;")
+
+.replaceAll(">","&gt;")
+
+.replaceAll('"',"&quot;")
+
+.replaceAll("'","&#039;");
+
+}
+
+
+
+
+
+
+
+function getViewers(
+stream
+){
+
+return Number(
+
+stream.viewer_count
+
+??
+
+stream.viewers
+
+??
+
+stream.viewer_count_now
+
+??
+
+0
+
 );
 
 
-profileButton.addEventListener(
-    "click",
-    () => {
+}
 
-        window.location.href =
-            "/profile.html";
-    }
+
+
+
+
+
+
+
+function renderPopular(){
+
+
+if(!streams.length){
+
+
+list.innerHTML =
+
+`
+<div class="empty">
+
+فعلاً لایو محبوبی وجود ندارد 🎥
+
+</div>
+`;
+
+return;
+
+
+}
+
+
+
+
+list.innerHTML =
+
+streams.map(
+
+stream=>{
+
+
+return `
+
+
+<div
+class="card"
+data-id="${escapeHtml(
+stream.id || stream.stream_id
+)}"
+>
+
+
+<div class="cover">
+
+
+📺
+
+
+
+<div class="live">
+
+🔴 LIVE
+
+</div>
+
+
+
+<div class="viewer">
+
+👁
+
+${getViewers(stream)}
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="body">
+
+
+<div class="name">
+
+${escapeHtml(
+stream.title ||
+"لایو بدون عنوان"
+)}
+
+</div>
+
+
+
+
+<div class="user">
+
+👤
+
+${escapeHtml(
+stream.username ||
+"کاربر"
+)}
+
+</div>
+
+
+
+
+<div class="info">
+
+🔥
+
+${getViewers(stream)}
+
+بیننده
+
+<br>
+
+${escapeHtml(
+stream.category ||
+"عمومی"
+)}
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+}
+
+).join("");
+
+
+
+
+
+
+
+document
+.querySelectorAll(
+".card"
+)
+.forEach(
+
+card=>{
+
+
+card.onclick =
+
+()=>{
+
+
+const id =
+
+card.dataset.id;
+
+
+
+const stream =
+
+streams.find(
+
+item=>
+
+String(
+item.id ||
+item.stream_id
+)
+
+===
+
+String(id)
+
 );
 
 
-/* =========================
-   START
-   ========================= */
+
+if(stream){
+
+
+sessionStorage.setItem(
+
+"lainolive_view_stream",
+
+JSON.stringify(
+stream
+)
+
+);
+
+
+
+window.location.href =
+
+"/viewer.html?id="
+
++
+
+encodeURIComponent(id);
+
+
+}
+
+
+
+};
+
+
+
+}
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function loadPopular(){
+
+
+try{
+
+
+const response =
+
+await fetch(
+
+"/api/streams"
+
+);
+
+
+
+
+
+if(!response.ok){
+
+throw Error();
+
+}
+
+
+
+
+
+const data =
+
+await response.json();
+
+
+
+
+
+streams =
+
+Array.isArray(data)
+
+?
+
+data
+
+:
+
+data.streams
+
+||
+
+[];
+
+
+
+
+
+
+streams.sort(
+
+(a,b)=>
+
+getViewers(b)
+
+-
+
+getViewers(a)
+
+);
+
+
+
+
+
+
+renderPopular();
+
+
+
+
+}
+
+catch(error){
+
+
+
+list.innerHTML =
+
+`
+
+<div class="empty">
+
+خطا در دریافت لایوها
+
+</div>
+
+`;
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
 
 loadPopular();
 
 
-/*
- * هر 2 ثانیه بررسی می‌کنیم.
- * streams-cache.js اجازه نمی‌دهد
- * درخواست‌های هم‌زمان تکراری ایجاد شوند.
- */
+
 
 setInterval(
-    () => {
 
-        loadPopular(
-            false
-        );
+()=>{
 
-    },
-    2000
+
+loadPopular();
+
+
+},
+
+5000
+
 );
 
-</script>
 
-</body>
-</html>
+
+</script>
+// فیلتر دسته بندی محبوب ها
+
+
+function filterCategory(category){
+
+
+if(category === "all"){
+
+
+renderPopular();
+
+return;
+
+
+}
+
+
+
+const filtered =
+
+streams.filter(
+
+item =>
+
+(item.category || "عمومی")
+===
+category
+
+);
+
+
+
+const old = streams;
+
+
+streams = filtered;
+
+
+renderPopular();
+
+
+streams = old;
+
+
+}
+
+
+
+
+
+
+
+// اضافه کردن کنترل دسته بندی
+
+
+const container =
+
+document.querySelector(
+".container"
+);
+
+
+
+const filters = document.createElement(
+"div"
+);
+
+
+
+filters.style.cssText =
+
+`
+display:flex;
+gap:8px;
+overflow:auto;
+margin-bottom:15px;
+`;
+
+
+
+[
+"همه",
+"گیم",
+"موسیقی",
+"گفتگو",
+"آموزشی",
+"سرگرمی"
+
+].forEach(
+
+item=>{
+
+
+const btn =
+
+document.createElement(
+"button"
+);
+
+
+
+btn.textContent =
+item;
+
+
+
+btn.style.cssText =
+
+`
+border:none;
+padding:8px 14px;
+border-radius:20px;
+background:rgba(255,255,255,.08);
+color:white;
+font-size:11px;
+`;
+
+
+
+btn.onclick =
+
+()=>{
+
+
+filterCategory(
+
+item==="همه"
+?
+"all"
+:
+item
+
+);
+
+
+};
+
+
+
+filters.appendChild(btn);
+
+
+
+}
+
+);
+
+
+
+container.insertBefore(
+
+filters,
+
+list
+
+);
+
+
+
+
