@@ -570,8 +570,6 @@
             </div>
 
 
-            <!-- SOURCE -->
-
             <div class="source-buttons">
 
                 <button
@@ -587,13 +585,11 @@
                     class="source-button"
                     type="button"
                 >
-                    🖥️ پخش صفحه سیستم
+                    🖥️ پخش صفحه + صدا
                 </button>
 
             </div>
 
-
-            <!-- CONTROLS -->
 
             <div class="controls">
 
@@ -602,7 +598,7 @@
                     class="control-btn active"
                     type="button"
                 >
-                    📷 دوربین
+                    📷 تصویر روشن
                 </button>
 
                 <button
@@ -610,7 +606,7 @@
                     class="control-btn active"
                     type="button"
                 >
-                    🎙 میکروفون
+                    🎙️ میکروفون روشن
                 </button>
 
                 <button
@@ -635,17 +631,13 @@
         </section>
 
 
-        <!-- CHAT -->
-
         <section class="chat-card">
 
             <div class="chat-title">
                 💬 چت لایو
             </div>
 
-
             <div id="chatMessages"></div>
-
 
             <form
                 id="chatForm"
@@ -660,7 +652,6 @@
                     placeholder="پیام خود را بنویسید..."
                 >
 
-
                 <button
                     id="chatSend"
                     type="submit"
@@ -669,7 +660,6 @@
                 </button>
 
             </form>
-
 
             <div
                 id="log"
@@ -809,11 +799,10 @@ const logEl =
 
 
 /* ============================================================
-   STREAM
+   STREAM DATA
    ============================================================ */
 
-let stream =
-    null;
+let stream = null;
 
 try {
 
@@ -824,10 +813,14 @@ try {
             ) || "null"
         );
 
-} catch {
+} catch (error) {
 
-    stream =
-        null;
+    console.error(
+        "stream storage error:",
+        error
+    );
+
+    stream = null;
 }
 
 
@@ -874,11 +867,6 @@ categoryTag.textContent =
    WEBRTC
    ============================================================ */
 
-/*
- * بدون TURN
- * فقط STUN
- */
-
 const rtcConfig = {
 
     iceServers: [
@@ -899,36 +887,43 @@ const SIGNALING_URL =
     "wss://lainolive-signaling.onrender.com";
 
 
-let socket =
-    null;
+let socket = null;
 
-let localStream =
-    null;
+let localStream = null;
 
 let currentSource =
     "camera";
 
-let reconnectTimer =
-    null;
+let reconnectTimer = null;
 
-let heartbeatTimer =
-    null;
+let heartbeatTimer = null;
 
-let stopped =
-    false;
+let stopped = false;
 
 
-/*
- * یک PeerConnection
- * برای هر بیننده
- */
+/* ============================================================
+   AUDIO MIXING
+   ============================================================ */
+
+let audioContext = null;
+
+let audioDestination = null;
+
+let microphoneStream = null;
+
+let screenStream = null;
+
+
+/* ============================================================
+   PEER CONNECTIONS
+   ============================================================ */
 
 const peerConnections =
     new Map();
 
 
 /* ============================================================
-   STATUS
+   HELPERS
    ============================================================ */
 
 function setStatus(
@@ -949,10 +944,6 @@ function log(
 }
 
 
-/* ============================================================
-   VIEWER COUNT
-   ============================================================ */
-
 function updateViewerCount(
     count
 ) {
@@ -963,17 +954,12 @@ function updateViewerCount(
             Number(count) || 0
         );
 
-
     viewerBadge.textContent =
         "👁 " +
         value +
         " بیننده";
 }
 
-
-/* ============================================================
-   SOURCE LABEL
-   ============================================================ */
 
 function updateSourceLabel() {
 
@@ -983,20 +969,15 @@ function updateSourceLabel() {
     ) {
 
         sourceBadge.textContent =
-            "🖥️ صفحه سیستم";
+            "🖥️ صفحه + 🔊 صدا";
 
-        return;
+    } else {
+
+        sourceBadge.textContent =
+            "🎥 دوربین";
     }
-
-
-    sourceBadge.textContent =
-        "🎥 دوربین";
 }
 
-
-/* ============================================================
-   SEND
-   ============================================================ */
 
 function send(
     data
@@ -1005,7 +986,7 @@ function send(
     if (
         !socket ||
         socket.readyState !==
-        WebSocket.OPEN
+            WebSocket.OPEN
     ) {
 
         return false;
@@ -1035,7 +1016,7 @@ function send(
 
 
 /* ============================================================
-   CREATE PEER CONNECTION
+   PEER CONNECTION
    ============================================================ */
 
 async function createPeerConnection(
@@ -1116,10 +1097,8 @@ async function createPeerConnection(
 
 
             if (
-                state ===
-                "failed" ||
-                state ===
-                "closed"
+                state === "failed" ||
+                state === "closed"
             ) {
 
                 try {
@@ -1139,7 +1118,7 @@ async function createPeerConnection(
 
 
 /* ============================================================
-   CREATE OFFER
+   OFFER
    ============================================================ */
 
 async function createOfferForViewer(
@@ -1155,7 +1134,15 @@ async function createOfferForViewer(
 
 
         const offer =
-            await pc.createOffer();
+            await pc.createOffer(
+                {
+                    offerToReceiveAudio:
+                        false,
+
+                    offerToReceiveVideo:
+                        false
+                }
+            );
 
 
         await pc.setLocalDescription(
@@ -1187,7 +1174,7 @@ async function createOfferForViewer(
 
 
 /* ============================================================
-   SOCKET CONNECT
+   SOCKET
    ============================================================ */
 
 function connectSocket() {
@@ -1271,8 +1258,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "joined"
+                type === "joined"
             ) {
 
                 setStatus(
@@ -1284,8 +1270,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "viewer-joined"
+                type === "viewer-joined"
             ) {
 
                 const viewerId =
@@ -1306,8 +1291,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "answer"
+                type === "answer"
             ) {
 
                 const viewerId =
@@ -1347,8 +1331,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "ice-candidate"
+                type === "ice-candidate"
             ) {
 
                 const viewerId =
@@ -1388,8 +1371,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "viewer-left"
+                type === "viewer-left"
             ) {
 
                 const viewerId =
@@ -1419,8 +1401,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "room-info"
+                type === "room-info"
             ) {
 
                 updateViewerCount(
@@ -1432,8 +1413,7 @@ function connectSocket() {
 
 
             if (
-                type ===
-                "chat-message"
+                type === "chat-message"
             ) {
 
                 appendChatMessage(
@@ -1444,7 +1424,6 @@ function connectSocket() {
                         ""
                 );
             }
-
         };
 
 
@@ -1550,12 +1529,161 @@ function stopHeartbeat() {
 
 
 /* ============================================================
-   CAMERA
+   AUDIO CONTEXT
+   ============================================================ */
+
+async function ensureAudioContext() {
+
+    if (
+        !audioContext ||
+        audioContext.state ===
+            "closed"
+    ) {
+
+        audioContext =
+            new AudioContext();
+    }
+
+
+    if (
+        audioContext.state ===
+            "suspended"
+    ) {
+
+        await audioContext.resume();
+    }
+}
+
+
+/* ============================================================
+   RELEASE AUDIO RESOURCES
+   ============================================================ */
+
+async function releaseMixedAudio() {
+
+    if (microphoneStream) {
+
+        microphoneStream
+            .getTracks()
+            .forEach(
+                track => {
+
+                    try {
+                        track.stop();
+                    } catch {}
+                }
+            );
+
+        microphoneStream =
+            null;
+    }
+
+
+    if (screenStream) {
+
+        screenStream
+            .getTracks()
+            .forEach(
+                track => {
+
+                    try {
+                        track.stop();
+                    } catch {}
+                }
+            );
+
+        screenStream =
+            null;
+    }
+
+
+    if (audioContext) {
+
+        try {
+
+            await audioContext.close();
+
+        } catch {}
+
+        audioContext =
+            null;
+
+        audioDestination =
+            null;
+    }
+}
+
+
+/* ============================================================
+   REPLACE TRACKS FOR ALL VIEWERS
+   ============================================================ */
+
+async function replaceTracksForAllPeers(
+    videoTrack,
+    audioTrack
+) {
+
+    const operations = [];
+
+
+    peerConnections.forEach(
+        pc => {
+
+            pc.getSenders()
+                .forEach(
+                    sender => {
+
+                        if (
+                            sender.track &&
+                            sender.track.kind ===
+                                "video"
+                        ) {
+
+                            operations.push(
+                                sender.replaceTrack(
+                                    videoTrack
+                                )
+                            );
+                        }
+
+
+                        if (
+                            sender.track &&
+                            sender.track.kind ===
+                                "audio"
+                        ) {
+
+                            operations.push(
+                                sender.replaceTrack(
+                                    audioTrack
+                                )
+                            );
+                        }
+                    }
+                );
+        }
+    );
+
+
+    if (operations.length) {
+
+        await Promise.allSettled(
+            operations
+        );
+    }
+}
+
+
+/* ============================================================
+   CAMERA STREAM
    ============================================================ */
 
 async function startCameraStream() {
 
     try {
+
+        await releaseMixedAudio();
+
 
         const cameraStream =
             await navigator.mediaDevices.getUserMedia(
@@ -1594,10 +1722,29 @@ async function startCameraStream() {
             );
 
 
-        await replaceLocalStream(
-            cameraStream,
-            "camera"
+        const oldStream =
+            localStream;
+
+
+        localStream =
+            cameraStream;
+
+
+        currentSource =
+            "camera";
+
+
+        localVideo.srcObject =
+            localStream;
+
+
+        await replaceTracksForAllPeers(
+            localStream.getVideoTracks()[0] || null,
+            localStream.getAudioTracks()[0] || null
         );
+
+
+        updateSourceLabel();
 
 
         cameraSourceButton.classList.add(
@@ -1607,6 +1754,45 @@ async function startCameraStream() {
         screenSourceButton.classList.remove(
             "active"
         );
+
+
+        cameraButton.classList.add(
+            "active"
+        );
+
+        micButton.classList.add(
+            "active"
+        );
+
+
+        cameraButton.textContent =
+            "📷 تصویر روشن";
+
+        micButton.textContent =
+            "🎙️ میکروفون روشن";
+
+
+        setStatus(
+            "در حال پخش دوربین و میکروفون"
+        );
+
+
+        if (
+            oldStream &&
+            oldStream !== cameraStream
+        ) {
+
+            oldStream
+                .getTracks()
+                .forEach(
+                    track => {
+
+                        try {
+                            track.stop();
+                        } catch {}
+                    }
+                );
+        }
 
 
         return true;
@@ -1620,7 +1806,7 @@ async function startCameraStream() {
 
 
         setStatus(
-            "دسترسی به دوربین ممکن نیست."
+            "دسترسی دوربین یا میکروفون ممکن نیست."
         );
 
 
@@ -1635,7 +1821,7 @@ async function startCameraStream() {
 
 
 /* ============================================================
-   SCREEN SHARE
+   SCREEN + SYSTEM AUDIO + MICROPHONE
    ============================================================ */
 
 async function startScreenStream() {
@@ -1656,7 +1842,10 @@ async function startScreenStream() {
 
     try {
 
-        const screenStream =
+        await releaseMixedAudio();
+
+
+        const displayStream =
             await navigator.mediaDevices.getDisplayMedia(
                 {
                     video: {
@@ -1672,62 +1861,203 @@ async function startScreenStream() {
                         }
                     },
 
-                    audio:
-                        true
+                    audio: true
                 }
             );
 
 
-        const videoTrack =
-            screenStream.getVideoTracks()[0];
+        screenStream =
+            displayStream;
 
 
-        if (videoTrack) {
+        const screenVideoTrack =
+            displayStream.getVideoTracks()[0] ||
+            null;
 
-            videoTrack.addEventListener(
-                "ended",
-                () => {
 
-                    /*
-                     * کاربر اشتراک صفحه را
-                     * از خود مرورگر متوقف کرده.
-                     */
+        if (!screenVideoTrack) {
 
-                    startCameraStream();
-                }
+            throw new Error(
+                "screen video track not found"
             );
         }
 
 
         /*
-         * اگر سیستم audio نداد،
-         * صدای میکروفون فعلی را حفظ می‌کنیم.
+         * میکروفون جداگانه
          */
+        try {
+
+            microphoneStream =
+                await navigator.mediaDevices.getUserMedia(
+                    {
+                        video: false,
+
+                        audio: {
+                            echoCancellation:
+                                true,
+
+                            noiseSuppression:
+                                true,
+
+                            autoGainControl:
+                                true
+                        }
+                    }
+                );
+
+        } catch (error) {
+
+            console.warn(
+                "microphone unavailable:",
+                error
+            );
+
+            microphoneStream =
+                null;
+        }
+
+
+        /*
+         * AudioContext
+         */
+        await ensureAudioContext();
+
+
+        audioDestination =
+            audioContext.createMediaStreamDestination();
+
+
+        /*
+         * صدای سیستم/تب
+         */
+        const systemAudioTracks =
+            displayStream.getAudioTracks();
+
 
         if (
-            screenStream.getAudioTracks().length ===
-            0
+            systemAudioTracks.length > 0
         ) {
 
-            if (localStream) {
+            const systemAudioStream =
+                new MediaStream(
+                    systemAudioTracks
+                );
 
-                localStream
-                    .getAudioTracks()
-                    .forEach(
-                        track => {
 
-                            screenStream.addTrack(
-                                track
-                            );
-                        }
+            const systemSource =
+                audioContext.createMediaStreamSource(
+                    systemAudioStream
+                );
+
+
+            systemSource.connect(
+                audioDestination
+            );
+        }
+
+
+        /*
+         * صدای میکروفون
+         */
+        if (
+            microphoneStream
+        ) {
+
+            const micTracks =
+                microphoneStream.getAudioTracks();
+
+
+            if (
+                micTracks.length > 0
+            ) {
+
+                const micAudioStream =
+                    new MediaStream(
+                        micTracks
                     );
+
+
+                const microphoneSource =
+                    audioContext.createMediaStreamSource(
+                        micAudioStream
+                    );
+
+
+                microphoneSource.connect(
+                    audioDestination
+                );
             }
         }
 
 
-        await replaceLocalStream(
-            screenStream,
-            "screen"
+        /*
+         * ساخت Stream نهایی
+         */
+        const mixedStream =
+            new MediaStream();
+
+
+        mixedStream.addTrack(
+            screenVideoTrack
+        );
+
+
+        const mixedAudioTrack =
+            audioDestination
+                .stream
+                .getAudioTracks()[0];
+
+
+        if (
+            mixedAudioTrack
+        ) {
+
+            mixedStream.addTrack(
+                mixedAudioTrack
+            );
+
+        } else {
+
+            /*
+             * اگر مرورگر هیچ System Audio
+             * نداد، حداقل میکروفون را می‌فرستیم.
+             */
+            const micTrack =
+                microphoneStream
+                    ?.getAudioTracks()
+                    ?.[0] ||
+                null;
+
+
+            if (micTrack) {
+
+                mixedStream.addTrack(
+                    micTrack
+                );
+            }
+        }
+
+
+        const oldStream =
+            localStream;
+
+
+        localStream =
+            mixedStream;
+
+
+        currentSource =
+            "screen";
+
+
+        localVideo.srcObject =
+            localStream;
+
+
+        await replaceTracksForAllPeers(
+            localStream.getVideoTracks()[0] || null,
+            localStream.getAudioTracks()[0] || null
         );
 
 
@@ -1740,6 +2070,69 @@ async function startScreenStream() {
         );
 
 
+        cameraButton.classList.add(
+            "active"
+        );
+
+        micButton.classList.add(
+            "active"
+        );
+
+
+        cameraButton.textContent =
+            "🖥️ تصویر صفحه روشن";
+
+        micButton.textContent =
+            "🔊 صدای میکس روشن";
+
+
+        sourceBadge.textContent =
+            "🖥️ صفحه + 🔊 صدا";
+
+
+        setStatus(
+            "در حال پخش صفحه + صدای سیستم + میکروفون"
+        );
+
+
+        /*
+         * کاربر از پنجره مرورگر
+         * اشتراک صفحه را متوقف کرده.
+         */
+        screenVideoTrack.addEventListener(
+            "ended",
+            async () => {
+
+                if (stopped) {
+                    return;
+                }
+
+
+                await releaseMixedAudio();
+
+                await startCameraStream();
+            }
+        );
+
+
+        if (
+            oldStream &&
+            oldStream !== mixedStream
+        ) {
+
+            oldStream
+                .getTracks()
+                .forEach(
+                    track => {
+
+                        try {
+                            track.stop();
+                        } catch {}
+                    }
+                );
+        }
+
+
         return true;
 
     } catch (error) {
@@ -1750,9 +2143,11 @@ async function startScreenStream() {
         );
 
 
+        await releaseMixedAudio();
+
+
         if (
-            error &&
-            error.name ===
+            error?.name ===
                 "NotAllowedError"
         ) {
 
@@ -1774,140 +2169,7 @@ async function startScreenStream() {
 
 
 /* ============================================================
-   REPLACE STREAM
-   ============================================================ */
-
-async function replaceLocalStream(
-    newStream,
-    source
-) {
-
-    const oldStream =
-        localStream;
-
-
-    localStream =
-        newStream;
-
-    currentSource =
-        source;
-
-
-    localVideo.srcObject =
-        localStream;
-
-
-    /*
-     * برای همه بیننده‌های فعلی
-     * Track را عوض می‌کنیم.
-     */
-
-    const videoTrack =
-        localStream.getVideoTracks()[0] ||
-        null;
-
-    const audioTrack =
-        localStream.getAudioTracks()[0] ||
-        null;
-
-
-    peerConnections.forEach(
-        pc => {
-
-            const senders =
-                pc.getSenders();
-
-
-            senders.forEach(
-                sender => {
-
-                    if (
-                        sender.track?.kind ===
-                        "video"
-                    ) {
-
-                        sender.replaceTrack(
-                            videoTrack
-                        ).catch(
-                            error => {
-
-                                console.error(
-                                    "video replace error:",
-                                    error
-                                );
-                            }
-                        );
-                    }
-
-
-                    if (
-                        sender.track?.kind ===
-                        "audio"
-                    ) {
-
-                        sender.replaceTrack(
-                            audioTrack
-                        ).catch(
-                            error => {
-
-                                console.error(
-                                    "audio replace error:",
-                                    error
-                                );
-                            }
-                        );
-                    }
-                }
-            );
-        }
-    );
-
-
-    updateSourceLabel();
-
-
-    if (
-        source ===
-        "screen"
-    ) {
-
-        setStatus(
-            "در حال پخش صفحه سیستم"
-        );
-
-    } else {
-
-        setStatus(
-            "در حال پخش دوربین"
-        );
-    }
-
-
-    /*
-     * Stream قبلی را بعد از جایگزینی متوقف کن.
-     */
-
-    if (
-        oldStream &&
-        oldStream !== newStream
-    ) {
-
-        oldStream
-            .getTracks()
-            .forEach(
-                track => {
-
-                    try {
-                        track.stop();
-                    } catch {}
-                }
-            );
-    }
-}
-
-
-/* ============================================================
-   CAMERA BUTTON
+   SOURCE BUTTONS
    ============================================================ */
 
 cameraSourceButton.addEventListener(
@@ -1928,10 +2190,6 @@ cameraSourceButton.addEventListener(
 );
 
 
-/* ============================================================
-   SCREEN BUTTON
-   ============================================================ */
-
 screenSourceButton.addEventListener(
     "click",
     async () => {
@@ -1951,7 +2209,7 @@ screenSourceButton.addEventListener(
 
 
 /* ============================================================
-   CAMERA ON / OFF
+   VIDEO TOGGLE
    ============================================================ */
 
 cameraButton.addEventListener(
@@ -1963,20 +2221,23 @@ cameraButton.addEventListener(
         }
 
 
-        const tracks =
+        const videoTracks =
             localStream.getVideoTracks();
 
 
-        if (!tracks.length) {
+        if (
+            !videoTracks.length
+        ) {
+
             return;
         }
 
 
         const enabled =
-            !tracks[0].enabled;
+            !videoTracks[0].enabled;
 
 
-        tracks.forEach(
+        videoTracks.forEach(
             track => {
 
                 track.enabled =
@@ -1993,14 +2254,19 @@ cameraButton.addEventListener(
 
         cameraButton.textContent =
             enabled
-                ? "📷 تصویر روشن"
+                ? (
+                    currentSource ===
+                    "screen"
+                        ? "🖥️ تصویر صفحه روشن"
+                        : "📷 تصویر روشن"
+                  )
                 : "🚫 تصویر خاموش";
     }
 );
 
 
 /* ============================================================
-   MIC ON / OFF
+   AUDIO TOGGLE
    ============================================================ */
 
 micButton.addEventListener(
@@ -2012,20 +2278,23 @@ micButton.addEventListener(
         }
 
 
-        const tracks =
+        const audioTracks =
             localStream.getAudioTracks();
 
 
-        if (!tracks.length) {
+        if (
+            !audioTracks.length
+        ) {
+
             return;
         }
 
 
         const enabled =
-            !tracks[0].enabled;
+            !audioTracks[0].enabled;
 
 
-        tracks.forEach(
+        audioTracks.forEach(
             track => {
 
                 track.enabled =
@@ -2042,8 +2311,13 @@ micButton.addEventListener(
 
         micButton.textContent =
             enabled
-                ? "🎙 میکروفون روشن"
-                : "🔇 میکروفون خاموش";
+                ? (
+                    currentSource ===
+                    "screen"
+                        ? "🔊 صدای میکس روشن"
+                        : "🎙️ میکروفون روشن"
+                  )
+                : "🔇 صدا خاموش";
     }
 );
 
@@ -2266,7 +2540,7 @@ async function stopLive() {
         if (
             socket &&
             socket.readyState ===
-            WebSocket.OPEN
+                WebSocket.OPEN
         ) {
 
             send(
@@ -2332,6 +2606,9 @@ async function stopLive() {
     }
 
 
+    await releaseMixedAudio();
+
+
     if (localStream) {
 
         localStream
@@ -2344,6 +2621,10 @@ async function stopLive() {
                     } catch {}
                 }
             );
+
+
+        localStream =
+            null;
     }
 
 
@@ -2352,7 +2633,7 @@ async function stopLive() {
         if (
             socket &&
             socket.readyState !==
-            WebSocket.CLOSED
+                WebSocket.CLOSED
         ) {
 
             socket.close();
@@ -2421,7 +2702,7 @@ window.addEventListener(
             if (
                 socket &&
                 socket.readyState ===
-                WebSocket.OPEN
+                    WebSocket.OPEN
             ) {
 
                 socket.send(
@@ -2460,10 +2741,6 @@ window.addEventListener(
     }
 
 
-    /*
-     * ابتدا دوربین عادی را فعال می‌کنیم.
-     */
-
     const started =
         await startCameraStream();
 
@@ -2472,10 +2749,6 @@ window.addEventListener(
         return;
     }
 
-
-    /*
-     * بعد WebSocket را وصل می‌کنیم.
-     */
 
     connectSocket();
 
