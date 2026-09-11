@@ -1,408 +1,518 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090f">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#020617"
-    >
-
-    <title>لایوهای محبوب | LainoLive</title>
-
-    <link
-        rel="stylesheet"
-        href="/style.css"
-    >
+    <title>لایوهای محبوب - LainoLive</title>
 
     <style>
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html,
         body {
             margin: 0;
             padding: 0;
+
             min-height: 100%;
-            background: #020617;
-            color: #ffffff;
-            font-family: Tahoma, Arial, sans-serif;
+
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #19192b 0%,
+                    #0b0b12 48%,
+                    #050508 100%
+                );
+
+            color: white;
         }
 
         body {
-            padding-bottom: 90px;
-        }
-
-        .popular-page {
-            width: 100%;
             min-height: 100vh;
         }
 
-        .popular-header {
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .page {
+            min-height: 100vh;
+
+            padding-bottom:
+                calc(
+                    90px +
+                    env(safe-area-inset-bottom)
+                );
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
             position: sticky;
             top: 0;
-            z-index: 30;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            background:
-                linear-gradient(
-                    180deg,
-                    #111827,
-                    #0f172a
-                );
-            border-bottom: 1px solid #273449;
-        }
+            z-index: 100;
 
-        .back-button {
-            width: 40px;
-            height: 40px;
-            flex: 0 0 40px;
-            border: 0;
-            border-radius: 10px;
-            background: #1e293b;
-            color: #ffffff;
-            font-size: 18px;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
-
-        .header-title-wrap {
-            min-width: 0;
-        }
-
-        .header-title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .header-subtitle {
-            margin-top: 3px;
-            color: #94a3b8;
-            font-size: 11px;
-        }
-
-        .popular-content {
-            width: min(900px, 100%);
-            margin: 0 auto;
-            padding: 18px 14px 30px;
-        }
-
-        .hero {
-            position: relative;
-            overflow: hidden;
-            padding: 22px;
-            border-radius: 22px;
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(34,197,94,0.18),
-                    transparent 45%
-                ),
-                #111827;
-            border: 1px solid #273449;
-            box-shadow:
-                0 20px 50px rgba(0,0,0,0.2);
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 9px;
-            border-radius: 9px;
-            background: #3f0a0a;
-            color: #fecaca;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .hero h1 {
-            margin: 12px 0 6px;
-            font-size: 23px;
-        }
-
-        .hero p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: 12px;
-            line-height: 1.9;
-        }
-
-        .refresh-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            margin-top: 18px;
+
+            padding:
+                calc(
+                    14px +
+                    env(safe-area-inset-top)
+                )
+                16px
+                14px;
+
+            background:
+                rgba(8,8,15,.9);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.07);
         }
 
-        .live-status {
-            color: #94a3b8;
-            font-size: 11px;
+        .header-title {
+            font-size: 20px;
+            font-weight: 900;
         }
 
-        .refresh-button {
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 9px 12px;
-            background: #1e293b;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            touch-action: manipulation;
+        .header-subtitle {
+            margin-top: 4px;
+
+            color: #9898a5;
+
+            font-size: 10px;
         }
 
-        .popular-list {
-            display: grid;
-            gap: 12px;
-            margin-top: 18px;
-        }
-
-        .popular-card {
-            position: relative;
-            display: grid;
-            grid-template-columns: 48px minmax(0, 1fr) auto;
-            align-items: center;
-            gap: 12px;
-            padding: 13px;
-            border-radius: 17px;
-            background: #111827;
-            border: 1px solid #273449;
-            cursor: pointer;
-            transition:
-                transform 0.15s ease,
-                border-color 0.15s ease,
-                background 0.15s ease;
-        }
-
-        .popular-card:hover {
-            transform: translateY(-2px);
-            border-color: #3b4d67;
-            background: #172033;
-        }
-
-        .rank {
+        .refresh-btn {
             width: 42px;
             height: 42px;
+
+            border: none;
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            color: white;
+
+            font-size: 18px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            margin:
+                16px;
+
+            padding:
+                20px;
+
+            border-radius:
+                22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,39,87,.17),
+                    rgba(139,53,255,.18)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+        }
+
+        .hero-title {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .hero-text {
+            margin-top: 7px;
+
+            color: #a8a8b6;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =========================
+           LIST
+        ========================= */
+
+        .list {
+            padding:
+                0
+                16px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0,1fr)
+                );
+
+            gap: 12px;
+        }
+
+        .card {
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.025)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            transition:
+                transform .18s ease;
+        }
+
+        .card:active {
+            transform: scale(.98);
+        }
+
+        .cover {
+            position: relative;
+
+            aspect-ratio:
+                16 / 10;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #161622,
+                    #29213d
+                );
+        }
+
+        .cover img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        .cover-placeholder {
+            width: 100%;
+            height: 100%;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 13px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            font-size: 17px;
-            font-weight: bold;
+
+            font-size: 36px;
+
+            opacity: .48;
         }
 
-        .rank.top {
-            background: #132b1d;
-            border-color: #166534;
-            color: #86efac;
+        .live-badge {
+            position: absolute;
+
+            top: 8px;
+            right: 8px;
+
+            padding:
+                5px
+                8px;
+
+            border-radius: 999px;
+
+            background: #ff1d4d;
+
+            font-size: 9px;
+            font-weight: 900;
         }
 
-        .stream-main {
-            min-width: 0;
+        .rank {
+            position: absolute;
+
+            left: 8px;
+            top: 8px;
+
+            width: 31px;
+            height: 31px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(0,0,0,.68);
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            font-size: 13px;
+            font-weight: 900;
         }
 
-        .stream-title {
+        .viewer-count {
+            position: absolute;
+
+            left: 8px;
+            bottom: 8px;
+
+            padding:
+                5px
+                8px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(0,0,0,.67);
+
+            font-size: 10px;
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .card-title {
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 900;
+
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .stream-user {
-            margin-top: 4px;
-            color: #94a3b8;
+        .card-user {
+            margin-top: 7px;
+
+            color: #a8a8b5;
+
             font-size: 11px;
         }
 
-        .stream-category {
-            display: inline-block;
-            margin-top: 7px;
-            padding: 4px 8px;
-            border-radius: 7px;
-            background: #132b1d;
-            color: #86efac;
-            font-size: 9px;
-        }
+        .card-bottom {
+            margin-top: 9px;
 
-        .stream-right {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 7px;
-        }
-
-        .live-badge {
-            display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 5px 8px;
-            border-radius: 7px;
-            background: #3f0a0a;
-            color: #fecaca;
+            justify-content: space-between;
+
+            gap: 8px;
+        }
+
+        .category {
+            max-width: 55%;
+
+            padding:
+                4px
+                8px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(139,53,255,.12);
+
+            color: #ceb5ff;
+
             font-size: 9px;
-            font-weight: bold;
-        }
 
-        .viewer-count {
-            color: #bfdbfe;
-            font-size: 11px;
-            font-weight: bold;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .empty-state {
-            padding: 45px 20px;
-            border-radius: 18px;
-            background: #111827;
-            border: 1px solid #273449;
+        .views {
+            color: #ffb7c5;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .empty {
+            grid-column: 1/-1;
+
+            padding:
+                45px
+                20px;
+
             text-align: center;
-        }
 
-        .empty-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
-        }
-
-        .empty-title {
-            font-size: 15px;
-            font-weight: bold;
-        }
-
-        .empty-text {
-            margin-top: 7px;
-            color: #94a3b8;
-            font-size: 12px;
-            line-height: 1.8;
-        }
-
-        .error-state {
-            padding: 25px;
             border-radius: 18px;
-            background: #2b1010;
-            border: 1px solid #7f1d1d;
-            color: #fecaca;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.8;
-        }
 
-        .toast {
-            position: fixed;
-            left: 50%;
-            bottom: 25px;
-            z-index: 1000;
-            transform: translate(-50%, 20px);
-            opacity: 0;
-            pointer-events: none;
-            max-width: calc(100% - 30px);
-            padding: 11px 16px;
-            border-radius: 12px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: #ffffff;
+            color: #9292a0;
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px dashed
+                rgba(255,255,255,.09);
+
             font-size: 13px;
-            text-align: center;
-            transition:
-                opacity 0.2s ease,
-                transform 0.2s ease;
+
+            line-height: 1.9;
         }
 
-        .toast.show {
-            opacity: 1;
-            transform: translate(-50%, 0);
-        }
+        /* =========================
+           NAV
+        ========================= */
 
         .bottom-nav {
             position: fixed;
+
             left: 0;
             right: 0;
             bottom: 0;
-            z-index: 40;
-            display: flex;
-            justify-content: space-around;
+
+            z-index: 200;
+
             padding:
-                8px
-                8px
-                max(8px, env(safe-area-inset-bottom));
-            background: rgba(15,23,42,0.96);
-            border-top: 1px solid #273449;
-            backdrop-filter: blur(10px);
+                10px
+                10px
+                calc(
+                    10px +
+                    env(safe-area-inset-bottom)
+                );
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 8px;
+
+            background:
+                rgba(7,7,12,.93);
+
+            border-top:
+                1px solid
+                rgba(255,255,255,.07);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
         }
 
-        .nav-item {
-            border: 0;
+        .nav-btn {
+            min-height: 52px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            color: #8f8f9d;
+
             background: transparent;
-            color: #94a3b8;
-            font-family: inherit;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 4px;
+
             font-size: 10px;
-            cursor: pointer;
-            padding: 7px 9px;
-            border-radius: 10px;
+            font-weight: 700;
         }
 
-        .nav-item.active {
-            background: #132b1d;
-            color: #86efac;
+        .nav-btn span:first-child {
+            font-size: 20px;
         }
 
-        .nav-icon {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 3px;
+        .nav-btn.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,39,87,.14),
+                    rgba(139,53,255,.16)
+                );
         }
 
-        @media (max-width: 600px) {
+        @media (min-width:700px) {
 
-            .popular-content {
-                padding: 14px 10px 25px;
+            .page {
+                max-width: 1100px;
+                margin: 0 auto;
             }
 
-            .hero {
-                padding: 18px;
-                border-radius: 18px;
-            }
-
-            .hero h1 {
-                font-size: 20px;
-            }
-
-            .popular-card {
+            .list {
                 grid-template-columns:
-                    42px
-                    minmax(0, 1fr)
-                    auto;
-                gap: 9px;
-                padding: 11px;
+                    repeat(
+                        3,
+                        minmax(0,1fr)
+                    );
             }
 
-            .rank {
-                width: 38px;
-                height: 38px;
-                border-radius: 11px;
-                font-size: 15px;
-            }
+            .bottom-nav {
+                left: 50%;
+                right: auto;
 
-            .stream-title {
-                font-size: 13px;
-            }
+                width:
+                    min(
+                        650px,
+                        calc(100% - 30px)
+                    );
 
-            .viewer-count {
-                font-size: 10px;
+                transform:
+                    translateX(-50%);
+
+                bottom: 14px;
+
+                border:
+                    1px solid
+                    rgba(255,255,255,.07);
+
+                border-radius: 22px;
+
+                padding: 8px;
+            }
+        }
+
+        @media (max-width:390px) {
+
+            .list {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -410,103 +520,55 @@
 
 <body>
 
-<script>
-    /* =====================================================
-       AUTH
-    ===================================================== */
+<div class="page">
 
-    const loggedIn =
-        localStorage.getItem(
-            "lainolive_logged_in"
-        );
+    <header class="header">
 
-    const currentUsername =
-        localStorage.getItem(
-            "lainolive_username"
-        );
-
-
-    if (
-        loggedIn !== "true" ||
-        !currentUsername
-    ) {
-
-        window.location.replace(
-            "/login.html"
-        );
-    }
-</script>
-
-
-<div class="popular-page">
-
-    <header class="popular-header">
-
-        <button
-            id="backButton"
-            class="back-button"
-            type="button"
-        >
-            ←
-        </button>
-
-        <div class="header-title-wrap">
+        <div>
 
             <div class="header-title">
-                لایوهای محبوب
+                🔥 لایوهای محبوب
             </div>
 
             <div class="header-subtitle">
-                محبوب‌ترین پخش‌ها بر اساس بیننده فعلی
+                بر اساس تعداد بیننده فعلی
             </div>
 
         </div>
 
+        <button
+            id="refreshButton"
+            class="refresh-btn"
+            type="button"
+        >
+            🔄
+        </button>
+
     </header>
 
 
-    <main class="popular-content">
+    <section class="hero">
 
-        <section class="hero">
+        <div class="hero-title">
+            🔥 محبوب‌ترین لایوها
+        </div>
 
-            <div class="hero-badge">
-                🔥 محبوب‌ها
-            </div>
+        <div class="hero-text">
+            لایوهایی که همین حالا بیشترین بیننده را دارند
+            اینجا نمایش داده می‌شوند.
+        </div>
 
-            <h1>
-                محبوب‌ترین لایوهای الآن
-            </h1>
-
-            <p>
-                لایوها بر اساس تعداد بیننده فعلی مرتب می‌شوند.
-            </p>
-
-            <div class="refresh-row">
-
-                <div
-                    id="liveStatus"
-                    class="live-status"
-                >
-                    در حال دریافت...
-                </div>
-
-                <button
-                    id="refreshButton"
-                    class="refresh-button"
-                    type="button"
-                >
-                    🔄 بروزرسانی
-                </button>
-
-            </div>
-
-        </section>
+    </section>
 
 
-        <section
-            id="popularList"
-            class="popular-list"
-        ></section>
+    <main
+        id="popularList"
+        class="list"
+    >
+
+        <div class="empty">
+            در حال دریافت لایوهای محبوب...
+        </div>
 
     </main>
 
@@ -517,111 +579,68 @@
 
     <button
         id="homeButton"
-        class="nav-item"
+        class="nav-btn"
         type="button"
     >
-        <span class="nav-icon">
-            🏠
-        </span>
-
-        خانه
+        <span>🏠</span>
+        <span>خانه</span>
     </button>
-
 
     <button
-        class="nav-item active"
+        class="nav-btn active"
         type="button"
     >
-        <span class="nav-icon">
-            🔥
-        </span>
-
-        محبوب
+        <span>🔥</span>
+        <span>محبوب</span>
     </button>
-
 
     <button
         id="profileButton"
-        class="nav-item"
+        class="nav-btn"
         type="button"
     >
-        <span class="nav-icon">
-            👤
-        </span>
-
-        پروفایل
+        <span>👤</span>
+        <span>پروفایل</span>
     </button>
 
 </nav>
 
 
-<div
-    id="toast"
-    class="toast"
-></div>
-
-
 <script>
+    const LOGIN_KEY =
+        "lainolive_logged_in";
 
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
+    const USERNAME_KEY =
+        "lainolive_username";
+
+    const VIEW_STREAM_KEY =
+        "lainolive_view_stream";
+
+    const CURRENT_STREAM_KEY =
+        "lainolive_current_stream";
+
+
+    if (
+        localStorage.getItem(
+            LOGIN_KEY
+        ) !== "true"
+    ) {
+
+        window.location.href =
+            "/login.html";
+    }
+
 
     const popularList =
         document.getElementById(
             "popularList"
         );
 
-    const liveStatus =
-        document.getElementById(
-            "liveStatus"
-        );
 
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    /* =====================================================
-       TOAST
-    ===================================================== */
-
-    function showToast(
-        text
-    ) {
-
-        toast.textContent =
-            text;
-
-        toast.classList.add(
-            "show"
-        );
-
-
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2200
-        );
-    }
-
-
-    /* =====================================================
-       ESCAPE
-    ===================================================== */
-
-    function escapeHtml(
-        text
-    ) {
+    function escapeHtml(value) {
 
         return String(
-            text ?? ""
+            value ?? ""
         )
             .replaceAll(
                 "&",
@@ -646,249 +665,108 @@
     }
 
 
-    /* =====================================================
-       OPEN STREAM
-    ===================================================== */
+    function getId(stream) {
 
-    function openStream(
-        stream
-    ) {
-
-        if (
-            !stream ||
-            stream.id ===
-            undefined ||
-            stream.id ===
-            null
-        ) {
-            return;
-        }
-
-
-        sessionStorage.setItem(
-            "lainolive_view_stream",
-            JSON.stringify(
-                stream
-            )
-        );
-
-
-        if (
-            String(
-                stream.username
-            ) ===
-            String(
-                currentUsername
-            )
-        ) {
-
-            sessionStorage.setItem(
-                "lainolive_current_stream",
-                JSON.stringify(
-                    stream
-                )
-            );
-
-
-            window.location.href =
-                "/live.html";
-
-            return;
-        }
-
-
-        window.location.href =
-            "/viewer.html?id=" +
-            encodeURIComponent(
-                stream.id
-            );
-    }
-
-
-    /* =====================================================
-       RENDER
-    ===================================================== */
-
-    function renderPopular(
-        streams
-    ) {
-
-        popularList.innerHTML =
-            "";
-
-
-        if (
-            !streams.length
-        ) {
-
-            popularList.innerHTML = `
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-                        📺
-                    </div>
-
-                    <div class="empty-title">
-                        هنوز لایو فعالی نیست
-                    </div>
-
-                    <div class="empty-text">
-                        وقتی لایوها شروع شوند، محبوب‌ترین‌ها اینجا نمایش داده می‌شوند.
-                    </div>
-
-                </div>
-            `;
-
-            return;
-        }
-
-
-        streams.forEach(
-            (
-                stream,
-                index
-            ) => {
-
-                const viewers =
-                    Number(
-                        stream.viewer_count ??
-                        stream.viewers ??
-                        0
-                    );
-
-
-                const card =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                card.className =
-                    "popular-card";
-
-
-                let rankText =
-                    "#" +
-                    (
-                        index + 1
-                    );
-
-
-                if (
-                    index === 0
-                ) {
-                    rankText = "🥇";
-                } else if (
-                    index === 1
-                ) {
-                    rankText = "🥈";
-                } else if (
-                    index === 2
-                ) {
-                    rankText = "🥉";
-                }
-
-
-                card.innerHTML = `
-
-                    <div class="rank ${
-                        index < 3
-                            ? "top"
-                            : ""
-                    }">
-                        ${rankText}
-                    </div>
-
-
-                    <div class="stream-main">
-
-                        <div class="stream-title">
-                            ${escapeHtml(
-                                stream.title ||
-                                "پخش زنده"
-                            )}
-                        </div>
-
-                        <div class="stream-user">
-                            👤
-                            ${escapeHtml(
-                                stream.username ||
-                                "کاربر"
-                            )}
-                        </div>
-
-                        <div class="stream-category">
-                            ${escapeHtml(
-                                stream.category ||
-                                "عمومی"
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <div class="stream-right">
-
-                        <div class="live-badge">
-                            🔴 LIVE
-                        </div>
-
-                        <div class="viewer-count">
-                            👁 ${viewers} بیننده
-                        </div>
-
-                    </div>
-                `;
-
-
-                card.addEventListener(
-                    "click",
-                    () => {
-
-                        openStream(
-                            stream
-                        );
-                    }
-                );
-
-
-                popularList.appendChild(
-                    card
-                );
-            }
+        return (
+            stream.id
+            ??
+            stream.stream_id
         );
     }
 
 
-    /* =====================================================
-       LOAD
-    ===================================================== */
+    function getViewers(stream) {
+
+        return Number(
+            stream.viewer_count
+            ??
+            stream.viewers
+            ??
+            0
+        );
+    }
+
+
+    function getTitle(stream) {
+
+        return (
+            stream.title
+            ||
+            "لایو بدون عنوان"
+        );
+    }
+
+
+    function getUsername(stream) {
+
+        return (
+            stream.username
+            ||
+            stream.user
+            ||
+            "کاربر"
+        );
+    }
+
+
+    function getCategory(stream) {
+
+        return (
+            stream.category
+            ||
+            "عمومی"
+        );
+    }
+
+
+    function getCover(stream) {
+
+        return (
+            stream.cover_url
+            ||
+            stream.cover
+            ||
+            stream.thumbnail
+            ||
+            ""
+        );
+    }
+
+
+    function rankIcon(index) {
+
+        if (index === 0) {
+            return "🥇";
+        }
+
+        if (index === 1) {
+            return "🥈";
+        }
+
+        if (index === 2) {
+            return "🥉";
+        }
+
+        return String(
+            index + 1
+        );
+    }
+
 
     async function loadPopular() {
-
-        liveStatus.textContent =
-            "در حال بروزرسانی...";
-
 
         try {
 
             const response =
                 await fetch(
-                    "/api/streams",
-                    {
-                        cache:
-                            "no-store"
-                    }
+                    "/api/streams"
                 );
 
 
-            if (
-                !response.ok
-            ) {
+            if (!response.ok) {
 
                 throw new Error(
-                    "HTTP " +
-                    response.status
+                    "خطا در دریافت لایوها"
                 );
             }
 
@@ -897,52 +775,25 @@
                 await response.json();
 
 
-            if (
-                !data ||
-                !data.success
-            ) {
-
-                throw new Error(
-                    data?.message ||
-                    "دریافت لایوها ناموفق بود."
-                );
-            }
-
-
             const streams =
                 Array.isArray(
                     data.streams
                 )
                     ? data.streams
-                    : [];
+                    : (
+                        Array.isArray(
+                            data
+                        )
+                            ? data
+                            : []
+                    );
 
 
             streams.sort(
-                (
-                    a,
-                    b
-                ) => {
-
-                    const viewersA =
-                        Number(
-                            a.viewer_count ??
-                            a.viewers ??
-                            0
-                        );
-
-                    const viewersB =
-                        Number(
-                            b.viewer_count ??
-                            b.viewers ??
-                            0
-                        );
-
-
-                    return (
-                        viewersB -
-                        viewersA
-                    );
-                }
+                (a, b) =>
+                    getViewers(b)
+                    -
+                    getViewers(a)
             );
 
 
@@ -950,48 +801,272 @@
                 streams
             );
 
-
-            liveStatus.textContent =
-                streams.length +
-                " لایو فعال";
-
-
         } catch (error) {
 
             console.error(
-                "Popular:",
                 error
             );
 
-
-            liveStatus.textContent =
-                "خطا در دریافت لایوها";
-
-
             popularList.innerHTML = `
-                <div class="error-state">
-                    اتصال به سرور لایوها ناموفق بود.
-                    دوباره تلاش کن.
+                <div class="empty">
+                    دریافت لایوهای محبوب انجام نشد.<br>
+                    اتصال سرور را بررسی کنید.
                 </div>
             `;
         }
     }
 
 
-    /* =====================================================
-       EVENTS
-    ===================================================== */
+    function renderPopular(
+        streams
+    ) {
+
+        if (!streams.length) {
+
+            popularList.innerHTML = `
+                <div class="empty">
+                    فعلاً هیچ لایوی در حال پخش نیست. 🎥
+                </div>
+            `;
+
+            return;
+        }
+
+
+        popularList.innerHTML =
+            streams
+                .map(
+                    (
+                        stream,
+                        index
+                    ) => {
+
+                        const id =
+                            getId(
+                                stream
+                            );
+
+                        const cover =
+                            getCover(
+                                stream
+                            );
+
+                        const title =
+                            escapeHtml(
+                                getTitle(
+                                    stream
+                                )
+                            );
+
+                        const username =
+                            escapeHtml(
+                                getUsername(
+                                    stream
+                                )
+                            );
+
+                        const category =
+                            escapeHtml(
+                                getCategory(
+                                    stream
+                                )
+                            );
+
+                        const viewers =
+                            getViewers(
+                                stream
+                            );
+
+
+                        return `
+                            <article
+                                class="card"
+                                data-id="${escapeHtml(id)}"
+                            >
+
+                                <div class="cover">
+
+                                    ${
+                                        cover
+                                            ? `
+                                                <img
+                                                    src="${escapeHtml(
+                                                        cover
+                                                    )}"
+                                                    alt="${title}"
+                                                    loading="lazy"
+                                                >
+                                            `
+                                            : `
+                                                <div
+                                                    class="cover-placeholder"
+                                                >
+                                                    📺
+                                                </div>
+                                            `
+                                    }
+
+                                    <div class="rank">
+                                        ${rankIcon(index)}
+                                    </div>
+
+                                    <div class="live-badge">
+                                        ● LIVE
+                                    </div>
+
+                                    <div class="viewer-count">
+                                        👁 ${viewers}
+                                    </div>
+
+                                </div>
+
+                                <div class="card-body">
+
+                                    <div class="card-title">
+                                        ${title}
+                                    </div>
+
+                                    <div class="card-user">
+                                        👤 ${username}
+                                    </div>
+
+                                    <div class="card-bottom">
+
+                                        <div class="category">
+                                            ${category}
+                                        </div>
+
+                                        <div class="views">
+                                            ${viewers} بیننده
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+                        `;
+                    }
+                )
+                .join("");
+
+
+        popularList
+            .querySelectorAll(
+                "[data-id]"
+            )
+            .forEach(
+                card => {
+
+                    card.addEventListener(
+                        "click",
+                        () => {
+
+                            const id =
+                                card.dataset.id;
+
+                            const stream =
+                                streams.find(
+                                    item =>
+                                        String(
+                                            getId(
+                                                item
+                                            )
+                                        )
+                                        ===
+                                        String(id)
+                                );
+
+                            if (!stream) {
+                                return;
+                            }
+
+
+                            const username =
+                                localStorage.getItem(
+                                    USERNAME_KEY
+                                );
+
+
+                            sessionStorage.setItem(
+                                VIEW_STREAM_KEY,
+                                JSON.stringify(
+                                    stream
+                                )
+                            );
+
+
+                            if (
+                                String(
+                                    getUsername(
+                                        stream
+                                    )
+                                )
+                                ===
+                                String(
+                                    username
+                                )
+                            ) {
+
+                                sessionStorage.setItem(
+                                    CURRENT_STREAM_KEY,
+                                    JSON.stringify(
+                                        stream
+                                    )
+                                );
+
+                                window.location.href =
+                                    "/live.html";
+
+                                return;
+                            }
+
+
+                            window.location.href =
+                                "/viewer.html?id="
+                                +
+                                encodeURIComponent(
+                                    getId(
+                                        stream
+                                    )
+                                );
+                        }
+                    );
+                }
+            );
+    }
+
 
     document
         .getElementById(
-            "backButton"
+            "refreshButton"
         )
         .addEventListener(
             "click",
-            () => {
+            async () => {
 
-                window.location.href =
-                    "/index.html";
+                const button =
+                    document.getElementById(
+                        "refreshButton"
+                    );
+
+                button.animate(
+                    [
+                        {
+                            transform:
+                                "rotate(0deg)"
+                        },
+                        {
+                            transform:
+                                "rotate(360deg)"
+                        }
+                    ],
+                    {
+                        duration: 450
+                    }
+                );
+
+                await loadPopular();
             }
         );
 
@@ -1024,20 +1099,6 @@
         );
 
 
-    document
-        .getElementById(
-            "refreshButton"
-        )
-        .addEventListener(
-            "click",
-            loadPopular
-        );
-
-
-    /* =====================================================
-       AUTO REFRESH
-    ===================================================== */
-
     loadPopular();
 
 
@@ -1045,9 +1106,7 @@
         loadPopular,
         5000
     );
-
 </script>
 
 </body>
-
 </html>
