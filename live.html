@@ -15,7 +15,9 @@
         content="#090b12"
     >
 
-    <title>LainoLive - پخش زنده</title>
+    <title>
+        LainoLive - پخش زنده
+    </title>
 
     <style>
 
@@ -30,7 +32,11 @@
             padding: 0;
             width: 100%;
             min-height: 100%;
-            font-family: Tahoma, Arial, sans-serif;
+
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
 
             background:
                 radial-gradient(
@@ -85,14 +91,23 @@
                 14px
                 12px;
 
-            background: rgba(9, 11, 18, .96);
+            background:
+                rgba(
+                    9,
+                    11,
+                    18,
+                    .96
+                );
 
             border-bottom:
                 1px solid
                 #202536;
 
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
         }
 
         .top-left {
@@ -104,9 +119,13 @@
         .back-btn {
             width: 42px;
             height: 42px;
+
             border: none;
             border-radius: 12px;
-            background: #171b29;
+
+            background:
+                #171b29;
+
             color: #ffffff;
             font-size: 20px;
         }
@@ -126,7 +145,12 @@
             border-radius: 999px;
 
             background:
-                rgba(255, 45, 85, .14);
+                rgba(
+                    255,
+                    45,
+                    85,
+                    .14
+                );
 
             color: #ff5578;
 
@@ -137,12 +161,20 @@
         .live-dot {
             width: 8px;
             height: 8px;
+
             border-radius: 50%;
-            background: #ff365f;
+
+            background:
+                #ff365f;
 
             box-shadow:
                 0 0 12px
-                rgba(255, 54, 95, .8);
+                rgba(
+                    255,
+                    54,
+                    95,
+                    .8
+                );
         }
 
         /* =================================================
@@ -150,8 +182,14 @@
         ================================================= */
 
         .main {
-            width: min(1250px, 100%);
+            width:
+                min(
+                    1250px,
+                    100%
+                );
+
             margin: 0 auto;
+
             padding: 16px;
         }
 
@@ -159,7 +197,10 @@
             display: grid;
 
             grid-template-columns:
-                minmax(0, 1fr)
+                minmax(
+                    0,
+                    1fr
+                )
                 360px;
 
             gap: 16px;
@@ -174,17 +215,20 @@
         .video-card,
         .panel,
         .info-card {
-            background: #10131c;
+            background:
+                #10131c;
 
             border:
                 1px solid
                 #23283a;
 
-            border-radius: 18px;
+            border-radius:
+                18px;
         }
 
         .video-card {
-            overflow: hidden;
+            overflow:
+                hidden;
         }
 
         /* =================================================
@@ -192,79 +236,126 @@
         ================================================= */
 
         .video-wrap {
-            position: relative;
+            position:
+                relative;
 
-            width: 100%;
+            width:
+                100%;
 
-            aspect-ratio: 16 / 9;
+            aspect-ratio:
+                16 / 9;
 
-            background: #000000;
+            background:
+                #000000;
 
-            overflow: hidden;
+            overflow:
+                hidden;
         }
 
         #localVideo {
-            display: block;
+            display:
+                block;
 
-            width: 100%;
-            height: 100%;
+            width:
+                100%;
 
-            object-fit: contain;
+            height:
+                100%;
 
-            background: #000000;
+            object-fit:
+                contain;
+
+            background:
+                #000000;
         }
 
         .overlay {
-            position: absolute;
-            inset: 0;
+            position:
+                absolute;
 
-            pointer-events: none;
+            inset:
+                0;
+
+            pointer-events:
+                none;
         }
 
         .status-pill,
         .viewer-pill {
-            position: absolute;
+            position:
+                absolute;
 
-            top: 12px;
+            top:
+                12px;
 
-            padding: 8px 11px;
+            padding:
+                8px
+                11px;
 
-            border-radius: 10px;
+            border-radius:
+                10px;
 
             background:
-                rgba(0, 0, 0, .64);
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .64
+                );
 
             border:
                 1px solid
-                rgba(255, 255, 255, .10);
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .10
+                );
 
-            font-size: 11px;
+            font-size:
+                11px;
         }
 
         .status-pill {
-            right: 12px;
+            right:
+                12px;
         }
 
         .viewer-pill {
-            left: 12px;
+            left:
+                12px;
 
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            display:
+                flex;
 
-            pointer-events: auto;
+            align-items:
+                center;
+
+            gap:
+                5px;
+
+            pointer-events:
+                auto;
         }
 
         #viewerListBtn {
-            border: none;
-            outline: none;
+            border:
+                none;
 
-            background: transparent;
+            outline:
+                none;
 
-            color: #ffffff;
+            background:
+                transparent;
 
-            font-size: 11px;
-            padding: 0;
+            color:
+                #ffffff;
+
+            font-size:
+                11px;
+
+            padding:
+                0;
         }
 
         /* =================================================
@@ -272,25 +363,40 @@
         ================================================= */
 
         #viewerList {
-            display: none;
+            display:
+                none;
 
-            position: absolute;
+            position:
+                absolute;
 
-            top: 60px;
-            left: 12px;
+            top:
+                60px;
 
-            width: 235px;
+            left:
+                12px;
 
-            max-height: 300px;
+            width:
+                235px;
 
-            overflow-y: auto;
+            max-height:
+                300px;
 
-            padding: 12px;
+            overflow-y:
+                auto;
 
-            border-radius: 14px;
+            padding:
+                12px;
+
+            border-radius:
+                14px;
 
             background:
-                rgba(10, 12, 20, .97);
+                rgba(
+                    10,
+                    12,
+                    20,
+                    .97
+                );
 
             border:
                 1px solid
@@ -298,64 +404,111 @@
 
             box-shadow:
                 0 15px 35px
-                rgba(0, 0, 0, .45);
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .45
+                );
 
-            z-index: 50;
+            z-index:
+                50;
         }
 
         .viewer-list-title {
-            margin-bottom: 10px;
+            margin-bottom:
+                10px;
 
-            font-size: 13px;
-            font-weight: 900;
+            font-size:
+                13px;
+
+            font-weight:
+                900;
         }
 
         .viewer-list-count {
-            color: #8e97ab;
-            font-size: 10px;
-            margin-bottom: 10px;
+            color:
+                #8e97ab;
+
+            font-size:
+                10px;
+
+            margin-bottom:
+                10px;
         }
 
         #viewerNames {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                6px;
         }
 
         .viewer-user {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            display:
+                flex;
 
-            padding: 9px;
+            align-items:
+                center;
 
-            border-radius: 10px;
+            gap:
+                8px;
 
-            background: #171b28;
+            padding:
+                9px;
 
-            color: #e9ebf2;
+            border-radius:
+                10px;
 
-            font-size: 12px;
+            background:
+                #171b28;
+
+            color:
+                #e9ebf2;
+
+            font-size:
+                12px;
         }
 
         .viewer-user-dot {
-            width: 7px;
-            height: 7px;
+            width:
+                7px;
 
-            border-radius: 50%;
+            height:
+                7px;
 
-            background: #45d483;
+            border-radius:
+                50%;
+
+            background:
+                #45d483;
 
             box-shadow:
                 0 0 8px
-                rgba(69, 212, 131, .6);
+                rgba(
+                    69,
+                    212,
+                    131,
+                    .6
+                );
         }
 
         .viewer-empty {
-            color: #747d91;
-            font-size: 11px;
-            text-align: center;
-            padding: 8px;
+            color:
+                #747d91;
+
+            font-size:
+                11px;
+
+            text-align:
+                center;
+
+            padding:
+                8px;
         }
 
         /* =================================================
@@ -363,42 +516,63 @@
         ================================================= */
 
         .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 9px;
+            display:
+                flex;
 
-            padding: 12px;
+            flex-wrap:
+                wrap;
 
-            background: #0e1119;
+            gap:
+                9px;
+
+            padding:
+                12px;
+
+            background:
+                #0e1119;
         }
 
         .control-btn {
-            min-height: 44px;
+            min-height:
+                44px;
 
-            padding: 0 13px;
+            padding:
+                0 13px;
 
-            border: none;
+            border:
+                none;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            background: #191e2d;
+            background:
+                #191e2d;
 
-            color: #ffffff;
+            color:
+                #ffffff;
 
-            font-size: 12px;
-            font-weight: 800;
+            font-size:
+                12px;
+
+            font-weight:
+                800;
         }
 
         .control-btn.active {
-            background: #5c43dd;
+            background:
+                #5c43dd;
         }
 
         .control-btn.red {
-            background: #d72f50;
+            background:
+                #d72f50;
         }
 
         .control-btn:hover {
-            filter: brightness(1.08);
+            filter:
+                brightness(
+                    1.08
+                );
         }
 
         /* =================================================
@@ -406,50 +580,77 @@
         ================================================= */
 
         .quality-box {
-            padding: 14px;
+            padding:
+                14px;
         }
 
         .quality-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display:
+                flex;
 
-            margin-bottom: 9px;
+            align-items:
+                center;
 
-            color: #d2d5df;
-            font-size: 12px;
+            justify-content:
+                space-between;
+
+            margin-bottom:
+                9px;
+
+            color:
+                #d2d5df;
+
+            font-size:
+                12px;
         }
 
         .quality-current {
-            color: #9d91ff;
-            font-weight: 800;
+            color:
+                #9d91ff;
+
+            font-weight:
+                800;
         }
 
         .quality-select {
-            width: 100%;
+            width:
+                100%;
 
-            min-height: 46px;
+            min-height:
+                46px;
 
-            padding: 0 12px;
+            padding:
+                0 12px;
 
             border:
                 1px solid
                 #2a3043;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            background: #0d1018;
-            color: #ffffff;
+            background:
+                #0d1018;
 
-            outline: none;
+            color:
+                #ffffff;
 
-            font-size: 12px;
-            font-weight: 700;
+            outline:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
         }
 
         .quality-select option {
-            background: #10131c;
-            color: #ffffff;
+            background:
+                #10131c;
+
+            color:
+                #ffffff;
         }
 
         /* =================================================
@@ -457,60 +658,91 @@
         ================================================= */
 
         .audio-quality-box {
-            padding: 14px;
+            padding:
+                14px;
         }
 
         .audio-quality-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display:
+                flex;
 
-            margin-bottom: 9px;
+            align-items:
+                center;
 
-            color: #d2d5df;
-            font-size: 12px;
+            justify-content:
+                space-between;
+
+            margin-bottom:
+                9px;
+
+            color:
+                #d2d5df;
+
+            font-size:
+                12px;
         }
 
         .audio-quality-current {
-            color: #9d91ff;
-            font-weight: 800;
+            color:
+                #9d91ff;
+
+            font-weight:
+                800;
         }
 
         .audio-quality-select {
-            width: 100%;
+            width:
+                100%;
 
-            min-height: 46px;
+            min-height:
+                46px;
 
-            padding: 0 12px;
+            padding:
+                0 12px;
 
             border:
                 1px solid
                 #2a3043;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            background: #0d1018;
-            color: #ffffff;
+            background:
+                #0d1018;
 
-            outline: none;
+            color:
+                #ffffff;
 
-            font-size: 12px;
-            font-weight: 700;
+            outline:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
         }
 
         .audio-quality-select option {
-            background: #10131c;
-            color: #ffffff;
+            background:
+                #10131c;
+
+            color:
+                #ffffff;
         }
 
         .audio-quality-hint {
-            margin-top: 8px;
+            margin-top:
+                8px;
 
-            color: #747d91;
+            color:
+                #747d91;
 
-            font-size: 10px;
+            font-size:
+                10px;
 
-            line-height: 1.8;
+            line-height:
+                1.8;
         }
 
         /* =================================================
@@ -518,56 +750,82 @@
         ================================================= */
 
         .info-card {
-            margin-top: 14px;
-            padding: 16px;
+            margin-top:
+                14px;
+
+            padding:
+                16px;
         }
 
         .stream-title {
-            margin: 0;
+            margin:
+                0;
 
-            font-size: 20px;
-            line-height: 1.6;
+            font-size:
+                20px;
+
+            line-height:
+                1.6;
         }
 
         .meta-row {
-            display: flex;
-            flex-wrap: wrap;
+            display:
+                flex;
 
-            gap: 8px;
+            flex-wrap:
+                wrap;
 
-            margin-top: 11px;
+            gap:
+                8px;
+
+            margin-top:
+                11px;
         }
 
         .meta {
-            padding: 7px 10px;
+            padding:
+                7px
+                10px;
 
-            border-radius: 10px;
+            border-radius:
+                10px;
 
-            background: #181c29;
+            background:
+                #181c29;
 
-            color: #bbc1d2;
+            color:
+                #bbc1d2;
 
-            font-size: 11px;
+            font-size:
+                11px;
         }
 
         /* =================================================
-           AUDIO
+           AUDIO CONTROLS
         ================================================= */
 
         .panel {
-            overflow: hidden;
+            overflow:
+                hidden;
         }
 
         .panel + .panel {
-            margin-top: 14px;
+            margin-top:
+                14px;
         }
 
         .panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display:
+                flex;
 
-            padding: 13px 15px;
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            padding:
+                13px 15px;
 
             border-bottom:
                 1px solid
@@ -575,46 +833,67 @@
         }
 
         .panel-title {
-            font-size: 14px;
-            font-weight: 900;
+            font-size:
+                14px;
+
+            font-weight:
+                900;
         }
 
         .panel-sub {
-            color: #8f97aa;
-            font-size: 11px;
+            color:
+                #8f97aa;
+
+            font-size:
+                11px;
         }
 
         .audio-box {
-            padding: 14px;
+            padding:
+                14px;
         }
 
         .audio-row {
-            margin-bottom: 17px;
+            margin-bottom:
+                17px;
         }
 
         .audio-row:last-child {
-            margin-bottom: 0;
+            margin-bottom:
+                0;
         }
 
         .audio-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display:
+                flex;
 
-            margin-bottom: 8px;
+            align-items:
+                center;
 
-            color: #d2d5df;
+            justify-content:
+                space-between;
 
-            font-size: 12px;
+            margin-bottom:
+                8px;
+
+            color:
+                #d2d5df;
+
+            font-size:
+                12px;
         }
 
         .audio-state {
-            color: #8d95a8;
+            color:
+                #8d95a8;
         }
 
         input[type="range"] {
-            width: 100%;
-            accent-color: #6a4cff;
+            width:
+                100%;
+
+            accent-color:
+                #6a4cff;
         }
 
         /* =================================================
@@ -622,50 +901,90 @@
         ================================================= */
 
         .diagnostic {
-            margin-top: 14px;
+            margin-top:
+                14px;
 
-            padding: 12px 14px;
+            padding:
+                12px 14px;
 
-            border-radius: 14px;
+            border-radius:
+                14px;
 
             background:
-                rgba(106, 76, 255, .08);
+                rgba(
+                    106,
+                    76,
+                    255,
+                    .08
+                );
 
             border:
                 1px solid
-                rgba(106, 76, 255, .18);
+                rgba(
+                    106,
+                    76,
+                    255,
+                    .18
+                );
 
-            color: #c9c2ff;
+            color:
+                #c9c2ff;
 
-            font-size: 11px;
+            font-size:
+                11px;
 
-            line-height: 1.9;
+            line-height:
+                1.9;
 
-            word-break: break-word;
+            word-break:
+                break-word;
         }
 
         .diagnostic strong {
-            color: #ffffff;
+            color:
+                #ffffff;
         }
 
         .diagnostic.ok {
             background:
-                rgba(46, 180, 110, .08);
+                rgba(
+                    46,
+                    180,
+                    110,
+                    .08
+                );
 
             border-color:
-                rgba(46, 180, 110, .20);
+                rgba(
+                    46,
+                    180,
+                    110,
+                    .20
+                );
 
-            color: #a9efc8;
+            color:
+                #a9efc8;
         }
 
         .diagnostic.warning {
             background:
-                rgba(255, 170, 55, .08);
+                rgba(
+                    255,
+                    170,
+                    55,
+                    .08
+                );
 
             border-color:
-                rgba(255, 170, 55, .20);
+                rgba(
+                    255,
+                    170,
+                    55,
+                    .20
+                );
 
-            color: #ffd49b;
+            color:
+                #ffd49b;
         }
 
         /* =================================================
@@ -673,30 +992,48 @@
         ================================================= */
 
         .notice {
-            display: none;
+            display:
+                none;
 
-            margin-top: 14px;
+            margin-top:
+                14px;
 
-            padding: 12px 14px;
+            padding:
+                12px 14px;
 
-            border-radius: 13px;
+            border-radius:
+                13px;
 
             background:
-                rgba(255, 45, 85, .10);
+                rgba(
+                    255,
+                    45,
+                    85,
+                    .10
+                );
 
             border:
                 1px solid
-                rgba(255, 45, 85, .20);
+                rgba(
+                    255,
+                    45,
+                    85,
+                    .20
+                );
 
-            color: #ff9eb0;
+            color:
+                #ff9eb0;
 
-            font-size: 12px;
+            font-size:
+                12px;
 
-            line-height: 1.8;
+            line-height:
+                1.8;
         }
 
         .notice.show {
-            display: block;
+            display:
+                block;
         }
 
         /* =================================================
@@ -704,72 +1041,104 @@
         ================================================= */
 
         .chat-panel {
-            display: flex;
-            flex-direction: column;
+            display:
+                flex;
 
-            height: 470px;
+            flex-direction:
+                column;
+
+            height:
+                470px;
         }
 
         #messages {
-            flex: 1;
+            flex:
+                1;
 
-            overflow-y: auto;
+            overflow-y:
+                auto;
 
-            padding: 12px;
+            padding:
+                12px;
         }
 
         .empty-chat {
-            height: 100%;
+            height:
+                100%;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display:
+                flex;
 
-            color: #70798d;
+            align-items:
+                center;
 
-            font-size: 12px;
+            justify-content:
+                center;
 
-            text-align: center;
+            color:
+                #70798d;
+
+            font-size:
+                12px;
+
+            text-align:
+                center;
         }
 
         .message {
-            margin-bottom: 9px;
+            margin-bottom:
+                9px;
 
-            padding: 9px 11px;
+            padding:
+                9px 11px;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            background: #171b28;
+            background:
+                #171b28;
         }
 
         .message-user {
-            margin-bottom: 4px;
+            margin-bottom:
+                4px;
 
-            color: #967fff;
+            color:
+                #967fff;
 
-            font-size: 11px;
+            font-size:
+                11px;
 
-            font-weight: 900;
+            font-weight:
+                900;
         }
 
         .message-text {
-            color: #e6e8ef;
+            color:
+                #e6e8ef;
 
-            font-size: 12px;
+            font-size:
+                12px;
 
-            line-height: 1.8;
+            line-height:
+                1.8;
 
-            word-break: break-word;
+            word-break:
+                break-word;
 
-            white-space: pre-wrap;
+            white-space:
+                pre-wrap;
         }
 
         .chat-form {
-            display: flex;
+            display:
+                flex;
 
-            gap: 8px;
+            gap:
+                8px;
 
-            padding: 10px;
+            padding:
+                10px;
 
             border-top:
                 1px solid
@@ -777,105 +1146,159 @@
         }
 
         .chat-input {
-            flex: 1;
+            flex:
+                1;
 
-            min-width: 0;
+            min-width:
+                0;
 
-            height: 44px;
+            height:
+                44px;
 
-            padding: 0 12px;
+            padding:
+                0 12px;
 
             border:
                 1px solid
                 #2a3043;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            outline: none;
+            outline:
+                none;
 
-            background: #0d1018;
+            background:
+                #0d1018;
 
-            color: #ffffff;
+            color:
+                #ffffff;
         }
 
         .chat-input:focus {
-            border-color: #6a4cff;
+            border-color:
+                #6a4cff;
 
             box-shadow:
                 0 0 0 3px
-                rgba(106, 76, 255, .12);
+                rgba(
+                    106,
+                    76,
+                    255,
+                    .12
+                );
         }
 
         .send-btn {
-            width: 48px;
+            width:
+                48px;
 
-            height: 44px;
+            height:
+                44px;
 
-            border: none;
+            border:
+                none;
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
-            background: #6a4cff;
+            background:
+                #6a4cff;
 
-            color: #ffffff;
+            color:
+                #ffffff;
 
-            font-size: 18px;
+            font-size:
+                18px;
         }
 
         .send-btn:disabled {
-            opacity: .5;
-            cursor: not-allowed;
+            opacity:
+                .5;
+
+            cursor:
+                not-allowed;
         }
 
-        @media (max-width: 980px) {
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (
+            max-width: 980px
+        ) {
 
             .layout {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
 
         }
 
-        @media (max-width: 600px) {
+        @media (
+            max-width: 600px
+        ) {
 
             .main {
-                padding: 8px;
+                padding:
+                    8px;
             }
 
             .topbar {
                 padding:
-                    calc(9px + env(safe-area-inset-top))
+                    calc(
+                        9px +
+                        env(
+                            safe-area-inset-top
+                        )
+                    )
                     10px
                     9px;
             }
 
             .top-title {
-                font-size: 14px;
+                font-size:
+                    14px;
             }
 
             .live-badge {
-                padding: 7px 9px;
+                padding:
+                    7px
+                    9px;
             }
 
             .video-card,
             .panel,
             .info-card {
-                border-radius: 15px;
+                border-radius:
+                    15px;
             }
 
             .control-btn {
                 flex:
                     1 1
-                    calc(50% - 9px);
+                    calc(
+                        50% -
+                        9px
+                    );
             }
 
             .chat-panel {
-                height: 420px;
+                height:
+                    420px;
             }
 
             #viewerList {
-                left: 8px;
-                width: calc(100vw - 32px);
-                max-width: 300px;
+                left:
+                    8px;
+
+                width:
+                    calc(
+                        100vw - 32px
+                    );
+
+                max-width:
+                    300px;
             }
 
         }
@@ -884,9 +1307,11 @@
 
 </head>
 
+
 <body>
 
 <div class="app">
+
 
     <header class="topbar">
 
@@ -900,11 +1325,13 @@
                 ←
             </button>
 
+
             <div class="top-title">
                 پخش زنده
             </div>
 
         </div>
+
 
         <div class="live-badge">
 
@@ -919,13 +1346,18 @@
 
     <main class="main">
 
+
         <div class="layout">
+
 
             <section>
 
+
                 <div class="video-card">
 
+
                     <div class="video-wrap">
+
 
                         <video
                             id="localVideo"
@@ -936,6 +1368,7 @@
 
 
                         <div class="overlay">
+
 
                             <div
                                 id="status"
@@ -955,7 +1388,6 @@
                                     0
                                 </span>
 
-
                                 <button
                                     id="viewerListBtn"
                                     type="button"
@@ -964,6 +1396,7 @@
                                 </button>
 
                             </div>
+
 
                         </div>
 
@@ -978,6 +1411,7 @@
                                 👤 کاربران حاضر
                             </div>
 
+
                             <div
                                 id="viewerListCount"
                                 class="viewer-list-count"
@@ -985,7 +1419,10 @@
                                 0 نفر آنلاین
                             </div>
 
-                            <div id="viewerNames">
+
+                            <div
+                                id="viewerNames"
+                            >
 
                                 <div
                                     class="viewer-empty"
@@ -1001,6 +1438,7 @@
 
 
                     <div class="controls">
+
 
                         <button
                             id="cameraBtn"
@@ -1064,7 +1502,9 @@
                             🔴 پایان لایو
                         </button>
 
+
                     </div>
+
 
                 </div>
 
@@ -1085,6 +1525,7 @@
 
                 <div class="info-card">
 
+
                     <h1
                         id="streamTitle"
                         class="stream-title"
@@ -1094,6 +1535,7 @@
 
 
                     <div class="meta-row">
+
 
                         <div
                             id="streamCategory"
@@ -1110,9 +1552,12 @@
                             Stream: -
                         </div>
 
+
                     </div>
 
+
                 </div>
+
 
             </section>
 
@@ -1120,13 +1565,18 @@
             <aside>
 
 
+                <!-- VIDEO QUALITY -->
+
                 <section class="panel">
 
+
                     <div class="panel-header">
+
 
                         <div class="panel-title">
                             🎥 کیفیت تصویر
                         </div>
+
 
                         <div
                             id="qualityCurrent"
@@ -1135,16 +1585,20 @@
                             720p
                         </div>
 
+
                     </div>
 
 
                     <div class="quality-box">
 
+
                         <div class="quality-head">
+
 
                             <span>
                                 کیفیت ویدیو
                             </span>
+
 
                             <span
                                 id="qualityDetails"
@@ -1152,6 +1606,7 @@
                             >
                                 1280×720 / 30fps
                             </span>
+
 
                         </div>
 
@@ -1165,6 +1620,7 @@
                                 480p — مصرف کمتر
                             </option>
 
+
                             <option
                                 value="720p"
                                 selected
@@ -1172,24 +1628,31 @@
                                 720p — پیشنهاد
                             </option>
 
+
                             <option value="1080p">
                                 1080p — کیفیت بالا
                             </option>
 
                         </select>
 
+
                     </div>
 
                 </section>
 
 
+                <!-- AUDIO QUALITY -->
+
                 <section class="panel">
 
+
                     <div class="panel-header">
+
 
                         <div class="panel-title">
                             🎵 کیفیت صدا
                         </div>
+
 
                         <div
                             id="audioQualityCurrent"
@@ -1198,10 +1661,14 @@
                             128 kbps
                         </div>
 
+
                     </div>
 
 
-                    <div class="audio-quality-box">
+                    <div
+                        class="audio-quality-box"
+                    >
+
 
                         <div
                             class="audio-quality-head"
@@ -1210,6 +1677,7 @@
                             <span>
                                 کیفیت ارسال صدا
                             </span>
+
 
                             <span
                                 id="audioQualityDetails"
@@ -1230,9 +1698,11 @@
                                 64 kbps — کم‌مصرف
                             </option>
 
+
                             <option value="96000">
                                 96 kbps — خوب
                             </option>
+
 
                             <option
                                 value="128000"
@@ -1240,6 +1710,7 @@
                             >
                                 128 kbps — پیشنهاد
                             </option>
+
 
                             <option value="160000">
                                 160 kbps — کیفیت بالا
@@ -1256,35 +1727,46 @@
                             میکروفن جداگانه تنظیم می‌شود.
                         </div>
 
+
                     </div>
 
                 </section>
 
 
+                <!-- AUDIO CONTROLS -->
+
                 <section class="panel">
 
+
                     <div class="panel-header">
+
 
                         <div class="panel-title">
                             🎚️ کنترل صدا
                         </div>
 
+
                         <div class="panel-sub">
                             جداگانه
                         </div>
+
 
                     </div>
 
 
                     <div class="audio-box">
 
+
                         <div class="audio-row">
 
+
                             <div class="audio-head">
+
 
                                 <span>
                                     🔊 صدای سیستم / تب
                                 </span>
+
 
                                 <span
                                     id="systemValue"
@@ -1292,6 +1774,7 @@
                                 >
                                     خاموش
                                 </span>
+
 
                             </div>
 
@@ -1304,16 +1787,20 @@
                                 value="100"
                             >
 
+
                         </div>
 
 
                         <div class="audio-row">
 
+
                             <div class="audio-head">
+
 
                                 <span>
                                     🎤 میکروفن / صحبت
                                 </span>
+
 
                                 <span
                                     id="micValue"
@@ -1321,6 +1808,7 @@
                                 >
                                     روشن
                                 </span>
+
 
                             </div>
 
@@ -1333,22 +1821,29 @@
                                 value="100"
                             >
 
+
                         </div>
+
 
                     </div>
 
                 </section>
 
 
+                <!-- CHAT -->
+
                 <section
                     class="panel chat-panel"
                 >
 
+
                     <div class="panel-header">
+
 
                         <div class="panel-title">
                             💬 چت زنده
                         </div>
+
 
                         <div
                             id="chatStatus"
@@ -1357,10 +1852,12 @@
                             در حال اتصال...
                         </div>
 
+
                     </div>
 
 
                     <div id="messages">
+
 
                         <div
                             id="emptyChat"
@@ -1369,6 +1866,7 @@
                             هنوز پیامی ارسال نشده است.
                         </div>
 
+
                     </div>
 
 
@@ -1376,6 +1874,7 @@
                         id="chatForm"
                         class="chat-form"
                     >
+
 
                         <input
                             id="chatInput"
@@ -1386,6 +1885,7 @@
                             placeholder="پیام بنویسید..."
                         >
 
+
                         <button
                             id="sendBtn"
                             class="send-btn"
@@ -1394,15 +1894,21 @@
                             ➤
                         </button>
 
+
                     </form>
+
 
                 </section>
 
+
             </aside>
+
 
         </div>
 
+
     </main>
+
 
 </div>
 
@@ -1467,37 +1973,49 @@ const QUALITY_PRESETS = {
 
     "480p": {
 
-        width: 854,
+        width:
+            854,
 
-        height: 480,
+        height:
+            480,
 
-        fps: 30,
+        fps:
+            30,
 
-        bitrate: 900000
+        bitrate:
+            900000
 
     },
 
     "720p": {
 
-        width: 1280,
+        width:
+            1280,
 
-        height: 720,
+        height:
+            720,
 
-        fps: 30,
+        fps:
+            30,
 
-        bitrate: 1800000
+        bitrate:
+            1800000
 
     },
 
     "1080p": {
 
-        width: 1920,
+        width:
+            1920,
 
-        height: 1080,
+        height:
+            1080,
 
-        fps: 30,
+        fps:
+            30,
 
-        bitrate: 3500000
+        bitrate:
+            3500000
 
     }
 
@@ -1512,7 +2030,9 @@ let selectedQuality =
 
 
 if (
-    !QUALITY_PRESETS[selectedQuality]
+    !QUALITY_PRESETS[
+        selectedQuality
+    ]
 ) {
 
     selectedQuality =
@@ -1527,13 +2047,17 @@ if (
 
 const AUDIO_BITRATES = {
 
-    "64000": 64000,
+    "64000":
+        64000,
 
-    "96000": 96000,
+    "96000":
+        96000,
 
-    "128000": 128000,
+    "128000":
+        128000,
 
-    "160000": 160000
+    "160000":
+        160000
 
 };
 
@@ -1600,9 +2124,6 @@ let peers =
 let viewerIds =
     new Set();
 
-/*
- * viewerId -> username
- */
 let viewerNames =
     new Map();
 
@@ -1615,6 +2136,9 @@ let extensionAudioContext =
 let extensionAudioSource =
     null;
 
+let settingsSaveTimer =
+    null;
+
 
 /* =====================================================
    ELEMENTS
@@ -1625,170 +2149,204 @@ const localVideo =
         "localVideo"
     );
 
+
 const statusElement =
     document.getElementById(
         "status"
     );
+
 
 const viewerCount =
     document.getElementById(
         "viewerCount"
     );
 
+
 const viewerListBtn =
     document.getElementById(
         "viewerListBtn"
     );
+
 
 const viewerList =
     document.getElementById(
         "viewerList"
     );
 
+
 const viewerNamesElement =
     document.getElementById(
         "viewerNames"
     );
+
 
 const viewerListCount =
     document.getElementById(
         "viewerListCount"
     );
 
+
 const notice =
     document.getElementById(
         "notice"
     );
+
 
 const diagnostic =
     document.getElementById(
         "diagnostic"
     );
 
+
 const streamTitle =
     document.getElementById(
         "streamTitle"
     );
+
 
 const streamCategory =
     document.getElementById(
         "streamCategory"
     );
 
+
 const streamIdElement =
     document.getElementById(
         "streamId"
     );
+
 
 const cameraBtn =
     document.getElementById(
         "cameraBtn"
     );
 
+
 const screenBtn =
     document.getElementById(
         "screenBtn"
     );
+
 
 const tabBtn =
     document.getElementById(
         "tabBtn"
     );
 
+
 const micBtn =
     document.getElementById(
         "micBtn"
     );
+
 
 const systemAudioBtn =
     document.getElementById(
         "systemAudioBtn"
     );
 
+
 const stopBtn =
     document.getElementById(
         "stopBtn"
     );
+
 
 const endBtn =
     document.getElementById(
         "endBtn"
     );
 
+
 const systemVolume =
     document.getElementById(
         "systemVolume"
     );
+
 
 const micVolume =
     document.getElementById(
         "micVolume"
     );
 
+
 const systemValue =
     document.getElementById(
         "systemValue"
     );
+
 
 const micValue =
     document.getElementById(
         "micValue"
     );
 
+
 const messages =
     document.getElementById(
         "messages"
     );
+
 
 const emptyChat =
     document.getElementById(
         "emptyChat"
     );
 
+
 const chatForm =
     document.getElementById(
         "chatForm"
     );
+
 
 const chatInput =
     document.getElementById(
         "chatInput"
     );
 
+
 const sendBtn =
     document.getElementById(
         "sendBtn"
     );
+
 
 const chatStatus =
     document.getElementById(
         "chatStatus"
     );
 
+
 const qualitySelect =
     document.getElementById(
         "qualitySelect"
     );
+
 
 const qualityCurrent =
     document.getElementById(
         "qualityCurrent"
     );
 
+
 const qualityDetails =
     document.getElementById(
         "qualityDetails"
     );
+
 
 const audioQualitySelect =
     document.getElementById(
         "audioQualitySelect"
     );
 
+
 const audioQualityCurrent =
     document.getElementById(
         "audioQualityCurrent"
     );
+
 
 const audioQualityDetails =
     document.getElementById(
@@ -1841,6 +2399,7 @@ function setDiagnostic(
     diagnostic.className =
         "diagnostic";
 
+
     if (
         type
     ) {
@@ -1850,6 +2409,7 @@ function setDiagnostic(
         );
 
     }
+
 
     diagnostic.innerHTML =
         text;
@@ -1868,7 +2428,7 @@ function setChatStatus(
 
 
 /* =====================================================
-   VIEWER NAMES
+   VIEWER LIST
 ===================================================== */
 
 function updateViewerList() {
@@ -1878,14 +2438,18 @@ function updateViewerList() {
 
 
     viewerCount.textContent =
-        String(count);
+        String(
+            count
+        );
 
 
     viewerListCount.textContent =
         count === 1
             ? "1 نفر آنلاین"
             : (
-                String(count) +
+                String(
+                    count
+                ) +
                 " نفر آنلاین"
             );
 
@@ -1903,15 +2467,19 @@ function updateViewerList() {
                 "div"
             );
 
+
         empty.className =
             "viewer-empty";
+
 
         empty.textContent =
             "هنوز کاربری وارد نشده است.";
 
+
         viewerNamesElement.appendChild(
             empty
         );
+
 
         return;
 
@@ -1931,14 +2499,20 @@ function updateViewerList() {
                 "div"
             );
 
+
         item.className =
             "viewer-user";
+
+
+        item.dataset.viewerId =
+            viewerId;
 
 
         const dot =
             document.createElement(
                 "span"
             );
+
 
         dot.className =
             "viewer-user-dot";
@@ -1949,6 +2523,7 @@ function updateViewerList() {
                 "span"
             );
 
+
         name.textContent =
             viewerUsername ||
             "کاربر";
@@ -1958,13 +2533,10 @@ function updateViewerList() {
             dot
         );
 
+
         item.appendChild(
             name
         );
-
-
-        item.dataset.viewerId =
-            viewerId;
 
 
         viewerNamesElement.appendChild(
@@ -1981,6 +2553,7 @@ viewerListBtn.addEventListener(
     event => {
 
         event.stopPropagation();
+
 
         viewerList.style.display =
             viewerList.style.display ===
@@ -2016,41 +2589,6 @@ document.addEventListener(
 
 
 /* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
-
-
-/* =====================================================
    QUALITY UI
 ===================================================== */
 
@@ -2061,6 +2599,7 @@ function updateQualityUI() {
             selectedQuality
         ];
 
+
     if (
         !preset
     ) {
@@ -2069,11 +2608,14 @@ function updateQualityUI() {
 
     }
 
+
     qualitySelect.value =
         selectedQuality;
 
+
     qualityCurrent.textContent =
         selectedQuality;
+
 
     qualityDetails.textContent =
         preset.width +
@@ -2102,13 +2644,16 @@ function updateAudioQualityUI() {
     const label =
         getAudioQualityLabel();
 
+
     audioQualitySelect.value =
         String(
             selectedAudioBitrate
         );
 
+
     audioQualityCurrent.textContent =
         label;
+
 
     audioQualityDetails.textContent =
         label;
@@ -2124,7 +2669,184 @@ updateViewerList();
 
 
 /* =====================================================
-   AUDIO QUALITY CONSTRAINTS
+   SAVE STREAM SETTINGS
+===================================================== */
+
+async function saveStreamSettings() {
+
+    if (
+        !streamId ||
+        !username
+    ) {
+
+        return false;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/streams/settings",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            stream_id:
+                                String(
+                                    streamId
+                                ),
+
+                            username:
+                                username,
+
+                            video_quality:
+                                selectedQuality,
+
+                            audio_bitrate:
+                                selectedAudioBitrate
+
+                        })
+
+                }
+            );
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        /*
+         * اطلاعات جدید را در اطلاعات لایو
+         * فعلی هم نگه می‌داریم.
+         */
+        if (
+            data &&
+            data.stream
+        ) {
+
+            streamData =
+                {
+                    ...streamData,
+                    ...data.stream
+                };
+
+        }
+        else {
+
+            streamData =
+                {
+                    ...streamData,
+
+                    video_quality:
+                        selectedQuality,
+
+                    audio_bitrate:
+                        selectedAudioBitrate
+
+                };
+
+        }
+
+
+        try {
+
+            sessionStorage.setItem(
+                "lainolive_current_stream",
+                JSON.stringify(
+                    streamData
+                )
+            );
+
+        }
+        catch {}
+
+
+        try {
+
+            localStorage.setItem(
+                "lainolive_current_stream",
+                JSON.stringify(
+                    streamData
+                )
+            );
+
+        }
+        catch {}
+
+
+        return true;
+
+    }
+    catch (
+        error
+    ) {
+
+        console.warn(
+            "save stream settings failed:",
+            error
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+function scheduleSaveStreamSettings() {
+
+    if (
+        settingsSaveTimer
+    ) {
+
+        clearTimeout(
+            settingsSaveTimer
+        );
+
+    }
+
+
+    settingsSaveTimer =
+        setTimeout(
+            async () => {
+
+                await saveStreamSettings();
+
+            },
+            200
+        );
+
+}
+
+
+/* =====================================================
+   AUDIO CONSTRAINTS
 ===================================================== */
 
 async function applyMicrophoneConstraints(
@@ -2139,23 +2861,29 @@ async function applyMicrophoneConstraints(
 
     }
 
+
     try {
 
         await track.applyConstraints({
 
             sampleRate: {
-                ideal: 48000
+                ideal:
+                    48000
             },
 
             channelCount: {
-                ideal: 1
+                ideal:
+                    1
             },
 
-            echoCancellation: true,
+            echoCancellation:
+                true,
 
-            noiseSuppression: true,
+            noiseSuppression:
+                true,
 
-            autoGainControl: true
+            autoGainControl:
+                true
 
         });
 
@@ -2186,23 +2914,29 @@ async function applySourceAudioConstraints(
 
     }
 
+
     try {
 
         await track.applyConstraints({
 
             sampleRate: {
-                ideal: 48000
+                ideal:
+                    48000
             },
 
             channelCount: {
-                ideal: 2
+                ideal:
+                    2
             },
 
-            echoCancellation: false,
+            echoCancellation:
+                false,
 
-            noiseSuppression: false,
+            noiseSuppression:
+                false,
 
-            autoGainControl: false
+            autoGainControl:
+                false
 
         });
 
@@ -2239,10 +2973,12 @@ async function applyTrackQuality(
 
     }
 
+
     const preset =
         QUALITY_PRESETS[
             selectedQuality
         ];
+
 
     if (
         !preset
@@ -2252,32 +2988,39 @@ async function applyTrackQuality(
 
     }
 
+
     try {
 
         await track.applyConstraints({
 
             width: {
+
                 ideal:
                     preset.width,
 
                 max:
                     preset.width
+
             },
 
             height: {
+
                 ideal:
                     preset.height,
 
                 max:
                     preset.height
+
             },
 
             frameRate: {
+
                 ideal:
                     preset.fps,
 
                 max:
                     preset.fps
+
             }
 
         });
@@ -2316,10 +3059,12 @@ async function applySenderVideoQuality(
 
     }
 
+
     const preset =
         QUALITY_PRESETS[
             selectedQuality
         ];
+
 
     if (
         !preset
@@ -2328,6 +3073,7 @@ async function applySenderVideoQuality(
         return;
 
     }
+
 
     try {
 
@@ -2393,6 +3139,7 @@ async function applySenderAudioQuality(
         return;
 
     }
+
 
     try {
 
@@ -2468,6 +3215,7 @@ async function applyPeerQuality(
         return;
 
     }
+
 
     const senders =
         peer.getSenders();
@@ -2561,7 +3309,7 @@ async function applyCurrentQuality() {
 
         "<br>" +
 
-        "🎵 <strong>صدای منبع:</strong> " +
+        "🎵 <strong>کیفیت صدای منبع:</strong> " +
         getAudioQualityLabel() +
 
         "<br>" +
@@ -2576,7 +3324,7 @@ async function applyCurrentQuality() {
 
 
 /* =====================================================
-   QUALITY EVENTS
+   QUALITY SELECT
 ===================================================== */
 
 qualitySelect.addEventListener(
@@ -2596,9 +3344,19 @@ qualitySelect.addEventListener(
         updateQualityUI();
 
 
-        try {
+        await applyCurrentQuality();
 
-            await applyCurrentQuality();
+
+        /*
+         * ثبت در سرور
+         */
+        scheduleSaveStreamSettings();
+
+
+        /*
+         * اعمال روی بیننده‌های فعلی
+         */
+        try {
 
             await renegotiateAllViewers();
 
@@ -2607,8 +3365,8 @@ qualitySelect.addEventListener(
             error
         ) {
 
-            console.error(
-                "video quality change:",
+            console.warn(
+                "renegotiate after video quality:",
                 error
             );
 
@@ -2624,6 +3382,10 @@ qualitySelect.addEventListener(
     }
 );
 
+
+/* =====================================================
+   AUDIO QUALITY SELECT
+===================================================== */
 
 audioQualitySelect.addEventListener(
     "change",
@@ -2672,7 +3434,27 @@ audioQualitySelect.addEventListener(
         }
 
 
-        await renegotiateAllViewers();
+        /*
+         * ثبت در سرور
+         */
+        scheduleSaveStreamSettings();
+
+
+        try {
+
+            await renegotiateAllViewers();
+
+        }
+        catch (
+            error
+        ) {
+
+            console.warn(
+                "renegotiate after audio quality:",
+                error
+            );
+
+        }
 
 
         setDiagnostic(
@@ -2800,11 +3582,20 @@ function getQueryId() {
 
     return (
 
-        params.get("id") ||
+        params.get(
+            "id"
+        )
+        ||
 
-        params.get("stream_id") ||
+        params.get(
+            "stream_id"
+        )
+        ||
 
-        params.get("room_id") ||
+        params.get(
+            "room_id"
+        )
+        ||
 
         ""
 
@@ -2905,6 +3696,7 @@ function stopExtensionAudio() {
     extensionAudioSource =
         null;
 
+
     extensionAudioContext =
         null;
 
@@ -2920,13 +3712,16 @@ function stopAllMedia() {
         cameraTrack
     );
 
+
     stopTrack(
         screenTrack
     );
 
+
     stopTrack(
         systemAudioTrack
     );
+
 
     stopTrack(
         microphoneTrack
@@ -2936,11 +3731,14 @@ function stopAllMedia() {
     cameraTrack =
         null;
 
+
     screenTrack =
         null;
 
+
     systemAudioTrack =
         null;
+
 
     microphoneTrack =
         null;
@@ -3054,6 +3852,7 @@ function updateAudioDiagnostic() {
 
         );
 
+
         return;
 
     }
@@ -3073,11 +3872,15 @@ function updateAudioDiagnostic() {
 
             "⚠️ <strong>صدای منبع:</strong> دریافت نشد<br>" +
 
-            "✅ <strong>میکروفن:</strong> فعال",
+            "✅ <strong>میکروفن:</strong> فعال<br>" +
+
+            "🎵 <strong>Bitrate انتخابی:</strong> " +
+            getAudioQualityLabel(),
 
             "warning"
 
         );
+
 
         return;
 
@@ -3093,7 +3896,7 @@ function updateAudioDiagnostic() {
 
 
 /* =====================================================
-   EXTENSION TAB CAPTURE
+   TAB CAPTURE
 ===================================================== */
 
 function waitForExtensionTabCapture() {
@@ -3279,11 +4082,14 @@ async function startCamera() {
 
     hideNotice();
 
+
     setStatus(
         "در حال فعال‌سازی دوربین..."
     );
 
+
     closeAllPeers();
+
 
     stopAllMedia();
 
@@ -3304,27 +4110,33 @@ async function startCamera() {
                     video: {
 
                         width: {
+
                             ideal:
                                 preset.width,
 
                             max:
                                 preset.width
+
                         },
 
                         height: {
+
                             ideal:
                                 preset.height,
 
                             max:
                                 preset.height
+
                         },
 
                         frameRate: {
+
                             ideal:
                                 preset.fps,
 
                             max:
                                 preset.fps
+
                         },
 
                         facingMode:
@@ -3335,18 +4147,24 @@ async function startCamera() {
                     audio: {
 
                         sampleRate: {
+
                             ideal:
                                 48000
+
                         },
 
                         sampleSize: {
+
                             ideal:
                                 16
+
                         },
 
                         channelCount: {
+
                             ideal:
                                 1
+
                         },
 
                         echoCancellation:
@@ -3368,12 +4186,14 @@ async function startCamera() {
 
 
         cameraTrack =
-            stream.getVideoTracks()[0]
+            stream
+                .getVideoTracks()[0]
             || null;
 
 
         microphoneTrack =
-            stream.getAudioTracks()[0]
+            stream
+                .getAudioTracks()[0]
             || null;
 
 
@@ -3412,6 +4232,7 @@ async function startCamera() {
                 microphoneTrack
             );
 
+
             microphoneTrack.enabled =
                 true;
 
@@ -3422,17 +4243,21 @@ async function startCamera() {
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
 
         tabBtn.classList.remove(
             "active"
         );
 
+
         micBtn.classList.add(
             "active"
         );
+
 
         systemAudioBtn.classList.remove(
             "active"
@@ -3455,6 +4280,9 @@ async function startCamera() {
         setStatus(
             "دوربین + میکروفن فعال"
         );
+
+
+        await saveStreamSettings();
 
 
         await renegotiateAllViewers();
@@ -3485,7 +4313,7 @@ async function startCamera() {
 
 
 /* =====================================================
-   SCREEN
+   SCREEN SHARE
 ===================================================== */
 
 async function startScreen() {
@@ -3499,6 +4327,7 @@ async function startScreen() {
 
 
     closeAllPeers();
+
 
     stopAllMedia();
 
@@ -3544,12 +4373,14 @@ async function startScreen() {
 
 
         screenTrack =
-            videoTracks[0] ||
+            videoTracks[0]
+            ||
             null;
 
 
         systemAudioTrack =
-            audioTracks[0] ||
+            audioTracks[0]
+            ||
             null;
 
 
@@ -3561,13 +4392,17 @@ async function startScreen() {
                     audio: {
 
                         sampleRate: {
+
                             ideal:
                                 48000
+
                         },
 
                         channelCount: {
+
                             ideal:
                                 1
+
                         },
 
                         echoCancellation:
@@ -3587,7 +4422,8 @@ async function startScreen() {
         microphoneTrack =
             microphoneStream
                 .getAudioTracks()[0]
-            || null;
+            ||
+            null;
 
 
         cameraTrack =
@@ -3641,6 +4477,7 @@ async function startScreen() {
                 systemAudioTrack
             );
 
+
             systemAudioTrack.enabled =
                 true;
 
@@ -3655,6 +4492,7 @@ async function startScreen() {
                 microphoneTrack
             );
 
+
             microphoneTrack.enabled =
                 true;
 
@@ -3665,9 +4503,11 @@ async function startScreen() {
             "active"
         );
 
+
         screenBtn.classList.add(
             "active"
         );
+
 
         tabBtn.classList.remove(
             "active"
@@ -3710,6 +4550,9 @@ async function startScreen() {
         );
 
 
+        await saveStreamSettings();
+
+
         await renegotiateAllViewers();
 
     }
@@ -3731,7 +4574,8 @@ async function startScreen() {
             "گرفتن صفحه انجام نشد: " +
 
             (
-                error?.message ||
+                error?.message
+                ||
                 "خطای نامشخص"
             )
 
@@ -3766,6 +4610,7 @@ async function startTabShare() {
 
     closeAllPeers();
 
+
     stopAllMedia();
 
 
@@ -3783,8 +4628,8 @@ async function startTabShare() {
 
             throw new Error(
 
-                extensionResult?.error ||
-
+                extensionResult?.error
+                ||
                 "افزونه Stream ID را برنگرداند."
 
             );
@@ -3835,13 +4680,15 @@ async function startTabShare() {
         screenTrack =
             tabStream
                 .getVideoTracks()[0]
-            || null;
+            ||
+            null;
 
 
         systemAudioTrack =
             tabStream
                 .getAudioTracks()[0]
-            || null;
+            ||
+            null;
 
 
         const microphoneStream =
@@ -3852,13 +4699,17 @@ async function startTabShare() {
                     audio: {
 
                         sampleRate: {
+
                             ideal:
                                 48000
+
                         },
 
                         channelCount: {
+
                             ideal:
                                 1
+
                         },
 
                         echoCancellation:
@@ -3878,7 +4729,8 @@ async function startTabShare() {
         microphoneTrack =
             microphoneStream
                 .getAudioTracks()[0]
-            || null;
+            ||
+            null;
 
 
         cameraTrack =
@@ -3932,6 +4784,7 @@ async function startTabShare() {
                 systemAudioTrack
             );
 
+
             systemAudioTrack.enabled =
                 true;
 
@@ -3946,6 +4799,7 @@ async function startTabShare() {
                 microphoneTrack
             );
 
+
             microphoneTrack.enabled =
                 true;
 
@@ -3956,9 +4810,11 @@ async function startTabShare() {
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
 
         tabBtn.classList.add(
             "active"
@@ -4001,6 +4857,9 @@ async function startTabShare() {
         );
 
 
+        await saveStreamSettings();
+
+
         await renegotiateAllViewers();
 
     }
@@ -4022,7 +4881,8 @@ async function startTabShare() {
             "گرفتن صدای تب انجام نشد: " +
 
             (
-                error?.message ||
+                error?.message
+                ||
                 "خطای نامشخص"
             )
 
@@ -4039,7 +4899,7 @@ async function startTabShare() {
 
 
 /* =====================================================
-   AUDIO TOGGLES
+   AUDIO TOGGLE
 ===================================================== */
 
 function toggleMicrophone() {
@@ -4051,6 +4911,7 @@ function toggleMicrophone() {
         showNotice(
             "میکروفن فعال نیست."
         );
+
 
         return;
 
@@ -4088,6 +4949,7 @@ function toggleSystemAudio() {
         showNotice(
             "صدای منبع دریافت نشده است."
         );
+
 
         return;
 
@@ -4560,9 +5422,6 @@ function connectSignaling() {
             );
 
 
-            /*
-             * میزبان
-             */
             sendSignal({
 
                 type:
@@ -4585,6 +5444,13 @@ function connectSignaling() {
                     username
 
             });
+
+
+            /*
+             * مطمئن می‌شویم کیفیت فعلی
+             * روی سرور ثبت شده باشد.
+             */
+            saveStreamSettings();
 
         };
 
@@ -4698,10 +5564,6 @@ async function handleSignal(
             }
 
 
-            /*
-             * بعضی سرورها هنگام join
-             * لیست کاربران را هم می‌فرستند.
-             */
             if (
                 Array.isArray(
                     message.viewers
@@ -4718,18 +5580,27 @@ async function handleSignal(
 
                     const id =
                         String(
-                            viewer.viewer_id ||
-                            viewer.id ||
-                            viewer.user_id ||
+
+                            viewer.viewer_id
+                            ||
+                            viewer.id
+                            ||
+                            viewer.user_id
+                            ||
                             ""
+
                         );
 
 
                     const name =
                         String(
-                            viewer.username ||
-                            viewer.user ||
+
+                            viewer.username
+                            ||
+                            viewer.user
+                            ||
                             "کاربر"
+
                         );
 
 
@@ -4798,17 +5669,25 @@ async function handleSignal(
 
                     const id =
                         String(
-                            viewer.viewer_id ||
-                            viewer.id ||
+
+                            viewer.viewer_id
+                            ||
+                            viewer.id
+                            ||
                             ""
+
                         );
 
 
                     const name =
                         String(
-                            viewer.username ||
-                            viewer.user ||
+
+                            viewer.username
+                            ||
+                            viewer.user
+                            ||
                             "کاربر"
+
                         );
 
 
@@ -4840,12 +5719,12 @@ async function handleSignal(
             const viewerId =
                 String(
 
-                    message.viewer_id ||
-
-                    message.user_id ||
-
-                    message.id ||
-
+                    message.viewer_id
+                    ||
+                    message.user_id
+                    ||
+                    message.id
+                    ||
                     ""
 
                 );
@@ -4854,12 +5733,12 @@ async function handleSignal(
             const viewerUsername =
                 String(
 
-                    message.username ||
-
-                    message.user ||
-
-                    message.name ||
-
+                    message.username
+                    ||
+                    message.user
+                    ||
+                    message.name
+                    ||
                     "کاربر"
 
                 );
@@ -4899,12 +5778,12 @@ async function handleSignal(
             const viewerId =
                 String(
 
-                    message.viewer_id ||
-
-                    message.user_id ||
-
-                    message.id ||
-
+                    message.viewer_id
+                    ||
+                    message.user_id
+                    ||
+                    message.id
+                    ||
                     ""
 
                 );
@@ -5041,20 +5920,24 @@ async function handleSignal(
             const incomingRoomId =
                 String(
 
-                    message.room_id ||
-
-                    message.stream_id ||
-
+                    message.room_id
+                    ||
+                    message.stream_id
+                    ||
                     ""
 
                 );
 
 
             if (
-                incomingRoomId &&
-                streamId &&
+                incomingRoomId
+                &&
+                streamId
+                &&
                 incomingRoomId !==
-                    String(streamId)
+                    String(
+                        streamId
+                    )
             ) {
 
                 break;
@@ -5064,20 +5947,22 @@ async function handleSignal(
 
             addChatMessage(
 
-                message.username ||
-
-                message.user ||
-
+                message.username
+                ||
+                message.user
+                ||
                 "کاربر",
 
-                message.message ||
-
+                message.message
+                ||
+                message.text
+                ||
                 "",
 
-                message.message_id ||
-
-                message.id ||
-
+                message.message_id
+                ||
+                message.id
+                ||
                 ""
 
             );
@@ -5096,8 +5981,8 @@ async function handleSignal(
 
             showNotice(
 
-                message.message ||
-
+                message.message
+                ||
                 "خطای سرور"
 
             );
@@ -5123,7 +6008,8 @@ function addChatMessage(
 
     text =
         String(
-            text || ""
+            text ||
+            ""
         ).trim();
 
 
@@ -5136,16 +6022,17 @@ function addChatMessage(
     }
 
 
-    /*
-     * جلوگیری از پیام تکراری
-     */
     if (
         messageId
     ) {
 
         const existing =
             document.querySelector(
-                `[data-message-id="${CSS.escape(String(messageId))}"]`
+                `[data-message-id="${CSS.escape(
+                    String(
+                        messageId
+                    )
+                )}"]`
             );
 
 
@@ -5248,7 +6135,8 @@ async function sendChat(
 
     text =
         String(
-            text || ""
+            text ||
+            ""
         ).trim();
 
 
@@ -5288,7 +6176,8 @@ async function sendChat(
     const messageId =
 
         window.crypto &&
-        typeof crypto.randomUUID ===
+        typeof
+            crypto.randomUUID ===
             "function"
 
             ? crypto.randomUUID()
@@ -5371,6 +6260,7 @@ async function sendChat(
         ) {
 
             console.error(
+                "WebSocket chat:",
                 error
             );
 
@@ -5383,14 +6273,19 @@ async function sendChat(
 
         const response =
             await fetch(
+
                 "/api/chat/send",
+
                 {
+
                     method:
                         "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
@@ -5421,6 +6316,7 @@ async function sendChat(
                         })
 
                 }
+
             );
 
 
@@ -5455,7 +6351,7 @@ async function sendChat(
     ) {
 
         console.error(
-            "chat error:",
+            "HTTP chat:",
             error
         );
 
@@ -5591,17 +6487,21 @@ stopBtn.addEventListener(
             "active"
         );
 
+
         screenBtn.classList.remove(
             "active"
         );
+
 
         tabBtn.classList.remove(
             "active"
         );
 
+
         micBtn.classList.remove(
             "active"
         );
+
 
         systemAudioBtn.classList.remove(
             "active"
@@ -5702,7 +6602,28 @@ chatForm.addEventListener(
             sendBtn.disabled =
                 false;
 
+
             chatInput.focus();
+
+        }
+
+    }
+);
+
+
+chatInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            event.preventDefault();
+
+
+            chatForm.requestSubmit();
 
         }
 
@@ -5812,9 +6733,17 @@ async function endLive() {
     );
 
 
+    /*
+     * آخرین کیفیت را قبل از پایان
+     * روی سرور ذخیره کن.
+     */
+    await saveStreamSettings();
+
+
     closeAllPeers();
 
     stopAllMedia();
+
 
     viewerIds.clear();
 
@@ -5868,6 +6797,7 @@ async function endLive() {
             "lainolive_current_stream"
         );
 
+
         sessionStorage.removeItem(
             "LainoLive_current_stream"
         );
@@ -5881,6 +6811,7 @@ async function endLive() {
         localStorage.removeItem(
             "lainolive_current_stream"
         );
+
 
         localStorage.removeItem(
             "LainoLive_current_stream"
@@ -5936,6 +6867,96 @@ async function initialize() {
         );
 
 
+    /*
+     * اگر قبلاً کیفیت روی مرورگر ذخیره شده،
+     * همان را استفاده کن.
+     */
+    if (
+        streamData.video_quality
+        &&
+        QUALITY_PRESETS[
+            streamData.video_quality
+        ]
+    ) {
+
+        selectedQuality =
+            streamData.video_quality;
+
+    }
+
+
+    if (
+        streamData.audio_bitrate
+    ) {
+
+        const serverAudio =
+            Number(
+                streamData.audio_bitrate
+            );
+
+
+        if (
+            AUDIO_BITRATES[
+                String(
+                    serverAudio
+                )
+            ]
+        ) {
+
+            selectedAudioBitrate =
+                serverAudio;
+
+        }
+
+    }
+
+
+    /*
+     * localStorage انتخاب کاربر
+     * اولویت دارد.
+     */
+    const localVideoQuality =
+        localStorage.getItem(
+            "lainolive_quality"
+        );
+
+
+    if (
+        localVideoQuality
+        &&
+        QUALITY_PRESETS[
+            localVideoQuality
+        ]
+    ) {
+
+        selectedQuality =
+            localVideoQuality;
+
+    }
+
+
+    const localAudioBitrate =
+        Number(
+            localStorage.getItem(
+                "lainolive_audio_bitrate"
+            )
+        );
+
+
+    if (
+        AUDIO_BITRATES[
+            String(
+                localAudioBitrate
+            )
+        ]
+    ) {
+
+        selectedAudioBitrate =
+            localAudioBitrate;
+
+    }
+
+
     updateQualityUI();
 
     updateAudioQualityUI();
@@ -5956,9 +6977,13 @@ async function initialize() {
 
     if (
 
-        !navigator.mediaDevices ||
+        !navigator.mediaDevices
 
-        !navigator.mediaDevices.getUserMedia ||
+        ||
+
+        !navigator.mediaDevices.getUserMedia
+
+        ||
 
         !navigator.mediaDevices.getDisplayMedia
 
@@ -5971,6 +6996,11 @@ async function initialize() {
 
         setChatStatus(
             "پشتیبانی نمی‌شود"
+        );
+
+
+        showNotice(
+            "مرورگر شما قابلیت لازم برای پخش زنده را ندارد."
         );
 
 
@@ -6003,9 +7033,21 @@ async function initialize() {
     }
 
 
+    /*
+     * اتصال به signaling
+     */
     connectSignaling();
 
 
+    /*
+     * ذخیره کیفیت فعلی روی سرور
+     */
+    await saveStreamSettings();
+
+
+    /*
+     * شروع دوربین
+     */
     await startCamera();
 
 }
@@ -6026,6 +7068,7 @@ window.addEventListener(
         closeAllPeers();
 
         stopAllMedia();
+
 
         viewerIds.clear();
 
@@ -6052,5 +7095,4 @@ initialize();
 </script>
 
 </body>
-
 </html>
